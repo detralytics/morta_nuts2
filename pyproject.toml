@@ -10,4 +10,11 @@ dependencies = [
     "matplotlib>=3.10.8",
     "numpy>=2.4.2",
     "pandas>=3.0.0",
+    "scipy>=1.17.0",
 ]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+ 
+[tool.setuptools.packages.find]
+where = ["src"]

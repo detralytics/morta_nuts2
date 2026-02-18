@@ -23,89 +23,88 @@ import pandas as pd
 from scipy.interpolate import BSpline, make_lsq_spline
 from scipy.special import gammaln
 from scipy.linalg import lstsq
-#from morta_nuts2.model.Bsplines import make_bspline_basis,eval_bspline_from_coef
-
+from morta_nuts2.model.Bsplines.Bsplines import make_bspline_basis, eval_bspline_from_coef
 
 # =============================================================================
 # 1. CONSTRUCTION DES B-SPLINES — scipy.interpolate.BSpline
 # =============================================================================
 
-def make_bspline_basis(xv, degree, n_knots, xmin=None, xmax=None):
-    """
-    Construit la matrice de base B-spline avec scipy.interpolate.BSpline.
+# def make_bspline_basis(xv, degree, n_knots, xmin=None, xmax=None):
+#     """
+#     Construit la matrice de base B-spline avec scipy.interpolate.BSpline.
     
-    Paramètres
-    ----------
-    xv       : array   points d'évaluation (ex: âges 0 à 82)
-    degree   : int     degré des B-splines (3 recommandé)
-    n_knots  : int     nombre de nœuds internes (équivalent à m+1 du code source)
-    xmin     : float   borne inférieure (défaut: min(xv))
-    xmax     : float   borne supérieure (défaut: max(xv))
+#     Paramètres
+#     ----------
+#     xv       : array   points d'évaluation (ex: âges 0 à 82)
+#     degree   : int     degré des B-splines (3 recommandé)
+#     n_knots  : int     nombre de nœuds internes (équivalent à m+1 du code source)
+#     xmin     : float   borne inférieure (défaut: min(xv))
+#     xmax     : float   borne supérieure (défaut: max(xv))
     
-    Retourne
-    --------
-    B      : (len(xv), n_basis)   matrice de base B-spline
-    knots  : array                vecteur de nœuds complet (avec multiplicité aux bords)
-    n_basis: int                  nombre de fonctions de base
+#     Retourne
+#     --------
+#     B      : (len(xv), n_basis)   matrice de base B-spline
+#     knots  : array                vecteur de nœuds complet (avec multiplicité aux bords)
+#     n_basis: int                  nombre de fonctions de base
     
-    Notes
-    -----
-    scipy.interpolate.BSpline utilise la convention :
-      - nœuds internes : np.linspace(xmin, xmax, n_knots)
-      - nœuds complets : répétition degree+1 fois aux bords
-      - n_basis = n_knots + degree - 1
-    """
-    if xmin is None:
-        xmin = float(np.min(xv))
-    if xmax is None:
-        xmax = float(np.max(xv))
+#     Notes
+#     -----
+#     scipy.interpolate.BSpline utilise la convention :
+#       - nœuds internes : np.linspace(xmin, xmax, n_knots)
+#       - nœuds complets : répétition degree+1 fois aux bords
+#       - n_basis = n_knots + degree - 1
+#     """
+#     if xmin is None:
+#         xmin = float(np.min(xv))
+#     if xmax is None:
+#         xmax = float(np.max(xv))
     
-    # Nœuds internes équidistants
-    internal_knots = np.linspace(xmin, xmax, n_knots)
+#     # Nœuds internes équidistants
+#     internal_knots = np.linspace(xmin, xmax, n_knots)
     
-    # Nœuds complets avec multiplicité aux bords (convention scipy)
-    knots = np.concatenate([
-        [xmin] * degree,        # répétition à gauche
-        internal_knots,
-        [xmax] * degree         # répétition à droite
-    ])
+#     # Nœuds complets avec multiplicité aux bords (convention scipy)
+#     knots = np.concatenate([
+#         [xmin] * degree,        # répétition à gauche
+#         internal_knots,
+#         [xmax] * degree         # répétition à droite
+#     ])
     
-    n_basis = len(knots) - degree - 1
+#     n_basis = len(knots) - degree - 1
     
-    # Construction de la matrice de base (chaque colonne = une fonction de base)
-    B = np.zeros((len(xv), n_basis))
-    for i in range(n_basis):
-        # Fonction de base i : tous les coeffs = 0 sauf le i-ème = 1
-        coef = np.zeros(n_basis)
-        coef[i] = 1.0
-        spline = BSpline(knots, coef, degree, extrapolate=False)
-        B[:, i] = spline(xv)
+#     # Construction de la matrice de base (chaque colonne = une fonction de base)
+#     B = np.zeros((len(xv), n_basis))
+#     for i in range(n_basis):
+#         # Fonction de base i : tous les coeffs = 0 sauf le i-ème = 1
+#         coef = np.zeros(n_basis)
+#         coef[i] = 1.0
+#         spline = BSpline(knots, coef, degree, extrapolate=False)
+#         B[:, i] = spline(xv)
     
-    # Remplacer NaN par 0 (extrapolation hors support)
-    B = np.nan_to_num(B, nan=0.0)
+#     # Remplacer NaN par 0 (extrapolation hors support)
+#     B = np.nan_to_num(B, nan=0.0)
     
-    return B, knots, n_basis
+#     return B, knots, n_basis
 
 
-def eval_bspline_from_coef(coef, xv, knots, degree):
-    """
-    Évalue une courbe B-spline à partir de ses coefficients.
-    Utilise scipy.interpolate.BSpline.
+# def eval_bspline_from_coef(coef, xv, knots, degree):
+#     """
+#     Évalue une courbe B-spline à partir de ses coefficients.
+#     Utilise scipy.interpolate.BSpline.
     
-    Paramètres
-    ----------
-    coef   : array  coefficients de la B-spline
-    xv     : array  points d'évaluation
-    knots  : array  vecteur de nœuds complet
-    degree : int    degré
+#     Paramètres
+#     ----------
+#     coef   : array  coefficients de la B-spline
+#     xv     : array  points d'évaluation
+#     knots  : array  vecteur de nœuds complet
+#     degree : int    degré
     
-    Retourne
-    --------
-    y : array   courbe évaluée aux points xv
-    """
-    spline = BSpline(knots, coef, degree, extrapolate=False)
-    y = spline(xv)
-    return np.nan_to_num(y, nan=0.0)
+#     Retourne
+#     --------
+#     y : array   courbe évaluée aux points xv
+#     """
+#     spline = BSpline(knots, coef, degree, extrapolate=False)
+#     y = spline(xv)
+#     return np.nan_to_num(y, nan=0.0)
 
 
 

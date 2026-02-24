@@ -459,15 +459,15 @@ def LiLee_p_fit(
     """
     nb_years = len(tv)
     nb_regions = Extg.shape[2]
-    
+
     if xmin is None:
         xmin = float(np.min(xv))
     if xmax is None:
         xmax = float(np.max(xv))
-    
+
     # Construction de la matrice de base B-spline
     B, knots, n_basis = make_bspline_basis(xv, degree, n_knots, xmin, xmax)
-    
+
     # Vérification des dimensions
     if alpha_coef_init.shape != (nb_regions, n_basis):
         raise ValueError(f"alpha_coef_init doit avoir shape ({nb_regions}, {n_basis})")
@@ -475,131 +475,177 @@ def LiLee_p_fit(
         raise ValueError(f"beta_coef_init doit avoir {n_basis} éléments")
     if beta_g_coef_init.shape != (nb_regions, n_basis):
         raise ValueError(f"beta_g_coef_init doit avoir shape ({nb_regions}, {n_basis})")
-    
+
     alpha_coef = alpha_coef_init.copy()
     beta_coef = beta_coef_init.copy()
     beta_g_coef = beta_g_coef_init.copy()
     kappa = kappa_init.copy()
     kappa_g = kappa_g_init.copy()
-    
+
     # Pénalité P-splines
     DtD, diag_DtD = make_penalty_matrix(n_basis, diff_order)
-    
+
     # Constante log-factorielle
     logDxtgFact = gammaln(Dxtg + 1)
-    
+
     lnL = 0.0
     Delta_lnL = -1000.0
     flag = 0
     it = -1
     eta = eta0
-    
+
     if verbose:
-        print("="*70)
+        print("=" * 70)
         print("CALIBRATION MODÈLE LI-LEE PARAMÉTRIQUE")
-        print("="*70)
+        print("=" * 70)
         print(f"Paramètres : degree={degree}, n_knots={n_knots}, lam={lam}")
         print(f"Données : {Dxtg.shape[0]} âges × {nb_years} années × {nb_regions} régions")
         print(f"Nombre de fonctions de base : {n_basis}")
-        print("="*70)
-    
+        print("=" * 70)
+
     # Boucle NR
     while (it < nb_iter) and (flag < 4):
         it += 1
-        
+
         # Learning rate adaptatif
         if Delta_lnL < 0:
             eta *= 0.5
         else:
             eta = min(eta * 1.05, 2.0)
-        
+
         # Critère d'arrêt
         if np.abs(Delta_lnL) < tol:
             flag += 1
         else:
             flag = 0
-        
+
         # Reconstruction ln(µ)
         logmu, alpha, beta, beta_g = compute_logmu_lilee(
-            alpha_coef, beta_coef, beta_g_coef, kappa, kappa_g,
-            xv, B, knots, degree
+            alpha_coef,
+            beta_coef,
+            beta_g_coef,
+            kappa,
+            kappa_g,
+            xv,
+            B,
+            knots,
+            degree,
         )
-        
+
         # Log-vraisemblance
         lnL_new, _, weighted_exp, residual = poisson_lnL(
             Dxtg, Extg, logmu, logDxtgFact
         )
+
         Delta_lnL = lnL_new - lnL
         lnL = lnL_new
-        
+
         if verbose and (it % 10 == 0):
             print(f"It {it:4d} | lnL = {lnL:,.2f} | Δ = {Delta_lnL:+.6f} | η = {eta:.5f}")
-        
+
         # Mises à jour NR séquentielles
         alpha_coef = update_alpha_coef(
             alpha_coef, B, residual, weighted_exp, eta, lam, DtD, diag_DtD
         )
+
         beta_coef = update_beta_coef(
             beta_coef, B, kappa, residual, weighted_exp, eta, lam, DtD, diag_DtD
         )
+
         beta_g_coef = update_beta_g_coef(
             beta_g_coef, B, kappa_g, residual, weighted_exp, eta, lam, DtD, diag_DtD
         )
+
         kappa = update_kappa(kappa, beta, residual, weighted_exp, eta)
-        kappa_g = update_kappa_g(kappa_g, beta_g, residual, weighted_exp, eta)
-    
+
+        kappa_g = update_kappa_g(
+            kappa_g, beta_g, residual, weighted_exp, eta
+        )
+
     # Normalisation finale
     beta_coef, beta_g_coef, kappa, kappa_g = normalize_lilee(
         beta_coef, beta_g_coef, kappa, kappa_g, B
     )
-    
+
     # Reconstruction finale
     logmu_final, alpha, beta, beta_g = compute_logmu_lilee(
-        alpha_coef, beta_coef, beta_g_coef, kappa, kappa_g,
-        xv, B, knots, degree
+        alpha_coef,
+        beta_coef,
+        beta_g_coef,
+        kappa,
+        kappa_g,
+        xv,
+        B,
+        knots,
+        degree,
     )
-    
+
     # Statistiques
     Fit_stat = compute_fit_stats(
-        Dxtg, Extg, logmu_final, logDxtgFact, n_basis, nb_years, nb_regions
+        Dxtg,
+        Extg,
+        logmu_final,
+        logDxtgFact,
+        n_basis,
+        nb_years,
+        nb_regions,
     )
-    
+
     if verbose:
-        print("\n" + "="*70)
+        print("\n" + "=" * 70)
         print("CALIBRATION TERMINÉE")
-        print("="*70)
-        print(f"Convergence atteinte après {it+1} itérations")
+        print("=" * 70)
+        print(f"Convergence atteinte après {it + 1} itérations")
         print("\nStatistiques finales :")
         print(Fit_stat.to_string(index=False))
-        print("="*70)
+        print("=" * 70)
 
     results = {
-    
-    "parameters": {
-        "alpha_coef": alpha_coef,
-        "beta_coef": beta_coef,
-        "beta_g_coef": beta_g_coef,
-        "kappa": kappa,
-        "kappa_g": kappa_g
-    },
-    
-    "curves": {
-        "alpha_xg": alpha,     # (age, region)
-        "beta_x": beta,        # (age,)
-        "beta_xg": beta_g      # (age, region)
-    },
-    
-    "fitted_values": {
-        "log_mu": logmu_final,
-        "mu": np.exp(logmu_final)
-    },
-    
-    "fit_statistics": Fit_stat
+
+        "parameters": {
+            "alpha_coef": alpha_coef,
+            "beta_coef": beta_coef,
+            "beta_g_coef": beta_g_coef,
+            "kappa": kappa,
+            "kappa_g": kappa_g,
+        },
+
+        "curves": {
+            "alpha_xg": alpha,
+            "beta_x": beta,
+            "beta_xg": beta_g,
+        },
+
+        "fitted_values": {
+            "log_mu": logmu_final,
+            "mu": np.exp(logmu_final),
+        },
+
+        "fit_statistics": Fit_stat,
     }
 
-
-
-    
     return results
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

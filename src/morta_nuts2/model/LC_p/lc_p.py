@@ -17,13 +17,20 @@ PAS de réimplémentation manuelle — tout vient de scipy/numpy.
 Référence scipy B-splines :
   https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BSpline.html
 """
-
+import sys, os
+sys.path.append(os.path.abspath(".."))
+import geopandas as gpd
+import sys
+sys.executable
 import numpy as np
 import pandas as pd
 from scipy.interpolate import BSpline, make_lsq_spline
 from scipy.special import gammaln
 from scipy.linalg import lstsq
+
 from morta_nuts2.model.Bsplines.Bsplines import make_bspline_basis, eval_bspline_from_coef
+
+#from morta_nuts2.model.Bsplines.Bsplines import*
 
 # =============================================================================
 # 1. CONSTRUCTION DES B-SPLINES — scipy.interpolate.BSpline
@@ -300,6 +307,175 @@ def compute_fit_stats(Dxtg, Extg, logmu, logDxtgFact, n_basis, nb_years, nb_regi
 # 8. FONCTION PRINCIPALE
 # =============================================================================
 
+# def LCp_fit(
+#     ax_coef_init,
+#     bx_coef_init,
+#     kappa_init,
+#     Extg,
+#     Dxtg,
+#     xv,
+#     tv,
+#     degree=2,
+#     n_knots=10,       # nombre de nœuds internes (équivalent à m+1)
+#     xmin=None,
+#     xmax=None,
+#     lam=0.0,
+#     diff_order=2,
+#     nb_iter=800,
+#     eta0=0.2,
+#     tol=1e-6,
+#     verbose=False,
+# ):
+#     """
+#     Calibre le modèle Lee-Carter paramétrique :
+#         ln(µ_{x,t,g}) = α_x  +  β_{x,g} · κ_t
+
+#     UTILISE UNIQUEMENT LES BIBLIOTHÈQUES PYTHON STANDARD :
+#       ✓ scipy.interpolate.BSpline
+#       ✓ scipy.special.gammaln
+#       ✓ numpy
+    
+#     Paramètres
+#     ----------
+#     ax_coef_init : (n_basis,)            init coefficients B-spline de α_x
+#     bx_coef_init : (nb_regions, n_basis) init coefficients B-spline de β_{x,g}
+#     kappa_init   : (nb_years,)           init κ_t
+#     Extg         : (nb_ages, nb_years, nb_regions)  expositions
+#     Dxtg         : (nb_ages, nb_years, nb_regions)  décès
+#     xv           : (nb_ages,)            vecteur des âges
+#     tv           : (nb_years,)           vecteur des années
+#     degree       : int   degré B-splines (défaut: 3)
+#     n_knots      : int   nombre de nœuds internes (défaut: 6)
+#     xmin, xmax   : float bornes (défaut: min/max de xv)
+#     lam          : float poids pénalité P-splines (0 = B-splines purs)
+#     diff_order   : int   ordre différences (1 ou 2)
+    
+#     Retourne
+#     --------
+#     ax_coef     : (n_basis,)            coefficients B-splines de α_x
+#     bx_coef     : (nb_regions, n_basis) coefficients B-splines de β_{x,g}
+#     kappa       : (nb_years,)           κ_t calibré
+#     ax          : (nb_ages,)            courbe α_x évaluée
+#     bx          : (nb_ages, nb_regions) courbes β_{x,g} évaluées
+#     logmu_final : ln(µ_{x,t,g})
+#     Fit_stat    : pd.DataFrame          statistiques
+#     """
+#     nb_years = len(tv)
+#     nb_regions = Extg.shape[2]
+    
+#     if xmin is None:
+#         xmin = float(np.min(xv))
+#     if xmax is None:
+#         xmax = float(np.max(xv))
+    
+#     # Construction de la matrice de base B-spline avec scipy
+#     B, knots, n_basis = make_bspline_basis(xv, degree, n_knots, xmin, xmax)
+    
+#     # Vérification des dimensions d'initialisation
+#     if len(ax_coef_init) != n_basis:
+#         raise ValueError(f"ax_coef_init doit avoir {n_basis} éléments, reçu {len(ax_coef_init)}")
+#     if bx_coef_init.shape[1] != n_basis:
+#         raise ValueError(f"bx_coef_init doit avoir {n_basis} colonnes, reçu {bx_coef_init.shape[1]}")
+    
+#     ax_coef = ax_coef_init.copy()
+#     bx_coef = bx_coef_init.copy()
+#     kappa = kappa_init.copy()
+    
+#     # Pénalité P-splines
+#     DtD, diag_DtD = make_penalty_matrix(n_basis, diff_order)
+    
+#     # Constante log-factorielle
+#     logDxtgFact = gammaln(Dxtg + 1)
+    
+#     lnL = 0.0
+#     Delta_lnL = -1000.0
+#     flag = 0
+#     it = -1
+#     eta = eta0
+    
+#     # Boucle NR
+#     while (it < nb_iter) and (flag < 4):
+#         it += 1
+        
+#         # Learning rate adaptatif
+#         if Delta_lnL < 0:
+#             eta *= 0.5
+#         else:
+#             eta = min(eta * 1.05, 2.0)
+        
+#         # Critère d'arrêt
+#         if np.abs(Delta_lnL) < tol:
+#             flag += 1
+#         else:
+#             flag = 0
+        
+#         # Reconstruction ln(µ) avec scipy.interpolate.BSpline
+#         logmu, ax, bx_reg = compute_logmu(
+#             ax_coef, bx_coef, kappa, xv, B, knots, degree
+#         )
+        
+#         # Log-vraisemblance
+#         lnL_new, _, weighted_exp, residual = poisson_lnL(
+#             Dxtg, Extg, logmu, logDxtgFact
+#         )
+#         Delta_lnL = lnL_new - lnL
+#         lnL = lnL_new
+        
+#         if verbose and (it % 10 == 0):
+#             print(f"It {it:4d} | lnL = {lnL:.4f} | Δ = {Delta_lnL:+.6f} | η = {eta:.5f}")
+        
+#         # Mises à jour NR
+#         ax_coef = update_ax_coef(ax_coef, B, residual, weighted_exp, eta, lam, DtD, diag_DtD)
+#         bx_coef = update_bx_coef(bx_coef, B, kappa, residual, weighted_exp, eta, lam, DtD, diag_DtD)
+#         kappa = update_kappa(kappa, bx_reg, residual, weighted_exp, eta)
+    
+#     # Rescaling final
+#     bx_coef, bx_reg, kappa = rescale_bx_kappa(bx_coef, bx_reg, kappa)
+
+#     # Reconstruction finale
+#     logmu_final, ax, bx_reg = compute_logmu(
+#         ax_coef, bx_coef, kappa, xv, B, knots, degree
+#     )
+    
+#     # Statistiques
+#     Fit_stat = compute_fit_stats(
+#         Dxtg, Extg, logmu_final, logDxtgFact, n_basis, nb_years, nb_regions
+#     )
+    
+#     if verbose:
+#         print("\n" + "="*70)
+#         print("STATISTIQUES FINALES (scipy/numpy uniquement)")
+#         print("="*70)
+#         print(Fit_stat.to_string(index=False))
+
+
+#     results = {
+    
+#     "parameters": {
+#         "ax_coef": ax_coef,
+#         "bx_coef": bx_coef,
+#         "kappa": kappa
+#     },
+    
+#     "curves": {
+#         "alpha_x": ax,
+#         "beta_xg": bx_reg
+#     },
+    
+#     "fitted_values": {
+#         "log_mu": logmu_final,
+#         "mu": np.exp(logmu_final)
+#     },
+    
+#     "fit_statistics": Fit_stat
+#     }
+
+
+ 
+    
+#     return results
+
+
 def LCp_fit(
     ax_coef_init,
     bx_coef_init,
@@ -309,50 +485,16 @@ def LCp_fit(
     xv,
     tv,
     degree=2,
-    n_knots=10,       # nombre de nœuds internes (équivalent à m+1)
+    n_knots=10,
     xmin=None,
     xmax=None,
     lam=0.0,
     diff_order=2,
     nb_iter=800,
-    eta0=1,
-    tol=1e-6,
+    eta0=0.2,
+    tol=1e-3,
     verbose=False,
 ):
-    """
-    Calibre le modèle Lee-Carter paramétrique :
-        ln(µ_{x,t,g}) = α_x  +  β_{x,g} · κ_t
-
-    UTILISE UNIQUEMENT LES BIBLIOTHÈQUES PYTHON STANDARD :
-      ✓ scipy.interpolate.BSpline
-      ✓ scipy.special.gammaln
-      ✓ numpy
-    
-    Paramètres
-    ----------
-    ax_coef_init : (n_basis,)            init coefficients B-spline de α_x
-    bx_coef_init : (nb_regions, n_basis) init coefficients B-spline de β_{x,g}
-    kappa_init   : (nb_years,)           init κ_t
-    Extg         : (nb_ages, nb_years, nb_regions)  expositions
-    Dxtg         : (nb_ages, nb_years, nb_regions)  décès
-    xv           : (nb_ages,)            vecteur des âges
-    tv           : (nb_years,)           vecteur des années
-    degree       : int   degré B-splines (défaut: 3)
-    n_knots      : int   nombre de nœuds internes (défaut: 6)
-    xmin, xmax   : float bornes (défaut: min/max de xv)
-    lam          : float poids pénalité P-splines (0 = B-splines purs)
-    diff_order   : int   ordre différences (1 ou 2)
-    
-    Retourne
-    --------
-    ax_coef     : (n_basis,)            coefficients B-splines de α_x
-    bx_coef     : (nb_regions, n_basis) coefficients B-splines de β_{x,g}
-    kappa       : (nb_years,)           κ_t calibré
-    ax          : (nb_ages,)            courbe α_x évaluée
-    bx          : (nb_ages, nb_regions) courbes β_{x,g} évaluées
-    logmu_final : ln(µ_{x,t,g})
-    Fit_stat    : pd.DataFrame          statistiques
-    """
     nb_years = len(tv)
     nb_regions = Extg.shape[2]
     
@@ -361,10 +503,8 @@ def LCp_fit(
     if xmax is None:
         xmax = float(np.max(xv))
     
-    # Construction de la matrice de base B-spline avec scipy
     B, knots, n_basis = make_bspline_basis(xv, degree, n_knots, xmin, xmax)
     
-    # Vérification des dimensions d'initialisation
     if len(ax_coef_init) != n_basis:
         raise ValueError(f"ax_coef_init doit avoir {n_basis} éléments, reçu {len(ax_coef_init)}")
     if bx_coef_init.shape[1] != n_basis:
@@ -374,20 +514,23 @@ def LCp_fit(
     bx_coef = bx_coef_init.copy()
     kappa = kappa_init.copy()
     
-    # Pénalité P-splines
     DtD, diag_DtD = make_penalty_matrix(n_basis, diff_order)
-    
-    # Constante log-factorielle
     logDxtgFact = gammaln(Dxtg + 1)
     
-    lnL = 0.0
-    Delta_lnL = -1000.0
-    flag = 0
-    it = -1
+    lnL = -np.inf
+    Delta_lnL = 0.0
     eta = eta0
+    it = -1
     
-    # Boucle NR
-    while (it < nb_iter) and (flag < 4):
+    # ===============================
+    # 🔵 Early stopping type patience
+    # ===============================
+    best_lnL = -np.inf
+    patience = 40           # nombre max d'itérations sans amélioration
+    min_delta = 1e-2        # amélioration minimale significative
+    wait = 0
+    
+    while it < nb_iter:
         it += 1
         
         # Learning rate adaptatif
@@ -396,13 +539,7 @@ def LCp_fit(
         else:
             eta = min(eta * 1.05, 2.0)
         
-        # Critère d'arrêt
-        if np.abs(Delta_lnL) < tol:
-            flag += 1
-        else:
-            flag = 0
-        
-        # Reconstruction ln(µ) avec scipy.interpolate.BSpline
+        # Reconstruction
         logmu, ax, bx_reg = compute_logmu(
             ax_coef, bx_coef, kappa, xv, B, knots, degree
         )
@@ -411,62 +548,393 @@ def LCp_fit(
         lnL_new, _, weighted_exp, residual = poisson_lnL(
             Dxtg, Extg, logmu, logDxtgFact
         )
+        
         Delta_lnL = lnL_new - lnL
-        lnL = lnL_new
         
         if verbose and (it % 10 == 0):
-            print(f"It {it:4d} | lnL = {lnL:.4f} | Δ = {Delta_lnL:+.6f} | η = {eta:.5f}")
+            print(f"It {it:4d} | lnL = {lnL_new:.4f} | Δ = {Delta_lnL:+.6f} | η = {eta:.5f}")
         
-        # Mises à jour NR
+        # ===============================
+        # 🔵 Early stopping logique
+        # ===============================
+        if lnL_new > best_lnL + min_delta:
+            best_lnL = lnL_new
+            wait = 0
+        else:
+            wait += 1
+        
+        if wait >= patience:
+            if verbose:
+                print("\nArrêt anticipé : plus d'amélioration significative.")
+            break
+        
+        # Critère d'arrêt classique
+        if abs(Delta_lnL) < tol:
+            if verbose:
+                print("\nConvergence atteinte (tolérance).")
+            break
+        
+        lnL = lnL_new
+        
+        # Updates
         ax_coef = update_ax_coef(ax_coef, B, residual, weighted_exp, eta, lam, DtD, diag_DtD)
         bx_coef = update_bx_coef(bx_coef, B, kappa, residual, weighted_exp, eta, lam, DtD, diag_DtD)
         kappa = update_kappa(kappa, bx_reg, residual, weighted_exp, eta)
     
+    # ===============================
     # Rescaling final
+    # ===============================
     bx_coef, bx_reg, kappa = rescale_bx_kappa(bx_coef, bx_reg, kappa)
-    
-    # Reconstruction finale
+
     logmu_final, ax, bx_reg = compute_logmu(
         ax_coef, bx_coef, kappa, xv, B, knots, degree
     )
     
-    # Statistiques
     Fit_stat = compute_fit_stats(
         Dxtg, Extg, logmu_final, logDxtgFact, n_basis, nb_years, nb_regions
     )
     
     if verbose:
         print("\n" + "="*70)
-        print("STATISTIQUES FINALES (scipy/numpy uniquement)")
+        print("STATISTIQUES FINALES")
         print("="*70)
         print(Fit_stat.to_string(index=False))
 
-
     results = {
-    
-    "parameters": {
-        "ax_coef": ax_coef,
-        "bx_coef": bx_coef,
-        "kappa": kappa
-    },
-    
-    "curves": {
-        "alpha_x": ax,
-        "beta_xg": bx_reg
-    },
-    
-    "fitted_values": {
-        "log_mu": logmu_final,
-        "mu": np.exp(logmu_final)
-    },
-    
-    "fit_statistics": Fit_stat
+        "parameters": {
+            "ax_coef": ax_coef,
+            "bx_coef": bx_coef,
+            "kappa": kappa
+        },
+        "curves": {
+            "alpha_x": ax,
+            "beta_xg": bx_reg
+        },
+        "fitted_values": {
+            "log_mu": logmu_final,
+            "mu": np.exp(logmu_final)
+        },
+        "fit_statistics": Fit_stat
     }
 
-
- 
-    
     return results
+
+
+
+# def LCp_fit_snd(
+#     ax_coef_init,
+#     bx_coef_init,
+#     kappa_init,
+#     Extg,
+#     Dxtg,
+#     xv,
+#     tv,
+#     degree=2,
+#     n_knots=10,
+#     xmin=None,
+#     xmax=None,
+#     lam=0.0,
+#     diff_order=2,
+#     nb_iter=800,
+#     eta0=0.2,
+#     tol=1e-6,
+#     verbose=False,
+# ):
+
+#     nb_years = len(tv)
+#     nb_regions = Extg.shape[2]
+
+#     if xmin is None:
+#         xmin = float(np.min(xv))
+#     if xmax is None:
+#         xmax = float(np.max(xv))
+
+#     B, knots, n_basis = make_bspline_basis(xv, degree, n_knots, xmin, xmax)
+
+#     ax_coef = ax_coef_init.copy()
+#     bx_coef = bx_coef_init.copy()
+#     kappa = kappa_init.copy()
+
+#     DtD, diag_DtD = make_penalty_matrix(n_basis, diff_order)
+#     logDxtgFact = gammaln(Dxtg + 1)
+
+#     eta = min(eta0, 1.0)
+#     flag = 0
+#     it = 0
+
+#     # loglik initiale
+#     logmu, ax, bx_reg = compute_logmu(
+#         ax_coef, bx_coef, kappa, xv, B, knots, degree
+#     )
+#     lnL, _, _, _ = poisson_lnL(Dxtg, Extg, logmu, logDxtgFact)
+
+#     while (it < nb_iter) and (flag < 4):
+
+#         it += 1
+
+#         # recalcul courant
+#         logmu, ax, bx_reg = compute_logmu(
+#             ax_coef, bx_coef, kappa, xv, B, knots, degree
+#         )
+
+#         lnL_current, _, weighted_exp, residual = poisson_lnL(
+#             Dxtg, Extg, logmu, logDxtgFact
+#         )
+
+#         # tentative update
+#         eta_try = eta
+#         accepted = False
+
+#         while not accepted:
+
+#             ax_new = update_ax_coef(
+#                 ax_coef, B, residual, weighted_exp,
+#                 eta_try, lam, DtD, diag_DtD
+#             )
+
+#             bx_new = update_bx_coef(
+#                 bx_coef, B, kappa, residual, weighted_exp,
+#                 eta_try, lam, DtD, diag_DtD
+#             )
+
+#             kappa_new = update_kappa(
+#                 kappa, bx_reg, residual, weighted_exp,
+#                 eta_try
+#             )
+
+#             # --- Stabilisation forte κ ---
+#             for _ in range(3):
+#                 logmu_tmp, _, bx_reg_tmp = compute_logmu(
+#                     ax_new, bx_new, kappa_new, xv, B, knots, degree
+#                 )
+#                 _, _, weighted_exp_tmp, residual_tmp = poisson_lnL(
+#                     Dxtg, Extg, logmu_tmp, logDxtgFact
+#                 )
+#                 kappa_new = update_kappa(
+#                     kappa_new, bx_reg_tmp, residual_tmp,
+#                     weighted_exp_tmp, 0.5
+#                 )
+
+#             # centrage κ
+#             kappa_new -= np.mean(kappa_new)
+
+#             # renormalisation β / κ
+#             logmu_tmp, _, bx_reg_tmp = compute_logmu(
+#                 ax_new, bx_new, kappa_new, xv, B, knots, degree
+#             )
+#             bx_avg = np.mean(bx_reg_tmp, axis=1)
+#             scale = np.sum(bx_avg)
+
+#             if abs(scale) > 1e-10:
+#                 bx_new /= scale
+#                 kappa_new *= scale
+
+#             # recalcul loglik candidate
+#             logmu_new, _, _ = compute_logmu(
+#                 ax_new, bx_new, kappa_new,
+#                 xv, B, knots, degree
+#             )
+
+#             lnL_new, _, _, _ = poisson_lnL(
+#                 Dxtg, Extg, logmu_new, logDxtgFact
+#             )
+
+#             if lnL_new >= lnL_current:
+#                 accepted = True
+#                 ax_coef = ax_new
+#                 bx_coef = bx_new
+#                 kappa = kappa_new
+#                 lnL = lnL_new
+#                 eta = min(eta_try * 1.05, 1.0)
+#             else:
+#                 eta_try *= 0.5
+#                 if eta_try < 1e-8:
+#                     accepted = True
+
+#         Delta_lnL = lnL - lnL_current
+
+#         if abs(Delta_lnL) < tol:
+#             flag += 1
+#         else:
+#             flag = 0
+
+#         if verbose and (it % 20 == 0):
+#             print(f"It {it:4d} | lnL = {lnL:.6f} | Δ = {Delta_lnL:+.6f} | η = {eta:.5f}")
+
+#     # reconstruction finale
+#     logmu_final, ax, bx_reg = compute_logmu(
+#         ax_coef, bx_coef, kappa, xv, B, knots, degree
+#     )
+
+#     Fit_stat = compute_fit_stats(
+#         Dxtg, Extg, logmu_final,
+#         logDxtgFact, n_basis,
+#         nb_years, nb_regions
+#     )
+
+#     return {
+#         "parameters": {
+#             "ax_coef": ax_coef,
+#             "bx_coef": bx_coef,
+#             "kappa": kappa
+#         },
+#         "curves": {
+#             "alpha_x": ax,
+#             "beta_xg": bx_reg
+#         },
+#         "fitted_values": {
+#             "log_mu": logmu_final,
+#             "mu": np.exp(logmu_final)
+#         },
+#         "fit_statistics": Fit_stat
+#     }
+
+
+
+# def LCp_fit_second(
+#     ax_coef_init,
+#     bx_coef_init,
+#     kappa_init,
+#     Extg,
+#     Dxtg,
+#     xv,
+#     tv,
+#     degree=2,
+#     n_knots=10,
+#     xmin=None,
+#     xmax=None,
+#     lam=0.0,
+#     diff_order=2,
+#     nb_iter=800,
+#     eta0=0.2,
+#     tol=1e-6,
+#     verbose=False,
+# ):
+
+#     nb_years = len(tv)
+#     nb_regions = Extg.shape[2]
+
+#     if xmin is None:
+#         xmin = float(np.min(xv))
+#     if xmax is None:
+#         xmax = float(np.max(xv))
+
+#     B, knots, n_basis = make_bspline_basis(xv, degree, n_knots, xmin, xmax)
+
+#     ax_coef = ax_coef_init.copy()
+#     bx_coef = bx_coef_init.copy()
+#     kappa = kappa_init.copy()
+
+#     DtD, diag_DtD = make_penalty_matrix(n_basis, diff_order)
+#     logDxtgFact = gammaln(Dxtg + 1)
+
+#     eta = min(eta0, 1.0)
+#     flag = 0
+#     it = 0
+
+#     # log-likelihood initial
+#     logmu, ax, bx_reg = compute_logmu(
+#         ax_coef, bx_coef, kappa, xv, B, knots, degree
+#     )
+#     lnL, _, _, _ = poisson_lnL(Dxtg, Extg, logmu, logDxtgFact)
+
+#     while (it < nb_iter) and (flag < 4):
+
+#         it += 1
+
+#         # --- calcul gradient local ---
+#         logmu, ax, bx_reg = compute_logmu(
+#             ax_coef, bx_coef, kappa, xv, B, knots, degree
+#         )
+#         lnL_current, _, weighted_exp, residual = poisson_lnL(
+#             Dxtg, Extg, logmu, logDxtgFact
+#         )
+
+#         # --- tentative de mise à jour ---
+#         eta_try = eta
+#         accepted = False
+
+#         while not accepted:
+
+#             ax_new = update_ax_coef(
+#                 ax_coef, B, residual, weighted_exp,
+#                 eta_try, lam, DtD, diag_DtD
+#             )
+
+#             bx_new = update_bx_coef(
+#                 bx_coef, B, kappa, residual, weighted_exp,
+#                 eta_try, lam, DtD, diag_DtD
+#             )
+
+#             kappa_new = update_kappa(
+#                 kappa, bx_reg, residual, weighted_exp,
+#                 eta_try
+#             )
+
+#             # recalcul loglik candidate
+#             logmu_new, _, _ = compute_logmu(
+#                 ax_new, bx_new, kappa_new,
+#                 xv, B, knots, degree
+#             )
+
+#             lnL_new, _, _, _ = poisson_lnL(
+#                 Dxtg, Extg, logmu_new, logDxtgFact
+#             )
+
+#             if lnL_new >= lnL_current:
+#                 accepted = True
+#                 ax_coef = ax_new
+#                 bx_coef = bx_new
+#                 kappa = kappa_new
+#                 lnL = lnL_new
+#                 eta = min(eta_try * 1.05, 1.0)
+#             else:
+#                 eta_try *= 0.5
+#                 if eta_try < 1e-8:
+#                     accepted = True  # abandon amélioration
+
+#         Delta_lnL = lnL - lnL_current
+
+#         if abs(Delta_lnL) < tol:
+#             flag += 1
+#         else:
+#             flag = 0
+
+#         if verbose and (it % 10 == 0):
+#             print(f"It {it:4d} | lnL = {lnL:.4f} | Δ = {Delta_lnL:+.6f} | η = {eta:.5f}")
+
+#     # Rescaling final
+#     bx_coef, bx_reg, kappa = rescale_bx_kappa(bx_coef, bx_reg, kappa)
+
+#     logmu_final, ax, bx_reg = compute_logmu(
+#         ax_coef, bx_coef, kappa, xv, B, knots, degree
+#     )
+
+#     Fit_stat = compute_fit_stats(
+#         Dxtg, Extg, logmu_final,
+#         logDxtgFact, n_basis,
+#         nb_years, nb_regions
+#     )
+
+#     results = {
+#         "parameters": {
+#             "ax_coef": ax_coef,
+#             "bx_coef": bx_coef,
+#             "kappa": kappa
+#         },
+#         "curves": {
+#             "alpha_x": ax,
+#             "beta_xg": bx_reg
+#         },
+#         "fitted_values": {
+#             "log_mu": logmu_final,
+#             "mu": np.exp(logmu_final)
+#         },
+#         "fit_statistics": Fit_stat
+#     }
+
+#     return results
+
 
 
 def build_input_from_dataframe(df):
@@ -476,10 +944,11 @@ def build_input_from_dataframe(df):
     Paramètres
     ----------
     df : DataFrame avec colonnes
-         ['region', 'year', 'age', 'deaths', 'exposure']
+         ['region', 'year', 'age', 'deaths', 'exposure','mortality_rate']
     
     Retourne
     --------
+    Muxtg: (nb_ages, nb_years, nb_regions)
     Dxtg : (nb_ages, nb_years, nb_regions)
     Extg : (nb_ages, nb_years, nb_regions)
     xv   : vecteur des âges triés
@@ -506,6 +975,7 @@ def build_input_from_dataframe(df):
     # Allocation
     Dxtg = np.zeros((nb_ages, nb_years, nb_regions))
     Extg = np.zeros_like(Dxtg)
+    Muxtg = np.zeros_like(Dxtg)
     
     # Vectorisation sans boucle triple
     Dxtg[
@@ -519,12 +989,18 @@ def build_input_from_dataframe(df):
         df.year.map(year_idx),
         df.region.map(reg_idx)
     ] = df.exposure.values
+
+    Muxtg[
+        df.age.map(age_idx),
+        df.year.map(year_idx),
+        df.region.map(reg_idx)
+    ] = df.mortality_rate.values
     
     # Sécurité numérique
     Extg = np.maximum(Extg, 1e-12)
     Dxtg = np.maximum(Dxtg, 0.0)
     
-    return Dxtg, Extg, xv, tv, regions
+    return Muxtg, Dxtg, Extg, xv, tv, regions
 
 
 #### Lee carter classique 

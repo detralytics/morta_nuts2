@@ -28,7 +28,7 @@ def lcp_bspline_initialisation(Dxtg, Extg, xv, degree, n_knots):
     # 3️⃣ centrage
     M_centered = logM - ax[:, None]
     
-    # 4️⃣ SVD
+    # 4️⃣ SVD : approximation de rang 1
     U, S, Vt = np.linalg.svd(M_centered, full_matrices=False)
     
     bx_raw = U[:, 0]

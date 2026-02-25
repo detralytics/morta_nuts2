@@ -740,18 +740,111 @@ def LC_fit(ax, bx,kappa,Extg,Dxtg,xv,tv,nb_iter):
     return ax, bx , kappa , Fit_stat
 
 #%% Lee and Li
+# def LandL_fit(ax, bx , bx_gr , kappa, kappa_gr, 
+#               Extg, Dxtg,Muxtg, xv, tv, nb_iter,h,z, verbose):
+#     #matrix of differences, order z    
+#     Kz = difference_matrix(len(ax), z)
+#     KTK   = Kz.T @ Kz 
+#     IdKTK = np.diag(KTK)    
+#     # ax and bx are computed with the Poisson LC
+#     ax, bx, kappa , _ = LC_fit(ax, bx,kappa,Extg,Dxtg,xv,tv,nb_iter)
+#     #gradient descent parameter
+#     eta = 0.80
+#     for it in range(nb_iter):
+#         for ct_opt in np.arange(0,2):
+#             axM     = np.repeat(ax,len(tv),axis=1)
+#             bxM     = np.repeat(bx,len(tv),axis=1)            
+#             bx_grM  = np.expand_dims(bx_gr,axis=1)
+#             bx_grM  = np.repeat(bx_grM,len(tv),axis=1)                        
+#             kappaM  = np.repeat(kappa.reshape(1,-1),len(xv),axis=0)
+#             kappa_grM = np.expand_dims(kappa_gr,axis=0)
+#             kappa_grM = np.repeat(kappa_grM,len(xv),axis=0)                        
+#             logmuxt_baseline = axM+bxM*kappaM
+#             nb_regions = Extg.shape[2]    
+#             logmuxt_gr  = np.zeros((len(xv),len(tv),nb_regions))    
+#             #computation of log(mu(x,t,g))
+#             for ct in range(nb_regions):                
+#                 logmuxt_gr[:,:,ct] = (logmuxt_baseline + bx_grM[:,:,ct]*kappa_grM[:,:,ct])               
+#             #baseline for update
+#             dlnL_baseline  = (Dxtg - Extg*np.exp(logmuxt_gr))
+#             if (ct_opt==0):                
+#                 #--------------- bx gr-----------------    
+#                 bx_gr_new = np.zeros_like(bx_gr)                  
+                
+#                 dlnL_dpar = ( (np.sum(dlnL_baseline*kappa_grM,axis=1) -2*h*(KTK@bx_gr) ) / (                    
+#                             np.sum(Extg*np.exp(logmuxt_gr)*kappa_grM**2,axis=1)
+#                             -2*h*np.repeat(IdKTK.reshape(-1,1),nb_regions,axis=1) ) )  
+#                 bx_gr_new= bx_gr + eta*dlnL_dpar
+#                 #----scaling----
+#                 #we normalize
+#                 scal_bx   = np.sum(bx_gr_new,axis=0).reshape((1,-1))
+#                 scal_bx   = np.repeat(scal_bx,len(xv),axis=0)
+#                 bx_gr_new    = bx_gr_new /scal_bx
+#                 scal_kap     = scal_bx[0,:].reshape((1,-1))
+#                 scal_kap     = np.repeat(scal_kap,len(tv),axis=0)
+#                 # kappa_gr     = kappa_gr*scal_kap
+#                 #-----plot------     
+#                 if verbose:
+#                     plt.plot(bx_gr_new,label='bx gdp new')
+#                     #plt.plot(bx_gr,label='bx gdp')
+#                     plt.title("bx_gr")
+#                     #plt.legend()
+#                     plt.show()
+#                 #update
+#                 bx_gr  = bx_gr_new
+#             if (ct_opt==1):                
+#                 #--------------- kappa gr-----------------    
+#                 kappa_gr_new = np.zeros_like(kappa_gr)
+#                 dlnL_dpar    = (np.sum(dlnL_baseline*bx_grM,axis=0)/(
+#                       np.sum(Extg*np.exp(logmuxt_gr)*bx_grM**2,axis=0)))
+#                 kappa_gr_new = kappa_gr + eta*dlnL_dpar
+#                 #---- Do not scale!
+#                 #-----plot----
+#                 if verbose:
+#                     plt.plot(kappa_gr_new,label='kappa new')
+#                     plt.title("kappa_gr")
+#                     # plt.plot(kappa_gr,label='kappa')
+#                     # plt.legend()
+#                     plt.show()
+#                 #update
+#                 kappa_gr  = kappa_gr_new.copy()     
+#     #end loop   
+#     #log-likelihood      
+#     exp_logmuxt = np.exp(logmuxt_gr)    
+#     logDxtgFact = gammaln(Dxtg + 1)
+#     lnL         = np.sum(Dxtg * logmuxt_gr - Extg * exp_logmuxt + Dxtg * np.log(Extg) - logDxtgFact)          
+#     #dof's and numbers of records
+#     nb_obs  = Dxtg.size 
+#     dofs    = len(ax)+len(bx)+np.size(bx_gr)+np.size(kappa_gr)+np.size(kappa)
+#     AIC     = 2*dofs - 2*lnL    
+#     BIC     = dofs*np.log(nb_obs)  - 2*lnL
+#     #dataframe with statistics of goodness of fit
+#     Fit_stat = [[nb_obs,'NA','NA',dofs,np.round(lnL,2),np.round(AIC,2),np.round(BIC,2)] ]
+#     #We print the file
+#     Fit_stat         = pd.DataFrame(Fit_stat)
+#     Fit_stat.columns = ["N","m","degree","dofs","lnL","AIC","BIC"]    
+#     # Return updated coefficients and stats
+    
+#     return ax, bx , bx_gr , kappa ,kappa_gr , Fit_stat
+
+
 def LandL_fit(ax, bx , bx_gr , kappa, kappa_gr, 
               Extg, Dxtg,Muxtg, xv, tv, nb_iter,h,z, verbose):
+
     #matrix of differences, order z    
     Kz = difference_matrix(len(ax), z)
     KTK   = Kz.T @ Kz 
     IdKTK = np.diag(KTK)    
+
     # ax and bx are computed with the Poisson LC
     ax, bx, kappa , _ = LC_fit(ax, bx,kappa,Extg,Dxtg,xv,tv,nb_iter)
+
     #gradient descent parameter
     eta = 0.80
+
     for it in range(nb_iter):
         for ct_opt in np.arange(0,2):
+
             axM     = np.repeat(ax,len(tv),axis=1)
             bxM     = np.repeat(bx,len(tv),axis=1)            
             bx_grM  = np.expand_dims(bx_gr,axis=1)
@@ -759,76 +852,127 @@ def LandL_fit(ax, bx , bx_gr , kappa, kappa_gr,
             kappaM  = np.repeat(kappa.reshape(1,-1),len(xv),axis=0)
             kappa_grM = np.expand_dims(kappa_gr,axis=0)
             kappa_grM = np.repeat(kappa_grM,len(xv),axis=0)                        
+
             logmuxt_baseline = axM+bxM*kappaM
             nb_regions = Extg.shape[2]    
             logmuxt_gr  = np.zeros((len(xv),len(tv),nb_regions))    
+
             #computation of log(mu(x,t,g))
             for ct in range(nb_regions):                
                 logmuxt_gr[:,:,ct] = (logmuxt_baseline + bx_grM[:,:,ct]*kappa_grM[:,:,ct])               
+
             #baseline for update
             dlnL_baseline  = (Dxtg - Extg*np.exp(logmuxt_gr))
+
             if (ct_opt==0):                
+
                 #--------------- bx gr-----------------    
                 bx_gr_new = np.zeros_like(bx_gr)                  
-                
+
                 dlnL_dpar = ( (np.sum(dlnL_baseline*kappa_grM,axis=1) -2*h*(KTK@bx_gr) ) / (                    
                             np.sum(Extg*np.exp(logmuxt_gr)*kappa_grM**2,axis=1)
                             -2*h*np.repeat(IdKTK.reshape(-1,1),nb_regions,axis=1) ) )  
+
                 bx_gr_new= bx_gr + eta*dlnL_dpar
+
                 #----scaling----
-                #we normalize
                 scal_bx   = np.sum(bx_gr_new,axis=0).reshape((1,-1))
                 scal_bx   = np.repeat(scal_bx,len(xv),axis=0)
                 bx_gr_new    = bx_gr_new /scal_bx
                 scal_kap     = scal_bx[0,:].reshape((1,-1))
                 scal_kap     = np.repeat(scal_kap,len(tv),axis=0)
-                # kappa_gr     = kappa_gr*scal_kap
-                #-----plot------     
+
                 if verbose:
                     plt.plot(bx_gr_new,label='bx gdp new')
-                    #plt.plot(bx_gr,label='bx gdp')
                     plt.title("bx_gr")
-                    #plt.legend()
                     plt.show()
-                #update
+
                 bx_gr  = bx_gr_new
+
             if (ct_opt==1):                
+
                 #--------------- kappa gr-----------------    
                 kappa_gr_new = np.zeros_like(kappa_gr)
+
                 dlnL_dpar    = (np.sum(dlnL_baseline*bx_grM,axis=0)/(
                       np.sum(Extg*np.exp(logmuxt_gr)*bx_grM**2,axis=0)))
+
                 kappa_gr_new = kappa_gr + eta*dlnL_dpar
-                #---- Do not scale!
-                #-----plot----
+
                 if verbose:
                     plt.plot(kappa_gr_new,label='kappa new')
                     plt.title("kappa_gr")
-                    # plt.plot(kappa_gr,label='kappa')
-                    # plt.legend()
                     plt.show()
-                #update
+
                 kappa_gr  = kappa_gr_new.copy()     
+
     #end loop   
-    #log-likelihood      
-    exp_logmuxt = np.exp(logmuxt_gr)    
+
+    # =============================
+    # Final log(mu) and mu
+    # =============================
+
+    axM     = np.repeat(ax,len(tv),axis=1)
+    bxM     = np.repeat(bx,len(tv),axis=1)            
+    bx_grM  = np.expand_dims(bx_gr,axis=1)
+    bx_grM  = np.repeat(bx_grM,len(tv),axis=1)                        
+    kappaM  = np.repeat(kappa.reshape(1,-1),len(xv),axis=0)
+    kappa_grM = np.expand_dims(kappa_gr,axis=0)
+    kappa_grM = np.repeat(kappa_grM,len(xv),axis=0)                        
+
+    nb_regions = Extg.shape[2]
+    logmu_final  = np.zeros((len(xv),len(tv),nb_regions))
+
+    for ct in range(nb_regions):                
+        logmu_final[:,:,ct] = (
+            axM + bxM*kappaM +
+            bx_grM[:,:,ct]*kappa_grM[:,:,ct]
+        )
+
+    mu_final = np.exp(logmu_final)
+
+    # =============================
+    # Log-likelihood
+    # =============================
+
+    exp_logmuxt = mu_final    
     logDxtgFact = gammaln(Dxtg + 1)
-    lnL         = np.sum(Dxtg * logmuxt_gr - Extg * exp_logmuxt + Dxtg * np.log(Extg) - logDxtgFact)          
-    #dof's and numbers of records
+
+    lnL = np.sum(Dxtg * logmu_final 
+                 - Extg * exp_logmuxt 
+                 + Dxtg * np.log(Extg) 
+                 - logDxtgFact)
+
     nb_obs  = Dxtg.size 
     dofs    = len(ax)+len(bx)+np.size(bx_gr)+np.size(kappa_gr)+np.size(kappa)
+
     AIC     = 2*dofs - 2*lnL    
     BIC     = dofs*np.log(nb_obs)  - 2*lnL
-    #dataframe with statistics of goodness of fit
+
     Fit_stat = [[nb_obs,'NA','NA',dofs,np.round(lnL,2),np.round(AIC,2),np.round(BIC,2)] ]
-    #We print the file
-    Fit_stat         = pd.DataFrame(Fit_stat)
+    Fit_stat = pd.DataFrame(Fit_stat)
     Fit_stat.columns = ["N","m","degree","dofs","lnL","AIC","BIC"]    
-    # Return updated coefficients and stats
-    
-    return ax, bx , bx_gr , kappa ,kappa_gr , Fit_stat
 
+    # =============================
+    # Return dictionary
+    # =============================
 
+    results = {
+        "parameters": {
+            "ax": ax,
+            "bx": bx,
+            "bx_gr": bx_gr,
+            "kappa": kappa,
+            "kappa_gr": kappa_gr,
+        },
+        "fitted_values": {
+            "log_mu": logmu_final,
+            "mu": mu_final,
+        },
+        "fit_statistics": Fit_stat
+    }
 
+    return results
 
 
 

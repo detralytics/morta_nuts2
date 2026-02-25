@@ -11,19 +11,29 @@ def compute_life_expectancy_all(mu_future):
     for r in range(regions):
         for t in range(horizon):
 
-            mu = mu_future[:, t, r]          # ✅ axis=1 → horizon, axis=2 → regions
-            qx = np.clip(mu / (1 + 0.5 * mu), 0, 1)
+            mu = mu_future[:, t, r]
 
-            lx      = np.zeros(ages)
-            lx[0]   = 100000
-            lx[1:]  = lx[0] * np.cumprod(1 - qx[:-1])
+            # 🔹 Transformation correcte μ → q (hypothèse exponentielle)
+            qx = 1.0 - np.exp(-mu)
+            qx = np.clip(qx, 0, 1)
 
-            Lx      = np.zeros(ages)
+            # 🔹 Construction lx
+            lx = np.zeros(ages)
+            lx[0] = 100000
+
+            for x in range(1, ages):
+                lx[x] = lx[x-1] * (1 - qx[x-1])
+
+            # 🔹 Lx (hypothèse UDD intra-annuelle)
+            Lx = np.zeros(ages)
             Lx[:-1] = 0.5 * (lx[:-1] + lx[1:])
-            Lx[-1]  = lx[-1]
+            Lx[-1] = lx[-1] / max(qx[-1], 1e-12)
 
-            Tx         = np.flip(np.cumsum(np.flip(Lx)))
-            ex[:, t, r] = Tx / lx             # ✅ cohérent avec (ages, horizon, regions)
+            # 🔹 Tx
+            Tx = np.flip(np.cumsum(np.flip(Lx)))
+
+            # 🔹 e_x
+            ex[:, t, r] = Tx / np.maximum(lx, 1e-12)
 
     return ex
 
@@ -133,6 +143,56 @@ def compute_life_expectancy(mu):
         ex_work = life_table(mu_work)                  # (ages, horizon, regions, n_sim)
         # Restore to (ages, regions, horizon, n_sim)
         return ex_work.transpose(0, 2, 1, 3)
+    
+
+import numpy as np
+
+def life_expectancy(mu_future):
+    """
+    mu_future:
+        - (ages, horizon, regions)
+        - OU (ages, horizon, regions, n_sim)
+
+    retourne:
+        - même format en sortie
+    """
+
+    if mu_future.ndim == 3:
+
+        ages, horizon, regions = mu_future.shape
+        ex = np.zeros((ages, horizon, regions))
+
+        for r in range(regions):
+            for t in range(horizon):
+
+                mu = mu_future[:, t, r]
+                px = np.exp(-mu)
+
+                for x in range(ages):
+                    ex[x, t, r] = np.sum(np.cumprod(px[x:]))
+
+        return ex
+
+
+    elif mu_future.ndim == 4:
+
+        ages, horizon, regions, n_sim = mu_future.shape
+        ex = np.zeros((ages, horizon, regions, n_sim))
+
+        for s in range(n_sim):
+            for r in range(regions):
+                for t in range(horizon):
+
+                    mu = mu_future[:, t, r, s]
+                    px = np.exp(-mu)
+
+                    for x in range(ages):
+                        ex[x, t, r, s] = np.sum(np.cumprod(px[x:]))
+
+        return ex
+
+    else:
+        raise ValueError("mu_future must be 3D or 4D")
 
 
 # def compute_life_expectancy_all(mu_future):
@@ -495,6 +555,76 @@ def project_LC_prospective_SVD(
             "mu_median":    mu_median,
             "mu_upper":     mu_upper,
         }
+    
+
+# def high_age_extrapolation(
+#     xv,
+#     x_extrap,
+#     x_extrap_start,
+#     log_Muxtg,
+# ):
+#     stochastic = log_Muxtg.ndim == 4
+
+#     x_max    = int(xv.max())
+#     xv_reg   = np.arange(x_extrap_start, x_max + 1)
+#     xv_add   = np.arange(x_max + 1, x_extrap + 1)
+#     xv_full  = np.arange(int(xv.min()), x_extrap + 1)
+
+#     age_to_idx = {int(age): i for i, age in enumerate(xv)}
+#     idx_reg    = [age_to_idx[a] for a in xv_reg]
+#     idx_max    = age_to_idx[x_max]
+
+#     dx_reg = (xv_reg - x_max).astype(float)   # (nb_ages_reg,)
+#     dx_add = (xv_add - x_max).astype(float)   # (nb_add,)
+
+#     # --- Matrice de design degré 2 sans intercept, centrée en x_max ---
+#     # colonnes : [dx, dx^2]  → continuité garantie car dx=0 en x_max
+#     X_reg = np.column_stack([dx_reg, dx_reg**2])           # (nb_ages_reg, 2)
+#     X_add = np.column_stack([dx_add, dx_add**2])           # (nb_add, 2)
+#     XtX   = X_reg.T @ X_reg                                # (2, 2)
+#     XtX_inv = np.linalg.inv(XtX)                           # (2, 2)
+
+#     den = (dx_reg ** 2).sum()
+
+#     if stochastic:
+#         nb_ages, nb_regions, horizon, n_sim = log_Muxtg.shape
+#         out = np.empty((len(xv_full), nb_regions, horizon, n_sim))
+#         out[:nb_ages, ...] = log_Muxtg
+
+#         Y_reg   = log_Muxtg[idx_reg, :, :, :]      # (nb_ages_reg, nb_regions, horizon, n_sim)
+#         anchor  = log_Muxtg[idx_max, :, :, :]      # (nb_regions, horizon, n_sim)
+#         Y_cent  = Y_reg - anchor                    # (nb_ages_reg, nb_regions, horizon, n_sim)
+
+#         # Coefficients : (2, nb_regions, horizon, n_sim)
+#         # einsum : X_reg.T (2, nb_ages_reg) @ Y_cent (nb_ages_reg, nb_regions, horizon, n_sim)
+#         XtY   = np.einsum('pi,ijkl->pjkl', X_reg.T, Y_cent)    # (2, nb_regions, horizon, n_sim)
+#         beta  = np.einsum('pq,qjkl->pjkl', XtX_inv, XtY)       # (2, nb_regions, horizon, n_sim)
+
+#         # Contrainte : pente (beta[0]) >= 0
+#         beta[0] = np.maximum(beta[0], 0.0)
+
+#         # Extrapolation
+#         Y_extrap = anchor + np.einsum('ap,pjkl->ajkl', X_add, beta)  # (nb_add, nb_regions, horizon, n_sim)
+#         out[nb_ages:, :, :, :] = Y_extrap
+
+#     else:
+#         nb_ages, nb_regions, horizon = log_Muxtg.shape
+#         out = np.empty((len(xv_full), nb_regions, horizon))
+#         out[:nb_ages, ...] = log_Muxtg
+
+#         Y_reg   = log_Muxtg[idx_reg, :, :]         # (nb_ages_reg, nb_regions, horizon)
+#         anchor  = log_Muxtg[idx_max, :, :]          # (nb_regions, horizon)
+#         Y_cent  = Y_reg - anchor
+
+#         XtY   = np.einsum('pi,ijk->pjk', X_reg.T, Y_cent)     # (2, nb_regions, horizon)
+#         beta  = np.einsum('pq,qjk->pjk', XtX_inv, XtY)        # (2, nb_regions, horizon)
+
+#         beta[0] = np.maximum(beta[0], 0.0)
+
+#         Y_extrap = anchor + np.einsum('ap,pjk->ajk', X_add, beta)    # (nb_add, nb_regions, horizon)
+#         out[nb_ages:, :, :] = Y_extrap
+
+#     return out, xv_full
 
 
 def high_age_extrapolation(
@@ -559,59 +689,198 @@ def high_age_extrapolation(
     return out, xv_full
 
 
-def high_age_extrapolation_snd(xv, x_extrap, x_extrap_start, log_Muxtg):
+# def high_age_extrapolation_snd(xv, x_extrap, x_extrap_start, log_Muxtg):
 
-    stochastic  = log_Muxtg.ndim == 4
-    x_max       = int(xv.max())
+#     stochastic  = log_Muxtg.ndim == 4
+#     x_max       = int(xv.max())
 
-    idx_reg     = np.where((xv >= x_extrap_start) & (xv <= x_max))[0]
-    idx_anchor  = np.where(xv == x_max)[0][0]
+#     idx_reg     = np.where((xv >= x_extrap_start) & (xv <= x_max))[0]
+#     idx_anchor  = np.where(xv == x_max)[0][0]
 
-    # ✅ Guard
+#     # ✅ Guard
+#     assert len(idx_reg) >= 2, (
+#         f"Fenêtre de régression trop petite : "
+#         f"x_extrap_start={x_extrap_start}, x_max={x_max}, "
+#         f"idx_reg={idx_reg}"
+#     )
+
+#     xv_add  = np.arange(x_max + 1, x_extrap + 1)
+#     xv_full = np.concatenate([xv, xv_add])
+
+#     dx_reg  = (xv[idx_reg] - x_max).reshape(-1, 1).astype(float)
+#     dx_add  = (xv_add      - x_max).reshape(-1, 1).astype(float)
+#     denom   = float(dx_reg.T @ dx_reg)
+
+#     assert denom != 0, "Dénominateur nul dans la régression"
+
+#     if stochastic:
+#         nb_ages, nb_regions, horizon, n_sim = log_Muxtg.shape
+#         out = np.empty((len(xv_full), nb_regions, horizon, n_sim))
+#         out[:nb_ages, ...] = log_Muxtg
+
+#         for r in range(nb_regions):
+#             for h in range(horizon):
+#                 Y_reg   = log_Muxtg[idx_reg,    r, h, :]   # (nb_reg_ages, n_sim)
+#                 anchor  = log_Muxtg[idx_anchor, r, h, :]   # (n_sim,)
+#                 Y_cent  = Y_reg - anchor                    # (nb_reg_ages, n_sim)
+#                 slope   = (dx_reg.T @ Y_cent) / denom      # (1, n_sim)
+#                 out[nb_ages:, r, h, :] = anchor + dx_add * slope  # (nb_add, n_sim)
+
+#         # ✅ Vérification post-calcul
+#         nan_by_age = np.isnan(out).any(axis=(1, 2, 3))
+#         if nan_by_age.any():
+#             print(f"⚠️ NaN aux indices d'âge : {np.where(nan_by_age)[0]}")
+
+#     else:
+#         nb_ages, nb_regions, horizon = log_Muxtg.shape
+#         out = np.empty((len(xv_full), nb_regions, horizon))
+#         out[:nb_ages, ...] = log_Muxtg
+
+#         for r in range(nb_regions):
+#             Y_reg   = log_Muxtg[idx_reg,    r, :]          # (nb_reg_ages, horizon)
+#             anchor  = log_Muxtg[idx_anchor, r, :]          # (horizon,)
+#             Y_cent  = Y_reg - anchor
+#             slope   = (dx_reg.T @ Y_cent) / denom          # (1, horizon)
+#             out[nb_ages:, r, :] = anchor + dx_add * slope
+
+#     return out, xv_full
+
+
+
+def optimal_x_extrap_start(xv, log_Muxtg, x_max, min_window=5, max_window=15):
+    """
+    Sélectionne automatiquement x_extrap_start via leave-one-out.
+    Fonctionne pour les deux shapes :
+      - déterministe : (nb_ages, horizon, nb_regions)
+      - stochastique : (nb_ages, horizon, nb_regions, n_sim)
+    """
+    age_to_idx = {int(age): i for i, age in enumerate(xv)}
+    idx_max    = age_to_idx[x_max]
+    anchor     = log_Muxtg[idx_max, ...]    # (horizon, nb_regions) ou (horizon, nb_regions, n_sim)
+
+    best_start = int(x_max) - min_window
+    best_mse   = np.inf
+
+    for window in range(min_window, max_window + 1):
+        start = int(x_max) - window
+        if start < int(xv.min()):
+            break
+
+        xv_reg  = np.arange(start, x_max + 1)
+        idx_reg = [age_to_idx[a] for a in xv_reg if a in age_to_idx]
+        if len(idx_reg) < 3:
+            continue
+
+        dx  = (xv[idx_reg] - x_max).astype(float)   # (nb_reg_ages,)
+        Y   = log_Muxtg[idx_reg, ...] - anchor        # centré en x_max
+
+        errors = []
+        for leave in range(1, len(idx_reg)):
+            mask        = np.ones(len(idx_reg), dtype=bool)
+            mask[leave] = False
+
+            dx_train  = dx[mask]
+            dx_test   = dx[leave]
+            Y_train   = Y[mask]
+            Y_test    = Y[leave]
+
+            denom_loo = (dx_train ** 2).sum()
+            if denom_loo == 0:
+                continue
+
+            num_loo = np.einsum('i,i...->...', dx_train, Y_train)
+            slope   = num_loo / denom_loo
+            pred    = dx_test * slope
+            err     = np.mean((pred - Y_test) ** 2)
+            errors.append(err)
+
+        if errors:
+            mse = np.mean(errors)
+            if mse < best_mse:
+                best_mse   = mse
+                best_start = start
+
+    return best_start
+
+
+def high_age_extrapolation_snd(
+    xv,
+    x_extrap,
+    x_extrap_start,
+    log_Muxtg,
+    auto_start=False,
+):
+    """
+    Extrapole log_Muxtg au-delà de max(xv) jusqu'à x_extrap.
+
+    Shapes attendues :
+      - déterministe : (nb_ages, horizon, nb_regions)
+      - stochastique : (nb_ages, horizon, nb_regions, n_sim)
+    """
+    stochastic = log_Muxtg.ndim == 4
+    x_max      = int(xv.max())
+
+    # --- Sélection automatique de x_extrap_start ---
+    if auto_start or x_extrap_start is None:
+        x_extrap_start = optimal_x_extrap_start(xv, log_Muxtg, x_max)
+        print(f"x_extrap_start sélectionné automatiquement : {x_extrap_start}")
+
+    # --- Indexation correcte âge → indice ---
+    idx_reg    = np.where((xv >= x_extrap_start) & (xv <= x_max))[0]
+    idx_anchor = np.where(xv == x_max)[0][0]
+
     assert len(idx_reg) >= 2, (
         f"Fenêtre de régression trop petite : "
         f"x_extrap_start={x_extrap_start}, x_max={x_max}, "
-        f"idx_reg={idx_reg}"
+        f"nb points={len(idx_reg)}"
     )
 
     xv_add  = np.arange(x_max + 1, x_extrap + 1)
     xv_full = np.concatenate([xv, xv_add])
 
-    dx_reg  = (xv[idx_reg] - x_max).reshape(-1, 1).astype(float)
-    dx_add  = (xv_add      - x_max).reshape(-1, 1).astype(float)
-    denom   = float(dx_reg.T @ dx_reg)
+    # ✅ Pas de reshape(-1,1) — on utilise einsum
+    dx_reg = (xv[idx_reg] - x_max).astype(float)   # (nb_ages_reg,)
+    dx_add = (xv_add      - x_max).astype(float)   # (nb_add,)
+    denom  = float((dx_reg ** 2).sum())             # scalaire ✅
 
     assert denom != 0, "Dénominateur nul dans la régression"
 
     if stochastic:
-        nb_ages, nb_regions, horizon, n_sim = log_Muxtg.shape
-        out = np.empty((len(xv_full), nb_regions, horizon, n_sim))
+        # Shape : (nb_ages, horizon, nb_regions, n_sim)
+        nb_ages, horizon, nb_regions, n_sim = log_Muxtg.shape
+        out = np.empty((len(xv_full), horizon, nb_regions, n_sim))
         out[:nb_ages, ...] = log_Muxtg
 
-        for r in range(nb_regions):
-            for h in range(horizon):
-                Y_reg   = log_Muxtg[idx_reg,    r, h, :]   # (nb_reg_ages, n_sim)
-                anchor  = log_Muxtg[idx_anchor, r, h, :]   # (n_sim,)
-                Y_cent  = Y_reg - anchor                    # (nb_reg_ages, n_sim)
-                slope   = (dx_reg.T @ Y_cent) / denom      # (1, n_sim)
-                out[nb_ages:, r, h, :] = anchor + dx_add * slope  # (nb_add, n_sim)
+        Y_reg   = log_Muxtg[idx_reg, :, :, :]        # (nb_ages_reg, horizon, nb_regions, n_sim)
+        anchor  = log_Muxtg[idx_anchor, :, :, :]     # (horizon, nb_regions, n_sim)
+        Y_cent  = Y_reg - anchor
 
-        # ✅ Vérification post-calcul
+        num     = np.einsum('i,ijkl->jkl', dx_reg, Y_cent)    # (horizon, nb_regions, n_sim)
+        slope   = np.maximum(num / denom, 0.0)                 # contrainte pente >= 0
+
+        Y_extrap = anchor + dx_add[:, None, None, None] * slope  # (nb_add, horizon, nb_regions, n_sim)
+        out[nb_ages:, ...] = Y_extrap
+
+        # Vérification NaN
         nan_by_age = np.isnan(out).any(axis=(1, 2, 3))
         if nan_by_age.any():
             print(f"⚠️ NaN aux indices d'âge : {np.where(nan_by_age)[0]}")
 
     else:
-        nb_ages, nb_regions, horizon = log_Muxtg.shape
-        out = np.empty((len(xv_full), nb_regions, horizon))
+        # Shape : (nb_ages, horizon, nb_regions)
+        nb_ages, horizon, nb_regions = log_Muxtg.shape
+        out = np.empty((len(xv_full), horizon, nb_regions))
         out[:nb_ages, ...] = log_Muxtg
 
-        for r in range(nb_regions):
-            Y_reg   = log_Muxtg[idx_reg,    r, :]          # (nb_reg_ages, horizon)
-            anchor  = log_Muxtg[idx_anchor, r, :]          # (horizon,)
-            Y_cent  = Y_reg - anchor
-            slope   = (dx_reg.T @ Y_cent) / denom          # (1, horizon)
-            out[nb_ages:, r, :] = anchor + dx_add * slope
+        Y_reg   = log_Muxtg[idx_reg, :, :]           # (nb_ages_reg, horizon, nb_regions)
+        anchor  = log_Muxtg[idx_anchor, :, :]        # (horizon, nb_regions)
+        Y_cent  = Y_reg - anchor
+
+        num     = np.einsum('i,ijk->jk', dx_reg, Y_cent)   # (horizon, nb_regions)
+        slope   = np.maximum(num / denom, 0.0)
+
+        Y_extrap = anchor + dx_add[:, None, None] * slope   # (nb_add, horizon, nb_regions)
+        out[nb_ages:, ...] = Y_extrap
 
     return out, xv_full
 

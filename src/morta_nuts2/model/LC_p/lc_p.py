@@ -476,7 +476,7 @@ def compute_fit_stats(Dxtg, Extg, logmu, logDxtgFact, n_basis, nb_years, nb_regi
 #     return results
 
 
-def LCp_fit(
+def LCp_multiregion_fit(
     ax_coef_init,
     bx_coef_init,
     kappa_init,
@@ -618,6 +618,336 @@ def LCp_fit(
     }
 
     return results
+
+
+
+# import numpy as np
+# import pandas as pd
+# from scipy.special import gammaln
+# from scipy.interpolate import BSpline
+
+
+# # =============================================================================
+# # 1. BASE B-SPLINE
+# # =============================================================================
+
+# def make_bspline_basis(x, degree=2, n_knots=10, xmin=None, xmax=None):
+#     if xmin is None:
+#         xmin = float(np.min(x))
+#     if xmax is None:
+#         xmax = float(np.max(x))
+
+#     knots_internal = np.linspace(xmin, xmax, n_knots)
+#     knots = np.concatenate((
+#         np.repeat(xmin, degree),
+#         knots_internal,
+#         np.repeat(xmax, degree)
+#     ))
+
+#     n_basis = len(knots) - degree - 1
+
+#     B = np.zeros((len(x), n_basis))
+#     for i in range(n_basis):
+#         coef = np.zeros(n_basis)
+#         coef[i] = 1.0
+#         spline = BSpline(knots, coef, degree)
+#         B[:, i] = spline(x)
+
+#     return B, knots, n_basis
+
+
+# # =============================================================================
+# # 2. MATRICE DE PÉNALITÉ
+# # =============================================================================
+
+# def make_penalty_matrix(n_basis, diff_order=2):
+#     D = np.diff(np.eye(n_basis), n=diff_order, axis=0)
+#     DtD = D.T @ D
+#     return DtD, np.diag(DtD)
+
+
+# # =============================================================================
+# # 3. RECONSTRUCTION ln(μ)
+# # =============================================================================
+
+# def compute_logmu(ax_coef, bx_coef, kappa, B):
+#     ax = B @ ax_coef
+#     bx = B @ bx_coef
+
+#     logmu = ax[:, None] + bx[:, None] * kappa[None, :]
+#     return logmu, ax, bx
+
+
+# # =============================================================================
+# # 4. LOG-VRAISEMBLANCE POISSON
+# # =============================================================================
+
+# def poisson_lnL(Dxt, Ext, logmu, logDxtFact):
+#     exp_logmu = np.exp(logmu)
+#     weighted_exp = Ext * exp_logmu
+#     residual = Dxt - weighted_exp
+
+#     lnL = float(np.sum(
+#         Dxt * logmu
+#         - weighted_exp
+#         + Dxt * np.log(np.maximum(Ext, 1e-12))
+#         - logDxtFact
+#     ))
+
+#     return lnL, exp_logmu, weighted_exp, residual
+
+
+# # =============================================================================
+# # 5. UPDATE α
+# # =============================================================================
+
+# def update_ax_coef(ax_coef, B, residual, weighted_exp,
+#                    eta, lam, DtD, diag_DtD):
+
+#     n_basis = len(ax_coef)
+#     ax_new = ax_coef.copy()
+
+#     pen_grad = 2.0 * lam * (DtD @ ax_coef) if lam > 0 else np.zeros(n_basis)
+
+#     for j in range(n_basis):
+#         Bj = B[:, j][:, None]
+
+#         num = float(np.sum(residual * Bj)) - pen_grad[j]
+#         den = float(np.sum(weighted_exp * Bj**2))
+
+#         if lam > 0:
+#             den += 2.0 * lam * diag_DtD[j]
+
+#         if den != 0:
+#             ax_new[j] += eta * num / den
+
+#     return ax_new
+
+
+# # =============================================================================
+# # 6. UPDATE β
+# # =============================================================================
+
+# def update_bx_coef(bx_coef, B, kappa, residual, weighted_exp,
+#                    eta, lam, DtD, diag_DtD):
+
+#     n_basis = len(bx_coef)
+#     bx_new = bx_coef.copy()
+
+#     nb_ages = B.shape[0]
+#     kappaM = np.repeat(kappa[None, :], nb_ages, axis=0)
+
+#     pen_grad = 2.0 * lam * (DtD @ bx_coef) if lam > 0 else np.zeros(n_basis)
+
+#     for j in range(n_basis):
+#         BjK = B[:, j][:, None] * kappaM
+
+#         num = float(np.sum(residual * BjK)) - pen_grad[j]
+#         den = float(np.sum(weighted_exp * BjK**2))
+
+#         if lam > 0:
+#             den += 2.0 * lam * diag_DtD[j]
+
+#         if den != 0:
+#             bx_new[j] += eta * num / den
+
+#     return bx_new
+
+
+# # =============================================================================
+# # 7. UPDATE κ
+# # =============================================================================
+
+# def update_kappa(kappa, bx, residual, weighted_exp, eta):
+
+#     bx2d = bx[:, None]
+
+#     num_k = np.sum(residual * bx2d, axis=0)
+#     den_k = np.sum(weighted_exp * bx2d**2, axis=0)
+
+#     kappa_new = kappa.copy()
+#     mask = den_k != 0
+#     kappa_new[mask] += eta * num_k[mask] / den_k[mask]
+
+#     return kappa_new
+
+
+# # =============================================================================
+# # 8. RESCALING (Σ β_x = 1)
+# # =============================================================================
+
+# def rescale_bx_kappa(bx_coef, bx, kappa):
+#     scale = float(np.sum(bx))
+#     if scale == 0:
+#         return bx_coef, bx, kappa
+
+#     return bx_coef / scale, bx / scale, kappa * scale
+
+
+# # =============================================================================
+# # 9. STATISTIQUES
+# # =============================================================================
+
+# def compute_fit_stats(Dxt, Ext, logmu, logDxtFact,
+#                       n_basis, nb_years):
+
+#     exp_logmu = np.exp(logmu)
+
+#     lnL = float(np.sum(
+#         Dxt * logmu
+#         - Ext * exp_logmu
+#         + Dxt * np.log(np.maximum(Ext, 1e-12))
+#         - logDxtFact
+#     ))
+
+#     safe_Dxt = np.where(Dxt > 0, Dxt, 1.0)
+
+#     lnL_sat = float(np.sum(np.where(
+#         Dxt > 0,
+#         Dxt * np.log(safe_Dxt / np.maximum(Ext, 1e-12)) - Dxt,
+#         0.0
+#     )))
+
+#     deviance = 2.0 * (lnL_sat - lnL)
+
+#     nb_obs = int(Dxt.size)
+#     dofs = 2 * n_basis + nb_years
+
+#     AIC = 2.0 * dofs - 2.0 * lnL
+#     BIC = dofs * np.log(nb_obs) - 2.0 * lnL
+
+#     return pd.DataFrame(
+#         [[nb_obs, n_basis, dofs,
+#           round(lnL, 2), round(deviance, 2),
+#           round(AIC, 2), round(BIC, 2)]],
+#         columns=["N", "n_basis", "dofs",
+#                  "lnL", "deviance", "AIC", "BIC"]
+#     )
+
+
+# # =============================================================================
+# # 10. FIT COMPLET
+# # =============================================================================
+
+# def LCp_fit(
+#     ax_coef_init,
+#     bx_coef_init,
+#     kappa_init,
+#     Ext,
+#     Dxt,
+#     xv,
+#     tv,
+#     degree=2,
+#     n_knots=10,
+#     lam=0.0,
+#     diff_order=2,
+#     nb_iter=800,
+#     eta0=0.2,
+#     tol=1e-3,
+#     verbose=False,
+# ):
+
+#     nb_years = len(tv)
+
+#     B, knots, n_basis = make_bspline_basis(
+#         xv, degree, n_knots
+#     )
+
+#     ax_coef = ax_coef_init.copy()
+#     bx_coef = bx_coef_init.copy()
+#     kappa = kappa_init.copy()
+
+#     DtD, diag_DtD = make_penalty_matrix(n_basis, diff_order)
+#     logDxtFact = gammaln(Dxt + 1)
+
+#     lnL = -np.inf
+#     Delta_lnL = 0.0
+#     eta = eta0
+#     it = -1
+
+#     best_lnL = -np.inf
+#     patience = 40
+#     min_delta = 1e-2
+#     wait = 0
+
+#     while it < nb_iter:
+#         it += 1
+
+#         if Delta_lnL < 0:
+#             eta *= 0.5
+#         else:
+#             eta = min(eta * 1.05, 2.0)
+
+#         logmu, ax, bx = compute_logmu(
+#             ax_coef, bx_coef, kappa, B
+#         )
+
+#         lnL_new, _, weighted_exp, residual = poisson_lnL(
+#             Dxt, Ext, logmu, logDxtFact
+#         )
+
+#         Delta_lnL = lnL_new - lnL
+
+#         if verbose and it % 10 == 0:
+#             print(f"It {it:4d} | lnL={lnL_new:.4f} "
+#                   f"| Δ={Delta_lnL:+.6f} | η={eta:.4f}")
+
+#         if lnL_new > best_lnL + min_delta:
+#             best_lnL = lnL_new
+#             wait = 0
+#         else:
+#             wait += 1
+
+#         if wait >= patience or abs(Delta_lnL) < tol:
+#             break
+
+#         lnL = lnL_new
+
+#         ax_coef = update_ax_coef(
+#             ax_coef, B, residual, weighted_exp,
+#             eta, lam, DtD, diag_DtD
+#         )
+
+#         bx_coef = update_bx_coef(
+#             bx_coef, B, kappa, residual, weighted_exp,
+#             eta, lam, DtD, diag_DtD
+#         )
+
+#         kappa = update_kappa(
+#             kappa, bx, residual, weighted_exp, eta
+#         )
+
+#     bx_coef, bx, kappa = rescale_bx_kappa(
+#         bx_coef, bx, kappa
+#     )
+
+#     logmu_final, ax, bx = compute_logmu(
+#         ax_coef, bx_coef, kappa, B
+#     )
+
+#     Fit_stat = compute_fit_stats(
+#         Dxt, Ext, logmu_final,
+#         logDxtFact, n_basis, nb_years
+#     )
+
+#     results = {
+#         "parameters": {
+#             "ax_coef": ax_coef,
+#             "bx_coef": bx_coef,
+#             "kappa": kappa
+#         },
+#         "curves": {
+#             "alpha_x": ax,
+#             "beta_x": bx
+#         },
+#         "fitted_values": {
+#             "log_mu": logmu_final,
+#             "mu": np.exp(logmu_final)
+#         },
+#         "fit_statistics": Fit_stat
+#     }
+
+#     return results
 
 
 
@@ -1081,6 +1411,274 @@ def LC_fit(ax, bx,kappa,Extg,Dxtg,xv,tv,nb_iter):
     Fit_stat = [[nb_obs,'NA','NA',dofs,np.round(lnL,2),np.round(AIC,2),np.round(BIC,2)] ]
     #We print the file
     Fit_stat         = pd.DataFrame(Fit_stat)
-    Fit_stat.columns = ["N","m","degree","dofs","lnL","AIC","BIC"]    
+    Fit_stat.columns = ["N","m","degree","dofs","lnL","AIC","BIC"]
+
+    results = {
+        "parameters": {
+            "ax_coef": axM,
+            "bx_coef": bxM,
+            "kappa": kappaM
+        },
+
+        "fitted_values": {
+            "log_mu": axM+bxM*kappaM,
+            "mu": np.exp(axM+bxM*kappaM)
+        },
+        "fit_statistics": Fit_stat
+    }    
     #we return ax, bx, kappa and stats    
-    return ax, bx , kappa , Fit_stat
+    return results
+
+
+
+# Modèle Lee carter paramétrique
+
+def make_bspline_basis_national(x, degree=2, n_knots=10):
+
+    xmin = float(np.min(x))
+    xmax = float(np.max(x))
+
+    knots_internal = np.linspace(xmin, xmax, n_knots)
+
+    knots = np.concatenate((
+        np.repeat(xmin, degree),
+        knots_internal,
+        np.repeat(xmax, degree)
+    ))
+
+    n_basis = len(knots) - degree - 1
+
+    B = np.zeros((len(x), n_basis))
+
+    for i in range(n_basis):
+        coef = np.zeros(n_basis)
+        coef[i] = 1.0
+        spline = BSpline(knots, coef, degree)
+        B[:, i] = spline(x)
+
+    return B, n_basis
+
+def make_penalty_matrix_national(n_basis, diff_order=2):
+
+    D = np.diff(np.eye(n_basis), n=diff_order, axis=0)
+    DtD = D.T @ D
+
+    return DtD, np.diag(DtD)
+
+def compute_logmu_national(ax_coef, bx_coef,
+                           kappa, B,
+                           nb_regions):
+
+    ax = B @ ax_coef
+    bx = B @ bx_coef
+
+    logmu_2d = ax[:, None] + bx[:, None] * kappa[None, :]
+
+    logmu_3d = np.repeat(
+        logmu_2d[:, :, np.newaxis],
+        nb_regions,
+        axis=2
+    )
+
+    return logmu_3d, logmu_2d, ax, bx
+
+def poisson_lnL_national(Dxtg, Extg,
+                         logmu_3d,
+                         logDxtFact):
+
+    exp_logmu = np.exp(logmu_3d)
+    weighted_exp = Extg * exp_logmu
+    residual = Dxtg - weighted_exp
+
+    lnL = float(np.sum(
+        Dxtg * logmu_3d
+        - weighted_exp
+        + Dxtg * np.log(np.maximum(Extg, 1e-12))
+        - logDxtFact
+    ))
+
+    return lnL, weighted_exp, residual
+
+
+def update_ax_coef_national(ax_coef, B,
+                            residual,
+                            weighted_exp,
+                            eta, lam,
+                            DtD, diag_DtD):
+
+    n_basis = len(ax_coef)
+    ax_new = ax_coef.copy()
+
+    pen_grad = 2.0 * lam * (DtD @ ax_coef) if lam > 0 else np.zeros(n_basis)
+
+    for j in range(n_basis):
+
+        Bj = B[:, j][:, None]
+
+        num = float(np.sum(residual * Bj)) - pen_grad[j]
+        den = float(np.sum(weighted_exp * Bj**2))
+
+        if lam > 0:
+            den += 2.0 * lam * diag_DtD[j]
+
+        if den != 0:
+            ax_new[j] += eta * num / den
+
+    return ax_new
+
+
+def update_bx_coef_national(bx_coef, B, kappa,
+                            residual,
+                            weighted_exp,
+                            eta, lam,
+                            DtD, diag_DtD):
+
+    n_basis = len(bx_coef)
+    bx_new = bx_coef.copy()
+
+    nb_ages = B.shape[0]
+    nb_regions = residual.shape[2]
+
+    kappaM = np.repeat(kappa[None, :], nb_ages, axis=0)
+    kappaM = np.expand_dims(kappaM, axis=2)
+    kappaM = np.repeat(kappaM, nb_regions, axis=2)
+
+    pen_grad = 2.0 * lam * (DtD @ bx_coef) if lam > 0 else np.zeros(n_basis)
+
+    for j in range(n_basis):
+
+        BjK = B[:, j][:, None, None] * kappaM
+
+        num = float(np.sum(residual * BjK)) - pen_grad[j]
+        den = float(np.sum(weighted_exp * BjK**2))
+
+        if lam > 0:
+            den += 2.0 * lam * diag_DtD[j]
+
+        if den != 0:
+            bx_new[j] += eta * num / den
+
+    return bx_new
+
+
+def update_kappa_national(kappa, bx,
+                          residual,
+                          weighted_exp,
+                          eta):
+
+    nb_regions = residual.shape[2]
+
+    bxM = bx[:, None]
+    bxM = np.expand_dims(bxM, axis=2)
+    bxM = np.repeat(bxM, nb_regions, axis=2)
+
+    num_k = np.sum(residual * bxM, axis=(0, 2))
+    den_k = np.sum(weighted_exp * bxM**2, axis=(0, 2))
+
+    kappa_new = kappa.copy()
+
+    mask = den_k != 0
+    kappa_new[mask] += eta * num_k[mask] / den_k[mask]
+
+    return kappa_new
+
+
+def LCp_fit(
+    ax_coef_init,
+    bx_coef_init,
+    kappa_init,
+    Extg,
+    Dxtg,
+    xv,
+    tv,
+    degree=2,
+    n_knots=10,
+    lam=0.0,
+    diff_order=2,
+    nb_iter=500,
+    eta=0.2,
+    tol=1e-4,
+    verbose=False
+):
+
+    nb_regions = Extg.shape[2]
+
+    B, n_basis = make_bspline_basis_national(
+        xv, degree, n_knots
+    )
+
+    DtD, diag_DtD = make_penalty_matrix_national(
+        n_basis, diff_order
+    )
+
+    ax_coef = ax_coef_init.copy()
+    bx_coef = bx_coef_init.copy()
+    kappa = kappa_init.copy()
+
+    logDxtFact = gammaln(Dxtg + 1)
+
+    lnL = -np.inf
+
+    for it in range(nb_iter):
+
+        logmu_3d, logmu_2d, ax, bx = compute_logmu_national(
+            ax_coef, bx_coef, kappa, B, nb_regions
+        )
+
+        lnL_new, weighted_exp, residual = poisson_lnL_national(
+            Dxtg, Extg, logmu_3d, logDxtFact
+        )
+
+        if abs(lnL_new - lnL) < tol:
+            break
+
+        lnL = lnL_new
+
+        ax_coef = update_ax_coef_national(
+            ax_coef, B,
+            residual, weighted_exp,
+            eta, lam,
+            DtD, diag_DtD
+        )
+
+        bx_coef = update_bx_coef_national(
+            bx_coef, B, kappa,
+            residual, weighted_exp,
+            eta, lam,
+            DtD, diag_DtD
+        )
+
+        kappa = update_kappa_national(
+            kappa, bx,
+            residual, weighted_exp,
+            eta
+        )
+
+    # Rescale Σβ = 1
+    scale = np.sum(bx)
+    if scale != 0:
+        bx_coef /= scale
+        bx /= scale
+        kappa *= scale
+
+    logmu_3d, logmu_2d, ax, bx = compute_logmu_national(
+        ax_coef, bx_coef, kappa, B, nb_regions
+    )
+
+    results = {
+        "parameters": {
+            "ax_coef": ax_coef,
+            "bx_coef": bx_coef,
+            "kappa": kappa
+        },
+        "curves": {
+            "alpha_x": ax,
+            "beta_x": bx
+        },
+        "fitted_values": {
+            "log_mu": logmu_2d,
+            "mu": np.exp(logmu_2d)
+        }
+    }
+
+    return results

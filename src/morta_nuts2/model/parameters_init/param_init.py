@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from morta_nuts2.model.Bsplines.Bsplines import make_bspline_basis
 
-def lcp_bspline_initialisation(Dxtg, Extg, xv, degree, n_knots):
+def lcp_bspline_init(Dxtg, Extg, xv, degree, n_knots):
     """
     Initialisation Lee-Carter robuste compatible B-splines.
     Multi-régions.
@@ -52,7 +52,7 @@ def lcp_bspline_initialisation(Dxtg, Extg, xv, degree, n_knots):
     return ax_coef, bx_coef, kappa
 
 
-def lileep_bspline_initialisation(Dxtg, Extg, xv, degree, n_knots):
+def lileep_bspline_init(Dxtg, Extg, xv, degree, n_knots):
     """
     Initialisation robuste Li-Lee compatible B-splines pénalisées.
     """
@@ -137,3 +137,56 @@ def lileep_bspline_initialisation(Dxtg, Extg, xv, degree, n_knots):
         kappa_g
     )
 
+def lcp_parametrique_init_national(Dxtg, Extg, xv, tv, n_basis, degree, n_knots):
+    """
+    Classical SVD initialization for the Lee-Carter model (national level).
+
+    ax  = log of the crude mortality rate averaged over time and regions
+    bx  = first left singular vector of the residual matrix (normalized)
+    kappa_t = first right singular vector scaled by the first singular value
+    """
+
+    nb_ages, nb_years, nb_regions = Dxtg.shape
+
+    # Aggregate deaths and exposures across regions → (nb_ages, nb_years)
+    D_agg = Dxtg.sum(axis=2)
+    E_agg = Extg.sum(axis=2)
+
+    # Compute crude log mortality rate
+    # Use numerical protection for division and log
+    with np.errstate(divide='ignore', invalid='ignore'):
+        lograte = np.where(
+            E_agg > 0,
+            np.log(np.maximum(D_agg / E_agg, 1e-12)),
+            np.nan
+        )
+
+    # α_x = time average of log mortality rate
+    ax_raw = np.nanmean(lograte, axis=1)  # shape (nb_ages,)
+
+    # Residual matrix for SVD
+    residuals = lograte - ax_raw[:, None]  # (nb_ages, nb_years)
+    residuals = np.nan_to_num(residuals, nan=0.0)
+
+    # Singular Value Decomposition
+    # residuals ≈ U S V^T
+    U, S, Vt = np.linalg.svd(residuals, full_matrices=False)
+
+    # First principal component
+    bx_raw = U[:, 0]              # age effect (nb_ages,)
+    kappa  = S[0] * Vt[0, :]      # time index (nb_years,)
+
+    # Identification constraint: sum_x bx = 1
+    scal = np.sum(bx_raw)
+    if scal != 0:
+        bx_raw = bx_raw / scal
+        kappa  = kappa * scal
+
+    # Project ax and bx onto B-spline basis
+    B, knots, n_basis_out = make_bspline_basis(xv, degree, n_knots)
+
+    # Least squares projection to obtain spline coefficients
+    ax_coef, _, _, _ = np.linalg.lstsq(B, ax_raw, rcond=None)
+    bx_coef, _, _, _ = np.linalg.lstsq(B, bx_raw, rcond=None)
+
+    return ax_coef, bx_coef, kappa

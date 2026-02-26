@@ -1465,127 +1465,93 @@ def make_penalty_matrix_national(n_basis, diff_order=2):
 
     return DtD, np.diag(DtD)
 
-def compute_logmu_national(ax_coef, bx_coef,
-                           kappa, B,
-                           nb_regions):
+# =============================================================================
+# COMPUTE LOGMU — version nationale (β_x commun)
+# =============================================================================
 
-    ax = B @ ax_coef
-    bx = B @ bx_coef
+def compute_logmu_national(ax_coef, bx_coef, kappa, xv, B):
+    """
+    ln(µ_{x,t,g}) = α_x + β_x · κ_t
+    β_x commun à toutes les régions.
 
-    logmu_2d = ax[:, None] + bx[:, None] * kappa[None, :]
+    Paramètres
+    ----------
+    ax_coef : (n_basis,)
+    bx_coef : (n_basis,)      ← plus de dimension région
+    kappa   : (nb_years,)
+    xv      : (nb_ages,)
+    B       : (nb_ages, n_basis)
 
-    logmu_3d = np.repeat(
-        logmu_2d[:, :, np.newaxis],
-        nb_regions,
-        axis=2
-    )
+    Retourne
+    --------
+    logmu  : (nb_ages, nb_years, nb_regions)   broadcast sur g
+    ax     : (nb_ages,)
+    bx     : (nb_ages,)
+    """
+    ax = B @ ax_coef                    # (nb_ages,)
+    bx = B @ bx_coef                    # (nb_ages,)
 
-    return logmu_3d, logmu_2d, ax, bx
+    # broadcast : pas de dimension région → identique pour tout g
+    logmu = ax[:, None] + bx[:, None] * kappa[None, :]   # (nb_ages, nb_years)
+    logmu = logmu[:, :, None]           # (nb_ages, nb_years, 1) → broadcast sur nb_regions
 
-def poisson_lnL_national(Dxtg, Extg,
-                         logmu_3d,
-                         logDxtFact):
-
-    exp_logmu = np.exp(logmu_3d)
-    weighted_exp = Extg * exp_logmu
-    residual = Dxtg - weighted_exp
-
-    lnL = float(np.sum(
-        Dxtg * logmu_3d
-        - weighted_exp
-        + Dxtg * np.log(np.maximum(Extg, 1e-12))
-        - logDxtFact
-    ))
-
-    return lnL, weighted_exp, residual
+    return logmu, ax, bx
 
 
-def update_ax_coef_national(ax_coef, B,
-                            residual,
-                            weighted_exp,
-                            eta, lam,
-                            DtD, diag_DtD):
+# =============================================================================
+# UPDATE BX — version nationale
+# =============================================================================
 
-    n_basis = len(ax_coef)
-    ax_new = ax_coef.copy()
-
-    pen_grad = 2.0 * lam * (DtD @ ax_coef) if lam > 0 else np.zeros(n_basis)
-
-    for j in range(n_basis):
-
-        Bj = B[:, j][:, None]
-
-        num = float(np.sum(residual * Bj)) - pen_grad[j]
-        den = float(np.sum(weighted_exp * Bj**2))
-
-        if lam > 0:
-            den += 2.0 * lam * diag_DtD[j]
-
-        if den != 0:
-            ax_new[j] += eta * num / den
-
-    return ax_new
-
-
-def update_bx_coef_national(bx_coef, B, kappa,
-                            residual,
-                            weighted_exp,
-                            eta, lam,
-                            DtD, diag_DtD):
-
+def update_bx_coef_national(bx_coef, B, kappa, residual, weighted_exp, eta, lam, DtD, diag_DtD):
+    """
+    Mise à jour NR de β_x (commun à toutes les régions).
+    residual / weighted_exp : (nb_ages, nb_years, nb_regions)
+    On somme sur les régions pour agréger le gradient.
+    """
     n_basis = len(bx_coef)
-    bx_new = bx_coef.copy()
-
     nb_ages = B.shape[0]
-    nb_regions = residual.shape[2]
-
-    kappaM = np.repeat(kappa[None, :], nb_ages, axis=0)
-    kappaM = np.expand_dims(kappaM, axis=2)
-    kappaM = np.repeat(kappaM, nb_regions, axis=2)
+    bx_coef_new = bx_coef.copy()
 
     pen_grad = 2.0 * lam * (DtD @ bx_coef) if lam > 0 else np.zeros(n_basis)
 
+    # κ_t répété sur l'axe âges : (nb_ages, nb_years)
+    kappaM = np.broadcast_to(kappa[None, :], (nb_ages, len(kappa)))
+
     for j in range(n_basis):
+        # B[:, j] * κ_t  →  (nb_ages, nb_years)
+        BjKappa = B[:, j][:, None] * kappaM          # (nb_ages, nb_years)
+        BjK3d   = BjKappa[:, :, None]                # (nb_ages, nb_years, 1) → broadcast sur g
 
-        BjK = B[:, j][:, None, None] * kappaM
-
-        num = float(np.sum(residual * BjK)) - pen_grad[j]
-        den = float(np.sum(weighted_exp * BjK**2))
-
+        # Somme sur (âges, années, régions)
+        num = float(np.sum(residual    * BjK3d)) - pen_grad[j]
+        den = float(np.sum(weighted_exp * BjK3d**2))
         if lam > 0:
             den += 2.0 * lam * diag_DtD[j]
-
         if den != 0:
-            bx_new[j] += eta * num / den
+            bx_coef_new[j] += eta * num / den
 
-    return bx_new
+    return bx_coef_new
 
 
-def update_kappa_national(kappa, bx,
-                          residual,
-                          weighted_exp,
-                          eta):
+# =============================================================================
+# RESCALING — version nationale
+# =============================================================================
 
-    nb_regions = residual.shape[2]
+def rescale_bx_kappa_national(bx_coef, bx, kappa):
+    """Normalisation : Σ_x β_x = 1"""
+    scal_factor = float(np.sum(bx))
+    if scal_factor == 0:
+        return bx_coef, bx, kappa
+    return bx_coef / scal_factor, bx / scal_factor, kappa * scal_factor
 
-    bxM = bx[:, None]
-    bxM = np.expand_dims(bxM, axis=2)
-    bxM = np.repeat(bxM, nb_regions, axis=2)
 
-    num_k = np.sum(residual * bxM, axis=(0, 2))
-    den_k = np.sum(weighted_exp * bxM**2, axis=(0, 2))
-
-    kappa_new = kappa.copy()
-
-    mask = den_k != 0
-    kappa_new[mask] += eta * num_k[mask] / den_k[mask]
-
-    return kappa_new
-
+# =============================================================================
+# FIT PRINCIPAL — version nationale
+# =============================================================================
 
 def LCp_fit(
     ax_coef_init,
-    bx_coef_init,
+    bx_coef_init,       # (n_basis,)  ← 1D, plus de dimension région
     kappa_init,
     Extg,
     Dxtg,
@@ -1593,92 +1559,128 @@ def LCp_fit(
     tv,
     degree=2,
     n_knots=10,
+    xmin=None,
+    xmax=None,
     lam=0.0,
     diff_order=2,
-    nb_iter=500,
-    eta=0.2,
-    tol=1e-4,
-    verbose=False
+    nb_iter=800,
+    eta0=0.2,
+    tol=1e-3,
+    verbose=False,
 ):
+    nb_years    = len(tv)
+    nb_regions  = Extg.shape[2]
 
-    nb_regions = Extg.shape[2]
+    if xmin is None:
+        xmin = float(np.min(xv))
+    if xmax is None:
+        xmax = float(np.max(xv))
 
-    B, n_basis = make_bspline_basis_national(
-        xv, degree, n_knots
-    )
+    B, knots, n_basis = make_bspline_basis(xv, degree, n_knots, xmin, xmax)
 
-    DtD, diag_DtD = make_penalty_matrix_national(
-        n_basis, diff_order
-    )
+    if len(ax_coef_init) != n_basis:
+        raise ValueError(f"ax_coef_init doit avoir {n_basis} éléments, reçu {len(ax_coef_init)}")
+    if len(bx_coef_init) != n_basis:                          # ← vérification 1D
+        raise ValueError(f"bx_coef_init doit avoir {n_basis} éléments, reçu {len(bx_coef_init)}")
 
     ax_coef = ax_coef_init.copy()
-    bx_coef = bx_coef_init.copy()
-    kappa = kappa_init.copy()
+    bx_coef = bx_coef_init.copy()          # (n_basis,)
+    kappa   = kappa_init.copy()
 
-    logDxtFact = gammaln(Dxtg + 1)
+    DtD, diag_DtD  = make_penalty_matrix(n_basis, diff_order)
+    logDxtgFact    = gammaln(Dxtg + 1)
 
-    lnL = -np.inf
+    lnL       = -np.inf
+    Delta_lnL = 0.0
+    eta       = eta0
+    it        = -1
 
-    for it in range(nb_iter):
+    best_lnL = -np.inf
+    patience  = 40
+    min_delta = 1e-2
+    wait      = 0
 
-        logmu_3d, logmu_2d, ax, bx = compute_logmu_national(
-            ax_coef, bx_coef, kappa, B, nb_regions
+    while it < nb_iter:
+        it += 1
+
+        # Learning rate adaptatif
+        if Delta_lnL < 0:
+            eta *= 0.5
+        else:
+            eta = min(eta * 1.05, 2.0)
+
+        # Reconstruction — β_x commun, broadcast sur nb_regions
+        logmu, ax, bx = compute_logmu_national(ax_coef, bx_coef, kappa, xv, B)
+
+        # Log-vraisemblance (logmu broadcasté sur nb_regions automatiquement)
+        lnL_new, _, weighted_exp, residual = poisson_lnL(
+            Dxtg, Extg, logmu, logDxtgFact
         )
 
-        lnL_new, weighted_exp, residual = poisson_lnL_national(
-            Dxtg, Extg, logmu_3d, logDxtFact
-        )
+        Delta_lnL = lnL_new - lnL
 
-        if abs(lnL_new - lnL) < tol:
+        if verbose and (it % 10 == 0):
+            print(f"It {it:4d} | lnL = {lnL_new:.4f} | Δ = {Delta_lnL:+.6f} | η = {eta:.5f}")
+
+        # Early stopping
+        if lnL_new > best_lnL + min_delta:
+            best_lnL = lnL_new
+            wait = 0
+        else:
+            wait += 1
+
+        if wait >= patience:
+            if verbose:
+                print("\nArrêt anticipé : plus d'amélioration significative.")
+            break
+
+        if abs(Delta_lnL) < tol:
+            if verbose:
+                print("\nConvergence atteinte (tolérance).")
             break
 
         lnL = lnL_new
 
-        ax_coef = update_ax_coef_national(
-            ax_coef, B,
-            residual, weighted_exp,
-            eta, lam,
-            DtD, diag_DtD
+        # Updates
+        ax_coef = update_ax_coef(
+            ax_coef, B, residual, weighted_exp, eta, lam, DtD, diag_DtD
         )
-
-        bx_coef = update_bx_coef_national(
-            bx_coef, B, kappa,
-            residual, weighted_exp,
-            eta, lam,
-            DtD, diag_DtD
+        bx_coef = update_bx_coef_national(        # ← version nationale
+            bx_coef, B, kappa, residual, weighted_exp, eta, lam, DtD, diag_DtD
         )
+        kappa = update_kappa(kappa, bx[:, None], residual, weighted_exp, eta)
+        #                          ↑ (nb_ages, 1) pour que update_kappa fonctionne
 
-        kappa = update_kappa_national(
-            kappa, bx,
-            residual, weighted_exp,
-            eta
-        )
+    # Rescaling final
+    bx_coef, bx, kappa = rescale_bx_kappa_national(bx_coef, bx, kappa)
 
-    # Rescale Σβ = 1
-    scale = np.sum(bx)
-    if scale != 0:
-        bx_coef /= scale
-        bx /= scale
-        kappa *= scale
+    logmu_final, ax, bx = compute_logmu_national(ax_coef, bx_coef, kappa, xv, B)
 
-    logmu_3d, logmu_2d, ax, bx = compute_logmu_national(
-        ax_coef, bx_coef, kappa, B, nb_regions
+    Fit_stat = compute_fit_stats(
+        Dxtg, Extg, logmu_final, logDxtgFact, n_basis, nb_years, nb_regions
     )
+
+    if verbose:
+        print("\n" + "="*70)
+        print("STATISTIQUES FINALES")
+        print("="*70)
+        print(Fit_stat.to_string(index=False))
 
     results = {
         "parameters": {
             "ax_coef": ax_coef,
-            "bx_coef": bx_coef,
-            "kappa": kappa
+            "bx_coef": bx_coef,        # (n_basis,)
+            "kappa":   kappa
         },
         "curves": {
-            "alpha_x": ax,
-            "beta_x": bx
+            "alpha_x": ax,             # (nb_ages,)
+            "beta_x":  bx,             # (nb_ages,)  ← plus de dimension g
         },
         "fitted_values": {
-            "log_mu": logmu_2d,
-            "mu": np.exp(logmu_2d)
-        }
+            "log_mu": logmu_final[:, :, 0],     # (nb_ages, nb_years, )
+            "mu":     np.exp(logmu_final[:, :, 0])
+        },
+        "fit_statistics": Fit_stat
     }
 
     return results

@@ -149,51 +149,81 @@ import numpy as np
 
 def life_expectancy(mu_future):
     """
-    mu_future:
-        - (ages, horizon, regions)
-        - OU (ages, horizon, regions, n_sim)
+    Compute life expectancy from mortality rates.
 
-    retourne:
-        - même format en sortie
+    Parameters
+    ----------
+    mu_future : ndarray
+        - (ages, horizon, regions)
+        - or (ages, horizon, regions, n_sim)
+
+    Returns
+    -------
+    ex : ndarray, same shape as mu_future
     """
 
     if mu_future.ndim == 3:
+        # (ages, horizon, regions)
+        px = np.exp(-mu_future)                          # survival probabilities
 
-        ages, horizon, regions = mu_future.shape
-        ex = np.zeros((ages, horizon, regions))
+        # cumulative product along age axis
+        # cumprod(px[x:]) for each x → use a reversed cumsum trick on log scale
+        log_px     = np.log(np.maximum(px, 1e-300))     # (ages, horizon, regions)
+        cumlog_px  = np.cumsum(log_px, axis=0)           # cumulative sum from age 0
 
-        for r in range(regions):
-            for t in range(horizon):
+        # survival from age x to age y = exp(cumlog[y] - cumlog[x-1])
+        # shift by 1 to get "survival starting at x"
+        cumlog_shifted        = np.zeros_like(cumlog_px)
+        cumlog_shifted[1:, :, :] = cumlog_px[:-1, :, :]  # cumlog_px up to x-1
 
-                mu = mu_future[:, t, r]
-                px = np.exp(-mu)
+        # S[x, y] = exp(cumlog[y] - cumlog_shifted[x])  → but we want sum over y >= x
+        # Efficient: compute reversed cumsum of exp(cumlog)
+        # ex[x] = sum_{y>=x} prod_{z=x}^{y} px[z]
+        #       = sum_{y>=x} exp(cumlog[y] - cumlog_shifted[x])
 
-                for x in range(ages):
-                    ex[x, t, r] = np.sum(np.cumprod(px[x:]))
+        # Build survival matrix S[x, y] = cumulative product from x to y
+        # Using: log S[x,y] = cumlog[y] - cumlog_shifted[x]
+        # Then ex[x] = sum_y S[x,y]  (upper triangular sum)
 
+        # Vectorized upper triangular sum via reversed cumsum
+        surv_from_0 = np.exp(cumlog_px)                  # prod(px[0:y]) shape (ages, h, r)
+
+        # ex[x] = sum_{y=x}^{A} surv[0->y] / surv[0->x-1]
+        # = (1 / surv[0->x-1]) * sum_{y=x}^{A} surv[0->y]
+
+        # reversed cumsum of surv_from_0 along age axis
+        rev_cumsum = np.cumsum(surv_from_0[::-1, :, :], axis=0)[::-1, :, :]  # (ages, h, r)
+
+        # divisor: survival from 0 to x-1
+        divisor        = np.ones_like(surv_from_0)
+        divisor[1:, :, :] = surv_from_0[:-1, :, :]
+
+        ex = rev_cumsum / divisor
         return ex
 
-
     elif mu_future.ndim == 4:
+        # (ages, horizon, regions, n_sim)
+        px = np.exp(-mu_future)
 
-        ages, horizon, regions, n_sim = mu_future.shape
-        ex = np.zeros((ages, horizon, regions, n_sim))
+        log_px    = np.log(np.maximum(px, 1e-300))
+        cumlog_px = np.cumsum(log_px, axis=0)
 
-        for s in range(n_sim):
-            for r in range(regions):
-                for t in range(horizon):
+        cumlog_shifted           = np.zeros_like(cumlog_px)
+        cumlog_shifted[1:, ...] = cumlog_px[:-1, ...]
 
-                    mu = mu_future[:, t, r, s]
-                    px = np.exp(-mu)
+        surv_from_0 = np.exp(cumlog_px)
 
-                    for x in range(ages):
-                        ex[x, t, r, s] = np.sum(np.cumprod(px[x:]))
+        rev_cumsum = np.cumsum(surv_from_0[::-1, ...], axis=0)[::-1, ...]
 
+        divisor           = np.ones_like(surv_from_0)
+        divisor[1:, ...] = surv_from_0[:-1, ...]
+
+        ex = rev_cumsum / divisor
         return ex
 
     else:
         raise ValueError("mu_future must be 3D or 4D")
-
+    
 
 # def compute_life_expectancy_all(mu_future):
 #     """
@@ -439,6 +469,7 @@ def life_expectancy(mu_future):
 #         }
 
 
+
 def project_LC_prospective_SVD(
     results,
     tv,
@@ -449,111 +480,118 @@ def project_LC_prospective_SVD(
     stochastic=True,
     n_sim=1000,
 ):
-    ax    = results["curves"]["alpha_x"]
-    bx    = results["curves"]["beta_xg"]
-    kappa = results["parameters"]["kappa"]
+    ax    = results["curves"]["alpha_x"]   # (nb_ages,)
+    bx    = results["curves"]["beta_xg"]   # (nb_ages, nb_regions)
+    kappa = results["parameters"]["kappa"] # (nb_years,) or (nb_regions, nb_years)
 
     # =====================================================
-    # 1️⃣ Préparer matrice κ
+    # 1. Prepare kappa matrix
     # =====================================================
     X_svd = kappa.reshape(-1, 1) if kappa.ndim == 1 else kappa.T
-    X_svd = X_svd[~np.isin(tv, exclude_years), :]
+    X_svd = X_svd[~np.isin(tv, exclude_years), :]   # (T, nb_regions)
 
     # =====================================================
-    # 2️⃣ SVD
+    # 2. SVD
     # =====================================================
     U, S, Vt = np.linalg.svd(X_svd, full_matrices=False)
-    Vred = Vt[:nb_components, :].T                    # (nb_regions, nb_components)
-    Zred = U[:, :nb_components] * S[:nb_components]   # (T, nb_components)
-    T, nb_regions = Zred.shape[0], Vred.shape[0]
+    Vred  = Vt[:nb_components, :].T                    # (nb_regions, nb_components)
+    Zred  = U[:, :nb_components] * S[:nb_components]   # (T, nb_components)
+    T     = Zred.shape[0]
+    nb_regions = Vred.shape[0]
 
     # =====================================================
-    # 3️⃣ Dynamique des facteurs
+    # 3. Factor dynamics
     # =====================================================
     if model == "rw":
-        diffs = np.diff(Zred, axis=0)
-        drift = np.mean(diffs, axis=0)                # (nb_components,)
-        cov   = np.cov(diffs, rowvar=False).reshape(nb_components, nb_components)
-        Z_last = Zred[-1, :]
+        diffs  = np.diff(Zred, axis=0)
+        drift  = np.mean(diffs, axis=0)                # (nb_components,)
+        cov    = np.cov(diffs, rowvar=False).reshape(nb_components, nb_components)
+        Z_last = Zred[-1, :]                           # (nb_components,)
 
         if not stochastic:
-            # Déterministe : cumsum du drift
-            Z_future     = Z_last + drift * np.arange(1, horizon + 1)[:, None]  # (horizon, nb_components)
-            kappa_future = Z_future @ Vred.T                                     # (horizon, nb_regions)
+            # Z_future : (horizon, nb_components)
+            Z_future     = Z_last + drift * np.arange(1, horizon + 1)[:, None]
+            kappa_future = Z_future @ Vred.T           # (horizon, nb_regions)
         else:
-            # Vectorisé : (horizon, n_sim, nb_components)
+            # Z_future : (horizon, n_sim, nb_components)
             steps        = np.random.multivariate_normal(drift, cov, size=(horizon, n_sim))
-            Z_future     = Z_last + np.cumsum(steps, axis=0)                    # (horizon, n_sim, nb_components)
-            kappa_future = Z_future @ Vred.T                                     # (horizon, n_sim, nb_regions)
+            Z_future     = Z_last + np.cumsum(steps, axis=0)
+            kappa_future = Z_future @ Vred.T           # (horizon, n_sim, nb_regions)
 
     elif model == "linear":
-        time_idx  = np.arange(T)
-        X_des     = np.column_stack([np.ones(T), time_idx])
-        beta_lin  = np.linalg.lstsq(X_des, Zred, rcond=None)[0]                # (2, nb_components)
+        time_idx   = np.arange(T)
+        X_des      = np.column_stack([np.ones(T), time_idx])
+        beta_lin   = np.linalg.lstsq(X_des, Zred, rcond=None)[0]   # (2, nb_components)
 
         future_idx = np.arange(T, T + horizon)
         Xf         = np.column_stack([np.ones(horizon), future_idx])
-        Z_det      = Xf @ beta_lin                                               # (horizon, nb_components)
+        Z_det      = Xf @ beta_lin                                   # (horizon, nb_components)
 
         if not stochastic:
-            kappa_future = Z_det @ Vred.T                                        # (horizon, nb_regions)
+            kappa_future = Z_det @ Vred.T                            # (horizon, nb_regions)
         else:
             residuals = Zred - X_des @ beta_lin
             cov_res   = np.cov(residuals, rowvar=False).reshape(nb_components, nb_components)
-            # Vectorisé : (horizon, n_sim, nb_components)
             noise        = np.random.multivariate_normal(np.zeros(nb_components), cov_res, size=(horizon, n_sim))
-            Z_future     = Z_det[:, None, :] + noise                            # (horizon, n_sim, nb_components)
-            kappa_future = Z_future @ Vred.T                                     # (horizon, n_sim, nb_regions)
+            Z_future     = Z_det[:, None, :] + noise                # (horizon, n_sim, nb_components)
+            kappa_future = Z_future @ Vred.T                        # (horizon, n_sim, nb_regions)
+
     else:
         raise ValueError("model must be 'rw' or 'linear'")
 
     # =====================================================
-    # 4️⃣ Reconstruction log-mortalité (sans espérance de vie)
+    # 4. Reconstruct log-mortality
+    #    convention : (nb_ages, horizon, nb_regions[, n_sim])
     # =====================================================
-    # ax : (nb_ages,)
-    # bx : (nb_ages, nb_regions)
-    # kappa_future stochastic : (horizon, n_sim, nb_regions)
-    # kappa_future determin.  : (horizon, nb_regions)
-
     if not stochastic:
-        # logmu : (nb_ages, nb_regions, horizon)
-        logmu_future = ax[:, None, None] + bx[:, :, None] * kappa_future.T[None, :, :]
-        mu_future    = np.exp(logmu_future)
+        # kappa_future : (horizon, nb_regions) → (1, horizon, nb_regions)
+        logmu_future = (
+            ax[:, None, None]                              # (nb_ages, 1,       1)
+            + bx[:, None, :] * kappa_future[None, :, :]   # (nb_ages, horizon, nb_regions)
+        )
+        # → (nb_ages, horizon, nb_regions) ✅
+        mu_future = np.exp(logmu_future)
+        
 
         return {
             "kappa_future": kappa_future,   # (horizon, nb_regions)
-            "logmu_future": logmu_future,   # (nb_ages, nb_regions, horizon)
-            "mu_future":    mu_future,      # (nb_ages, nb_regions, horizon)
+            "logmu_future": logmu_future,   # (nb_ages, horizon, nb_regions)
+            "mu_future":    mu_future,      # (nb_ages, horizon, nb_regions)
         }
+
     else:
-        # logmu : (nb_ages, nb_regions, horizon, n_sim)
+        # kappa_future : (horizon, n_sim, nb_regions) → (1, horizon, nb_regions, n_sim)
+        kf_4d = kappa_future.transpose(0, 2, 1)[None, :, :, :]   # (1, horizon, nb_regions, n_sim)
+
         logmu_sim = (
-            ax[:, None, None, None]
-            + bx[:, :, None, None] * kappa_future.transpose(2, 1, 0)[None, :, :, :]
+            ax[:, None, None, None]          # (nb_ages, 1,       1,          1)
+            + bx[:, None, :, None] * kf_4d   # (nb_ages, horizon, nb_regions, n_sim)
         )
+        # → (nb_ages, horizon, nb_regions, n_sim) ✅
         mu_sim = np.exp(logmu_sim)
 
-        # Percentiles sur kappa : (horizon, nb_regions)
-        kappa_arr    = kappa_future.transpose(0, 2, 1)   # (horizon, nb_regions, n_sim)
-        kappa_lower  = np.percentile(kappa_arr,  5, axis=2)
-        kappa_median = np.percentile(kappa_arr, 50, axis=2)
-        kappa_upper  = np.percentile(kappa_arr, 95, axis=2)
+        # Percentiles over simulations (axis=-1)
+        mu_lower  = np.percentile(mu_sim,  2.5, axis=-1)   # (nb_ages, horizon, nb_regions)
+        mu_median = np.percentile(mu_sim, 50,   axis=-1)
+        mu_upper  = np.percentile(mu_sim, 97.5, axis=-1)
 
-        # Percentiles sur mu : (nb_ages, nb_regions, horizon)
-        mu_lower  = np.percentile(mu_sim,  5, axis=3)
-        mu_median = np.percentile(mu_sim, 50, axis=3)
-        mu_upper  = np.percentile(mu_sim, 95, axis=3)
+        # Percentiles kappa : (horizon, nb_regions)
+        # kappa_future : (horizon, n_sim, nb_regions) → percentile on axis=1
+        kappa_lower  = np.percentile(kappa_future,  2.5, axis=1)
+        kappa_median = np.percentile(kappa_future, 50,   axis=1)
+        kappa_upper  = np.percentile(kappa_future, 97.5, axis=1)
+        
 
         return {
             "kappa_paths":  kappa_future,   # (horizon, n_sim, nb_regions)
             "kappa_lower":  kappa_lower,    # (horizon, nb_regions)
-            "kappa_median": kappa_median,
-            "kappa_upper":  kappa_upper,
-            "logmu_sim":    logmu_sim,      # (nb_ages, nb_regions, horizon, n_sim)
-            "mu_sim":       mu_sim,
-            "mu_lower":     mu_lower,       # (nb_ages, nb_regions, horizon)
-            "mu_median":    mu_median,
-            "mu_upper":     mu_upper,
+            "kappa_median": kappa_median,   # (horizon, nb_regions)
+            "kappa_upper":  kappa_upper,    # (horizon, nb_regions)
+            "logmu_sim":    logmu_sim,      # (nb_ages, horizon, nb_regions, n_sim)
+            "mu_sim":       mu_sim,         # (nb_ages, horizon, nb_regions, n_sim)
+            "mu_lower":     mu_lower,       # (nb_ages, horizon, nb_regions)
+            "mu_median":    mu_median,      # (nb_ages, horizon, nb_regions)
+            "mu_upper":     mu_upper,       # (nb_ages, horizon, nb_regions)
         }
     
 
@@ -886,6 +924,362 @@ def high_age_extrapolation_snd(
 
 
 
+# def project_LeeLi_prospective(
+#     results,
+#     tv,
+#     horizon=30,
+#     exclude_years=[2020, 2021],
+#     model="rw",
+#     stochastic=True,
+#     n_sim=1000,
+# ):
+#     # =====================================================
+#     # 1. Extract parameters
+#     # =====================================================
+#     alpha_xg = results["curves"]["alpha_xg"]    # (nb_ages, nb_regions)
+#     beta_x   = results["curves"]["beta_x"]      # (nb_ages,)
+#     beta_xg  = results["curves"]["beta_xg"]     # (nb_ages, nb_regions)
+#     kappa    = results["parameters"]["kappa"]   # (nb_years,)
+#     kappa_g  = results["parameters"]["kappa_g"] # (nb_regions, nb_years)
+
+#     nb_ages, nb_regions = alpha_xg.shape
+
+#     # =====================================================
+#     # 2. Mask COVID years
+#     # =====================================================
+#     mask     = ~np.isin(tv, exclude_years)
+#     kappa_m  = kappa[mask]       # (T,)
+#     kappa_gm = kappa_g[:, mask]  # (nb_regions, T)
+#     T        = kappa_m.shape[0]
+
+#     # =====================================================
+#     # 3. Factor dynamics
+#     # =====================================================
+#     def fit_rw(series):
+#         """
+#         Fit a random walk to a 1D or 2D series.
+
+#         Parameters
+#         ----------
+#         series : (T,) or (T, nb_regions)
+
+#         Returns
+#         -------
+#         drift      : scalar or (nb_regions,)
+#         cov        : (1, 1) or (nb_regions, nb_regions)
+#         last_value : scalar or (nb_regions,)
+#         """
+#         diffs = np.diff(series, axis=0)
+#         drift = np.mean(diffs, axis=0)
+#         if diffs.ndim == 1:
+#             cov   = np.array([[np.var(diffs, ddof=1)]])
+#             drift = np.array([drift])
+#         else:
+#             cov = np.cov(diffs, rowvar=False)
+#         last = series[-1] if series.ndim == 1 else series[-1, :]
+#         return drift, cov, last
+
+#     # =====================================================
+#     # 4. Projection
+#     # =====================================================
+#     if model == "rw":
+
+#         drift_k,  cov_k,  k_last  = fit_rw(kappa_m)
+#         drift_kg, cov_kg, kg_last = fit_rw(kappa_gm.T)   # (T, nb_regions)
+
+#         if not stochastic:
+#             # Common kappa : (horizon,)
+#             k_future  = k_last  + drift_k[0]  * np.arange(1, horizon + 1)
+
+#             # Region kappa_g : (horizon, nb_regions)
+#             kg_future = kg_last + drift_kg * np.arange(1, horizon + 1)[:, None]
+
+#         else:
+#             # Common kappa : (horizon, n_sim)
+#             steps_k  = np.random.multivariate_normal(drift_k,  cov_k,  size=(horizon, n_sim))
+#             k_future = k_last + np.cumsum(steps_k[:, :, 0], axis=0)   # (horizon, n_sim)
+
+#             # Region kappa_g : (horizon, n_sim, nb_regions)
+#             steps_kg  = np.random.multivariate_normal(drift_kg, cov_kg, size=(horizon, n_sim))
+#             kg_future = kg_last + np.cumsum(steps_kg, axis=0)          # (horizon, n_sim, nb_regions)
+
+#     elif model == "linear":
+
+#         time_idx = np.arange(T)
+#         X_des    = np.column_stack([np.ones(T), time_idx])
+#         Xf       = np.column_stack([np.ones(horizon), np.arange(T, T + horizon)])
+
+#         # Common factor linear fit
+#         beta_k  = np.linalg.lstsq(X_des, kappa_m,    rcond=None)[0]   # (2,)
+#         beta_kg = np.linalg.lstsq(X_des, kappa_gm.T, rcond=None)[0]   # (2, nb_regions)
+
+#         k_det  = Xf @ beta_k    # (horizon,)
+#         kg_det = Xf @ beta_kg   # (horizon, nb_regions)
+
+#         if not stochastic:
+#             k_future  = k_det    # (horizon,)
+#             kg_future = kg_det   # (horizon, nb_regions)
+
+#         else:
+#             res_k  = kappa_m    - X_des @ beta_k     # (T,)
+#             res_kg = kappa_gm.T - X_des @ beta_kg    # (T, nb_regions)
+#             cov_k  = np.array([[np.var(res_k,  ddof=1)]])
+#             cov_kg = np.cov(res_kg, rowvar=False)
+
+#             noise_k   = np.random.multivariate_normal(np.zeros(1),         cov_k,  size=(horizon, n_sim))
+#             k_future  = k_det[:, None] + noise_k[:, :, 0]                          # (horizon, n_sim)
+
+#             noise_kg  = np.random.multivariate_normal(np.zeros(nb_regions), cov_kg, size=(horizon, n_sim))
+#             kg_future = kg_det[:, None, :] + noise_kg                               # (horizon, n_sim, nb_regions)
+
+#     else:
+#         raise ValueError("model must be 'rw' or 'linear'")
+
+#     # =====================================================
+#     # 5. Reconstruct log(mu) — convention (nb_ages, horizon, nb_regions[, n_sim])
+#     # =====================================================
+#     if not stochastic:
+#         # k_future  : (horizon,)          → (1, horizon, 1)
+#         # kg_future : (horizon, nb_reg)   → (1, horizon, nb_reg)
+#         logmu_future = (
+#             alpha_xg[:, None, :]                                  # (nb_ages, 1,       nb_regions)
+#             + beta_x[:,  None, None] * k_future[None, :, None]   # (nb_ages, horizon, 1)
+#             + beta_xg[:, None, :]    * kg_future[None, :, :]     # (nb_ages, horizon, nb_regions)
+#         )
+#         # → (nb_ages, horizon, nb_regions) ✅
+
+#         mu_future = np.exp(logmu_future)
+        
+
+#         return {
+#             "kappa_future":   k_future,      # (horizon,)
+#             "kappa_g_future": kg_future,     # (horizon, nb_regions)
+#             "logmu_future":   logmu_future,  # (nb_ages, horizon, nb_regions)
+#             "mu_future":      mu_future,     # (nb_ages, horizon, nb_regions)
+#         }
+
+#     else:
+#         # k_future  : (horizon, n_sim)              → (1, horizon, 1,         n_sim)
+#         # kg_future : (horizon, n_sim, nb_regions)  → (1, horizon, nb_regions, n_sim)
+#         logmu_sim = (
+#             alpha_xg[:, None, :, None]                                              # (nb_ages, 1,       nb_regions, 1)
+#             + beta_x[:,  None, None, None] * k_future.T[None, None, None, :]       # (nb_ages, 1,       1,          n_sim) — k_future.T : (n_sim, horizon)
+#             + beta_xg[:, None, :,    None] * kg_future.transpose(0, 2, 1)[None, :, :, :]  # (nb_ages, horizon, nb_regions, n_sim)
+#         )
+#         # Fixing broadcast : k_future needs (horizon, n_sim) → axis 1 and 3
+#         # Rebuild cleanly below
+
+#         # k_future  : (horizon, n_sim)
+#         # kg_future : (horizon, n_sim, nb_regions)
+#         k_4d  = k_future[None, :, None, :]                          # (1, horizon, 1, n_sim)
+#         kg_4d = kg_future.transpose(0, 2, 1)[None, :, :, :]         # (1, horizon, nb_regions, n_sim)
+
+#         logmu_sim = (
+#             alpha_xg[:, None, :, None]          # (nb_ages, 1,       nb_regions, 1)
+#             + beta_x[:,  None, None, None] * k_4d   # (nb_ages, horizon, 1,          n_sim)
+#             + beta_xg[:, None, :,    None] * kg_4d  # (nb_ages, horizon, nb_regions, n_sim)
+#         )
+#         # → (nb_ages, horizon, nb_regions, n_sim) ✅
+
+#         mu_sim = np.exp(logmu_sim)
+
+#         # Percentiles over simulations (axis=-1)
+#         mu_lower  = np.percentile(mu_sim,  2.5, axis=-1)   # (nb_ages, horizon, nb_regions)
+#         mu_median = np.percentile(mu_sim, 50,   axis=-1)
+#         mu_upper  = np.percentile(mu_sim, 97.5, axis=-1)
+
+#         # Percentiles kappa common : (horizon,)
+#         k_lower  = np.percentile(k_future,  2.5, axis=1)
+#         k_median = np.percentile(k_future, 50,   axis=1)
+#         k_upper  = np.percentile(k_future, 97.5, axis=1)
+
+#         # Percentiles kappa_g : (horizon, nb_regions)
+#         kg_lower  = np.percentile(kg_future,  2.5, axis=1)   # (horizon, nb_regions)
+#         kg_median = np.percentile(kg_future, 50,   axis=1)
+#         kg_upper  = np.percentile(kg_future, 97.5, axis=1)
+       
+
+#         return {
+#             "kappa_paths":    k_future,    # (horizon, n_sim)
+#             "kappa_lower":    k_lower,     # (horizon,)
+#             "kappa_median":   k_median,    # (horizon,)
+#             "kappa_upper":    k_upper,     # (horizon,)
+#             "kappa_g_paths":  kg_future,   # (horizon, n_sim, nb_regions)
+#             "kappa_g_lower":  kg_lower,    # (horizon, nb_regions)
+#             "kappa_g_median": kg_median,   # (horizon, nb_regions)
+#             "kappa_g_upper":  kg_upper,    # (horizon, nb_regions)
+#             "logmu_sim":      logmu_sim,   # (nb_ages, horizon, nb_regions, n_sim)
+#             "mu_sim":         mu_sim,      # (nb_ages, horizon, nb_regions, n_sim)
+#             "mu_lower":       mu_lower,    # (nb_ages, horizon, nb_regions)
+#             "mu_median":      mu_median,   # (nb_ages, horizon, nb_regions)
+#             "mu_upper":       mu_upper,    # (nb_ages, horizon, nb_regions)
+#         }
+
+
+# def project_LeeLi_prospective(
+#     results,
+#     tv,
+#     horizon=30,
+#     exclude_years=[2020, 2021],
+#     model="rw",
+#     stochastic=True,
+#     n_sim=1000,
+# ):
+#     # =====================================================
+#     # 1️⃣ Extract parameters
+#     # =====================================================
+#     alpha_xg = results["curves"]["alpha_xg"]   # (nb_ages, nb_regions)
+#     beta_x   = results["curves"]["beta_x"]     # (nb_ages,)
+#     beta_xg  = results["curves"]["beta_xg"]    # (nb_ages, nb_regions)
+#     kappa    = results["parameters"]["kappa"]  # (nb_years,)        — common factor
+#     kappa_g  = results["parameters"]["kappa_g"]# (nb_regions, nb_years) — region-specific
+
+#     nb_ages, nb_regions = alpha_xg.shape
+
+#     # =====================================================
+#     # 2️⃣ Mask COVID years
+#     # =====================================================
+#     mask     = ~np.isin(tv, exclude_years)
+#     kappa_m  = kappa[mask]                     # (T,)
+#     kappa_gm = kappa_g[:, mask]                # (nb_regions, T)
+#     T        = kappa_m.shape[0]
+
+#     # =====================================================
+#     # 3️⃣ Factor dynamics — common kappa
+#     # =====================================================
+#     def fit_dynamics(series, model, T):
+#         """
+#         series : (T,) or (T, nb_regions)
+#         Returns drift, cov, last_value
+#         """
+#         diffs = np.diff(series, axis=0)
+#         drift = np.mean(diffs, axis=0)
+#         if diffs.ndim == 1:
+#             cov = np.array([[np.var(diffs, ddof=1)]])
+#             drift = np.array([drift])
+#         else:
+#             cov = np.cov(diffs, rowvar=False)
+#         last = series[-1] if series.ndim == 1 else series[-1, :]
+#         return drift, cov, last
+
+#     if model == "rw":
+#         # Common factor
+#         drift_k,  cov_k,  k_last  = fit_dynamics(kappa_m,       model, T)
+#         # Region-specific factors
+#         drift_kg, cov_kg, kg_last = fit_dynamics(kappa_gm.T,     model, T)
+#         # cov_kg : (nb_regions, nb_regions)
+
+#     elif model == "linear":
+#         time_idx = np.arange(T)
+#         X_des    = np.column_stack([np.ones(T), time_idx])
+#         Xf       = np.column_stack([np.ones(horizon), np.arange(T, T + horizon)])
+
+#         # Common factor linear fit
+#         beta_k    = np.linalg.lstsq(X_des, kappa_m,   rcond=None)[0]      # (2,)
+#         beta_kg   = np.linalg.lstsq(X_des, kappa_gm.T, rcond=None)[0]     # (2, nb_regions)
+
+#         k_det     = Xf @ beta_k                                             # (horizon,)
+#         kg_det    = Xf @ beta_kg                                            # (horizon, nb_regions)
+
+#         if stochastic:
+#             res_k  = kappa_m   - X_des @ beta_k                            # (T,)
+#             res_kg = kappa_gm.T - X_des @ beta_kg                          # (T, nb_regions)
+#             cov_k  = np.array([[np.var(res_k,  ddof=1)]])
+#             cov_kg = np.cov(res_kg, rowvar=False)
+#     else:
+#         raise ValueError("model must be 'rw' or 'linear'")
+
+#     # =====================================================
+#     # 4️⃣ Projection
+#     # =====================================================
+#     if not stochastic:
+#         if model == "rw":
+#             # Common kappa : (horizon,)
+#             k_future  = k_last  + drift_k[0]  * np.arange(1, horizon + 1)
+
+#             # Region kappa_g : (horizon, nb_regions)
+#             kg_future = kg_last + drift_kg     * np.arange(1, horizon + 1)[:, None]
+
+#         else:  # linear
+#             k_future  = k_det                  # (horizon,)
+#             kg_future = kg_det                 # (horizon, nb_regions)
+
+#         # ── Reconstruction logmu : (nb_ages, nb_regions, horizon) ──
+#         # log(mu) = alpha_xg + beta_x * kappa + beta_xg * kappa_g
+#         logmu_future = (
+#             alpha_xg[:, :, None]
+#             + beta_x[:, None, None]  * k_future[None, None, :]
+#             + beta_xg[:, :, None]    * kg_future.T[None, :, :]
+#         )
+#         mu_future = np.exp(logmu_future)
+
+#         return {
+#             "kappa_future":  k_future,      # (horizon,)
+#             "kappa_g_future": kg_future,    # (horizon, nb_regions)
+#             "logmu_future":  logmu_future,  # (nb_ages, nb_regions, horizon)
+#             "mu_future":     mu_future,     # (nb_ages, nb_regions, horizon)
+#         }
+
+#     else:
+#         if model == "rw":
+#             # Common kappa : (horizon, n_sim)
+#             steps_k   = np.random.multivariate_normal(drift_k,  cov_k,  size=(horizon, n_sim))
+#             k_future  = k_last  + np.cumsum(steps_k[:, :, 0],  axis=0) # (horizon, n_sim)
+
+#             # Region kappa_g : (horizon, n_sim, nb_regions)
+#             steps_kg  = np.random.multivariate_normal(drift_kg, cov_kg, size=(horizon, n_sim))
+#             kg_future = kg_last + np.cumsum(steps_kg, axis=0)           # (horizon, n_sim, nb_regions)
+
+#         else:  # linear
+#             noise_k   = np.random.multivariate_normal(np.zeros(1),         cov_k,  size=(horizon, n_sim))
+#             k_future  = k_det[:, None]    + noise_k[:, :, 0]               # (horizon, n_sim)
+
+#             noise_kg  = np.random.multivariate_normal(np.zeros(nb_regions), cov_kg, size=(horizon, n_sim))
+#             kg_future = kg_det[:, None, :] + noise_kg                       # (horizon, n_sim, nb_regions)
+
+#         # ── Reconstruction logmu : (nb_ages, nb_regions, horizon, n_sim) ──
+#         # k_future  : (horizon, n_sim)         → (1, 1, horizon, n_sim)
+#         # kg_future : (horizon, n_sim, nb_reg) → (1, nb_reg, horizon, n_sim)
+#         logmu_sim = (
+#             alpha_xg[:, :, None, None]
+#             + beta_x[:,  None, None, None] * k_future.T[None, None, :, :]
+#             + beta_xg[:, :,    None, None] * kg_future.transpose(2, 1, 0)[None, :, :, :]
+#         )
+#         mu_sim = np.exp(logmu_sim)
+
+#         # Percentiles kappa commun : (horizon,)
+#         k_lower  = np.percentile(k_future,  5,  axis=1)
+#         k_median = np.percentile(k_future,  50, axis=1)
+#         k_upper  = np.percentile(k_future,  95, axis=1)
+
+#         # Percentiles kappa_g : (horizon, nb_regions)
+#         kg_arr    = kg_future                                    # (horizon, n_sim, nb_regions)
+#         kg_lower  = np.percentile(kg_arr,  5,  axis=1)
+#         kg_median = np.percentile(kg_arr,  50, axis=1)
+#         kg_upper  = np.percentile(kg_arr,  95, axis=1)
+
+#         # Percentiles mu : (nb_ages, nb_regions, horizon)
+#         mu_lower  = np.percentile(mu_sim,  5,  axis=3)
+#         mu_median = np.percentile(mu_sim,  50, axis=3)
+#         mu_upper  = np.percentile(mu_sim,  95, axis=3)
+
+#         return {
+#             "kappa_paths":    k_future,     # (horizon, n_sim)
+#             "kappa_lower":    k_lower,      # (horizon,)
+#             "kappa_median":   k_median,
+#             "kappa_upper":    k_upper,
+#             "kappa_g_paths":  kg_future,    # (horizon, n_sim, nb_regions)
+#             "kappa_g_lower":  kg_lower,     # (horizon, nb_regions)
+#             "kappa_g_median": kg_median,
+#             "kappa_g_upper":  kg_upper,
+#             "logmu_sim":      logmu_sim,    # (nb_ages, nb_regions, horizon, n_sim)
+#             "mu_sim":         mu_sim,
+#             "mu_lower":       mu_lower,     # (nb_ages, nb_regions, horizon)
+#             "mu_median":      mu_median,
+#             "mu_upper":       mu_upper,
+#         }
+    
+
 def project_LeeLi_prospective(
     results,
     tv,
@@ -896,155 +1290,166 @@ def project_LeeLi_prospective(
     n_sim=1000,
 ):
     # =====================================================
-    # 1️⃣ Extract parameters
+    # 1. Extract parameters
     # =====================================================
-    alpha_xg = results["curves"]["alpha_xg"]   # (nb_ages, nb_regions)
-    beta_x   = results["curves"]["beta_x"]     # (nb_ages,)
-    beta_xg  = results["curves"]["beta_xg"]    # (nb_ages, nb_regions)
-    kappa    = results["parameters"]["kappa"]  # (nb_years,)        — common factor
-    kappa_g  = results["parameters"]["kappa_g"]# (nb_regions, nb_years) — region-specific
+    alpha_xg = results["curves"]["alpha_xg"]    # (nb_ages, nb_regions)
+    beta_x   = results["curves"]["beta_x"]      # (nb_ages,)
+    beta_xg  = results["curves"]["beta_xg"]     # (nb_ages, nb_regions)
+    kappa    = results["parameters"]["kappa"]   # (nb_years,)
+    kappa_g  = results["parameters"]["kappa_g"] # (nb_regions, nb_years)
 
     nb_ages, nb_regions = alpha_xg.shape
 
     # =====================================================
-    # 2️⃣ Mask COVID years
+    # 2. Mask COVID years
     # =====================================================
     mask     = ~np.isin(tv, exclude_years)
-    kappa_m  = kappa[mask]                     # (T,)
-    kappa_gm = kappa_g[:, mask]                # (nb_regions, T)
+    kappa_m  = kappa[mask]       # (T,)
+    kappa_gm = kappa_g[:, mask]  # (nb_regions, T)
     T        = kappa_m.shape[0]
 
     # =====================================================
-    # 3️⃣ Factor dynamics — common kappa
+    # 3. Factor dynamics
     # =====================================================
-    def fit_dynamics(series, model, T):
+    def fit_rw(series):
         """
+        Fit a random walk to a 1D or 2D series.
+
+        Parameters
+        ----------
         series : (T,) or (T, nb_regions)
-        Returns drift, cov, last_value
+
+        Returns
+        -------
+        drift      : scalar or (nb_regions,)
+        cov        : (1, 1) or (nb_regions, nb_regions)
+        last_value : scalar or (nb_regions,)
         """
         diffs = np.diff(series, axis=0)
         drift = np.mean(diffs, axis=0)
         if diffs.ndim == 1:
-            cov = np.array([[np.var(diffs, ddof=1)]])
+            cov   = np.array([[np.var(diffs, ddof=1)]])
             drift = np.array([drift])
         else:
             cov = np.cov(diffs, rowvar=False)
         last = series[-1] if series.ndim == 1 else series[-1, :]
         return drift, cov, last
 
+    # =====================================================
+    # 4. Projection
+    # =====================================================
     if model == "rw":
-        # Common factor
-        drift_k,  cov_k,  k_last  = fit_dynamics(kappa_m,       model, T)
-        # Region-specific factors
-        drift_kg, cov_kg, kg_last = fit_dynamics(kappa_gm.T,     model, T)
-        # cov_kg : (nb_regions, nb_regions)
+
+        drift_k,  cov_k,  k_last  = fit_rw(kappa_m)
+        drift_kg, cov_kg, kg_last = fit_rw(kappa_gm.T)   # (T, nb_regions)
+
+        if not stochastic:
+            # Common kappa : (horizon,)
+            k_future  = k_last  + drift_k[0]  * np.arange(1, horizon + 1)
+
+            # Region kappa_g : (horizon, nb_regions)
+            kg_future = kg_last + drift_kg * np.arange(1, horizon + 1)[:, None]
+
+        else:
+            # Common kappa : (horizon, n_sim)
+            steps_k  = np.random.multivariate_normal(drift_k,  cov_k,  size=(horizon, n_sim))
+            k_future = k_last + np.cumsum(steps_k[:, :, 0], axis=0)   # (horizon, n_sim)
+
+            # Region kappa_g : (horizon, n_sim, nb_regions)
+            steps_kg  = np.random.multivariate_normal(drift_kg, cov_kg, size=(horizon, n_sim))
+            kg_future = kg_last + np.cumsum(steps_kg, axis=0)          # (horizon, n_sim, nb_regions)
 
     elif model == "linear":
+
         time_idx = np.arange(T)
         X_des    = np.column_stack([np.ones(T), time_idx])
         Xf       = np.column_stack([np.ones(horizon), np.arange(T, T + horizon)])
 
         # Common factor linear fit
-        beta_k    = np.linalg.lstsq(X_des, kappa_m,   rcond=None)[0]      # (2,)
-        beta_kg   = np.linalg.lstsq(X_des, kappa_gm.T, rcond=None)[0]     # (2, nb_regions)
+        beta_k  = np.linalg.lstsq(X_des, kappa_m,    rcond=None)[0]   # (2,)
+        beta_kg = np.linalg.lstsq(X_des, kappa_gm.T, rcond=None)[0]   # (2, nb_regions)
 
-        k_det     = Xf @ beta_k                                             # (horizon,)
-        kg_det    = Xf @ beta_kg                                            # (horizon, nb_regions)
+        k_det  = Xf @ beta_k    # (horizon,)
+        kg_det = Xf @ beta_kg   # (horizon, nb_regions)
 
-        if stochastic:
-            res_k  = kappa_m   - X_des @ beta_k                            # (T,)
-            res_kg = kappa_gm.T - X_des @ beta_kg                          # (T, nb_regions)
+        if not stochastic:
+            k_future  = k_det    # (horizon,)
+            kg_future = kg_det   # (horizon, nb_regions)
+
+        else:
+            res_k  = kappa_m    - X_des @ beta_k     # (T,)
+            res_kg = kappa_gm.T - X_des @ beta_kg    # (T, nb_regions)
             cov_k  = np.array([[np.var(res_k,  ddof=1)]])
             cov_kg = np.cov(res_kg, rowvar=False)
+
+            noise_k   = np.random.multivariate_normal(np.zeros(1),         cov_k,  size=(horizon, n_sim))
+            k_future  = k_det[:, None] + noise_k[:, :, 0]                          # (horizon, n_sim)
+
+            noise_kg  = np.random.multivariate_normal(np.zeros(nb_regions), cov_kg, size=(horizon, n_sim))
+            kg_future = kg_det[:, None, :] + noise_kg                               # (horizon, n_sim, nb_regions)
+
     else:
         raise ValueError("model must be 'rw' or 'linear'")
 
     # =====================================================
-    # 4️⃣ Projection
+    # 5. Reconstruct log(mu) — convention (nb_ages, horizon, nb_regions[, n_sim])
     # =====================================================
     if not stochastic:
-        if model == "rw":
-            # Common kappa : (horizon,)
-            k_future  = k_last  + drift_k[0]  * np.arange(1, horizon + 1)
-
-            # Region kappa_g : (horizon, nb_regions)
-            kg_future = kg_last + drift_kg     * np.arange(1, horizon + 1)[:, None]
-
-        else:  # linear
-            k_future  = k_det                  # (horizon,)
-            kg_future = kg_det                 # (horizon, nb_regions)
-
-        # ── Reconstruction logmu : (nb_ages, nb_regions, horizon) ──
-        # log(mu) = alpha_xg + beta_x * kappa + beta_xg * kappa_g
+        # k_future  : (horizon,)          → (1, horizon, 1)
+        # kg_future : (horizon, nb_reg)   → (1, horizon, nb_reg)
         logmu_future = (
-            alpha_xg[:, :, None]
-            + beta_x[:, None, None]  * k_future[None, None, :]
-            + beta_xg[:, :, None]    * kg_future.T[None, :, :]
+            alpha_xg[:, None, :]                                  # (nb_ages, 1,       nb_regions)
+            + beta_x[:,  None, None] * k_future[None, :, None]   # (nb_ages, horizon, 1)
+            + beta_xg[:, None, :]    * kg_future[None, :, :]     # (nb_ages, horizon, nb_regions)
         )
+        # → (nb_ages, horizon, nb_regions) ✅
+
         mu_future = np.exp(logmu_future)
 
         return {
-            "kappa_future":  k_future,      # (horizon,)
-            "kappa_g_future": kg_future,    # (horizon, nb_regions)
-            "logmu_future":  logmu_future,  # (nb_ages, nb_regions, horizon)
-            "mu_future":     mu_future,     # (nb_ages, nb_regions, horizon)
+            "kappa_future":   k_future,      # (horizon,)
+            "kappa_g_future": kg_future,     # (horizon, nb_regions)
+            "logmu_future":   logmu_future,  # (nb_ages, horizon, nb_regions)
+            "mu_future":      mu_future,     # (nb_ages, horizon, nb_regions)
         }
 
     else:
-        if model == "rw":
-            # Common kappa : (horizon, n_sim)
-            steps_k   = np.random.multivariate_normal(drift_k,  cov_k,  size=(horizon, n_sim))
-            k_future  = k_last  + np.cumsum(steps_k[:, :, 0],  axis=0) # (horizon, n_sim)
+        k_4d  = k_future[None, :, None, :]                       # (1, horizon, 1,          n_sim)
+        kg_4d = kg_future.transpose(0, 2, 1)[None, :, :, :]      # (1, horizon, nb_regions, n_sim)
 
-            # Region kappa_g : (horizon, n_sim, nb_regions)
-            steps_kg  = np.random.multivariate_normal(drift_kg, cov_kg, size=(horizon, n_sim))
-            kg_future = kg_last + np.cumsum(steps_kg, axis=0)           # (horizon, n_sim, nb_regions)
-
-        else:  # linear
-            noise_k   = np.random.multivariate_normal(np.zeros(1),         cov_k,  size=(horizon, n_sim))
-            k_future  = k_det[:, None]    + noise_k[:, :, 0]               # (horizon, n_sim)
-
-            noise_kg  = np.random.multivariate_normal(np.zeros(nb_regions), cov_kg, size=(horizon, n_sim))
-            kg_future = kg_det[:, None, :] + noise_kg                       # (horizon, n_sim, nb_regions)
-
-        # ── Reconstruction logmu : (nb_ages, nb_regions, horizon, n_sim) ──
-        # k_future  : (horizon, n_sim)         → (1, 1, horizon, n_sim)
-        # kg_future : (horizon, n_sim, nb_reg) → (1, nb_reg, horizon, n_sim)
         logmu_sim = (
-            alpha_xg[:, :, None, None]
-            + beta_x[:,  None, None, None] * k_future.T[None, None, :, :]
-            + beta_xg[:, :,    None, None] * kg_future.transpose(2, 1, 0)[None, :, :, :]
+            alpha_xg[:, None, :, None]                           # (nb_ages, 1,       nb_regions, 1)
+            + beta_x[:,  None, None, None] * k_4d                # (nb_ages, horizon, 1,          n_sim)
+            + beta_xg[:, None, :,    None] * kg_4d               # (nb_ages, horizon, nb_regions, n_sim)
         )
+        # → (nb_ages, horizon, nb_regions, n_sim) ✅
+
         mu_sim = np.exp(logmu_sim)
 
-        # Percentiles kappa commun : (horizon,)
-        k_lower  = np.percentile(k_future,  5,  axis=1)
-        k_median = np.percentile(k_future,  50, axis=1)
-        k_upper  = np.percentile(k_future,  95, axis=1)
+        mu_lower  = np.percentile(mu_sim,  2.5, axis=-1)
+        mu_median = np.percentile(mu_sim, 50,   axis=-1)
+        mu_upper  = np.percentile(mu_sim, 97.5, axis=-1)
 
-        # Percentiles kappa_g : (horizon, nb_regions)
-        kg_arr    = kg_future                                    # (horizon, n_sim, nb_regions)
-        kg_lower  = np.percentile(kg_arr,  5,  axis=1)
-        kg_median = np.percentile(kg_arr,  50, axis=1)
-        kg_upper  = np.percentile(kg_arr,  95, axis=1)
+        k_lower  = np.percentile(k_future,  2.5, axis=1)
+        k_median = np.percentile(k_future, 50,   axis=1)
+        k_upper  = np.percentile(k_future, 97.5, axis=1)
 
-        # Percentiles mu : (nb_ages, nb_regions, horizon)
-        mu_lower  = np.percentile(mu_sim,  5,  axis=3)
-        mu_median = np.percentile(mu_sim,  50, axis=3)
-        mu_upper  = np.percentile(mu_sim,  95, axis=3)
+        kg_lower  = np.percentile(kg_future,  2.5, axis=1)
+        kg_median = np.percentile(kg_future, 50,   axis=1)
+        kg_upper  = np.percentile(kg_future, 97.5, axis=1)
 
         return {
-            "kappa_paths":    k_future,     # (horizon, n_sim)
-            "kappa_lower":    k_lower,      # (horizon,)
+            "kappa_paths":    k_future,
+            "kappa_lower":    k_lower,
             "kappa_median":   k_median,
             "kappa_upper":    k_upper,
-            "kappa_g_paths":  kg_future,    # (horizon, n_sim, nb_regions)
-            "kappa_g_lower":  kg_lower,     # (horizon, nb_regions)
+            "kappa_g_paths":  kg_future,
+            "kappa_g_lower":  kg_lower,
             "kappa_g_median": kg_median,
             "kappa_g_upper":  kg_upper,
-            "logmu_sim":      logmu_sim,    # (nb_ages, nb_regions, horizon, n_sim)
+            "logmu_sim":      logmu_sim,
             "mu_sim":         mu_sim,
-            "mu_lower":       mu_lower,     # (nb_ages, nb_regions, horizon)
+            "mu_lower":       mu_lower,
             "mu_median":      mu_median,
             "mu_upper":       mu_upper,
         }

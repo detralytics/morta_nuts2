@@ -1,148 +1,82 @@
 import numpy as np
 
-def compute_life_expectancy_all(mu_future):
-    """
-    mu_future : (ages, horizon, regions)
-    retourne  : (ages, horizon, regions)
-    """
-    ages, horizon, regions = mu_future.shape
-    ex = np.zeros((ages, horizon, regions))
-
-    for r in range(regions):
-        for t in range(horizon):
-
-            mu = mu_future[:, t, r]
-
-            # 🔹 Transformation correcte μ → q (hypothèse exponentielle)
-            qx = 1.0 - np.exp(-mu)
-            qx = np.clip(qx, 0, 1)
-
-            # 🔹 Construction lx
-            lx = np.zeros(ages)
-            lx[0] = 100000
-
-            for x in range(1, ages):
-                lx[x] = lx[x-1] * (1 - qx[x-1])
-
-            # 🔹 Lx (hypothèse UDD intra-annuelle)
-            Lx = np.zeros(ages)
-            Lx[:-1] = 0.5 * (lx[:-1] + lx[1:])
-            Lx[-1] = lx[-1] / max(qx[-1], 1e-12)
-
-            # 🔹 Tx
-            Tx = np.flip(np.cumsum(np.flip(Lx)))
-
-            # 🔹 e_x
-            ex[:, t, r] = Tx / np.maximum(lx, 1e-12)
-
-    return ex
 
 
-def compute_life_expectancy_sim(mu_sim):
-    """
-    mu_sim : (ages, regions, horizon, n_sim)
-    
-    retourne :
-    ex_sim : (ages, regions, horizon, n_sim)
-    """
-    
-    ages, regions, horizon, n_sim = mu_sim.shape
-    ex_sim = np.zeros((ages, regions, horizon, n_sim))
-    
-    for s in range(n_sim):
-        for r in range(regions):
-            for t in range(horizon):
-                
-                mu = mu_sim[:, r, t, s]
-                qx = mu / (1 + 0.5 * mu)
-                qx = np.clip(qx, 0, 1)
-                
-                lx = np.zeros(ages)
-                lx[0] = 100000
-                lx[1:] = lx[0] * np.cumprod(1 - qx[:-1])
-                
-                Lx = np.zeros(ages)
-                Lx[:-1] = 0.5 * (lx[:-1] + lx[1:])
-                Lx[-1] = lx[-1]
-                
-                Tx = np.flip(np.cumsum(np.flip(Lx)))
-                
-                ex_sim[:, r, t, s] = Tx / lx
-    
-    return ex_sim
 
-def compute_life_expectancy(mu):
-    """
-    Computes life expectancy table for all ages.
 
-    Handles both cases automatically:
-      - Deterministic : mu shape (ages, horizon, regions)
-      - Stochastic    : mu shape (ages, regions, horizon, n_sim)
 
-    Returns ex with the same shape as input mu.
-    """
+# def compute_life_expectancy(mu):
+#     """
+#     Computes life expectancy table for all ages.
 
-    # =====================================================
-    # Detect case and reshape to (ages, horizon, regions, [n_sim])
-    # =====================================================
-    if mu.ndim == 3:
-        # Deterministic : (ages, horizon, regions)
-        ages, horizon, regions = mu.shape
-        n_sim      = None
-        mu_work    = mu                              # (ages, horizon, regions)
+#     Handles both cases automatically:
+#       - Deterministic : mu shape (ages, horizon, regions)
+#       - Stochastic    : mu shape (ages, regions, horizon, n_sim)
 
-    elif mu.ndim == 4:
-        # Stochastic : (ages, regions, horizon, n_sim)
-        ages, regions, horizon, n_sim = mu.shape
-        mu_work = mu.transpose(0, 2, 1, 3)          # → (ages, horizon, regions, n_sim)
+#     Returns ex with the same shape as input mu.
+#     """
 
-    else:
-        raise ValueError(f"mu must be 3D or 4D, got {mu.ndim}D")
+#     # =====================================================
+#     # Detect case and reshape to (ages, horizon, regions, [n_sim])
+#     # =====================================================
+#     if mu.ndim == 3:
+#         # Deterministic : (ages, horizon, regions)
+#         ages, horizon, regions = mu.shape
+#         n_sim      = None
+#         mu_work    = mu                              # (ages, horizon, regions)
 
-    # =====================================================
-    # Core life table computation — vectorized over last axes
-    # =====================================================
-    def life_table(mu_slice):
-        """
-        mu_slice : (ages, ...) — any trailing dimensions
-        Returns ex of same shape.
-        """
-        orig_shape = mu_slice.shape
-        ages_      = orig_shape[0]
-        rest       = int(np.prod(orig_shape[1:]))      # flatten trailing dims
+#     elif mu.ndim == 4:
+#         # Stochastic : (ages, regions, horizon, n_sim)
+#         ages, regions, horizon, n_sim = mu.shape
+#         mu_work = mu.transpose(0, 2, 1, 3)          # → (ages, horizon, regions, n_sim)
 
-        mu_2d  = mu_slice.reshape(ages_, rest)          # (ages, rest)
-        qx     = np.clip(mu_2d / (1 + 0.5 * mu_2d), 0, 1)
+#     else:
+#         raise ValueError(f"mu must be 3D or 4D, got {mu.ndim}D")
 
-        # lx : survival
-        lx        = np.zeros_like(qx)
-        lx[0, :]  = 100_000
-        lx[1:, :] = 100_000 * np.cumprod(1 - qx[:-1, :], axis=0)
+#     # =====================================================
+#     # Core life table computation — vectorized over last axes
+#     # =====================================================
+#     def life_table(mu_slice):
+#         """
+#         mu_slice : (ages, ...) — any trailing dimensions
+#         Returns ex of same shape.
+#         """
+#         orig_shape = mu_slice.shape
+#         ages_      = orig_shape[0]
+#         rest       = int(np.prod(orig_shape[1:]))      # flatten trailing dims
 
-        # Lx : person-years lived
-        Lx        = np.zeros_like(lx)
-        Lx[:-1,:] = 0.5 * (lx[:-1, :] + lx[1:, :])
-        Lx[-1, :] = lx[-1, :]
+#         mu_2d  = mu_slice.reshape(ages_, rest)          # (ages, rest)
+#         qx     = np.clip(mu_2d / (1 + 0.5 * mu_2d), 0, 1)
 
-        # Tx : cumulative from above
-        Tx = np.flip(np.cumsum(np.flip(Lx, axis=0), axis=0), axis=0)
+#         # lx : survival
+#         lx        = np.zeros_like(qx)
+#         lx[0, :]  = 100_000
+#         lx[1:, :] = 100_000 * np.cumprod(1 - qx[:-1, :], axis=0)
 
-        ex_2d = Tx / lx
-        return ex_2d.reshape(orig_shape)
+#         # Lx : person-years lived
+#         Lx        = np.zeros_like(lx)
+#         Lx[:-1,:] = 0.5 * (lx[:-1, :] + lx[1:, :])
+#         Lx[-1, :] = lx[-1, :]
 
-    # =====================================================
-    # Apply and restore original shape convention
-    # =====================================================
-    if n_sim is None:
-        # (ages, horizon, regions)
-        ex = life_table(mu_work)                       # (ages, horizon, regions)
-        return ex
+#         # Tx : cumulative from above
+#         Tx = np.flip(np.cumsum(np.flip(Lx, axis=0), axis=0), axis=0)
 
-    else:
-        # (ages, horizon, regions, n_sim)
-        ex_work = life_table(mu_work)                  # (ages, horizon, regions, n_sim)
-        # Restore to (ages, regions, horizon, n_sim)
-        return ex_work.transpose(0, 2, 1, 3)
+#         ex_2d = Tx / lx
+#         return ex_2d.reshape(orig_shape)
+
+#     # =====================================================
+#     # Apply and restore original shape convention
+#     # =====================================================
+#     if n_sim is None:
+#         # (ages, horizon, regions)
+#         ex = life_table(mu_work)                       # (ages, horizon, regions)
+#         return ex
+
+#     else:
+#         # (ages, horizon, regions, n_sim)
+#         ex_work = life_table(mu_work)                  # (ages, horizon, regions, n_sim)
+#         # Restore to (ages, regions, horizon, n_sim)
+#         return ex_work.transpose(0, 2, 1, 3)
     
 
 import numpy as np
@@ -922,6 +856,150 @@ def high_age_extrapolation_snd(
 
     return out, xv_full
 
+from scipy.optimize import curve_fit
+
+def kannisto_log_mu(x, a, b):
+    """log(μ(x)) pour le modèle de Kannisto : μ(x) = a*exp(b*x) / (1 + a*exp(b*x))"""
+    ebx = np.exp(b * x)
+    return np.log(a * ebx / (1.0 + a * ebx))
+
+def fit_kannisto(xv_fit, log_mu_fit):
+    """
+    Calibre Kannisto sur un vecteur 1D de log_mu.
+    Retourne (a, b) ou None si échec.
+    """
+    try:
+        mu_fit = np.exp(log_mu_fit)
+        # Initialisation via Gompertz (régression log-linéaire)
+        slope, intercept = np.polyfit(xv_fit, log_mu_fit, 1)
+        b0 = max(slope, 1e-4)
+        a0 = max(np.exp(intercept), 1e-6)
+
+        popt, _ = curve_fit(
+            lambda x, a, b: kannisto_log_mu(x, a, b),
+            xv_fit, log_mu_fit,
+            p0=[a0, b0],
+            bounds=([1e-8, 1e-6], [1e2, 1.0]),
+            maxfev=5000,
+        )
+        return popt  # (a, b)
+    except Exception:
+        return None
+
+def high_age_extrapolation_kannisto(
+    xv,
+    x_extrap,
+    x_extrap_start,
+    log_Muxtg,
+    auto_start=False,
+    fallback_linear=True,
+):
+    """
+    Extrapole log_Muxtg au-delà de max(xv) jusqu'à x_extrap via Kannisto.
+
+    Shapes attendues :
+      - déterministe : (nb_ages, horizon, nb_regions)
+      - stochastique : (nb_ages, horizon, nb_regions, n_sim)
+
+    fallback_linear : si Kannisto échoue, repli sur régression linéaire (ta méthode ancienne)
+    """
+    stochastic = log_Muxtg.ndim == 4
+    x_max      = int(xv.max())
+
+    if auto_start or x_extrap_start is None:
+        x_extrap_start = optimal_x_extrap_start(xv, log_Muxtg, x_max)
+        print(f"x_extrap_start sélectionné automatiquement : {x_extrap_start}")
+
+    idx_reg    = np.where((xv >= x_extrap_start) & (xv <= x_max))[0]
+    idx_anchor = np.where(xv == x_max)[0][0]
+
+    assert len(idx_reg) >= 2, (
+        f"Fenêtre de régression trop petite : "
+        f"x_extrap_start={x_extrap_start}, x_max={x_max}, "
+        f"nb points={len(idx_reg)}"
+    )
+
+    xv_fit  = xv[idx_reg].astype(float)
+    xv_add  = np.arange(x_max + 1, x_extrap + 1, dtype=float)
+    xv_full = np.concatenate([xv, xv_add])
+    nb_add  = len(xv_add)
+
+    # --- fallback linéaire (ta méthode) ---
+    def _linear_extrap(Y_reg_1d, anchor_val):
+        dx_reg = (xv_fit - x_max)
+        dx_add_ = (xv_add - x_max)
+        denom = float((dx_reg ** 2).sum())
+        if denom == 0:
+            return np.full(nb_add, anchor_val)
+        slope = max(float(np.dot(dx_reg, Y_reg_1d - anchor_val) / denom), 0.0)
+        return anchor_val + dx_add_ * slope
+
+    # --- extrapolation Kannisto 1D ---
+    def _kannisto_extrap_1d(log_mu_1d):
+        """Prend un vecteur 1D sur tous les âges, retourne l'extrapolation sur xv_add."""
+        fit_vals = log_mu_1d[idx_reg]
+        anchor_val = log_mu_1d[idx_anchor]
+
+        params = fit_kannisto(xv_fit, fit_vals)
+
+        if params is None:
+            # Fallback
+            if fallback_linear:
+                return _linear_extrap(fit_vals, anchor_val)
+            else:
+                raise RuntimeError("Kannisto fit échoué et fallback désactivé.")
+
+        a, b = params
+        log_mu_extrap = kannisto_log_mu(xv_add, a, b)
+
+        # Contrainte de monotonie : on s'assure que ça ne descend pas
+        log_mu_extrap = np.maximum.accumulate(
+            np.concatenate([[anchor_val], log_mu_extrap])
+        )[1:]
+
+        return log_mu_extrap
+
+    # --- Dispatch déterministe / stochastique ---
+    if stochastic:
+        nb_ages, horizon, nb_regions, n_sim = log_Muxtg.shape
+        out = np.empty((len(xv_full), horizon, nb_regions, n_sim))
+        out[:nb_ages, ...] = log_Muxtg
+
+        # On itère sur horizon × regions × sims
+        # Pour éviter une triple boucle trop lente, on reshape
+        flat = log_Muxtg.reshape(nb_ages, -1)          # (nb_ages, H*R*S)
+        n_cols = flat.shape[1]
+        extrap_flat = np.empty((nb_add, n_cols))
+
+        for col in range(n_cols):
+            extrap_flat[:, col] = _kannisto_extrap_1d(flat[:, col])
+
+        out[nb_ages:, ...] = extrap_flat.reshape(nb_add, horizon, nb_regions, n_sim)
+
+    else:
+        nb_ages, horizon, nb_regions = log_Muxtg.shape
+        out = np.empty((len(xv_full), horizon, nb_regions))
+        out[:nb_ages, ...] = log_Muxtg
+
+        flat = log_Muxtg.reshape(nb_ages, -1)          # (nb_ages, H*R)
+        n_cols = flat.shape[1]
+        extrap_flat = np.empty((nb_add, n_cols))
+
+        for col in range(n_cols):
+            extrap_flat[:, col] = _kannisto_extrap_1d(flat[:, col])
+
+        out[nb_ages:, ...] = extrap_flat.reshape(nb_add, horizon, nb_regions)
+
+    # Vérification NaN
+    if stochastic:
+        nan_check = np.isnan(out).any(axis=(1, 2, 3))
+    else:
+        nan_check = np.isnan(out).any(axis=(1, 2))
+
+    if nan_check.any():
+        print(f"⚠️ NaN aux indices d'âge : {np.where(nan_check)[0]}")
+
+    return out, xv_full
 
 
 # def project_LeeLi_prospective(

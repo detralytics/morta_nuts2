@@ -434,6 +434,8 @@ class Eurostat_data:
                 return 0
             elif label == "Y_GE85":
                 return 85
+            elif label == "Y_GE95":
+                return 95
         return None
     
     def add_exclusion(self, country: str, regions: List[str]) -> 'Eurostat_data':

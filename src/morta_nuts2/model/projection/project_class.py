@@ -94,8 +94,15 @@ class ProjectorLC_SVD:
         stochastic: bool = True,
         n_sim: int = 1000,
     ):
-        self.ax            = results["curves"]["alpha_x"]   # (nb_ages,)
-        self.bx            = results["curves"]["beta_xg"]   # (nb_ages, nb_regions)
+        self.ax = results["curves"]["alpha_x"]   # (nb_ages,)
+        curves = results["curves"]
+
+        beta_key = next((k for k in curves.keys() if k.startswith("beta")), None)
+
+        if beta_key is None:
+            raise KeyError("No beta curve found in results['curves']")
+
+        self.bx = curves[beta_key]  # stocké comme beta_xg dans l'objet
         self.kappa_raw     = results["parameters"]["kappa"]
         self.tv            = np.asarray(tv)
         self.horizon       = horizon
@@ -635,3 +642,63 @@ class HighAgeExtrapolator:
             return self._extrapolate_kannisto()
         else:
             raise ValueError("method must be 'linear' or 'kannisto'")
+
+
+
+
+#pour stochastique
+def concat_logmu_time(logmu_hist, logmu_proj):
+    """
+    Concatenate historical and projected log-mortality along time axis.
+
+    Parameters
+    ----------
+    logmu_hist : (nb_ages, nb_years_hist, nb_regions)
+    logmu_proj :
+        - deterministic : (nb_ages, horizon, nb_regions)
+        - stochastic    : (nb_ages, horizon, nb_regions, n_sim)
+
+    Returns
+    -------
+    - deterministic : (nb_ages, nb_years_hist + horizon, nb_regions)
+    - stochastic    : (nb_ages, nb_years_hist + horizon, nb_regions, n_sim)
+    """
+    if logmu_proj.ndim == 3:
+        return np.concatenate([logmu_hist, logmu_proj], axis=1)
+
+    elif logmu_proj.ndim == 4:
+        n_sim = logmu_proj.shape[3]
+        logmu_hist_expanded = np.repeat(
+            logmu_hist[:, :, :, None],   # (nb_ages, nb_years_hist, nb_regions, 1)
+            n_sim,
+            axis=3
+        )
+        return np.concatenate([logmu_hist_expanded, logmu_proj], axis=1)
+
+    else:
+        raise ValueError("logmu_proj must be 3D (deterministic) or 4D (stochastic)")
+    
+
+
+#------------------------------------------------------------------------------
+# Function for valuation of annuities
+#------------------------------------------------------------------------------
+def Annuity_pricing(xe,xv,log_Muxtg,duration,rate):
+    _ , nby , nb_reg , nb_simul = log_Muxtg.shape
+    price   = np.zeros((len(xe),nb_reg,nb_simul))    
+    ctx      = 0
+    v = 1/(1+rate)
+    for xs in xe:
+        for i in range(nb_reg):
+            for s in range(nb_simul):
+                tpx = 1
+                tax = 0
+                for j in range(duration):    
+                    #t_p_xs
+                    Muxtg = np.exp(log_Muxtg[xs+j,j,i,s])
+                    px    = np.exp(-Muxtg)  
+                    tpx   = tpx*px
+                    tax   = tax + tpx*v**j
+                    price[ctx,i,s]  = tax
+        ctx = ctx +1  
+    return(price)

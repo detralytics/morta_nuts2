@@ -1,5 +1,5 @@
 # =============================================================================
-# Eurostat Data Manager - Smart with Shapefile Auto-Load
+# Eurostat Data Manager - Smart avec Shapefile Auto-Load
 # =============================================================================
 
 import pandas as pd
@@ -12,33 +12,33 @@ from typing import List, Optional, Dict, Tuple, Literal, Union
 
 
 class EurostatConfig:
-    """Centralized configuration for paths and default parameters."""
+    """Configuration centralisée pour les chemins et paramètres par défaut."""
     
-    # Default path for NUTS shapefile
+    # Chemin par défaut du shapefile NUTS
     DEFAULT_SHAPEFILE_PATH = Path("C:/Users/Idrissa Belem/Documents/GitHub/test_projet/NUTS_files/NUTS_RG_01M_2024_3035.shp")
     
-    # Default data path
+    # Chemin par défaut des données
     DEFAULT_DATA_PATH = Path("../data")
     
-    # Available datasets
+    # Datasets disponibles
     DATASETS = {
         "mortality": "demo_r_mlife",
         "deaths": "demo_r_magec",
         "population": "demo_r_d2jan"
     }
     
-    # Regions to exclude by country
+    # Régions à exclure par pays
     EXCLUDE_REGIONS = {
         "FR": ["FRY1", "FRY2", "FRY3", "FRY4", "FRY5"],  # DOM-TOM
-        "PT": ["PT20", "PT30"],                           # Azores, Madeira
-        "ES": ["ES63", "ES64", "ES70"],                   # Ceuta, Melilla, Canary Islands
+        "PT": ["PT20", "PT30"],                           # Açores, Madère
+        "ES": ["ES63", "ES64", "ES70"],                   # Ceuta, Melilla, Canaries
         "NO": ["NO0B"],                                   # Svalbard
     }
     
     @classmethod
     def set_default_shapefile(cls, path: Union[str, Path]) -> None:
         """
-        Changes the default shapefile path globally.
+        Modifie le chemin par défaut du shapefile globalement.
         
         Examples
         --------
@@ -49,7 +49,7 @@ class EurostatConfig:
     @classmethod
     def set_default_data_path(cls, path: Union[str, Path]) -> None:
         """
-        Changes the default data path globally.
+        Modifie le chemin par défaut des données globalement.
         
         Examples
         --------
@@ -60,27 +60,27 @@ class EurostatConfig:
 
 class Eurostat_data:
     """
-    Single manager for all Eurostat operations.
+    Gestionnaire unique pour toutes les opérations Eurostat.
     
-    The NUTS shapefile is loaded automatically from the default path.
-    No need to handle 'shapef' in your code!
+    Le shapefile NUTS est chargé automatiquement depuis le chemin par défaut.
+    Aucun besoin de manipuler 'shapef' dans votre code !
     
     Examples
     --------
-    # Standard usage (shapefile auto-loaded)
+    # Utilisation standard (shapefile auto-chargé)
     >>> manager = EurostatManager()
     >>> mortality = manager.load("mortality", "FR")
     
-    # With a custom shapefile
+    # Avec un shapefile personnalisé
     >>> manager = EurostatManager(shapefile_path="D:/custom/nuts.shp")
     
-    # Or pass a GeoDataFrame directly
+    # Ou passer directement un GeoDataFrame
     >>> custom_shapef = gpd.read_file("path/to/shapefile.shp")
     >>> manager = EurostatManager(shapefile=custom_shapef)
     
-    # Change the default for the whole application
+    # Changer le défaut pour toute l'application
     >>> EurostatConfig.set_default_shapefile("D:/data/NUTS_2024.shp")
-    >>> manager = EurostatManager()  # Will use the new path
+    >>> manager = EurostatManager()  # Utilisera le nouveau chemin
     """
     
     def __init__(
@@ -93,22 +93,22 @@ class Eurostat_data:
         auto_load_shapefile: bool = True
     ):
         """
-        Initializes the Eurostat manager.
+        Initialise le gestionnaire Eurostat.
         
         Parameters
         ----------
         shapefile : GeoDataFrame, optional
-            Already loaded NUTS shapefile (takes priority if provided)
+            Shapefile NUTS déjà chargé (priorité si fourni)
         shapefile_path : str or Path, optional
-            Custom shapefile path (uses default if None)
+            Chemin personnalisé du shapefile (utilise le défaut si None)
         data_path : str or Path, optional
-            Data storage directory (uses default if None)
+            Répertoire de stockage des données (utilise le défaut si None)
         language : str
-            Language for Eurostat metadata
+            Langue des métadonnées Eurostat
         nuts_level : int
-            Default NUTS level (1, 2 or 3)
+            Niveau NUTS par défaut (1, 2 ou 3)
         auto_load_shapefile : bool
-            If True, automatically loads the shapefile on first use
+            Si True, charge automatiquement le shapefile au premier usage
         """
         self._shapefile = shapefile
         self._shapefile_path = Path(shapefile_path) if shapefile_path else EurostatConfig.DEFAULT_SHAPEFILE_PATH
@@ -120,44 +120,44 @@ class Eurostat_data:
         
         self.nuts_level = nuts_level
         
-        # Eurostat API client
+        # Client API Eurostat
         self.client = EurostatAPIClient("1.0", "json", language)
         
-        # Regions cache to avoid recomputing
+        # Cache des régions pour éviter de recalculer
         self._regions_cache: Dict[Tuple[str, int, bool], List[str]] = {}
     
     @property
     def shapefile(self) -> gpd.GeoDataFrame:
         """
-        Access to the shapefile with auto-loading if necessary.
+        Accès au shapefile avec auto-chargement si nécessaire.
         
-        The user never needs to call this property directly.
+        L'utilisateur n'a jamais besoin d'appeler cette propriété directement.
         """
         if self._shapefile is None and self._auto_load:
             self._load_shapefile()
         
         if self._shapefile is None:
             raise ValueError(
-                f"Shapefile not loaded. Path used: {self._shapefile_path}\n"
-                f"Check that the file exists or set another path:\n"
+                f"Shapefile non chargé. Chemin utilisé: {self._shapefile_path}\n"
+                f"Vérifiez que le fichier existe ou définissez un autre chemin:\n"
                 f"  EurostatConfig.set_default_shapefile('path/to/shapefile.shp')\n"
-                f"  or manager = EurostatManager(shapefile_path='path/to/shapefile.shp')"
+                f"  ou manager = EurostatManager(shapefile_path='path/to/shapefile.shp')"
             )
         
         return self._shapefile
     
     def _load_shapefile(self) -> None:
-        """Loads the shapefile from the configured path."""
+        """Charge le shapefile depuis le chemin configuré."""
         if not self._shapefile_path.exists():
-            print(f"⚠️  Shapefile not found: {self._shapefile_path}")
-            print(f"💡 Set the correct path with:")
-            print(f"   EurostatConfig.set_default_shapefile('your/path.shp')")
+            print(f"⚠️  Shapefile introuvable: {self._shapefile_path}")
+            print(f"💡 Définissez le bon chemin avec:")
+            print(f"   EurostatConfig.set_default_shapefile('votre/chemin.shp')")
             return
         
-        print(f"📂 Loading NUTS shapefile... {self._shapefile_path.name}")
+        print(f"📂 Chargement du shapefile NUTS... {self._shapefile_path.name}")
         self._shapefile = gpd.read_file(self._shapefile_path)
         self._shapefile_loaded = True
-        print(f"✅ Shapefile loaded ({len(self._shapefile)} features)")
+        print(f"✅ Shapefile chargé ({len(self._shapefile)} entités)")
     
     def set_shapefile(
         self,
@@ -165,14 +165,14 @@ class Eurostat_data:
         shapefile_path: Optional[Union[str, Path]] = None
     ) -> 'Eurostat_data':
         """
-        Sets a new shapefile (chainable).
+        Définit un nouveau shapefile (chainable).
         
         Parameters
         ----------
         shapefile : GeoDataFrame, optional
-            Already loaded shapefile
+            Shapefile déjà chargé
         shapefile_path : str or Path, optional
-            Path to a new shapefile to load
+            Chemin vers un nouveau shapefile à charger
         
         Examples
         --------
@@ -192,7 +192,7 @@ class Eurostat_data:
         return self
     
     # =========================================================================
-    # Main methods - Simplified API
+    # Méthodes principales - API simplifiée
     # =========================================================================
     
     def load(
@@ -204,40 +204,40 @@ class Eurostat_data:
         exclude_outremer: bool = True
     ) -> pd.DataFrame:
         """
-        Loads an Eurostat dataset smartly.
+        Charge un dataset Eurostat de manière intelligente.
         
         Parameters
         ----------
         dataset_type : str
-            Dataset type: "mortality", "deaths" or "population"
+            Type de dataset: "mortality", "deaths" ou "population"
         country : str
-            ISO 2-letter country code
+            Code pays ISO 2 lettres
         nuts_level : int, optional
-            NUTS level (uses default if None)
+            Niveau NUTS (utilise celui par défaut si None)
         download : bool
-            Forces download even if cache exists
+            Force le téléchargement même si le cache existe
         exclude_outremer : bool
-            Excludes non-continental regions
+            Exclut les régions non continentales
         
         Returns
         -------
-        Cleaned DataFrame ready to use
+        DataFrame nettoyé et prêt à l'emploi
         
         Examples
         --------
-        >>> manager = EurostatManager()  # Shapefile auto-loaded!
+        >>> manager = EurostatManager()  # Shapefile auto-chargé !
         >>> mortality = manager.load("mortality", "FR")
         >>> deaths = manager.load("deaths", "BE", download=True)
         """
         nuts_level = nuts_level or self.nuts_level
         
-        # Retrieve regions (with cache)
+        # Récupération des régions (avec cache)
         regions = self.get_regions(country, nuts_level, exclude_outremer)
         
-        # Dataset code
+        # Code du dataset
         dataset_code = EurostatConfig.DATASETS[dataset_type]
         
-        # Filename with explicit type
+        # Nom de fichier avec type explicite
         filename_map = {
             "mortality": "mxt_raw",
             "deaths": "Dxt_raw",
@@ -245,7 +245,7 @@ class Eurostat_data:
         }
         filename = filename_map[dataset_type]
         
-        # Load with cache
+        # Chargement avec cache
         return self._load_and_cache(
             dataset_code=dataset_code,
             regions=regions,
@@ -261,11 +261,11 @@ class Eurostat_data:
         download: bool = False
     ) -> Dict[str, pd.DataFrame]:
         """
-        Loads all datasets for a country.
+        Charge tous les datasets pour un pays.
         
         Returns
         -------
-        Dict with keys: "mortality", "deaths", "population"
+        Dict avec clés: "mortality", "deaths", "population"
         
         Examples
         --------
@@ -288,18 +288,18 @@ class Eurostat_data:
         indicator: str
     ) -> Tuple[pd.DataFrame, np.ndarray, np.ndarray]:
         """
-        Creates an age × year cross-table for a given region.
+        Crée un tableau croisé âge × année pour une région donnée.
         
         Parameters
         ----------
         data : DataFrame
-            Source data (from load())
+            Données sources (issues de load())
         region : str
-            NUTS region code
+            Code région NUTS
         gender : str
-            Gender ("M", "F", "T")
+            Genre ("M", "F", "T")
         indicator : str
-            Eurostat indicator code
+            Code indicateur Eurostat
         
         Returns
         -------
@@ -312,7 +312,7 @@ class Eurostat_data:
         ...     mortality, "FR10", "M", "LIFE_EXP"
         ... )
         """
-        # Filtering
+        # Filtrage
         subset = data[
             (data['geo'] == region) &
             (data['sex'] == gender) &
@@ -330,7 +330,7 @@ class Eurostat_data:
             observed=True
         )
         
-        # Sort by ascending age
+        # Tri par âge croissant
         pivot = pivot.sort_values("age").reset_index(drop=True)
         ages = pivot.index.values.astype('int')
         years = pivot.columns.values.astype('int')
@@ -344,20 +344,20 @@ class Eurostat_data:
         exclude_outremer: bool = True
     ) -> List[str]:
         """
-        Retrieves the list of NUTS codes for a country (with cache).
+        Récupère la liste des codes NUTS pour un pays (avec cache).
         
         Parameters
         ----------
         country : str
-            ISO 2-letter country code
+            Code pays ISO 2 lettres
         nuts_level : int, optional
-            NUTS level (uses default if None)
+            Niveau NUTS (utilise celui par défaut si None)
         exclude_outremer : bool
-            Excludes non-continental regions
+            Exclut les régions non continentales
         
         Returns
         -------
-        List of NUTS codes
+        Liste des codes NUTS
         
         Examples
         --------
@@ -366,10 +366,10 @@ class Eurostat_data:
         """
         nuts_level = nuts_level or self.nuts_level
         
-        # Cache key
+        # Clé de cache
         cache_key = (country, nuts_level, exclude_outremer)
         
-        # Check cache
+        # Vérification du cache
         if cache_key not in self._regions_cache:
             filtered = self.filter_shapefile(country, nuts_level, exclude_outremer)
             self._regions_cache[cache_key] = filtered["NUTS_ID"].tolist()
@@ -383,20 +383,20 @@ class Eurostat_data:
         exclude_outremer: bool = True
     ) -> gpd.GeoDataFrame:
         """
-        Filters the NUTS shapefile by country and level.
+        Filtre le shapefile NUTS par pays et niveau.
         
         Parameters
         ----------
         country : str
-            ISO 2-letter country code
+            Code pays ISO 2 lettres
         nuts_level : int, optional
-            NUTS level (uses default if None)
+            Niveau NUTS (utilise celui par défaut si None)
         exclude_outremer : bool
-            Excludes non-continental regions
+            Exclut les régions non continentales
         
         Returns
         -------
-        Filtered and sorted GeoDataFrame
+        GeoDataFrame filtré et trié
         """
         nuts_level = nuts_level or self.nuts_level
         
@@ -413,13 +413,13 @@ class Eurostat_data:
         return filtered.sort_values("NUTS_ID").reset_index(drop=True)
     
     # =========================================================================
-    # Utility methods
+    # Méthodes utilitaires
     # =========================================================================
     
     @staticmethod
     def parse_age(label) -> Optional[int]:
         """
-        Parses an Eurostat age label into a numeric value.
+        Parse un label d'âge Eurostat en valeur numérique.
         
         Examples
         --------
@@ -440,7 +440,7 @@ class Eurostat_data:
     
     def add_exclusion(self, country: str, regions: List[str]) -> 'Eurostat_data':
         """
-        Adds regions to exclude for a country (chainable).
+        Ajoute des régions à exclure pour un pays (chainable).
         
         Examples
         --------
@@ -453,28 +453,28 @@ class Eurostat_data:
         return self
     
     def list_datasets(self) -> List[str]:
-        """Lists the available datasets."""
+        """Liste les datasets disponibles."""
         return list(EurostatConfig.DATASETS.keys())
     
     def cache_info(self, country: Optional[str] = None) -> Union[Dict[str, bool], Dict[str, Dict[str, bool]]]:
         """
-        Checks which datasets are cached.
+        Vérifie quels datasets sont en cache.
         
         Parameters
         ----------
         country : str, optional
-            If None, checks all detected countries
+            Si None, vérifie tous les pays détectés
         
         Returns
         -------
-        Dict with status of each dataset
+        Dict avec status de chaque dataset
         
         Examples
         --------
         >>> manager.cache_info("FR")
         {'mortality': True, 'deaths': False, 'population': True}
         
-        >>> manager.cache_info()  # All countries
+        >>> manager.cache_info()  # Tous les pays
         {'FR': {'mortality': True, 'deaths': False, ...}, 'BE': {...}}
         """
         filename_map = {
@@ -489,11 +489,11 @@ class Eurostat_data:
                 for dataset, filename in filename_map.items()
             }
         else:
-            # Auto-detect cached countries
+            # Auto-détection des pays en cache
             countries = set()
             for file in self.data_path.glob("*_*.csv"):
                 country_code = file.stem.split("_")[0]
-                if len(country_code) == 2:  # ISO code
+                if len(country_code) == 2:  # Code ISO
                     countries.add(country_code)
             
             return {
@@ -502,58 +502,58 @@ class Eurostat_data:
     
     def clear_cache(self, country: Optional[str] = None, dataset: Optional[str] = None) -> int:
         """
-        Deletes cached files.
+        Supprime les fichiers en cache.
         
         Parameters
         ----------
         country : str, optional
-            Country code (if None, all countries)
+            Code pays (si None, tous les pays)
         dataset : str, optional
-            Dataset type (if None, all datasets)
+            Type de dataset (si None, tous les datasets)
         
         Returns
         -------
-        Number of deleted files
+        Nombre de fichiers supprimés
         
         Examples
         --------
-        >>> manager.clear_cache("FR")  # Deletes everything for France
-        >>> manager.clear_cache("FR", "mortality")  # Deletes only FR mortality
-        >>> manager.clear_cache()  # Clears entire cache
+        >>> manager.clear_cache("FR")  # Supprime tout pour la France
+        >>> manager.clear_cache("FR", "mortality")  # Supprime juste mortality FR
+        >>> manager.clear_cache()  # Supprime tout le cache
         """
         count = 0
         
         if country and dataset:
-            # Targeted deletion
+            # Suppression ciblée
             filename_map = {"mortality": "mxt_raw", "deaths": "Dxt_raw", "population": "Lxt_raw"}
             filepath = self.data_path / f"{country}_{filename_map[dataset]}.csv"
             if filepath.exists():
                 filepath.unlink()
                 count = 1
-                print(f"🗑️  [Cache] Deleted: {filepath.name}")
+                print(f"🗑️  [Cache] Supprimé: {filepath.name}")
         elif country:
-            # Delete a country
+            # Suppression d'un pays
             for file in self.data_path.glob(f"{country}_*.csv"):
                 file.unlink()
                 count += 1
-            print(f"🗑️  [Cache] Deleted: {count} files for {country}")
+            print(f"🗑️  [Cache] Supprimé: {count} fichiers pour {country}")
         else:
-            # Full deletion
+            # Suppression totale
             for file in self.data_path.glob("*_*.csv"):
                 file.unlink()
                 count += 1
             if count > 0:
-                print(f"🗑️  [Cache] Deleted: {count} files")
+                print(f"🗑️  [Cache] Supprimé: {count} fichiers")
         
         return count
     
     def stats(self) -> Dict[str, any]:
         """
-        Statistics about the manager.
+        Statistiques sur le manager.
         
         Returns
         -------
-        Dict with various stats
+        Dict avec diverses stats
         """
         cache_files = list(self.data_path.glob("*_*.csv"))
         total_size = sum(f.stat().st_size for f in cache_files)
@@ -569,21 +569,21 @@ class Eurostat_data:
         }
     
     def __repr__(self) -> str:
-        """Human-readable representation of the manager."""
+        """Représentation lisible du manager."""
         stats = self.stats()
         shapefile_status = "✓ loaded" if stats['shapefile_loaded'] else f"⏳ will load from {Path(stats['shapefile_path']).name}"
         
         return (
             f"EurostatManager(\n"
             f"  shapefile={shapefile_status},\n"
-            f"  cache={stats['cached_files']} files ({stats['cache_size_mb']:.1f} MB),\n"
-            f"  countries={stats['cached_countries']},\n"
+            f"  cache={stats['cached_files']} fichiers ({stats['cache_size_mb']:.1f} MB),\n"
+            f"  pays={stats['cached_countries']},\n"
             f"  data='{stats['data_path']}'\n"
             f")"
         )
     
     # =========================================================================
-    # Private methods (internal)
+    # Méthodes privées (internes)
     # =========================================================================
     
     def _load_and_cache(
@@ -594,21 +594,21 @@ class Eurostat_data:
         country: str,
         download: bool
     ) -> pd.DataFrame:
-        """Loads a dataset with cache management."""
+        """Charge un dataset avec gestion du cache."""
         filepath = self.data_path / f"{country}_{filename}.csv"
         
-        # Download decision
+        # Décision de téléchargement
         should_download = download or not filepath.exists()
         
         if should_download:
             data = self._download_dataset(dataset_code, regions)
             data.to_csv(filepath, index=False)
-            print(f"⬇️  [Eurostat] Downloaded → {filepath.name}")
+            print(f"⬇️  [Eurostat] Téléchargé → {filepath.name}")
         else:
             data = pd.read_csv(filepath)
             print(f"💾 [Eurostat] Cache → {filepath.name}")
         
-        # Automatic cleaning
+        # Nettoyage automatique
         return self._clean_data(data)
     
     def _download_dataset(
@@ -616,13 +616,13 @@ class Eurostat_data:
         dataset_code: str,
         regions: List[str]
     ) -> pd.DataFrame:
-        """Downloads data for all regions."""
-        print(f"🌐 [Eurostat] Downloading... ({len(regions)} regions)")
+        """Télécharge les données pour toutes les régions."""
+        print(f"🌐 [Eurostat] Téléchargement en cours... ({len(regions)} régions)")
         
         frames = []
         for i, region in enumerate(regions, 1):
-            if i % 5 == 0:  # Feedback every 5 regions
-                print(f"  → Progress: {i}/{len(regions)}")
+            if i % 5 == 0:  # Feedback tous les 5 régions
+                print(f"  → Progression: {i}/{len(regions)}")
             
             response = self.client.get_dataset(dataset_code, params={"geo": region})
             df = response.to_dataframe()
@@ -631,17 +631,17 @@ class Eurostat_data:
         return pd.concat(frames, ignore_index=True)
     
     def _clean_data(self, data: pd.DataFrame) -> pd.DataFrame:
-        """Cleans data (invalid ages, type conversion)."""
+        """Nettoie les données (âges invalides, conversion types)."""
         data = data.copy()
         
-        # Age cleaning
+        # Nettoyage des âges
         if "age" in data.columns:
             data = data[~data["age"].isin(["TOTAL", "UNK", "Y_OPEN"])]
             data["age"] = data["age"].map(self.parse_age)
             data = data.dropna(subset=["age"])
             data["age"] = data["age"].astype(int)
         
-        # Year conversion
+        # Conversion des années
         if "time" in data.columns:
             data["time"] = data["time"].astype(int)
         
@@ -649,40 +649,40 @@ class Eurostat_data:
 
 
 # =============================================================================
-# Compatibility functions (simple wrappers)
+# Fonctions de compatibilité (wrapper simple)
 # =============================================================================
 
 def load_mxt_raw(shapef=None, country="FR", nuts_level=2, data_path="../data", download=False):
-    """Compatibility: loads mortality rates."""
+    """Compatibilité: charge les taux de mortalité."""
     manager = Eurostat_data(shapefile=shapef, data_path=data_path, nuts_level=nuts_level)
     return manager.load("mortality", country, download=download)
 
 
 def load_dxt_raw(shapef=None, country="FR", nuts_level=2, data_path="../data", download=False):
-    """Compatibility: loads deaths."""
+    """Compatibilité: charge les décès."""
     manager = Eurostat_data(shapefile=shapef, data_path=data_path, nuts_level=nuts_level)
     return manager.load("deaths", country, download=download)
 
 
 def load_lxt_raw(shapef=None, country="FR", nuts_level=2, data_path="../data", download=False):
-    """Compatibility: loads populations."""
+    """Compatibilité: charge les populations."""
     manager = Eurostat_data(shapefile=shapef, data_path=data_path, nuts_level=nuts_level)
     return manager.load("population", country, download=download)
 
 
 def age_year_pivot_table(data_raw, region, gender, indicator):
-    """Compatibility: creates an age × year pivot table."""
-    manager = Eurostat_data(auto_load_shapefile=False)  # No shapefile needed for pivot
+    """Compatibilité: crée un pivot âge × année."""
+    manager = Eurostat_data(auto_load_shapefile=False)  # Pas besoin de shapefile pour pivot
     return manager.pivot_age_year(data_raw, region, gender, indicator)
 
 
 def filter_shapefile(shapef=None, country="FR", nuts_level=2, exclude_outremer=True):
-    """Compatibility: filters the shapefile."""
+    """Compatibilité: filtre le shapefile."""
     manager = Eurostat_data(shapefile=shapef, nuts_level=nuts_level)
     return manager.filter_shapefile(country, exclude_outremer=exclude_outremer)
 
 
 def parse_age(label):
-    """Compatibility: parses an age label."""
+    """Compatibilité: parse un label d'âge."""
     return Eurostat_data.parse_age(label)
 

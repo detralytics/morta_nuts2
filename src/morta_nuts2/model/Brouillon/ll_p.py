@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 """
-LiLee_fit — Modèle Li-Lee paramétrique avec B-splines/P-splines
+LiLee_fit — Parametric Li-Lee model with B-splines/P-splines
 ================================================================
-Modèle Li-Lee multi-population :
+Multi-population Li-Lee model:
     ln(µ_{x,t,g}) = α_{x,g} + β_x·κ_t + β_{x,g}·κ_{g,t}
 
-Où :
-  α_{x,g}   : baseline mortalité par âge ET région (B-splines)
-  β_x       : sensibilité commune à toutes les régions (B-splines)
-  κ_t       : facteur temporel commun
-  β_{x,g}   : sensibilité régionale (B-splines)
-  κ_{g,t}   : facteur temporel régional
+Where:
+  α_{x,g}   : mortality baseline by age AND region (B-splines)
+  β_x       : common sensitivity across all regions (B-splines)
+  κ_t       : common time factor
+  β_{x,g}   : regional sensitivity (B-splines)
+  κ_{g,t}   : regional time factor
 
-UTILISE UNIQUEMENT scipy/numpy :
+USES ONLY scipy/numpy:
   ✓ scipy.interpolate.BSpline
   ✓ scipy.special.gammaln
-  ✓ numpy.diff (matrice de pénalité)
+  ✓ numpy.diff (penalty matrix)
 
-Référence : Hainaut (2025), équation (1) page 3
+Reference: Hainaut (2025), equation (1) page 3
 """
 
 import numpy as np
@@ -28,98 +28,15 @@ from morta_nuts2.model.Bsplines.Bsplines import make_bspline_basis,eval_bspline_
 
 
 
-# # =============================================================================
-# # 1. CONSTRUCTION DES B-SPLINES — scipy.interpolate.BSpline
-# # =============================================================================
-
-# def make_bspline_basis(xv, degree, n_knots, xmin=None, xmax=None):
-#     """
-#     Construit la matrice de base B-spline avec scipy.interpolate.BSpline.
-    
-#     Paramètres
-#     ----------
-#     xv       : array   points d'évaluation (ex: âges 0 à 82)
-#     degree   : int     degré des B-splines (3 recommandé)
-#     n_knots  : int     nombre de nœuds internes (équivalent à m+1 du code source)
-#     xmin     : float   borne inférieure (défaut: min(xv))
-#     xmax     : float   borne supérieure (défaut: max(xv))
-    
-#     Retourne
-#     --------
-#     B      : (len(xv), n_basis)   matrice de base B-spline
-#     knots  : array                vecteur de nœuds complet (avec multiplicité aux bords)
-#     n_basis: int                  nombre de fonctions de base
-    
-#     Notes
-#     -----
-#     scipy.interpolate.BSpline utilise la convention :
-#       - nœuds internes : np.linspace(xmin, xmax, n_knots)
-#       - nœuds complets : répétition degree+1 fois aux bords
-#       - n_basis = n_knots + degree - 1
-#     """
-#     if xmin is None:
-#         xmin = float(np.min(xv))
-#     if xmax is None:
-#         xmax = float(np.max(xv))
-    
-#     # Nœuds internes équidistants
-#     internal_knots = np.linspace(xmin, xmax, n_knots)
-    
-#     # Nœuds complets avec multiplicité aux bords (convention scipy)
-#     knots = np.concatenate([
-#         [xmin] * degree,        # répétition à gauche
-#         internal_knots,
-#         [xmax] * degree         # répétition à droite
-#     ])
-    
-#     n_basis = len(knots) - degree - 1
-    
-#     # Construction de la matrice de base (chaque colonne = une fonction de base)
-#     B = np.zeros((len(xv), n_basis))
-#     for i in range(n_basis):
-#         # Fonction de base i : tous les coeffs = 0 sauf le i-ème = 1
-#         coef = np.zeros(n_basis)
-#         coef[i] = 1.0
-#         spline = BSpline(knots, coef, degree, extrapolate=False)
-#         B[:, i] = spline(xv)
-    
-#     # Remplacer NaN par 0 (extrapolation hors support)
-#     B = np.nan_to_num(B, nan=0.0)
-    
-#     return B, knots, n_basis
-
-
-# def eval_bspline_from_coef(coef, xv, knots, degree):
-#     """
-#     Évalue une courbe B-spline à partir de ses coefficients.
-#     Utilise scipy.interpolate.BSpline.
-    
-#     Paramètres
-#     ----------
-#     coef   : array  coefficients de la B-spline
-#     xv     : array  points d'évaluation
-#     knots  : array  vecteur de nœuds complet
-#     degree : int    degré
-    
-#     Retourne
-#     --------
-#     y : array   courbe évaluée aux points xv
-#     """
-#     spline = BSpline(knots, coef, degree, extrapolate=False)
-#     y = spline(xv)
-#     return np.nan_to_num(y, nan=0.0)
-
-
-
 
 def make_penalty_matrix(n_basis, diff_order=2):
     """
-    Construit la matrice de pénalité P-splines D^T D.
+    Builds the P-splines penalty matrix D^T D.
     
-    Retourne
+    Returns
     --------
     DtD      : (n_basis, n_basis)
-    diag_DtD : (n_basis,)   diagonale
+    diag_DtD : (n_basis,)   diagonal
     """
     D = np.diff(np.eye(n_basis), n=diff_order, axis=0)
     DtD = D.T @ D
@@ -127,39 +44,39 @@ def make_penalty_matrix(n_basis, diff_order=2):
 
 
 # =============================================================================
-# 2. RECONSTRUCTION ln(µ) — MODÈLE LI-LEE
+# 2. ln(µ) RECONSTRUCTION — LI-LEE MODEL
 # =============================================================================
 
 def compute_logmu_lilee(
     alpha_coef,  # (nb_regions, n_basis)  α_{x,g}
-    beta_coef,   # (n_basis,)             β_x commun
+    beta_coef,   # (n_basis,)             β_x common
     beta_g_coef, # (nb_regions, n_basis)  β_{x,g}
-    kappa,       # (nb_years,)            κ_t commun
+    kappa,       # (nb_years,)            κ_t common
     kappa_g,     # (nb_regions, nb_years) κ_{g,t}
     xv, B, knots, degree
 ):
     """
-    Reconstruit ln(µ_{x,t,g}) = α_{x,g} + β_x·κ_t + β_{x,g}·κ_{g,t}
+    Reconstructs ln(µ_{x,t,g}) = α_{x,g} + β_x·κ_t + β_{x,g}·κ_{g,t}
     
-    Paramètres
+    Parameters
     ----------
-    alpha_coef  : (nb_regions, n_basis)  coefficients α_{x,g}
-    beta_coef   : (n_basis,)             coefficients β_x
-    beta_g_coef : (nb_regions, n_basis)  coefficients β_{x,g}
-    kappa       : (nb_years,)            κ_t commun
-    kappa_g     : (nb_regions, nb_years) κ_{g,t} régionaux
+    alpha_coef  : (nb_regions, n_basis)  α_{x,g} coefficients
+    beta_coef   : (n_basis,)             β_x coefficients
+    beta_g_coef : (nb_regions, n_basis)  β_{x,g} coefficients
+    kappa       : (nb_years,)            common κ_t
+    kappa_g     : (nb_regions, nb_years) regional κ_{g,t}
     
-    Retourne
+    Returns
     --------
     logmu    : (nb_ages, nb_years, nb_regions)
-    alpha    : (nb_ages, nb_regions)  courbes α_{x,g}
-    beta     : (nb_ages,)             courbe β_x
-    beta_g   : (nb_ages, nb_regions)  courbes β_{x,g}
+    alpha    : (nb_ages, nb_regions)  α_{x,g} curves
+    beta     : (nb_ages,)             β_x curve
+    beta_g   : (nb_ages, nb_regions)  β_{x,g} curves
     """
     nb_regions = alpha_coef.shape[0]
     nb_ages = len(xv)
     
-    # Évaluation des courbes B-splines
+    # Evaluate B-spline curves
     alpha = np.zeros((nb_ages, nb_regions))
     beta_g = np.zeros((nb_ages, nb_regions))
     for g in range(nb_regions):
@@ -168,8 +85,8 @@ def compute_logmu_lilee(
     
     beta = B @ beta_coef
     
-    # Construction de ln(µ) par broadcast
-    # Dimensions : (nb_ages, nb_years, nb_regions)
+    # Build ln(µ) by broadcasting
+    # Dimensions: (nb_ages, nb_years, nb_regions)
     logmu = (
         alpha[:, None, :]                                # (nb_ages, 1, nb_regions)
         + beta[:, None, None] * kappa[None, :, None]     # β_x · κ_t
@@ -180,11 +97,11 @@ def compute_logmu_lilee(
 
 
 # =============================================================================
-# 3. LOG-VRAISEMBLANCE POISSON
+# 3. POISSON LOG-LIKELIHOOD
 # =============================================================================
 
 def poisson_lnL(Dxtg, Extg, logmu, logDxtgFact):
-    """Log-vraisemblance de Poisson."""
+    """Poisson log-likelihood."""
     exp_logmu = np.exp(logmu)
     weighted_exp = Extg * exp_logmu
     residual = Dxtg - weighted_exp
@@ -195,13 +112,13 @@ def poisson_lnL(Dxtg, Extg, logmu, logDxtgFact):
 
 
 # =============================================================================
-# 4. MISES À JOUR NR — MODÈLE LI-LEE
+# 4. NR UPDATES — LI-LEE MODEL
 # =============================================================================
 
 def update_alpha_coef(alpha_coef, B, residual, weighted_exp, eta, lam, DtD, diag_DtD):
     """
-    Mise à jour NR de α_{x,g} (baseline régional).
-    Un vecteur de coefficients par région.
+    NR update of α_{x,g} (regional baseline).
+    One coefficient vector per region.
     """
     nb_regions = alpha_coef.shape[0]
     n_basis = alpha_coef.shape[1]
@@ -222,8 +139,8 @@ def update_alpha_coef(alpha_coef, B, residual, weighted_exp, eta, lam, DtD, diag
 
 def update_beta_coef(beta_coef, B, kappa, residual, weighted_exp, eta, lam, DtD, diag_DtD):
     """
-    Mise à jour NR de β_x (sensibilité commune).
-    Un seul vecteur de coefficients pour toutes les régions.
+    NR update of β_x (common sensitivity).
+    A single coefficient vector for all regions.
     """
     n_basis = len(beta_coef)
     nb_ages = B.shape[0]
@@ -247,8 +164,8 @@ def update_beta_coef(beta_coef, B, kappa, residual, weighted_exp, eta, lam, DtD,
 
 def update_beta_g_coef(beta_g_coef, B, kappa_g, residual, weighted_exp, eta, lam, DtD, diag_DtD):
     """
-    Mise à jour NR de β_{x,g} (sensibilité régionale).
-    Un vecteur de coefficients par région.
+    NR update of β_{x,g} (regional sensitivity).
+    One coefficient vector per region.
     """
     nb_regions = beta_g_coef.shape[0]
     nb_ages = B.shape[0]
@@ -273,7 +190,7 @@ def update_beta_g_coef(beta_g_coef, B, kappa_g, residual, weighted_exp, eta, lam
 
 def update_kappa(kappa, beta, residual, weighted_exp, eta):
     """
-    Mise à jour NR de κ_t (facteur temporel commun).
+    NR update of κ_t (common time factor).
     """
     beta3d = beta[:, None, None]
     num_k = np.sum(residual * beta3d, axis=(0, 2))
@@ -286,7 +203,7 @@ def update_kappa(kappa, beta, residual, weighted_exp, eta):
 
 def update_kappa_g(kappa_g, beta_g, residual, weighted_exp, eta):
     """
-    Mise à jour NR de κ_{g,t} (facteurs temporels régionaux).
+    NR update of κ_{g,t} (regional time factors).
     """
     nb_regions = kappa_g.shape[0]
     kappa_g_new = kappa_g.copy()
@@ -302,36 +219,36 @@ def update_kappa_g(kappa_g, beta_g, residual, weighted_exp, eta):
 
 
 # =============================================================================
-# 5. NORMALISATION (CONTRAINTES D'IDENTIFIABILITÉ)
+# 5. NORMALIZATION (IDENTIFIABILITY CONSTRAINTS)
 # =============================================================================
 
 def normalize_lilee(beta_coef, beta_g_coef, kappa, kappa_g, B):
     """
-    Contraintes d'identifiabilité Li-Lee :
+    Li-Lee identifiability constraints:
       1. Σ_x β_x = 1
-      2. Σ_x β_{x,g} = 0  pour tout g
-      3. Σ_t κ_{g,t} = 0  pour tout g
+      2. Σ_x β_{x,g} = 0  for all g
+      3. Σ_t κ_{g,t} = 0  for all g
     
-    Ces contraintes garantissent l'unicité de la solution.
+    These constraints ensure uniqueness of the solution.
     """
-    # 1. Normalisation de β_x : Σ_x β_x = 1
+    # 1. Normalization of β_x : Σ_x β_x = 1
     beta = B @ beta_coef
     scal_beta = float(np.sum(beta))
     if scal_beta != 0:
         beta_coef = beta_coef / scal_beta
         kappa = kappa * scal_beta
     
-    # 2. Normalisation de β_{x,g} : Σ_x β_{x,g} = 0 pour tout g
+    # 2. Normalization of β_{x,g} : Σ_x β_{x,g} = 0 for all g
     nb_regions = beta_g_coef.shape[0]
     for g in range(nb_regions):
         beta_g = B @ beta_g_coef[g]
         sum_beta_g = float(np.sum(beta_g))
         if sum_beta_g != 0:
-            # Soustraire la moyenne pour centrer à 0
+            # Subtract mean to center at 0
             adjustment = sum_beta_g / len(beta_g)
             beta_g_coef[g] -= adjustment / np.mean(B.sum(axis=0))
     
-    # 3. Normalisation de κ_{g,t} : Σ_t κ_{g,t} = 0 pour tout g
+    # 3. Normalization of κ_{g,t} : Σ_t κ_{g,t} = 0 for all g
     for g in range(nb_regions):
         mean_kappa_g = float(np.mean(kappa_g[g]))
         kappa_g[g] -= mean_kappa_g
@@ -340,22 +257,22 @@ def normalize_lilee(beta_coef, beta_g_coef, kappa, kappa_g, B):
 
 
 # =============================================================================
-# 6. STATISTIQUES FIT
+# 6. FIT STATISTICS
 # =============================================================================
 
 def compute_fit_stats(Dxtg, Extg, logmu, logDxtgFact, n_basis, nb_years, nb_regions):
     """
-    Calcule déviance, AIC, BIC pour le modèle Li-Lee.
+    Computes deviance, AIC, BIC for the Li-Lee model.
     
-    Degrés de liberté :
+    Degrees of freedom:
       dofs = n_basis × nb_regions      (α_{x,g})
            + n_basis                    (β_x)
            + n_basis × nb_regions       (β_{x,g})
            + nb_years                   (κ_t)
            + nb_years × nb_regions      (κ_{g,t})
-           - nb_regions                 (contraintes Σ_x β_{x,g} = 0)
-           - nb_regions                 (contraintes Σ_t κ_{g,t} = 0)
-           - 1                          (contrainte Σ_x β_x = 1)
+           - nb_regions                 (constraints Σ_x β_{x,g} = 0)
+           - nb_regions                 (constraints Σ_t κ_{g,t} = 0)
+           - 1                          (constraint Σ_x β_x = 1)
     """
     exp_logmu = np.exp(logmu)
     lnL = float(np.sum(
@@ -391,7 +308,7 @@ def compute_fit_stats(Dxtg, Extg, logmu, logDxtgFact, n_basis, nb_years, nb_regi
 
 
 # =============================================================================
-# 7. FONCTION PRINCIPALE — MODÈLE LI-LEE
+# 7. MAIN FUNCTION — LI-LEE MODEL
 # =============================================================================
 
 def LiLee_p_fit(
@@ -416,15 +333,15 @@ def LiLee_p_fit(
     verbose=False,
 ):
     """
-    Calibre le modèle Li-Lee paramétrique :
+    Calibrates the parametric Li-Lee model:
         ln(µ_{x,t,g}) = α_{x,g} + β_x·κ_t + β_{x,g}·κ_{g,t}
     
-    UTILISE UNIQUEMENT scipy/numpy :
+    USES ONLY scipy/numpy:
       ✓ scipy.interpolate.BSpline
       ✓ scipy.special.gammaln
       ✓ numpy.diff
     
-    Paramètres
+    Parameters
     ----------
     alpha_coef_init  : (nb_regions, n_basis)  init α_{x,g}
     beta_coef_init   : (n_basis,)             init β_x
@@ -435,27 +352,27 @@ def LiLee_p_fit(
     Dxtg             : (nb_ages, nb_years, nb_regions)
     xv               : (nb_ages,)
     tv               : (nb_years,)
-    degree           : int   degré B-splines (3 recommandé)
-    n_knots          : int   nombre de nœuds internes (6 recommandé)
-    lam              : float poids pénalité P-splines
-    diff_order       : int   ordre différences (2 recommandé)
-    nb_iter          : int   nombre max d'itérations
-    eta0             : float learning rate initial (0.30 recommandé)
-    tol              : float tolérance convergence
-    verbose          : bool  afficher progression
+    degree           : int   B-spline degree (3 recommended)
+    n_knots          : int   number of internal knots (6 recommended)
+    lam              : float P-splines penalty weight
+    diff_order       : int   difference order (2 recommended)
+    nb_iter          : int   max number of iterations
+    eta0             : float initial learning rate (0.30 recommended)
+    tol              : float convergence tolerance
+    verbose          : bool  display progress
     
-    Retourne
+    Returns
     --------
-    alpha_coef  : (nb_regions, n_basis)  coefficients α_{x,g}
-    beta_coef   : (n_basis,)             coefficients β_x
-    beta_g_coef : (nb_regions, n_basis)  coefficients β_{x,g}
+    alpha_coef  : (nb_regions, n_basis)  α_{x,g} coefficients
+    beta_coef   : (n_basis,)             β_x coefficients
+    beta_g_coef : (nb_regions, n_basis)  β_{x,g} coefficients
     kappa       : (nb_years,)            κ_t
     kappa_g     : (nb_regions, nb_years) κ_{g,t}
-    alpha       : (nb_ages, nb_regions)  courbes α_{x,g}
-    beta        : (nb_ages,)             courbe β_x
-    beta_g      : (nb_ages, nb_regions)  courbes β_{x,g}
-    logmu_final : ln(µ_{x,t,g}) 
-    Fit_stat    : pd.DataFrame           statistiques
+    alpha       : (nb_ages, nb_regions)  α_{x,g} curves
+    beta        : (nb_ages,)             β_x curve
+    beta_g      : (nb_ages, nb_regions)  β_{x,g} curves
+    logmu_final : ln(µ_{x,t,g})
+    Fit_stat    : pd.DataFrame           statistics
     """
     nb_years = len(tv)
     nb_regions = Extg.shape[2]
@@ -465,16 +382,16 @@ def LiLee_p_fit(
     if xmax is None:
         xmax = float(np.max(xv))
 
-    # Construction de la matrice de base B-spline
+    # Build B-spline basis matrix
     B, knots, n_basis = make_bspline_basis(xv, degree, n_knots, xmin, xmax)
 
-    # Vérification des dimensions
+    # Dimension checks
     if alpha_coef_init.shape != (nb_regions, n_basis):
-        raise ValueError(f"alpha_coef_init doit avoir shape ({nb_regions}, {n_basis})")
+        raise ValueError(f"alpha_coef_init must have shape ({nb_regions}, {n_basis})")
     if len(beta_coef_init) != n_basis:
-        raise ValueError(f"beta_coef_init doit avoir {n_basis} éléments")
+        raise ValueError(f"beta_coef_init must have {n_basis} elements")
     if beta_g_coef_init.shape != (nb_regions, n_basis):
-        raise ValueError(f"beta_g_coef_init doit avoir shape ({nb_regions}, {n_basis})")
+        raise ValueError(f"beta_g_coef_init must have shape ({nb_regions}, {n_basis})")
 
     alpha_coef = alpha_coef_init.copy()
     beta_coef = beta_coef_init.copy()
@@ -482,10 +399,10 @@ def LiLee_p_fit(
     kappa = kappa_init.copy()
     kappa_g = kappa_g_init.copy()
 
-    # Pénalité P-splines
+    # P-splines penalty
     DtD, diag_DtD = make_penalty_matrix(n_basis, diff_order)
 
-    # Constante log-factorielle
+    # Log-factorial constant
     logDxtgFact = gammaln(Dxtg + 1)
 
     lnL = 0.0
@@ -496,30 +413,30 @@ def LiLee_p_fit(
 
     if verbose:
         print("=" * 70)
-        print("CALIBRATION MODÈLE LI-LEE PARAMÉTRIQUE")
+        print("PARAMETRIC LI-LEE MODEL CALIBRATION")
         print("=" * 70)
-        print(f"Paramètres : degree={degree}, n_knots={n_knots}, lam={lam}")
-        print(f"Données : {Dxtg.shape[0]} âges × {nb_years} années × {nb_regions} régions")
-        print(f"Nombre de fonctions de base : {n_basis}")
+        print(f"Parameters: degree={degree}, n_knots={n_knots}, lam={lam}")
+        print(f"Data: {Dxtg.shape[0]} ages × {nb_years} years × {nb_regions} regions")
+        print(f"Number of basis functions: {n_basis}")
         print("=" * 70)
 
-    # Boucle NR
+    # NR loop
     while (it < nb_iter) and (flag < 4):
         it += 1
 
-        # Learning rate adaptatif
+        # Adaptive learning rate
         if Delta_lnL < 0:
             eta *= 0.5
         else:
             eta = min(eta * 1.05, 2.0)
 
-        # Critère d'arrêt
+        # Stopping criterion
         if np.abs(Delta_lnL) < tol:
             flag += 1
         else:
             flag = 0
 
-        # Reconstruction ln(µ)
+        # Reconstruct ln(µ)
         logmu, alpha, beta, beta_g = compute_logmu_lilee(
             alpha_coef,
             beta_coef,
@@ -532,7 +449,7 @@ def LiLee_p_fit(
             degree,
         )
 
-        # Log-vraisemblance
+        # Log-likelihood
         lnL_new, _, weighted_exp, residual = poisson_lnL(
             Dxtg, Extg, logmu, logDxtgFact
         )
@@ -543,7 +460,7 @@ def LiLee_p_fit(
         if verbose and (it % 10 == 0):
             print(f"It {it:4d} | lnL = {lnL:,.2f} | Δ = {Delta_lnL:+.6f} | η = {eta:.5f}")
 
-        # Mises à jour NR séquentielles
+        # Sequential NR updates
         alpha_coef = update_alpha_coef(
             alpha_coef, B, residual, weighted_exp, eta, lam, DtD, diag_DtD
         )
@@ -562,12 +479,12 @@ def LiLee_p_fit(
             kappa_g, beta_g, residual, weighted_exp, eta
         )
 
-        # Normalisation finale
+        # Final normalization
         beta_coef, beta_g_coef, kappa, kappa_g = normalize_lilee(
             beta_coef, beta_g_coef, kappa, kappa_g, B
         )
 
-    # Reconstruction finale
+    # Final reconstruction
     logmu_final, alpha, beta, beta_g = compute_logmu_lilee(
         alpha_coef,
         beta_coef,
@@ -580,7 +497,7 @@ def LiLee_p_fit(
         degree,
     )
 
-    # Statistiques
+    # Statistics
     Fit_stat = compute_fit_stats(
         Dxtg,
         Extg,
@@ -593,10 +510,10 @@ def LiLee_p_fit(
 
     if verbose:
         print("\n" + "=" * 70)
-        print("CALIBRATION TERMINÉE")
+        print("CALIBRATION COMPLETE")
         print("=" * 70)
-        print(f"Convergence atteinte après {it + 1} itérations")
-        print("\nStatistiques finales :")
+        print(f"Convergence reached after {it + 1} iterations")
+        print("\nFinal statistics:")
         print(Fit_stat.to_string(index=False))
         print("=" * 70)
 
@@ -638,7 +555,7 @@ import matplotlib.pyplot as plt
 
 
 # =============================================================================
-# 1. CONSTRUCTION construction du modèles Lee carter : inspiré de Donatien
+# 1. LEE-CARTER MODEL CONSTRUCTION: inspired by Donatien
 # =============================================================================
 
 #%% Smoothing procedure
@@ -770,7 +687,6 @@ def LC_fit(ax, bx,kappa,Extg,Dxtg,xv,tv,nb_iter):
 #             if (ct_opt==0):                
 #                 #--------------- bx gr-----------------    
 #                 bx_gr_new = np.zeros_like(bx_gr)                  
-                
 #                 dlnL_dpar = ( (np.sum(dlnL_baseline*kappa_grM,axis=1) -2*h*(KTK@bx_gr) ) / (                    
 #                             np.sum(Extg*np.exp(logmuxt_gr)*kappa_grM**2,axis=1)
 #                             -2*h*np.repeat(IdKTK.reshape(-1,1),nb_regions,axis=1) ) )  
@@ -824,7 +740,7 @@ def LC_fit(ax, bx,kappa,Extg,Dxtg,xv,tv,nb_iter):
 #     Fit_stat         = pd.DataFrame(Fit_stat)
 #     Fit_stat.columns = ["N","m","degree","dofs","lnL","AIC","BIC"]    
 #     # Return updated coefficients and stats
-    
+#     
 #     return ax, bx , bx_gr , kappa ,kappa_gr , Fit_stat
 
 
@@ -973,20 +889,5 @@ def LandL_fit(ax, bx , bx_gr , kappa, kappa_gr,
     }
 
     return results
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

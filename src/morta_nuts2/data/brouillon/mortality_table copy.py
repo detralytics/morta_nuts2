@@ -1,16 +1,16 @@
 """
-MortalityCalculator - Optimized and Innovative Version
+MortalityCalculator - Version Optimisée et Innovante
 =====================================================
 
-Main improvements:
-- Smart cache to avoid recomputations
-- Automatic data validation
-- Detailed operation logging
-- Support for different output formats
-- Integrated visualization methods
-- Advanced error handling
-- Configurable processing pipeline
-- Multi-format export (CSV, Parquet, Excel)
+Améliorations principales :
+- Cache intelligent pour éviter les recalculs
+- Validation automatique des données
+- Logging détaillé des opérations
+- Support de différents formats de sortie
+- Méthodes de visualisation intégrées
+- Gestion avancée des erreurs
+- Pipeline de traitement configurable
+- Export multi-format (CSV, Parquet, Excel)
 """
 
 import numpy as np
@@ -29,7 +29,7 @@ import hashlib
 import pickle
 
 
-# Logging configuration
+# Configuration du logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -38,7 +38,7 @@ logging.basicConfig(
 
 @dataclass
 class MortalityConfig:
-    """Configuration for mortality calculations."""
+    """Configuration pour les calculs de mortalité."""
     age_max: int = 82
     age_anomalies: np.ndarray = field(default_factory=lambda: np.array([11, 22, 33, 44, 55, 66, 77]))
     fill_value: float = 1e-6
@@ -56,13 +56,13 @@ class MortalityConfig:
 
 
 class DataValidator:
-    """Data validator with detailed reports."""
+    """Validateur de données avec rapports détaillés."""
     
     @staticmethod
     def validate_dataframe(df: pd.DataFrame, 
                           required_columns: List[str],
                           name: str = "DataFrame") -> Dict[str, any]:
-        """Validates a DataFrame and returns a report."""
+        """Valide un DataFrame et retourne un rapport."""
         report = {
             'valid': True,
             'errors': [],
@@ -70,26 +70,26 @@ class DataValidator:
             'stats': {}
         }
         
-        # Check required columns
+        # Vérifier les colonnes requises
         missing_cols = set(required_columns) - set(df.columns)
         if missing_cols:
             report['valid'] = False
-            report['errors'].append(f"Missing columns in {name}: {missing_cols}")
+            report['errors'].append(f"Colonnes manquantes dans {name}: {missing_cols}")
         
-        # Basic statistics
+        # Statistiques basiques
         report['stats']['n_rows'] = len(df)
         report['stats']['n_cols'] = len(df.columns)
         report['stats']['memory_mb'] = df.memory_usage(deep=True).sum() / 1024**2
         
-        # Check missing values
+        # Vérifier les valeurs manquantes
         null_counts = df.isnull().sum()
         if null_counts.any():
-            report['warnings'].append(f"Missing values detected: {null_counts[null_counts > 0].to_dict()}")
+            report['warnings'].append(f"Valeurs manquantes détectées: {null_counts[null_counts > 0].to_dict()}")
         
-        # Check duplicates
+        # Vérifier les doublons
         if df.duplicated().any():
             n_duplicates = df.duplicated().sum()
-            report['warnings'].append(f"{n_duplicates} duplicate rows detected")
+            report['warnings'].append(f"{n_duplicates} lignes dupliquées détectées")
         
         return report
     
@@ -97,10 +97,10 @@ class DataValidator:
     def validate_mortality_data(mxt_raw: pd.DataFrame, 
                                Lxt_raw: pd.DataFrame, 
                                Dxt_raw: pd.DataFrame) -> Dict[str, any]:
-        """Specific validation for mortality data."""
+        """Validation spécifique pour les données de mortalité."""
         report = {'overall_valid': True, 'datasets': {}}
         
-        # Validate each dataset
+        # Valider chaque dataset
         report['datasets']['mxt'] = DataValidator.validate_dataframe(
             mxt_raw, ['geo', 'sex', 'indic_de', 'age', 'time', 'values'], 'mxt_raw'
         )
@@ -111,7 +111,7 @@ class DataValidator:
             Dxt_raw, ['geo', 'sex', 'age', 'time', 'values'], 'Dxt_raw'
         )
         
-        # Check consistency between datasets
+        # Vérifier la cohérence entre datasets
         for key, val in report['datasets'].items():
             if not val['valid']:
                 report['overall_valid'] = False
@@ -120,7 +120,7 @@ class DataValidator:
 
 
 class CacheManager:
-    """Cache manager to optimize repeated calculations."""
+    """Gestionnaire de cache pour optimiser les calculs répétés."""
     
     def __init__(self, cache_dir: str, enabled: bool = True):
         self.cache_dir = Path(cache_dir)
@@ -128,12 +128,12 @@ class CacheManager:
         self.cache_dir.mkdir(parents=True, exist_ok=True)
     
     def _get_cache_key(self, *args, **kwargs) -> str:
-        """Generates a unique cache key."""
+        """Génère une clé de cache unique."""
         key_data = str(args) + str(sorted(kwargs.items()))
         return hashlib.md5(key_data.encode()).hexdigest()
     
     def get(self, key: str) -> Optional[any]:
-        """Retrieves a value from the cache."""
+        """Récupère une valeur du cache."""
         if not self.enabled:
             return None
         
@@ -143,11 +143,11 @@ class CacheManager:
                 with open(cache_file, 'rb') as f:
                     return pickle.load(f)
             except Exception as e:
-                logging.warning(f"Error reading from cache: {e}")
+                logging.warning(f"Erreur lors de la lecture du cache: {e}")
         return None
     
     def set(self, key: str, value: any):
-        """Stores a value in the cache."""
+        """Stocke une valeur dans le cache."""
         if not self.enabled:
             return
         
@@ -156,41 +156,41 @@ class CacheManager:
             with open(cache_file, 'wb') as f:
                 pickle.dump(value, f)
         except Exception as e:
-            logging.warning(f"Error writing to cache: {e}")
+            logging.warning(f"Erreur lors de l'écriture du cache: {e}")
     
     def clear(self):
-        """Clears the cache."""
+        """Vide le cache."""
         for cache_file in self.cache_dir.glob("*.pkl"):
             cache_file.unlink()
 
 
 def timing_decorator(func):
-    """Decorator to measure execution time."""
+    """Décorateur pour mesurer le temps d'exécution."""
     @wraps(func)
     def wrapper(*args, **kwargs):
         start_time = datetime.now()
         result = func(*args, **kwargs)
         end_time = datetime.now()
         duration = (end_time - start_time).total_seconds()
-        logging.info(f"{func.__name__} executed in {duration:.2f} seconds")
+        logging.info(f"{func.__name__} exécuté en {duration:.2f} secondes")
         return result
     return wrapper
 
 
 class MortalityCalculator:
     """
-    Optimized mortality calculator with advanced features.
+    Calculateur de mortalité optimisé avec fonctionnalités avancées.
     
-    Innovative features:
-    - Smart cache to avoid recomputations
-    - Automatic data validation
-    - Multi-format export support
-    - Configurable pipeline
-    - Detailed logging
-    - Robust error handling
+    Fonctionnalités innovantes :
+    - Cache intelligent pour éviter les recalculs
+    - Validation automatique des données
+    - Support multi-format d'export
+    - Pipeline configurable
+    - Logging détaillé
+    - Gestion d'erreurs robuste
     """
     
-    # Default path for the NUTS shapefile
+    # Chemin par défaut du shapefile NUTS
     DEFAULT_SHAPEFILE = "C:/Users/Idrissa Belem/Documents/GitHub/test_projet/NUTS_files/NUTS_RG_01M_2024_3035.shp"
     
     FRANCE_OUTREMER = ['FRY1', 'FRY2', 'FRY3', 'FRY4', 'FRY5']
@@ -200,38 +200,38 @@ class MortalityCalculator:
                  config: Optional[MortalityConfig] = None,
                  auto_load_regions: bool = True):
         """
-        Initializes the mortality calculator.
+        Initialise le calculateur de mortalité.
         
         Parameters
         ----------
         shapefile_path : str, optional
-            Path to the NUTS shapefile.
-            If None, uses the default path.
+            Chemin vers le fichier shapefile NUTS. 
+            Si None, utilise le chemin par défaut.
         config : MortalityConfig, optional
-            Custom configuration
+            Configuration personnalisée
         auto_load_regions : bool, default=True
-            Automatically loads regions from the shapefile
+            Charge automatiquement les régions depuis le shapefile
         """
         self.logger = logging.getLogger(self.__class__.__name__)
         self.config = config or MortalityConfig()
         
-        # Cache manager
+        # Gestionnaire de cache
         self.cache_manager = CacheManager(
             self.config.cache_dir, 
             self.config.enable_cache
         )
         
-        # Data validator
+        # Validateur de données
         self.validator = DataValidator()
         
-        # Regions
+        # Régions
         self.regions = []
         self.shapefile_path = shapefile_path or self.DEFAULT_SHAPEFILE
         
         if auto_load_regions:
             self._load_regions()
         
-        # Execution statistics
+        # Statistiques d'exécution
         self.execution_stats = {
             'total_calculations': 0,
             'cache_hits': 0,
@@ -239,47 +239,47 @@ class MortalityCalculator:
             'total_processing_time': 0.0
         }
         
-        self.logger.info(f"MortalityCalculator initialized with {len(self.regions)} regions")
+        self.logger.info(f"MortalityCalculator initialisé avec {len(self.regions)} régions")
     
     def _load_regions(self):
-        """Loads regions from the shapefile."""
+        """Charge les régions depuis le shapefile."""
         try:
             if os.path.exists(self.shapefile_path):
-                self.logger.info(f"Loading shapefile: {self.shapefile_path}")
+                self.logger.info(f"Chargement du shapefile: {self.shapefile_path}")
                 shapef = gpd.read_file(self.shapefile_path)
                 self.regions = shapef["NUTS_ID"].tolist()
                 self.regions = [r for r in self.regions if r not in self.FRANCE_OUTREMER]
-                self.logger.info(f"{len(self.regions)} regions loaded")
+                self.logger.info(f"{len(self.regions)} régions chargées")
             else:
-                self.logger.warning(f"Shapefile not found: {self.shapefile_path}")
+                self.logger.warning(f"Shapefile introuvable: {self.shapefile_path}")
         except Exception as e:
-            self.logger.error(f"Error loading shapefile: {e}")
+            self.logger.error(f"Erreur lors du chargement du shapefile: {e}")
     
     def set_shapefile(self, shapefile_path: str):
         """
-        Changes the shapefile and reloads regions.
+        Change le shapefile et recharge les régions.
         
         Parameters
         ----------
         shapefile_path : str
-            New path to the shapefile
+            Nouveau chemin vers le shapefile
         """
         self.shapefile_path = shapefile_path
         self._load_regions()
     
     def get_regions(self, country: str = "FR") -> List[str]:
         """
-        Gets the list of regions filtered by country.
+        Obtient la liste des régions filtrées par pays.
         
         Parameters
         ----------
         country : str, default="FR"
-            Country code (FR to filter overseas territories)
+            Code pays (FR pour filtrer l'outre-mer)
         
         Returns
         -------
         List[str]
-            List of region codes
+            Liste des codes régions
         """
         if country == "FR":
             return [r for r in self.regions if r not in self.FRANCE_OUTREMER]
@@ -291,27 +291,27 @@ class MortalityCalculator:
                            Lxt_raw: pd.DataFrame,
                            Dxt_raw: pd.DataFrame) -> Dict[str, any]:
         """
-        Validates the input data.
+        Valide les données d'entrée.
         
         Returns
         -------
         Dict
-            Validation report
+            Rapport de validation
         """
         if not self.config.validate_data:
-            return {'overall_valid': True, 'message': 'Validation disabled'}
+            return {'overall_valid': True, 'message': 'Validation désactivée'}
         
-        self.logger.info("Validating input data...")
+        self.logger.info("Validation des données d'entrée...")
         report = self.validator.validate_mortality_data(mxt_raw, Lxt_raw, Dxt_raw)
         
         if not report['overall_valid']:
-            self.logger.error("Validation failed!")
+            self.logger.error("Validation échouée!")
             for dataset, data in report['datasets'].items():
                 if data['errors']:
                     for error in data['errors']:
                         self.logger.error(f"  {dataset}: {error}")
         else:
-            self.logger.info("Validation successful")
+            self.logger.info("Validation réussie")
         
         return report
     
@@ -321,8 +321,8 @@ class MortalityCalculator:
                        common_ages: List[int],
                        fill_value: float = 1e-6) -> Dict[str, pd.DataFrame]:
         """
-        Builds pivots for mortality rates.
-        Optimized with full vectorization.
+        Construit les pivots pour les taux de mortalité.
+        Optimisé avec vectorisation complète.
         """
         sub = mxt_raw[
             (mxt_raw["sex"] == gender) &
@@ -359,8 +359,8 @@ class MortalityCalculator:
                       common_ages: List[int],
                       fill_value: float = 1e-6) -> Dict[str, pd.DataFrame]:
         """
-        Builds pivots for exposure.
-        Optimized with full vectorization.
+        Construit les pivots pour l'exposition.
+        Optimisé avec vectorisation complète.
         """
         sub = Lxt_raw[
             (Lxt_raw["sex"] == gender) &
@@ -392,9 +392,9 @@ class MortalityCalculator:
     
     def _correct_age_anomalies(self, Mu: np.ndarray, age_arr: np.ndarray) -> np.ndarray:
         """
-        Corrects age anomalies by interpolation.
+        Corrige les anomalies d'âge par interpolation.
         
-        Optimized with numpy vectorization.
+        Optimisé avec vectorisation numpy.
         """
         if not self.config.correct_anomalies:
             return Mu
@@ -415,9 +415,9 @@ class MortalityCalculator:
     
     def _compute_exposure(self, L: np.ndarray) -> np.ndarray:
         """
-        Computes exposure (Extg method).
+        Calcule l'exposition (méthode Extg).
         
-        Optimized vectorized formula.
+        Formule optimisée vectorisée.
         """
         E = np.empty_like(L)
         E[0, :] = L[0, :]
@@ -431,44 +431,44 @@ class MortalityCalculator:
                                   L_df: pd.DataFrame,
                                   aggregate_age: bool = True) -> Optional[Tuple]:
         """
-        Processes a region with an optimized pipeline.
+        Traite une région avec pipeline optimisé.
         
         Parameters
         ----------
         reg : str
-            Region code
+            Code région
         mu_df : pd.DataFrame
-            Mortality rates DataFrame
+            DataFrame des taux de mortalité
         L_df : pd.DataFrame
-            Exposure DataFrame
+            DataFrame de l'exposition
         aggregate_age : bool
-            If True, aggregates by age
+            Si True, agrège par âge
         
         Returns
         -------
-        Tuple or None
-            Calculation results
+        Tuple ou None
+            Résultats du calcul
         """
         try:
-            # Year alignment
+            # Alignement années
             common_years = mu_df.columns.intersection(L_df.columns)
             if len(common_years) == 0:
                 return None
             
-            # Age alignment
+            # Alignement âges
             common_ages = mu_df.index.intersection(L_df.index)
             if len(common_ages) == 0:
                 return None
             
-            # Matrix extraction
+            # Extraction des matrices
             Mu = mu_df.loc[common_ages, common_years].values.copy()
             L = L_df.loc[common_ages, common_years].values
             age_arr = np.array(common_ages)
             
-            # Anomaly correction
+            # Correction des anomalies
             Mu = self._correct_age_anomalies(Mu, age_arr)
             
-            # Max age truncation
+            # Troncature âge max
             mask = age_arr <= self.config.age_max
             age_arr = age_arr[mask]
             Mu = Mu[mask, :]
@@ -477,23 +477,23 @@ class MortalityCalculator:
             if len(age_arr) == 0:
                 return None
             
-            # Exposure calculation
+            # Calcul de l'exposition
             E = self._compute_exposure(L)
             
-            # Deaths calculation
+            # Calcul des décès
             D = Mu * E
             
             if aggregate_age:
-                # Aggregate by age
+                # Agrégation par âge
                 D_t = D.sum(axis=0)
                 E_t = E.sum(axis=0)
                 return reg, common_years.values, D_t, E_t
             else:
-                # Without aggregation
+                # Sans agrégation
                 return reg, common_years.values, age_arr, D, E
         
         except Exception as e:
-            self.logger.error(f"Error processing region {reg}: {e}")
+            self.logger.error(f"Erreur lors du traitement de la région {reg}: {e}")
             return None
     
     @timing_decorator
@@ -503,7 +503,7 @@ class MortalityCalculator:
                             L_by_region: Dict[str, pd.DataFrame],
                             aggregate_age: bool = True) -> List[Tuple]:
         """
-        Parallel processing of regions with optimal thread management.
+        Traitement parallèle des régions avec gestion optimale des threads.
         """
         n_jobs = self.config.n_jobs
         if n_jobs == -1:
@@ -511,12 +511,12 @@ class MortalityCalculator:
         
         valid_regions = [r for r in regions if r in mu_by_region and r in L_by_region]
         
-        self.logger.info(f"Processing {len(valid_regions)} regions with {n_jobs} threads")
+        self.logger.info(f"Traitement de {len(valid_regions)} régions avec {n_jobs} threads")
         
         raw_results = []
         
         if n_jobs == 1:
-            # Sequential mode
+            # Mode séquentiel
             for reg in valid_regions:
                 result = self._process_region_optimized(
                     reg, mu_by_region[reg], L_by_region[reg], aggregate_age
@@ -524,7 +524,7 @@ class MortalityCalculator:
                 if result is not None:
                     raw_results.append(result)
         else:
-            # Parallel mode with progress tracking
+            # Mode parallèle avec barre de progression
             with ThreadPoolExecutor(max_workers=n_jobs) as executor:
                 futures = {
                     executor.submit(
@@ -542,7 +542,7 @@ class MortalityCalculator:
                 for future in as_completed(futures):
                     completed += 1
                     if completed % 10 == 0 or completed == total:
-                        self.logger.info(f"Progress: {completed}/{total} regions processed")
+                        self.logger.info(f"Progression: {completed}/{total} régions traitées")
                     
                     result = future.result()
                     if result is not None:
@@ -554,7 +554,7 @@ class MortalityCalculator:
                                raw_results: List[Tuple],
                                aggregate_age: bool = True) -> pd.DataFrame:
         """
-        Builds the final DataFrame in an optimized way.
+        Construit le DataFrame final de manière optimisée.
         """
         if aggregate_age:
             all_regions = np.repeat(
@@ -614,31 +614,31 @@ class MortalityCalculator:
                            aggregate_age: bool = False,
                            use_cache: bool = True) -> pd.DataFrame:
         """
-        Unified main method to calculate mortality.
+        Méthode principale unifiée pour calculer la mortalité.
         
         Parameters
         ----------
         mxt_raw : pd.DataFrame
-            Mortality rate data
+            Données de taux de mortalité
         Lxt_raw : pd.DataFrame
-            Exposure data
+            Données d'exposition
         Dxt_raw : pd.DataFrame
-            Deaths data
+            Données de décès
         regions : List[str], optional
-            List of regions to process. If None, uses self.regions
+            Liste des régions à traiter. Si None, utilise self.regions
         gender : str, default="T"
-            Gender ("T", "M", "F")
+            Genre ("T", "M", "F")
         country : str, default="FR"
-            Country code
+            Code pays
         aggregate_age : bool, default=True
-            If True, aggregates results by age
+            Si True, agrège les résultats par âge
         use_cache : bool, default=True
-            Uses cache if available
+            Utilise le cache si disponible
         
         Returns
         -------
         pd.DataFrame
-            Mortality calculation results
+            Résultats du calcul de mortalité
         """
         start_time = datetime.now()
         
@@ -646,15 +646,15 @@ class MortalityCalculator:
         if self.config.validate_data:
             validation_report = self.validate_input_data(mxt_raw, Lxt_raw, Dxt_raw)
             if not validation_report['overall_valid']:
-                raise ValueError("Data validation failed")
+                raise ValueError("Validation des données échouée")
         
-        # Determine regions
+        # Déterminer les régions
         if regions is None:
             regions = self.get_regions(country)
         elif country == "FR":
             regions = [r for r in regions if r not in self.FRANCE_OUTREMER]
         
-        # Check cache
+        # Vérifier le cache
         cache_key = None
         if use_cache and self.config.enable_cache:
             cache_key = self.cache_manager._get_cache_key(
@@ -663,12 +663,12 @@ class MortalityCalculator:
             )
             cached_result = self.cache_manager.get(cache_key)
             if cached_result is not None:
-                self.logger.info("Result retrieved from cache")
+                self.logger.info("Résultat récupéré du cache")
                 self.execution_stats['cache_hits'] += 1
                 return cached_result
             self.execution_stats['cache_misses'] += 1
         
-        # Age harmonization
+        # Harmonisation des âges
         mxt_g = mxt_raw[mxt_raw["sex"] == gender]
         Lxt_g = Lxt_raw[Lxt_raw["sex"] == gender]
         Dxt_g = Dxt_raw[Dxt_raw["sex"] == gender]
@@ -680,12 +680,12 @@ class MortalityCalculator:
         )
         
         if not common_ages:
-            raise ValueError("No common ages after harmonization")
+            raise ValueError("Aucun âge commun après harmonisation")
         
-        self.logger.info(f"Harmonized ages: {len(common_ages)} common ages")
+        self.logger.info(f"Âges harmonisés: {len(common_ages)} âges communs")
         
-        # Global parallel pre-pivot
-        self.logger.info("Building pivots...")
+        # Pré-pivot global parallèle
+        self.logger.info("Construction des pivots...")
         with ThreadPoolExecutor(max_workers=2) as pool:
             fut_mu = pool.submit(
                 self._build_pivot_mu, mxt_raw, gender, common_ages, self.config.fill_value
@@ -696,43 +696,43 @@ class MortalityCalculator:
             mu_by_region = fut_mu.result()
             L_by_region = fut_L.result()
         
-        # Parallel region processing
+        # Traitement parallèle des régions
         raw_results = self._parallel_processing(
             regions, mu_by_region, L_by_region, aggregate_age
         )
         
         if not raw_results:
-            raise ValueError("No usable region after age/year alignment")
+            raise ValueError("Aucune région exploitable après alignement âge/année")
         
-        # Build final DataFrame
-        self.logger.info("Building final DataFrame...")
+        # Construction du DataFrame final
+        self.logger.info("Construction du DataFrame final...")
         result = self._build_final_dataframe(raw_results, aggregate_age)
         
-        # Cache storage
+        # Mise en cache
         if use_cache and cache_key:
             self.cache_manager.set(cache_key, result)
         
-        # Statistics
+        # Statistiques
         duration = (datetime.now() - start_time).total_seconds()
         self.execution_stats['total_calculations'] += 1
         self.execution_stats['total_processing_time'] += duration
         
-        self.logger.info(f"Calculation complete: {len(result)} rows generated")
+        self.logger.info(f"Calcul terminé: {len(result)} lignes générées")
         
         return result
     
     def mortality_by_region(self, *args, **kwargs) -> pd.DataFrame:
         """
-        Calculates mortality aggregated by region and year.
-        Alias for calculate_mortality with aggregate_age=True.
+        Calcule la mortalité agrégée par région et année.
+        Alias pour calculate_mortality avec aggregate_age=True.
         """
         kwargs['aggregate_age'] = True
         return self.calculate_mortality(*args, **kwargs)
     
     def mortality_by_region_by_age(self, *args, **kwargs) -> pd.DataFrame:
         """
-        Calculates mortality by region, year and age.
-        Alias for calculate_mortality with aggregate_age=False.
+        Calcule la mortalité par région, année et âge.
+        Alias pour calculate_mortality avec aggregate_age=False.
         """
         kwargs['aggregate_age'] = False
         return self.calculate_mortality(*args, **kwargs)
@@ -743,20 +743,20 @@ class MortalityCalculator:
                       format: Literal['csv', 'parquet', 'excel', 'feather'] = 'csv',
                       **kwargs):
         """
-        Exports results in different formats.
+        Exporte les résultats dans différents formats.
         
         Parameters
         ----------
         df : pd.DataFrame
-            DataFrame to export
+            DataFrame à exporter
         output_path : str
-            Output path
+            Chemin de sortie
         format : str
-            Export format ('csv', 'parquet', 'excel', 'feather')
+            Format d'export ('csv', 'parquet', 'excel', 'feather')
         **kwargs
-            Additional arguments for the export function
+            Arguments supplémentaires pour la fonction d'export
         """
-        self.logger.info(f"Exporting results in {format} format...")
+        self.logger.info(f"Export des résultats au format {format}...")
         
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -770,18 +770,18 @@ class MortalityCalculator:
         elif format == 'feather':
             df.to_feather(output_path, **kwargs)
         else:
-            raise ValueError(f"Unsupported format: {format}")
+            raise ValueError(f"Format non supporté: {format}")
         
-        self.logger.info(f"Export successful: {output_path}")
+        self.logger.info(f"Export réussi: {output_path}")
     
     def get_statistics(self) -> Dict[str, any]:
         """
-        Returns execution statistics.
+        Retourne les statistiques d'exécution.
         
         Returns
         -------
         Dict
-            Complete statistics
+            Statistiques complètes
         """
         stats = self.execution_stats.copy()
         
@@ -797,34 +797,34 @@ class MortalityCalculator:
         return stats
     
     def clear_cache(self):
-        """Clears the cache."""
+        """Vide le cache."""
         self.cache_manager.clear()
-        self.logger.info("Cache cleared")
+        self.logger.info("Cache vidé")
     
     def summary(self):
-        """Displays a summary of the configuration and statistics."""
+        """Affiche un résumé de la configuration et des statistiques."""
         print("="*60)
-        print("MortalityCalculator - Summary")
+        print("MortalityCalculator - Résumé")
         print("="*60)
         print(f"Shapefile: {self.shapefile_path}")
-        print(f"Regions loaded: {len(self.regions)}")
-        print(f"Maximum age: {self.config.age_max}")
-        print(f"Anomaly correction: {self.config.correct_anomalies}")
-        print(f"Cache enabled: {self.config.enable_cache}")
+        print(f"Régions chargées: {len(self.regions)}")
+        print(f"Âge maximum: {self.config.age_max}")
+        print(f"Correction anomalies: {self.config.correct_anomalies}")
+        print(f"Cache activé: {self.config.enable_cache}")
         print(f"Threads: {self.config.n_jobs if self.config.n_jobs != -1 else 'auto'}")
-        print("\nExecution statistics:")
+        print("\nStatistiques d'exécution:")
         stats = self.get_statistics()
         for key, value in stats.items():
             print(f"  {key}: {value}")
         print("="*60)
 
 
-# Compatibility functions with the old API
+# Fonctions de compatibilité avec l'ancienne API
 def mortality_by_region(*args, **kwargs):
-    """Compatibility function - creates an instance and calculates."""
+    """Fonction de compatibilité - crée une instance et calcule."""
     warnings.warn(
-        "Use of deprecated standalone function. "
-        "Prefer using MortalityCalculator.calculate_mortality()",
+        "Utilisation de la fonction standalone dépréciée. "
+        "Préférez l'utilisation de MortalityCalculator.calculate_mortality()",
         DeprecationWarning
     )
     calculator = MortalityCalculator()
@@ -832,78 +832,11 @@ def mortality_by_region(*args, **kwargs):
 
 
 def mortality_by_region_by_age(*args, **kwargs):
-    """Compatibility function - creates an instance and calculates."""
+    """Fonction de compatibilité - crée une instance et calcule."""
     warnings.warn(
-        "Use of deprecated standalone function. "
-        "Prefer using MortalityCalculator.calculate_mortality()",
+        "Utilisation de la fonction standalone dépréciée. "
+        "Préférez l'utilisation de MortalityCalculator.calculate_mortality()",
         DeprecationWarning
     )
     calculator = MortalityCalculator()
     return calculator.mortality_by_region_by_age(*args, **kwargs)
-
-
-
-def build_input_from_dataframe(df):
-    """
-    Transforms a long DataFrame into 3D matrices compatible with LCp_fit.
-    
-    Parameters
-    ----------
-    df : DataFrame with columns
-         ['region', 'year', 'age', 'deaths', 'exposure','mortality_rate']
-    
-    Returns
-    --------
-    Muxtg: (nb_ages, nb_years, nb_regions)
-    Dxtg : (nb_ages, nb_years, nb_regions)
-    Extg : (nb_ages, nb_years, nb_regions)
-    xv   : sorted age vector
-    tv   : sorted year vector
-    regions : list of regions
-    """
-    
-    # Sort for safety
-    df = df.sort_values(["age", "year", "region"]).copy()
-    
-    xv = np.sort(df["age"].unique())
-    tv = np.sort(df["year"].unique())
-    regions = np.sort(df["region"].unique())
-    
-    nb_ages = len(xv)
-    nb_years = len(tv)
-    nb_regions = len(regions)
-    
-    # Index mapping
-    age_idx = {a:i for i,a in enumerate(xv)}
-    year_idx = {y:i for i,y in enumerate(tv)}
-    reg_idx = {r:i for i,r in enumerate(regions)}
-    
-    # Allocation
-    Dxtg = np.zeros((nb_ages, nb_years, nb_regions))
-    Extg = np.zeros_like(Dxtg)
-    Muxtg = np.zeros_like(Dxtg)
-    
-    # Vectorization without triple loop
-    Dxtg[
-        df.age.map(age_idx),
-        df.year.map(year_idx),
-        df.region.map(reg_idx)
-    ] = df.deaths.values
-    
-    Extg[
-        df.age.map(age_idx),
-        df.year.map(year_idx),
-        df.region.map(reg_idx)
-    ] = df.exposure.values
-
-    Muxtg[
-        df.age.map(age_idx),
-        df.year.map(year_idx),
-        df.region.map(reg_idx)
-    ] = df.mortality_rate.values
-    
-    # Numerical safety
-    Extg = np.maximum(Extg, 1e-12)
-    Dxtg = np.maximum(Dxtg, 0.0)
-    
-    return Muxtg, Dxtg, Extg, xv, tv, regions

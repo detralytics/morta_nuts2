@@ -359,3 +359,196 @@ def plot_dispersion_over_time(
     plt.tight_layout()
     #plt.savefig("dispersion.png", bbox_inches="tight", dpi=150)
     plt.show()
+
+
+    import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import numpy as np
+from dataclasses import dataclass, field
+
+
+# ── Default color palette (cyclic if more series than colors) ────────────────
+_DEFAULT_COLORS = [
+    {"facecolor": "#1a1a2e", "edgecolor": "#e94560", "median": "#e94560"},  # red
+    {"facecolor": "#fff8e1", "edgecolor": "#e67e22", "median": "#e67e22"},  # orange
+    {"facecolor": "#e8f5e9", "edgecolor": "#27ae60", "median": "#27ae60"},  # green
+    {"facecolor": "#f3e5f5", "edgecolor": "#8e44ad", "median": "#8e44ad"},  # purple
+]
+
+_REGIONAL_STYLE = {
+    "facecolor": "#eaf2fb",
+    "edgecolor": "#2c3e50",
+    "median":    "#f39c12",
+}
+
+
+# ── Dataclass describing an extra series ─────────────────────────────────────
+@dataclass
+class ExtraSeries:
+    """
+    An extra series to overlay on top of the regional boxplots.
+
+    Parameters
+    ----------
+    data     : ndarray (nb_xe, 1, nb_simul)
+    label    : str   – display name (legend + tick label)
+    position : "first" | "last"  – where to insert the boxplot
+    style    : dict | None  – optional visual override
+                 valid keys: facecolor, edgecolor, median, linewidth
+    """
+    data:     np.ndarray
+    label:    str
+    position: str  = "last"
+    style:    dict = field(default_factory=dict)
+
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
+def _resolve_style(user_style: dict, default: dict, linewidth: float = 2.2) -> dict:
+    merged = {**default, **user_style}
+    merged.setdefault("linewidth", linewidth)
+    return merged
+
+
+def _boxplot_kwargs(style: dict, alpha: float = 0.88) -> dict:
+    lw = style.get("linewidth", 1.8)
+    return dict(
+        patch_artist=True,
+        boxprops=dict(facecolor=style["facecolor"], color=style["edgecolor"],
+                      linewidth=lw, alpha=alpha),
+        medianprops=dict(color=style["median"], linewidth=lw + 0.5),
+        whiskerprops=dict(color=style["edgecolor"], linewidth=lw),
+        capprops=dict(color=style["edgecolor"], linewidth=lw),
+        flierprops=dict(marker="o", markerfacecolor=style["edgecolor"],
+                        markeredgecolor=style["edgecolor"],
+                        markersize=2.5, alpha=0.35, linestyle="none"),
+        zorder=3,
+    )
+
+
+# ── Main function ────────────────────────────────────────────────────────────
+def plot_annuity_boxplot(
+    price_regional: np.ndarray,
+    region_names:   list,
+    extra_series:   list = None,
+    xe_idx:         int   = 0,
+    duration:       int   = 20,
+    age:            int   = 60,
+    figsize:        tuple = (18, 7),
+    show:           bool  = True,
+    ax              = None,
+):
+    """
+    Plot regional boxplots + any number of extra series.
+
+    Parameters
+    ----------
+    price_regional : ndarray (nb_xe, nb_reg, nb_simul)
+    region_names   : list[str]
+    extra_series   : list[ExtraSeries] | None
+                     Pass [] or None to display regions only.
+                     Examples:
+                       [ExtraSeries(price_nat,   "National",  position="last")]
+                       [ExtraSeries(price_nat,   "National",  position="last"),
+                        ExtraSeries(price_bench, "Benchmark", position="first")]
+    xe_idx         : age index
+    duration / age : used in the chart title
+    show           : calls plt.show() if True
+    ax             : existing axes (creates a new figure if None)
+
+    Returns
+    -------
+    fig, ax
+    """
+    extra_series = extra_series or []
+    nb_reg = price_regional.shape[1]
+
+    # Auto-assign colors to each extra series (cyclic)
+    for k, es in enumerate(extra_series):
+        default_col = _DEFAULT_COLORS[k % len(_DEFAULT_COLORS)]
+        es.style = _resolve_style(es.style, default_col)
+
+    # ── Ordered sequence: firsts | regions | lasts ──────────────────────────
+    regional_entries = [
+        (price_regional[xe_idx, g, :],
+         _resolve_style({}, _REGIONAL_STYLE, linewidth=1.5),
+         region_names[g], False)
+        for g in range(nb_reg)
+    ]
+    firsts = [
+        (es.data[xe_idx, 0, :], es.style, es.label, True)
+        for es in extra_series if es.position == "first"
+    ]
+    lasts = [
+        (es.data[xe_idx, 0, :], es.style, es.label, True)
+        for es in extra_series if es.position == "last"
+    ]
+    series = firsts + regional_entries + lasts
+
+    # ── Figure ────────────────────────────────────────────────────────────────
+    if ax is None:
+        fig, ax = plt.subplots(figsize=figsize)
+    else:
+        fig = ax.get_figure()
+
+    for i, (data, style, _, _) in enumerate(series, start=1):
+        ax.boxplot(data, positions=[i], widths=0.55, **_boxplot_kwargs(style))
+
+    # Visual separators between blocks
+    n_first, n_last, n_total = len(firsts), len(lasts), len(series)
+    if n_first:
+        ax.axvline(n_first + 0.5, color="#bbb", linewidth=1.1, linestyle=":", zorder=1)
+    if n_last:
+        ax.axvline(n_total - n_last + 0.5, color="#bbb", linewidth=1.1, linestyle=":", zorder=1)
+
+    # ── Axes & styling ────────────────────────────────────────────────────────
+    tick_labels = [s[2] for s in series]
+    ax.set_xticks(range(1, n_total + 1))
+    ax.set_xticklabels(tick_labels, rotation=45, ha="right", fontsize=9)
+    ax.set_xlim(0.3, n_total + 0.7)
+    ax.set_title(f"Annuity price — {age} y.o. | duration {duration}y",
+                 fontsize=14, fontweight="bold", pad=14)
+    ax.set_xlabel("Region", fontsize=11, labelpad=8)
+    ax.set_ylabel("Price (€)", fontsize=11, labelpad=8)
+    ax.grid(True, axis="y", alpha=0.22, linestyle="--")
+    ax.set_facecolor("#fafafa")
+
+    # Legend
+    legend_handles = [
+        mpatches.Patch(facecolor=_REGIONAL_STYLE["facecolor"],
+                       edgecolor=_REGIONAL_STYLE["edgecolor"], label="Regions")
+    ]
+    for es in extra_series:
+        legend_handles.append(
+            mpatches.Patch(facecolor=es.style["facecolor"],
+                           edgecolor=es.style["edgecolor"], label=es.label)
+        )
+    ax.legend(handles=legend_handles, loc="upper right", fontsize=9, framealpha=0.9)
+
+    plt.tight_layout()
+    try:
+        from IPython.display import display as ipy_display
+        ipy_display(fig)
+    except ImportError:
+        if show:
+            plt.show()
+    plt.close(fig)
+    return fig, ax
+
+
+# ── Usage examples ───────────────────────────────────────────────────────────
+# 0 série extra
+# plot_annuity_boxplot(price_reg, names)
+
+# # 1 série extra
+# plot_annuity_boxplot(price_reg, names, extra_series=[
+#     ExtraSeries(price_nat, "National", position="last"),
+# ])
+
+# # 2 séries extra (positions différentes)
+# plot_annuity_boxplot(price_reg, names, extra_series=[
+#     ExtraSeries(price_nat,   "National",  position="last"),
+#     ExtraSeries(price_bench, "Benchmark", position="first"),
+# ])
+
+# # Style custom sur une série
+# ExtraSeries(price_nat, "National", style={"edgecolor": "#00e5ff", "median": "#00e5ff"})

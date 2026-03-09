@@ -680,25 +680,151 @@ def concat_logmu_time(logmu_hist, logmu_proj):
     
 
 
-#------------------------------------------------------------------------------
-# Function for valuation of annuities
-#------------------------------------------------------------------------------
-def Annuity_pricing(xe,xv,log_Muxtg,duration,rate):
-    _ , nby , nb_reg , nb_simul = log_Muxtg.shape
-    price   = np.zeros((len(xe),nb_reg,nb_simul))    
-    ctx      = 0
-    v = 1/(1+rate)
+# #------------------------------------------------------------------------------
+# # Function for valuation of annuities
+# #------------------------------------------------------------------------------
+# def Annuity_pricing(xe,xv,log_Muxtg,duration,rate):
+#     _ , nby , nb_reg , nb_simul = log_Muxtg.shape
+#     price   = np.zeros((len(xe),nb_reg,nb_simul))    
+#     ctx      = 0
+#     v = 1/(1+rate)
+#     for xs in xe:
+#         for i in range(nb_reg):
+#             for s in range(nb_simul):
+#                 tpx = 1
+#                 tax = 0
+#                 for j in range(duration):    
+#                     #t_p_xs
+#                     Muxtg = np.exp(log_Muxtg[xs+j,j,i,s])
+#                     px    = np.exp(-Muxtg)  
+#                     tpx   = tpx*px
+#                     tax   = tax + tpx*v**j
+#                     price[ctx,i,s]  = tax
+#         ctx = ctx +1  
+#     return(price)
+
+def Annuity_pricing(xe, xv, log_Muxtg, duration, rate):
+    """
+    Compute the present value of life annuities using simulated mortality rates.
+
+    This function evaluates the actuarial present value of a life annuity
+    for different entry ages, regions, and stochastic mortality scenarios.
+    The mortality intensity is provided in logarithmic form and transformed
+    to obtain the force of mortality.
+
+    The annuity is valued by computing survival probabilities year by year
+    and discounting future payments using a constant interest rate.
+
+    Parameters
+    ----------
+    xe : array-like
+        Vector of entry ages at which the annuity starts.
+    xv : array-like
+        Vector of ages in the mortality table (not directly used in the function
+        but typically included for compatibility with the mortality grid).
+    log_Muxtg : numpy.ndarray
+        4D array containing the logarithm of mortality intensities with shape:
+        (age, projection_year, region, simulation).
+
+        Dimensions:
+        - age: index corresponding to the age in the mortality table
+        - projection_year: future year index
+        - region: geographical region
+        - simulation: stochastic mortality scenario
+    duration : int
+        Maximum duration (in years) of the annuity payments.
+    rate : float
+        Constant annual interest rate used for discounting.
+
+    Returns
+    -------
+    numpy.ndarray
+        Array containing the annuity prices with shape:
+        (len(xe), number_of_regions, number_of_simulations)
+
+        Each value corresponds to the actuarial present value of a life annuity
+        for a given entry age, region, and stochastic mortality scenario.
+
+    Notes
+    -----
+    The survival probability is approximated using the force of mortality:
+
+    .. math::
+
+        p_x = \\exp(-\\mu_x)
+
+    where :math:`\\mu_x` is the force of mortality.
+
+    The annuity value is computed as:
+
+    .. math::
+
+        a_x = \\sum_{t=1}^{T} v^t \\cdot {}_t p_x
+
+    where:
+
+    - :math:`v = \\frac{1}{1+i}` is the discount factor
+    - :math:`{}_t p_x` is the survival probability from age :math:`x` to :math:`x+t`
+    - :math:`T` is the annuity duration
+
+    The function evaluates the annuity value for each:
+    - entry age
+    - region
+    - stochastic mortality simulation.
+
+    """
+
+    # Extract dimensions from the mortality array
+    # nby: number of projection years
+    # nb_reg: number of regions
+    # nb_simul: number of stochastic simulations
+    _, nby, nb_reg, nb_simul = log_Muxtg.shape
+
+    # Initialize output array storing annuity prices
+    # Dimensions: entry_age × region × simulation
+    price = np.zeros((len(xe), nb_reg, nb_simul))
+
+    # Index for entry age
+    ctx = 0
+
+    # Discount factor
+    v = 1 / (1 + rate)
+
+    # Loop over entry ages
     for xs in xe:
+
+        # Loop over regions
         for i in range(nb_reg):
+
+            # Loop over stochastic mortality simulations
             for s in range(nb_simul):
+
+                # Survival probability accumulator
                 tpx = 1
+
+                # Present value of annuity payments
                 tax = 0
-                for j in range(duration):    
-                    #t_p_xs
-                    Muxtg = np.exp(log_Muxtg[xs+j,j,i,s])
-                    px    = np.exp(-Muxtg)  
-                    tpx   = tpx*px
-                    tax   = tax + tpx*v**j
-                    price[ctx,i,s]  = tax
-        ctx = ctx +1  
-    return(price)
+
+                # Loop over annuity duration
+                for j in range(duration):
+
+                    # Retrieve mortality intensity for age xs+j
+                    # and projection year j
+                    Muxtg = np.exp(log_Muxtg[xs + j, j, i, s])
+
+                    # Convert force of mortality into survival probability
+                    px = np.exp(-Muxtg)
+
+                    # Update cumulative survival probability
+                    tpx = tpx * px
+
+                    # Add discounted payment conditional on survival
+                    tax = tax + tpx * v**j
+
+                    # Store intermediate annuity value
+                    price[ctx, i, s] = tax
+
+        # Move to next entry age
+        ctx = ctx + 1
+
+    return price

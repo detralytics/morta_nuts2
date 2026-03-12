@@ -180,6 +180,7 @@ class MapPlotter:
         self.shapef_path    = shapef_path
         self.cmap           = cmap
         self.nuts_level     = nuts_level
+        self.age            = age  # stored for use in plot_static
 
         # Reduce to 2D (horizon, nb_regions) if a 3D array is provided
         self.data = data[age, :, :] if data.ndim == 3 else data
@@ -291,6 +292,57 @@ class MapPlotter:
         )
         plt.show()
 
+    def plot_static(self, static_data, title_suffix=""):
+        """
+        Draw a choropleth map from data that has no time dimension.
+        Accepts formats: (nb_regions,) or (nb_ages, nb_regions).
+
+        Parameters
+        ----------
+        static_data  : ndarray — shape (nb_regions,) or (nb_ages, nb_regions)
+                       When 2D, the age index used at __init__ time is applied.
+        title_suffix : str — optional subtitle appended to the figure title
+                       (e.g. "Mean error")
+        """
+        shp = self._load_shapefile()
+
+        # Handle (nb_ages, nb_regions) → (nb_regions,)
+        if static_data.ndim == 2:
+            values = static_data[self.age, :]
+        elif static_data.ndim == 1:
+            values = static_data
+        else:
+            raise ValueError(
+                f"static_data must be 1D (nb_regions,) or 2D (nb_ages, nb_regions), "
+                f"got shape {static_data.shape}"
+            )
+
+        df = shp.merge(
+            gpd.GeoDataFrame({"NUTS_ID": self.regions, "value": values}),
+            on="NUTS_ID", how="left",
+        )
+
+        vmin = np.nanmin(values)
+        vmax = np.nanmax(values)
+        norm = mcolors.Normalize(vmin=vmin, vmax=vmax)
+
+        fig, ax = plt.subplots(1, 1, figsize=(8, 9), gridspec_kw={"bottom": 0.15})
+
+        df.plot(
+            column="value", cmap=self.cmap, linewidth=0.5,
+            edgecolor="black", ax=ax, norm=norm, legend=False,
+        )
+
+        if title_suffix:
+            ax.set_title(title_suffix, fontsize=13, fontweight="bold")
+        ax.axis("off")
+
+        self._add_colorbar(fig, norm)
+        plt.suptitle(
+            f"{self.indicator_name} — {self.country_code}",
+            fontsize=14, fontweight="bold", y=0.98,
+        )
+        plt.show()
 
 # ════════════════════════════════════════════════════════════════════
 # CLASS 3 : Regional statistics

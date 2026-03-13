@@ -11,7 +11,7 @@ API Reference
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: morta_nuts2.graph.plot
+.. automodule:: morta_nuts2.graph.plot_class
    :members:
    :undoc-members:
    :show-inheritance:

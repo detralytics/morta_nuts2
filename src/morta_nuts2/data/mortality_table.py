@@ -2,7 +2,8 @@
 MortalityCalculator - Optimized and Innovative Version
 =====================================================
 
-Main improvements:
+Main improvements ::
+
 - Smart cache to avoid recomputations
 - Automatic data validation
 - Detailed operation logging

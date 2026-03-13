@@ -1,3 +1,11 @@
+
+"""
+Projection 
+=====================================================
+
+"""
+
+
 import numpy as np
 from scipy.optimize import curve_fit
 
@@ -699,7 +707,7 @@ def concat_logmu_time(logmu_hist, logmu_proj):
 #                     px    = np.exp(-Muxtg)  
 #                     tpx   = tpx*px
 #                     tax   = tax + tpx*v**j
-#                     price[ctx,i,s]  = tax
+#                     price[ctx,i,s]  = taxcd
 #         ctx = ctx +1  
 #     return(price)
 

@@ -2,14 +2,17 @@
 """
 Lee-Carter — Object-oriented architecture
 ===============================================================
-Class hierarchy :
+
+
+Class hierarchy ::
 
     LeeCarter                        ← general base class
     ├── LeeCarter.Parametric         ← parametric Lee-Carter (B-splines + P-splines)
     │   └── LeeCarter.Parametric.National      ← β_x shared across all regions
     └── LeeCarter.Classic            ← classic Lee-Carter (gradient descent)
 
-USAGE :
+USAGE ::
+
     # National parametric model
     model = LeeCarter.Parametric.National(n_knots=10, lam=0.1)
     results = model.fit(ax_coef_init, bx_coef_init, kappa_init, Extg, Dxtg, xv, tv)
@@ -18,16 +21,17 @@ USAGE :
     model = LeeCarter.Classic(nb_iter=500)
     results = model.fit(ax, bx, kappa, Extg, Dxtg, xv, tv)
 
-USES STANDARD PYTHON LIBRARIES:
+    
+
+USES STANDARD PYTHON LIBRARIES ::
+
   ✓ scipy.interpolate.BSpline      — B-spline construction
   ✓ scipy.interpolate.make_lsq_spline — least squares fit
   ✓ scipy.special.gammaln          — log-factorial
   ✓ scipy.linalg                   — linear algebra
   ✓ numpy                          — matrix computation
 
-NOTE :
-    The multi-region parametric variant (Lee & Li model) has been moved
-    to llp_class.py → LeeAndLi class.
+
 """
 import sys, os
 sys.path.append(os.path.abspath(".."))

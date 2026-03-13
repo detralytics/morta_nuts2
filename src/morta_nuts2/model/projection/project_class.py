@@ -10,6 +10,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 
 
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Low-level utilities
 # ─────────────────────────────────────────────────────────────────────────────
@@ -141,7 +142,7 @@ class ProjectorLC_SVD:
 
         if not self.stochastic:
             Z_future     = Z_last + drift * np.arange(1, self.horizon + 1)[:, None]
-            kappa_future = Z_future @ Vred.T
+            kappa_future = Z_future @ Vred.T 
         else:
             steps        = np.random.multivariate_normal(drift, cov, size=(self.horizon, self.n_sim))
             Z_future     = Z_last + np.cumsum(steps, axis=0)
@@ -836,3 +837,53 @@ def Annuity_pricing(xe, xv, log_Muxtg, duration, rate):
         ctx = ctx + 1
 
     return price
+
+
+################################################################
+#                 COMPUTE MAE AND WMAE
+################################################################
+
+def compute_mae(mu_obs, mu_model, weights=None):
+    """
+    Compute MAE and WMAE between observed and modelled mortality rates.
+
+    Parameters
+    ----------
+    mu_obs   : (nb_ages, horizon) or (nb_ages, horizon, nb_regions)
+    mu_model : (nb_ages, horizon) or (nb_ages, horizon, nb_regions)
+    weights  : same shape as mu_obs, optional, e.g. exposures Extg
+
+    Returns
+    -------
+    dict with MAE and WMAE (if weights provided) at different aggregation levels
+    """
+    #  2D  →  broadcast to 3D
+    if mu_obs.ndim == 2:
+        mu_obs = mu_obs[:, :, None]
+    if mu_model.ndim == 2:
+        mu_model = mu_model[:, :, None]
+    if weights is not None and weights.ndim == 2:
+        weights = weights[:, :, None]
+
+    
+    if mu_model.shape != mu_obs.shape:
+        mu_model = np.broadcast_to(mu_model, mu_obs.shape)
+
+    abs_err = np.abs(mu_model - mu_obs)
+
+    result = {
+        "by_region": np.mean(abs_err, axis=(0, 1)),   # (nb_regions,)
+        "by_age":    np.mean(abs_err, axis=(1, 2)),   # (nb_ages,)
+        "by_year":   np.mean(abs_err, axis=(0, 2)),   # (horizon,)
+        "global":    np.sum(abs_err) / abs_err.size,  # scalar
+    }
+
+    if weights is not None:
+        result.update({
+            "wmae_by_region": np.sum(abs_err * weights, axis=(0, 1)) / np.sum(weights, axis=(0, 1)),
+            "wmae_by_age":    np.sum(abs_err * weights, axis=(1, 2)) / np.sum(weights, axis=(1, 2)),
+            "wmae_by_year":   np.sum(abs_err * weights, axis=(0, 2)) / np.sum(weights, axis=(0, 2)),
+            "wmae_global":    np.sum(abs_err * weights) / np.sum(weights),
+        })
+
+    return result

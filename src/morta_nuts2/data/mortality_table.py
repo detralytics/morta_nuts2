@@ -30,6 +30,19 @@ import hashlib
 import pickle
 
 
+from pathlib import Path
+
+# Cherche la racine du projet en remontant jusqu'à trouver NUTS_files/
+BASE_DIR = Path.cwd()
+while not (BASE_DIR / "NUTS_files").exists():
+    BASE_DIR = BASE_DIR.parent
+
+DATA_DIR = BASE_DIR / "NUTS_files" / "NUTS_RG_01M_2024_3035.shp"
+# Path to the NUTS shapefile used for choropleth maps
+#SHAPEF_PATH = DATA_DIR
+
+
+
 # Logging configuration
 logging.basicConfig(
     level=logging.INFO,
@@ -192,8 +205,8 @@ class MortalityCalculator:
     """
     
     # Default path for the NUTS shapefile
-    DEFAULT_SHAPEFILE = "C:/Users/Idrissa Belem/Documents/GitHub/test_projet/NUTS_files/NUTS_RG_01M_2024_3035.shp"
-    
+    #DEFAULT_SHAPEFILE = "C:/Users/Idrissa Belem/Documents/GitHub/test_projet/NUTS_files/NUTS_RG_01M_2024_3035.shp"
+    DEFAULT_SHAPEFILE=DATA_DIR
     FRANCE_OUTREMER = ['FRY1', 'FRY2', 'FRY3', 'FRY4', 'FRY5']
     
     def __init__(self, 

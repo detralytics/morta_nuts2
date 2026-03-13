@@ -140,25 +140,61 @@ class LiLee:
         return lnL, exp_logmu, weighted_exp, residual
 
     # -------------------------------------------------------------------------
+    # EFFECTIVE DEGREES OF FREEDOM — trace of the hat matrix
+    # -------------------------------------------------------------------------
+    @staticmethod
+    def effective_dof_spline_block(B, w_flat, lam, DtD):
+        """
+        Effective degrees of freedom for one B-spline block under P-splines penalty.
+
+        For a penalized Poisson GLM, the effective dofs of a single spline block
+        are the trace of its hat-matrix contribution:
+
+        .. math::
+
+            \\text{dof}_\\text{eff}
+            = \\text{tr}\\!\\left[
+                \\left(B^T W B + \\lambda D^T D\\right)^{-1} B^T W B
+              \\right]
+
+        where :math:`W = \\text{diag}(w)` are the final Poisson weights.
+        When :math:`\\lambda = 0` this reduces to :math:`n_{\\text{basis}}` exactly.
+
+        :param B: B-spline basis matrix, shape ``(nb_ages, n_basis)``.
+        :type B: numpy.ndarray
+        :param w_flat: Aggregated Poisson weights per age, shape ``(nb_ages,)``.
+            Typically ``weighted_exp[:, :, g].sum(axis=1)`` for region ``g``,
+            or ``weighted_exp.sum(axis=(1, 2))`` for a common block.
+        :type w_flat: numpy.ndarray
+        :param lam: P-splines penalty weight :math:`\\lambda`.
+        :type lam: float
+        :param DtD: Penalty matrix :math:`D^T D`, shape ``(n_basis, n_basis)``.
+        :type DtD: numpy.ndarray
+
+        :returns: Effective dofs for this block (scalar).
+        :rtype: float
+        """
+        if lam == 0.0:
+            return float(B.shape[1])          # n_basis, exact
+        BtWB = B.T @ (w_flat[:, None] * B)    # (n_basis, n_basis)
+        A    = BtWB + lam * DtD               # penalized Hessian
+        try:
+            AinvBtWB = np.linalg.solve(A, BtWB)
+        except np.linalg.LinAlgError:
+            AinvBtWB = np.linalg.lstsq(A, BtWB, rcond=None)[0]
+        return float(np.trace(AinvBtWB))
+
+    # -------------------------------------------------------------------------
     # FIT STATISTICS — numpy
     # -------------------------------------------------------------------------
     @staticmethod
-    def compute_fit_stats_variant(Dxtg, Extg, logmu, logDxtgFact, n_basis, nb_years, nb_regions):
+    def compute_fit_stats(Dxtg, Extg, logmu, logDxtgFact, dofs):
         """
-        Compute deviance, AIC, and BIC for the Li-Lee model.
+        Compute Poisson deviance, AIC, and BIC given pre-computed effective dofs.
 
-        Degrees of freedom:
-
-        .. math::
-
-            \\text{dofs} = n_{\\text{basis}} \\times G          \\quad (\\alpha_{x,g})
-                         + n_{\\text{basis}}                      \\quad (\\beta_x)
-                         + n_{\\text{basis}} \\times G            \\quad (\\beta_{x,g})
-                         + T                                       \\quad (\\kappa_t)
-                         + T \\times G                            \\quad (\\kappa_{g,t})
-                         - G                                       \\quad (\\sum_x \\beta_{x,g} = 0)
-                         - G                                       \\quad (\\sum_t \\kappa_{g,t} = 0)
-                         - 1                                       \\quad (\\sum_x \\beta_x = 1)
+        The effective dofs must be computed by the calling ``fit()`` method
+        using :meth:`LiLee.effective_dof_spline_block`, so that the P-splines
+        penalty is properly accounted for.
 
         :param Dxtg: Death counts, shape ``(nb_ages, nb_years, nb_regions)``.
         :type Dxtg: numpy.ndarray
@@ -168,14 +204,10 @@ class LiLee:
         :type logmu: numpy.ndarray
         :param logDxtgFact: Pre-computed :math:`\\log(D!)`, same shape as ``Dxtg``.
         :type logDxtgFact: numpy.ndarray
-        :param n_basis: Number of B-spline basis functions.
-        :type n_basis: int
-        :param nb_years: Number of calendar years.
-        :type nb_years: int
-        :param nb_regions: Number of regions.
-        :type nb_regions: int
+        :param dofs: Effective number of parameters (float).
+        :type dofs: float
 
-        :returns: DataFrame with columns ``["N", "n_basis", "dofs", "lnL", "deviance", "AIC", "BIC"]``.
+        :returns: DataFrame with columns ``["N", "dofs", "lnL", "deviance", "AIC", "BIC"]``.
         :rtype: pandas.DataFrame
         """
         exp_logmu = np.exp(logmu)
@@ -192,87 +224,13 @@ class LiLee:
         deviance = 2.0 * (lnL_sat - lnL)
 
         nb_obs = int(Dxtg.size)
-        dofs = (n_basis * nb_regions     # α_{x,g}
-                + n_basis                   # β_x
-                + n_basis * nb_regions      # β_{x,g}
-                + nb_years                  # κ_t
-                + nb_years * nb_regions     # κ_{g,t}
-                - nb_regions               # Σ_x β_{x,g} = 0
-                - nb_regions                # Σ_t κ_{g,t} = 0
-                - 1)                        # Σ_x β_x = 1
-
         AIC = 2.0 * dofs - 2.0 * lnL
         BIC = dofs * np.log(nb_obs) - 2.0 * lnL
 
         return pd.DataFrame(
-            [[nb_obs, n_basis, dofs,
+            [[nb_obs, round(dofs, 2),
               round(lnL, 2), round(deviance, 2), round(AIC, 2), round(BIC, 2)]],
-            columns=["N", "n_basis", "dofs", "lnL", "deviance", "AIC", "BIC"]
-        )
-    
-    @staticmethod
-    def compute_fit_stats(Dxtg, Extg, logmu, logDxtgFact, n_basis, nb_years, nb_regions):
-        """
-        Compute deviance, AIC, and BIC for the Li-Lee model.
-
-        Degrees of freedom:
-
-        .. math::
-
-            \\text{dofs} = n_{\\text{basis}} \\times G          \\quad (\\alpha_{x,g})
-                         + n_{\\text{basis}}                      \\quad (\\beta_x)
-                         + n_{\\text{basis}} \\times G            \\quad (\\beta_{x,g})
-                         + T                                       \\quad (\\kappa_t)
-                         + T \\times G                            \\quad (\\kappa_{g,t})
-                         - G                                       \\quad (\\sum_x \\beta_{x,g} = 0)
-                         - G                                       \\quad (\\sum_t \\kappa_{g,t} = 0)
-                         - 1                                       \\quad (\\sum_x \\beta_x = 1)
-
-        :param Dxtg: Death counts, shape ``(nb_ages, nb_years, nb_regions)``.
-        :type Dxtg: numpy.ndarray
-        :param Extg: Exposures, same shape as ``Dxtg``.
-        :type Extg: numpy.ndarray
-        :param logmu: Fitted log mortality rates, same shape as ``Dxtg``.
-        :type logmu: numpy.ndarray
-        :param logDxtgFact: Pre-computed :math:`\\log(D!)`, same shape as ``Dxtg``.
-        :type logDxtgFact: numpy.ndarray
-        :param n_basis: Number of B-spline basis functions.
-        :type n_basis: int
-        :param nb_years: Number of calendar years.
-        :type nb_years: int
-        :param nb_regions: Number of regions.
-        :type nb_regions: int
-
-        :returns: DataFrame with columns ``["N", "n_basis", "dofs", "lnL", "deviance", "AIC", "BIC"]``.
-        :rtype: pandas.DataFrame
-        """
-        exp_logmu = np.exp(logmu)
-        lnL = float(np.sum(
-            Dxtg * logmu - Extg * exp_logmu + Dxtg * np.log(Extg) - logDxtgFact
-        ))
-
-        safe_Dxtg = np.where(Dxtg > 0, Dxtg, 1.0)
-        lnL_sat = float(np.sum(np.where(
-            Dxtg > 0,
-            Dxtg * np.log(safe_Dxtg / np.maximum(Extg, 1e-12)) - Dxtg,
-            0.0
-        )))
-        deviance = 2.0 * (lnL_sat - lnL)
-
-        nb_obs = int(Dxtg.size)
-        dofs = (n_basis      # α_{x}
-                + n_basis * nb_regions    # β_{x,g}
-                + nb_years                  # κ_t
-                - nb_regions # Σ_x β_{x,g} = 0
-                - 1)                        # Σ_x β_x = 1
-
-        AIC = 2.0 * dofs - 2.0 * lnL
-        BIC = dofs * np.log(nb_obs) - 2.0 * lnL
-
-        return pd.DataFrame(
-            [[nb_obs, n_basis, dofs,
-              round(lnL, 2), round(deviance, 2), round(AIC, 2), round(BIC, 2)]],
-            columns=["N", "n_basis", "dofs", "lnL", "deviance", "AIC", "BIC"]
+            columns=["N", "dofs", "lnL", "deviance", "AIC", "BIC"]
         )
 
     # -------------------------------------------------------------------------
@@ -1007,12 +965,33 @@ class LiLee:
                     kappa, kappa_g, xv, B, knots, self.degree,
                 )
 
-                # Statistics
-                Fit_stat = LiLee.compute_fit_stats_variant(
-                    Dxtg, Extg, logmu_final, logDxtgFact, n_basis, nb_years, nb_regions,
-                )
+                # Effective dofs — evaluated at final Poisson weights
+                w_final = Extg * np.exp(logmu_final)          # (nb_ages, nb_years, nb_regions)
 
-                #Fit_stat.loc[1, "dofs"] = dofs
+                dof_alpha = sum(                               # α_{x,g} : one block per region
+                    LiLee.effective_dof_spline_block(B, w_final[:, :, g].sum(axis=1), self.lam, DtD)
+                    for g in range(nb_regions)
+                )
+                dof_beta = LiLee.effective_dof_spline_block(   # β_x : single common block
+                    B, w_final.sum(axis=(1, 2)), self.lam, DtD
+                )
+                dof_beta_g = sum(                              # β_{x,g} : one block per region
+                    LiLee.effective_dof_spline_block(B, w_final[:, :, g].sum(axis=1), self.lam, DtD)
+                    for g in range(nb_regions)
+                )
+                dof_kappa   = nb_years                        # κ_t    : unpenalized
+                dof_kappa_g = nb_years * nb_regions           # κ_{g,t}: unpenalized
+                # identifiability constraints (exact regardless of λ)
+                dof_constraints = 1 + nb_regions + nb_regions  # Σβ_x=1, Σβ_{x,g}=0 ∀g, Σκ_{g,t}=0 ∀g
+
+                dofs = (dof_alpha + dof_beta + dof_beta_g
+                        + dof_kappa + dof_kappa_g
+                        - dof_constraints)
+
+                # Statistics
+                Fit_stat = LiLee.compute_fit_stats(
+                    Dxtg, Extg, logmu_final, logDxtgFact, dofs,
+                )
                 if self.verbose:
                     print("\n" + "=" * 70)
                     print("CALIBRATION COMPLETE")
@@ -1444,8 +1423,24 @@ class LiLee:
                     ax_coef, bx_coef, kappa, xv, B, knots, self.degree
                 )
 
+                # Effective dofs — evaluated at final Poisson weights
+                w_final = Extg * np.exp(logmu_final)          # (nb_ages, nb_years, nb_regions)
+
+                dof_alpha = LiLee.effective_dof_spline_block(  # α_x : single common block
+                    B, w_final.sum(axis=(1, 2)), self.lam, DtD
+                )
+                dof_beta_g = sum(                              # β_{x,g} : one block per region
+                    LiLee.effective_dof_spline_block(B, w_final[:, :, g].sum(axis=1), self.lam, DtD)
+                    for g in range(nb_regions)
+                )
+                dof_kappa = nb_years                          # κ_t : unpenalized
+                # identifiability constraint: Σ_x mean_g(β_{x,g}) = 1
+                dof_constraints = 1
+
+                dofs = dof_alpha + dof_beta_g + dof_kappa - dof_constraints
+
                 Fit_stat = LiLee.compute_fit_stats(
-                    Dxtg, Extg, logmu_final, logDxtgFact, n_basis, nb_years, nb_regions
+                    Dxtg, Extg, logmu_final, logDxtgFact, dofs
                 )
 
                 if self.verbose:
@@ -1591,7 +1586,9 @@ class LiLee:
             lnL = np.sum(Dxtg * logmuxt_grp - Extg * exp_logmuxt + Dxtg * np.log(Extg) - logDxtgFact)
             #dof's and numbers of records
             nb_obs = Dxtg.size
-            dofs   = len(ax) + len(bx) + len(kappa)
+            # Discrete parameters, no penalty.
+            # Constraints: Σ_x β_x = 1 → -1 ; mean(κ_t) = 0 → -1
+            dofs   = len(ax) + len(bx) + len(kappa) - 1 - 1
             AIC    = 2 * dofs - 2 * lnL
             BIC    = dofs * np.log(nb_obs) - 2 * lnL
             #dataframe with statistics of goodness of fit
@@ -1742,7 +1739,10 @@ class LiLee:
                          - logDxtgFact)
 
             nb_obs = Dxtg.size
-            dofs   = len(ax) + len(bx) + np.size(bx_gr) + np.size(kappa_gr) + np.size(kappa)
+            # Discrete parameters, no penalty.
+            # Constraints: Σ_x β_x = 1 → -1 ; mean(κ_t) = 0 → -1 ; Σ_x β_{x,g} = 1 ∀g → -G
+            dofs   = (len(ax) + len(bx) + np.size(bx_gr) + np.size(kappa_gr) + np.size(kappa)
+                      - 1 - 1 - nb_regions)
             AIC    = 2 * dofs - 2 * lnL
             BIC    = dofs * np.log(nb_obs) - 2 * lnL
 
@@ -1764,3 +1764,4 @@ class LiLee:
                 },
                 "fit_statistics": Fit_stat,
             }
+

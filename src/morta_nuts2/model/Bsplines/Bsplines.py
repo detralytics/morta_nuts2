@@ -97,7 +97,7 @@ def make_bspline_basis(xv, degree, n_knots, xmin=None, xmax=None):
     Parameters
     ----------
     xv       : array   evaluation points (e.g. ages 0 to 82)
-    degree   : int     spline degree (3 recommended)
+    degree   : int     spline degree 
     n_knots  : int     number of internal knots (equivalent to m+1 in the original code)
     xmin     : float   lower bound (default: min(xv))
     xmax     : float   upper bound (default: max(xv))

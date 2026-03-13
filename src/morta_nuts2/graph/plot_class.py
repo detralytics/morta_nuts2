@@ -30,8 +30,15 @@ _REGIONAL_STYLE = {
     "median":    "#f39c12",
 }
 
+from pathlib import Path
+
+BASE_DIR = Path.cwd()
+while not (BASE_DIR / "NUTS_files").exists():
+    BASE_DIR = BASE_DIR.parent
+
+DATA_DIR = BASE_DIR / "NUTS_files" / "NUTS_RG_01M_2024_3035.shp"
 # Path to the NUTS shapefile used for choropleth maps
-SHAPEF_PATH = "C:/Users/Idrissa Belem/Documents/GitHub/test_projet/NUTS_files/NUTS_RG_01M_2024_3035.shp"
+SHAPEF_PATH = DATA_DIR
 
 
 # ── Helper dataclass describing an extra series overlaid on regional boxplots ──

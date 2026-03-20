@@ -1,4 +1,3 @@
-
 """
 Projection 
 =====================================================
@@ -103,16 +102,27 @@ class ProjectorLC_SVD:
         stochastic: bool = True,
         n_sim: int = 1000,
     ):
-        self.ax = results["curves"]["alpha_x"]   # (nb_ages,)
-        curves = results["curves"]
+        params = results["parameters"]
 
-        beta_key = next((k for k in curves.keys() if k.startswith("beta")), None)
+        # ── Variante parametric : courbes dans results["curves"] ─────────
+        if "curves" in results:
+            curves   = results["curves"]
+            beta_key = next((k for k in curves if k.startswith("beta")), None)
+            if beta_key is None:
+                raise KeyError("No beta curve found in results['curves']")
+            self.ax        = curves["alpha_x"]          # (nb_ages,)
+            self.bx        = curves[beta_key]            # (nb_ages,) ou (nb_ages, nb_regions)
+            self.kappa_raw = params["kappa"]             # (nb_years,) ou (nb_regions, nb_years)
 
-        if beta_key is None:
-            raise KeyError("No beta curve found in results['curves']")
-
-        self.bx = curves[beta_key]  # stocké comme beta_xg dans l'objet
-        self.kappa_raw     = results["parameters"]["kappa"]
+        # ── Variante classic : ax/bx dans results["parameters"] ─────────
+        # ax[x,g], bx[x,g] : (nb_ages, nb_regions)
+        # kappa[x,t]        : (nb_ages, nb_years) mais constant sur x → extraire kappa[0,:]
+        else:
+            self.ax        = params["ax_coef"]           # (nb_ages, nb_regions)
+            self.bx        = params["bx_coef"]           # (nb_ages, nb_regions)
+            kappa_raw      = np.asarray(params["kappa"]) # (nb_ages, nb_years) ou (nb_years,)
+            # kappa ne dépend que de t : on prend la première ligne si 2D
+            self.kappa_raw = kappa_raw[0, :] if kappa_raw.ndim == 2 else kappa_raw  # (nb_years,)
         self.tv            = np.asarray(tv)
         self.horizon       = horizon
         self.exclude_years = exclude_years if exclude_years is not None else [2020, 2021]
@@ -175,27 +185,78 @@ class ProjectorLC_SVD:
 
     # ------------------------------------------------------------------
     def _reconstruct(self, kappa_future):
-        """Reconstructs log(μ) and μ from projected kappa."""
-        ax, bx = self.ax, self.bx
+        """Reconstructs log(μ) and μ from projected kappa.
 
+        Shapes attendues selon le chemin emprunté :
+
+        ┌──────────────┬─────────────┬──────────────────────────────────────────────┐
+        │ variante     │ stochastic  │ kappa_future shape                           │
+        ├──────────────┼─────────────┼──────────────────────────────────────────────┤
+        │ classic 1D   │ False       │ (horizon,)                                   │
+        │ classic 1D   │ True        │ (horizon, n_sim)                             │
+        │ SVD (≥1 cp)  │ False       │ (horizon, nb_regions)                        │
+        │ SVD (≥1 cp)  │ True        │ (horizon, n_sim, nb_regions)                 │
+        └──────────────┴─────────────┴──────────────────────────────────────────────┘
+
+        Détection :
+          - classic sans SVD  →  ax.ndim == 2 ET kappa_future.ndim ∈ {1, 2}
+          - SVD (nb_components ≥ 1) ou parametric  →  kappa_future.ndim ∈ {2, 3}
+            avec la dernière dimension = nb_regions
+
+        ax.ndim == 2  →  classic (ax/bx par région),  ax.ndim == 1  →  parametric (ax scalaire par âge)
+        """
+        ax, bx  = self.ax, self.bx
+        classic = ax.ndim == 2   # classic: ax (nb_ages, nb_regions), parametric: ax (nb_ages,)
+
+        # ── Cas déterministe ────────────────────────────────────────────────
         if not self.stochastic:
-            logmu_future = (
-                ax[:, None, None]
-                + bx[:, None, :] * kappa_future[None, :, :]
-            )
+            if classic and kappa_future.ndim == 1:
+                # classic sans SVD : kappa_future (horizon,)
+                # logmu : (nb_ages, horizon, nb_regions)
+                logmu_future = (
+                    ax[:, None, :]
+                    + bx[:, None, :] * kappa_future[None, :, None]
+                )
+            else:
+                # SVD (nb_components ≥ 1) ou parametric :
+                # kappa_future (horizon, nb_regions)  →  logmu : (nb_ages, horizon, nb_regions)
+                kf = kappa_future[:, None] if kappa_future.ndim == 1 else kappa_future  # (horizon, nb_regions)
+                if classic:
+                    # ax (nb_ages, nb_regions), bx (nb_ages, nb_regions)
+                    logmu_future = ax[:, None, :] + bx[:, None, :] * kf[None, :, :]
+                elif bx.ndim == 1:
+                    logmu_future = ax[:, None, None] + bx[:, None, None] * kf[None, :, :]
+                else:
+                    logmu_future = ax[:, None, None] + bx[:, None, :] * kf[None, :, :]
             mu_future = np.exp(logmu_future)
             return {
                 "kappa_future": kappa_future,
                 "logmu_future": logmu_future,
                 "mu_future":    mu_future,
             }
+
+        # ── Cas stochastique ────────────────────────────────────────────────
         else:
-            # reshape kappa to (1, horizon, nb_regions, n_sim)
-            kf_4d = kappa_future.transpose(0, 2, 1)[None, :, :, :]
-            logmu_sim = (
-                ax[:, None, None, None]
-                + bx[:, None, :, None] * kf_4d
-            )
+            if classic and kappa_future.ndim == 2:
+                # classic sans SVD : kappa_future (horizon, n_sim)
+                # logmu_sim : (nb_ages, horizon, nb_regions, n_sim)
+                logmu_sim = (
+                    ax[:, None, :, None]
+                    + bx[:, None, :, None] * kappa_future[None, :, None, :]
+                )
+            else:
+                # SVD (nb_components ≥ 1) ou parametric :
+                # kappa_future (horizon, n_sim, nb_regions)
+                # reshape → (1, horizon, nb_regions, n_sim)
+                kf = kappa_future[:, :, None] if kappa_future.ndim == 2 else kappa_future  # (horizon, n_sim, nb_regions)
+                kf_4d = kf.transpose(0, 2, 1)[None, :, :, :]  # (1, horizon, nb_regions, n_sim)
+                if classic:
+                    # ax (nb_ages, nb_regions), bx (nb_ages, nb_regions)
+                    logmu_sim = ax[:, None, :, None] + bx[:, None, :, None] * kf_4d
+                elif bx.ndim == 1:
+                    logmu_sim = ax[:, None, None, None] + bx[:, None, None, None] * kf_4d
+                else:
+                    logmu_sim = ax[:, None, None, None] + bx[:, None, :, None] * kf_4d
             mu_sim = np.exp(logmu_sim)
 
             mu_lower  = np.percentile(mu_sim,  2.5, axis=-1)
@@ -219,16 +280,60 @@ class ProjectorLC_SVD:
             }
 
     # ------------------------------------------------------------------
+    # ------------------------------------------------------------------
+    def _project_rw_1d(self):
+        """Random walk pour kappa 1D (variante classic)."""
+        kappa_m = self.kappa_raw[~np.isin(self.tv, self.exclude_years)]
+        diffs   = np.diff(kappa_m)
+        drift   = np.mean(diffs)
+        sigma   = np.std(diffs, ddof=1)
+        k_last  = kappa_m[-1]
+        t_range = np.arange(1, self.horizon + 1)
+        if not self.stochastic:
+            return k_last + drift * t_range                          # (horizon,)
+        else:
+            steps = np.random.normal(drift, sigma, size=(self.horizon, self.n_sim))
+            return k_last + np.cumsum(steps, axis=0)                 # (horizon, n_sim)
+
+    # ------------------------------------------------------------------
+    def _project_linear_1d(self):
+        """Tendance linéaire pour kappa 1D (variante classic)."""
+        kappa_m = self.kappa_raw[~np.isin(self.tv, self.exclude_years)]
+        T        = len(kappa_m)
+        time_idx = np.arange(T)
+        X_des    = np.column_stack([np.ones(T), time_idx])
+        beta_lin = np.linalg.lstsq(X_des, kappa_m, rcond=None)[0]
+        Xf       = np.column_stack([np.ones(self.horizon), np.arange(T, T + self.horizon)])
+        k_det    = Xf @ beta_lin                                     # (horizon,)
+        if not self.stochastic:
+            return k_det
+        else:
+            residuals = kappa_m - X_des @ beta_lin
+            sigma     = np.std(residuals, ddof=1)
+            noise     = np.random.normal(0, sigma, size=(self.horizon, self.n_sim))
+            return k_det[:, None] + noise                            # (horizon, n_sim)
+
+    # ------------------------------------------------------------------
     def project(self) -> dict:
         """Runs the projection and returns the results dict."""
-        Zred, Vred = self._svd_factors()
+        classic = self.kappa_raw.ndim == 1   # True pour le classic LC mono-kappa
 
-        if self.model == "rw":
-            kappa_future = self._project_rw(Zred, Vred)
-        elif self.model == "linear":
-            kappa_future = self._project_linear(Zred, Vred)
+        if classic:
+            # Pas de SVD : projection directe de kappa 1D
+            if self.model == "rw":
+                kappa_future = self._project_rw_1d()
+            elif self.model == "linear":
+                kappa_future = self._project_linear_1d()
+            else:
+                raise ValueError("model must be 'rw' or 'linear'")
         else:
-            raise ValueError("model must be 'rw' or 'linear'")
+            Zred, Vred = self._svd_factors()
+            if self.model == "rw":
+                kappa_future = self._project_rw(Zred, Vred)
+            elif self.model == "linear":
+                kappa_future = self._project_linear(Zred, Vred)
+            else:
+                raise ValueError("model must be 'rw' or 'linear'")
 
         return self._reconstruct(kappa_future)
 
@@ -260,21 +365,41 @@ class ProjectorLeeLi:
         tv,
         horizon: int = 30,
         exclude_years: list = None,
+        nb_components: int = 1,
         model: str = "rw",
         stochastic: bool = True,
         n_sim: int = 1000,
     ):
-        curves = results["curves"]
+        curves = results.get("curves")
         params = results["parameters"]
 
-        self.alpha_xg      = curves["alpha_xg"]   # (nb_ages, nb_regions)
-        self.beta_x        = curves["beta_x"]     # (nb_ages,)
-        self.beta_xg       = curves["beta_xg"]    # (nb_ages, nb_regions)
-        self.kappa         = params["kappa"]      # (nb_years,)
-        self.kappa_g       = params["kappa_g"]    # (nb_regions, nb_years)
+        # ── Variante parametric : courbes dans results["curves"] ─────────
+        if curves is not None:
+            self.alpha_xg = curves["alpha_xg"]   # (nb_ages, nb_regions)
+            self.beta_x   = curves["beta_x"]     # (nb_ages,)
+            self.beta_xg  = curves["beta_xg"]    # (nb_ages, nb_regions)
+            self.kappa    = params["kappa"]       # (nb_years,)
+            self.kappa_g  = params["kappa_g"]     # (nb_regions, nb_years)
+
+        # ── Variante classic : tout dans results["parameters"] ──────────
+        else:
+            ax           = np.asarray(params["ax"])    # (nb_ages,) ou (nb_ages, 1) — alpha ne dépend que de x
+            bx_gr        = np.asarray(params["bx_gr"]) # (nb_ages, nb_regions)
+            nb_regions   = bx_gr.shape[1]
+            # normalise ax en (nb_ages,) puis broadcast vers (nb_ages, nb_regions)
+            ax_1d         = ax.ravel() if ax.ndim > 1 else ax   # (nb_ages,)
+            self.alpha_xg = np.tile(ax_1d[:, None], (1, nb_regions))  # (nb_ages, nb_regions)
+            self.beta_x   = np.asarray(params["bx"]).ravel()   # (nb_ages,)
+            self.beta_xg  = bx_gr                               # (nb_ages, nb_regions)
+            self.kappa    = params["kappa"]                     # (nb_years,)
+            kappa_gr      = np.asarray(params["kappa_gr"])
+            # kappa_gr peut être (nb_years, nb_regions) ou (nb_regions, nb_years) selon le modèle
+            # on normalise en (nb_regions, nb_years) pour ProjectorLeeLi.project()
+            self.kappa_g  = kappa_gr.T if kappa_gr.shape[0] == len(np.asarray(params["kappa"])) else kappa_gr
         self.tv            = np.asarray(tv)
         self.horizon       = horizon
         self.exclude_years = exclude_years if exclude_years is not None else [2020, 2021]
+        self.nb_components = nb_components
         self.model         = model
         self.stochastic    = stochastic
         self.n_sim         = n_sim
@@ -297,52 +422,74 @@ class ProjectorLeeLi:
         return drift, cov, last
 
     # ------------------------------------------------------------------
-    def _project_rw(self, kappa_m, kappa_gm):
+    def _svd_factors_g(self, kappa_gm: np.ndarray):
+        """Builds reduced Z and V matrices for kappa_g via SVD.
+
+        Parameters
+        ----------
+        kappa_gm : (T, nb_regions)
+            Regional kappa series, already masked (excluded years removed).
+
+        Returns
+        -------
+        Zred : (T, nb_components)        – scores in the reduced space
+        Vred : (nb_regions, nb_components) – regional loadings
+        """
+        U, S, Vt = np.linalg.svd(kappa_gm, full_matrices=False)
+        Vred = Vt[:self.nb_components, :].T                        # (nb_regions, nb_components)
+        Zred = U[:, :self.nb_components] * S[:self.nb_components]  # (T, nb_components)
+        return Zred, Vred
+
+    # ------------------------------------------------------------------
+    def _project_rw(self, kappa_m, Zred, Vred):
         """Random walk projection for common and regional factors."""
         drift_k,  cov_k,  k_last  = self._fit_rw(kappa_m)
-        drift_kg, cov_kg, kg_last = self._fit_rw(kappa_gm.T)
+        drift_z,  cov_z,  z_last  = self._fit_rw(Zred)
 
         t_range = np.arange(1, self.horizon + 1)
 
         if not self.stochastic:
-            k_future  = k_last + drift_k[0] * t_range                  # (horizon,)
-            kg_future = kg_last + drift_kg * t_range[:, None]          # (horizon, nb_regions)
+            k_future  = k_last + drift_k[0] * t_range                   # (horizon,)
+            Z_future  = z_last + drift_z * t_range[:, None]             # (horizon, nb_components)
+            kg_future = Z_future @ Vred.T                                # (horizon, nb_regions)
         else:
             steps_k   = np.random.multivariate_normal(drift_k,  cov_k,  size=(self.horizon, self.n_sim))
-            k_future  = k_last + np.cumsum(steps_k[:, :, 0], axis=0)  # (horizon, n_sim)
-            steps_kg  = np.random.multivariate_normal(drift_kg, cov_kg, size=(self.horizon, self.n_sim))
-            kg_future = kg_last + np.cumsum(steps_kg, axis=0)          # (horizon, n_sim, nb_regions)
+            k_future  = k_last + np.cumsum(steps_k[:, :, 0], axis=0)   # (horizon, n_sim)
+            steps_z   = np.random.multivariate_normal(drift_z, cov_z.reshape(self.nb_components, self.nb_components),   size=(self.horizon, self.n_sim))
+            Z_future  = z_last + np.cumsum(steps_z, axis=0)             # (horizon, n_sim, nb_components)
+            kg_future = Z_future @ Vred.T                                # (horizon, n_sim, nb_regions)
 
         return k_future, kg_future
 
     # ------------------------------------------------------------------
-    def _project_linear(self, kappa_m, kappa_gm):
+    def _project_linear(self, kappa_m, Zred, Vred):
         """Linear trend projection for common and regional factors."""
         T        = kappa_m.shape[0]
         time_idx = np.arange(T)
         X_des    = np.column_stack([np.ones(T), time_idx])
         Xf       = np.column_stack([np.ones(self.horizon), np.arange(T, T + self.horizon)])
 
-        beta_k  = np.linalg.lstsq(X_des, kappa_m,    rcond=None)[0]
-        beta_kg = np.linalg.lstsq(X_des, kappa_gm.T, rcond=None)[0]
+        beta_k = np.linalg.lstsq(X_des, kappa_m, rcond=None)[0]
+        beta_z = np.linalg.lstsq(X_des, Zred,    rcond=None)[0]
 
-        k_det  = Xf @ beta_k    # (horizon,)
-        kg_det = Xf @ beta_kg   # (horizon, nb_regions)
+        k_det  = Xf @ beta_k   # (horizon,)
+        Z_det  = Xf @ beta_z   # (horizon, nb_components)
 
         if not self.stochastic:
             k_future  = k_det
-            kg_future = kg_det
+            kg_future = Z_det @ Vred.T                                   # (horizon, nb_regions)
         else:
-            res_k  = kappa_m    - X_des @ beta_k
-            res_kg = kappa_gm.T - X_des @ beta_kg
+            res_k  = kappa_m - X_des @ beta_k
+            res_z  = Zred    - X_des @ beta_z
             cov_k  = np.array([[np.var(res_k, ddof=1)]])
-            cov_kg = np.cov(res_kg, rowvar=False)
+            cov_z  = np.cov(res_z, rowvar=False).reshape(self.nb_components, self.nb_components)
 
-            noise_k   = np.random.multivariate_normal(np.zeros(1),              cov_k,  size=(self.horizon, self.n_sim))
-            noise_kg  = np.random.multivariate_normal(np.zeros(self.nb_regions), cov_kg, size=(self.horizon, self.n_sim))
+            noise_k  = np.random.multivariate_normal(np.zeros(1),              cov_k, size=(self.horizon, self.n_sim))
+            noise_z  = np.random.multivariate_normal(np.zeros(self.nb_components), cov_z, size=(self.horizon, self.n_sim))
 
-            k_future  = k_det[:, None] + noise_k[:, :, 0]   # (horizon, n_sim)
-            kg_future = kg_det[:, None, :] + noise_kg        # (horizon, n_sim, nb_regions)
+            k_future  = k_det[:, None] + noise_k[:, :, 0]               # (horizon, n_sim)
+            Z_future  = Z_det[:, None, :] + noise_z                      # (horizon, n_sim, nb_components)
+            kg_future = Z_future @ Vred.T                                 # (horizon, n_sim, nb_regions)
 
         return k_future, kg_future
 
@@ -412,12 +559,14 @@ class ProjectorLeeLi:
         """Runs the projection and returns the results dict."""
         mask     = ~np.isin(self.tv, self.exclude_years)
         kappa_m  = self.kappa[mask]
-        kappa_gm = self.kappa_g[:, mask]
+        kappa_gm = self.kappa_g[:, mask].T   # (T, nb_regions)
+
+        Zred, Vred = self._svd_factors_g(kappa_gm)
 
         if self.model == "rw":
-            k_future, kg_future = self._project_rw(kappa_m, kappa_gm)
+            k_future, kg_future = self._project_rw(kappa_m, Zred, Vred)
         elif self.model == "linear":
-            k_future, kg_future = self._project_linear(kappa_m, kappa_gm)
+            k_future, kg_future = self._project_linear(kappa_m, Zred, Vred)
         else:
             raise ValueError("model must be 'rw' or 'linear'")
 

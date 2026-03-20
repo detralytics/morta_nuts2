@@ -689,6 +689,7 @@ class LeeCarter:
                         kappa = kappa_new.copy()
             #end loop
             # we recompute log-mort. rates
+            
             ax = ax.reshape(-1, 1) ; bx = bx.reshape(-1, 1)
             axM    = np.repeat(ax, len(tv), axis=1)
             bxM    = np.repeat(bx, len(tv), axis=1)

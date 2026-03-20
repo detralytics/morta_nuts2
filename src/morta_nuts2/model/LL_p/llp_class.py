@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """
 LiLee — Object-oriented architecture
@@ -21,7 +22,7 @@ Model equations:
     \\ln(\\mu_{x,t,g}) = \\alpha_{x,g} + \\beta_x \\cdot \\kappa_t
                         + \\beta_{x,g} \\cdot \\kappa_{g,t}
 
-    \\text{LeeAndLi:} \\quad
+    \\text{Variant:} \\quad
     \\ln(\\mu_{x,t,g}) = \\alpha_x + \\beta_{x,g} \\cdot \\kappa_t
 
 USAGE::
@@ -646,56 +647,56 @@ class LiLee:
             # NORMALIZATION (IDENTIFIABILITY CONSTRAINTS)
             # -----------------------------------------------------------------
             @staticmethod
-            def normalize_lilee(beta_coef, beta_g_coef, kappa, kappa_g, B):
+            def normalize_lilee(alpha_coef, beta_coef, beta_g_coef, kappa, kappa_g, B):
                 """
-                Enforce Li-Lee identifiability constraints:
+                Enforce Li-Lee identifiability constraints.
 
-                .. math::
+                Constraints applied:
 
-                    \\sum_x \\beta_x = 1, \\qquad
-                    \\sum_x \\beta_{x,g} = 0 \\ \\forall g, \\qquad
-                    \\sum_t \\kappa_{g,t} = 0 \\ \\forall g
-
-                These constraints ensure uniqueness of the decomposition.
-
-                :param beta_coef: Coefficients of :math:`\\beta_x`, shape ``(n_basis,)``.
-                :type beta_coef: numpy.ndarray
-                :param beta_g_coef: Coefficients of :math:`\\beta_{x,g}`,
-                    shape ``(nb_regions, n_basis)``.
-                :type beta_g_coef: numpy.ndarray
-                :param kappa: Common time index, shape ``(nb_years,)``.
-                :type kappa: numpy.ndarray
-                :param kappa_g: Regional time indices, shape ``(nb_regions, nb_years)``.
-                :type kappa_g: numpy.ndarray
-                :param B: B-spline basis matrix, shape ``(nb_ages, n_basis)``.
-                :type B: numpy.ndarray
-
-                :returns: Normalized ``(beta_coef, beta_g_coef, kappa, kappa_g)``.
-                :rtype: tuple
+                  1. :math:`\\sum_x \\beta_x = 1`
+                     — fixes the scale of the common factor
+                  2. :math:`\\sum_x \\beta_{x,g} = 1 \\; \\forall g`
+                     — fixes the scale of each regional factor
+                  3. :math:`\\overline{\\kappa}_t = 0`
+                     — centres :math:`\\kappa_t`; compensated in :math:`\\alpha_{x,g}`
                 """
-                # 1. Normalization of β_x : Σ_x β_x = 1
+                # ----------------------------------------------------------
+                # 1. Σ_x β_x = 1 : scale of the common factor
+                #    Identical to classic Lee-Carter
+                # ----------------------------------------------------------
                 beta      = B @ beta_coef
                 scal_beta = float(np.sum(beta))
                 if scal_beta != 0:
                     beta_coef = beta_coef / scal_beta
                     kappa     = kappa * scal_beta
 
-                # 2. Normalization of β_{x,g} : Σ_x β_{x,g} = 0 for all g
+                # ----------------------------------------------------------
+                # 2. Σ_x β_{x,g} = 1 ∀g : scale of the regional factors
+                #    Symmetric to the constraint on β_x
+                # ----------------------------------------------------------
                 nb_regions = beta_g_coef.shape[0]
                 for g in range(nb_regions):
-                    beta_g     = B @ beta_g_coef[g]
-                    sum_beta_g = float(np.sum(beta_g))
-                    if sum_beta_g != 0:
-                        # Subtract mean to center at 0
-                        adjustment = sum_beta_g / len(beta_g)
-                        beta_g_coef[g] -= adjustment / np.mean(B.sum(axis=0))
+                    beta_g  = B @ beta_g_coef[g]
+                    scal_bg = float(np.sum(beta_g))
+                    if scal_bg != 0:
+                        beta_g_coef[g] = beta_g_coef[g] / scal_bg
+                        kappa_g[g]     = kappa_g[g] * scal_bg
 
-                # 3. Normalization of κ_{g,t} : Σ_t κ_{g,t} = 0 for all g
-                for g in range(nb_regions):
-                    mean_kappa_g  = float(np.mean(kappa_g[g]))
-                    kappa_g[g]   -= mean_kappa_g
+                # ----------------------------------------------------------
+                # 3. mean(κ_t) = 0 : centre κ_t
+                #    Compensation in α_{x,g} via β_x (non-zero, sum=1)
+                #    logmu invariant: α_{x,g} += β_x * mean(κ_t)
+                # ----------------------------------------------------------
+                mean_kappa = float(np.mean(kappa))
+                if mean_kappa != 0:
+                    kappa -= mean_kappa
+                    beta_x = B @ beta_coef                              # (nb_ages,)
+                    alpha_adjustment = beta_x * mean_kappa              # (nb_ages,)
+                    adj_coef = np.linalg.lstsq(B, alpha_adjustment, rcond=None)[0]
+                    for g in range(nb_regions):
+                        alpha_coef[g] += adj_coef                       # same adjustment for all regions
 
-                return beta_coef, beta_g_coef, kappa, kappa_g
+                return alpha_coef, beta_coef, beta_g_coef, kappa, kappa_g
 
             # -----------------------------------------------------------------
             # ROBUST INITIALISATION — B-spline projection of SVD estimates
@@ -734,12 +735,15 @@ class LiLee:
 
                 # =====================================================
                 # Step 1 — AGGREGATED RATES → common component
+                # Equal weighting across regions (prevents large regions
+                # such as FR10 from dominating the common factor)
                 # =====================================================
-                Dxt = np.sum(Dxtg, axis=2)
-                Ext = np.sum(Extg, axis=2)
+                Mxtg_all = Dxtg / np.maximum(Extg, 1e-12)   # (nb_ages, nb_years, nb_regions)
+                Mxtg_all = np.maximum(Mxtg_all, 1e-12)
 
-                Mxt = Dxt / np.maximum(Ext, 1e-12)
-                Mxt = np.maximum(Mxt, 1e-12)
+                # Simple average of rates across regions — each region has weight 1/G
+                Mxt  = Mxtg_all.mean(axis=2)                 # (nb_ages, nb_years)
+                Mxt  = np.maximum(Mxt, 1e-12)
 
                 logM = np.log(Mxt)
 
@@ -753,6 +757,13 @@ class LiLee:
 
                 beta_common  = U[:, 0]
                 kappa_common = S[0] * Vt[0, :]
+
+                # Sign correction: force kappa_common to have a negative drift
+                # (mortality decreasing over time)
+                sign_common = np.sign(np.mean(np.diff(kappa_common)))
+                if sign_common > 0:   # kappa rises → flip
+                    beta_common  *= -1
+                    kappa_common *= -1
 
                 # Standard LC normalisation
                 beta_common  /= np.sum(beta_common)
@@ -779,10 +790,17 @@ class LiLee:
 
                     U_g, S_g, Vt_g = np.linalg.svd(residual, full_matrices=False)
 
+                    # Sign correction only: force beta_g to be positive on average
+                    sign = np.sign(np.sum(U_g[:, 0]))
+                    if sign == 0:
+                        sign = 1.0
+                    U_g[:, 0]  *= sign
+                    Vt_g[0, :] *= sign
+
                     beta_g[:, g]  = U_g[:, 0]
                     kappa_g[g, :] = S_g[0] * Vt_g[0, :]
 
-                    # Normalisation
+                    # Original normalisation (identical behaviour to the original)
                     beta_g[:, g]  /= np.sum(beta_g[:, g])
                     kappa_g[g, :] *= np.sum(beta_g[:, g])
 
@@ -899,6 +917,11 @@ class LiLee:
                 it        = -1
                 eta       = self.eta0
 
+                # Debug: track regional contribution (index 0 = first region)
+                # Change _debug_idx if FR10 is not at index 0
+                _debug_idx     = 0
+                _debug_contrib = []
+
                 if self.verbose:
                     print("=" * 70)
                     print("PARAMETRIC LI-LEE MODEL CALIBRATION")
@@ -955,9 +978,15 @@ class LiLee:
                     kappa_g = self.update_kappa_g(kappa_g, beta_g, residual, weighted_exp, eta)
 
                     # Final normalization
-                    beta_coef, beta_g_coef, kappa, kappa_g = self.normalize_lilee(
-                        beta_coef, beta_g_coef, kappa, kappa_g, B
+                    alpha_coef, beta_coef, beta_g_coef, kappa, kappa_g = self.normalize_lilee(
+                        alpha_coef, beta_coef, beta_g_coef, kappa, kappa_g, B
                     )
+
+                    # Debug: track regional contribution
+                    _bxg     = B @ beta_g_coef[_debug_idx]
+                    _kg      = kappa_g[_debug_idx, :]
+                    _contrib = (_bxg[:, None] * _kg[None, :]).mean()
+                    _debug_contrib.append(_contrib)
 
                 # Final reconstruction
                 logmu_final, alpha, beta, beta_g = self.compute_logmu_lilee(
@@ -1019,6 +1048,7 @@ class LiLee:
                         "mu":     np.exp(logmu_final),
                     },
                     "fit_statistics": Fit_stat,
+                    "debug_contrib":  _debug_contrib,  # contribution tracking for region _debug_idx
                 }
 
 
@@ -1027,7 +1057,7 @@ class LiLee:
         # Simplified Lee & Li model: α_x + β_{x,g}·κ_t
         # =====================================================================
 
-        class LeeAndLi:
+        class variant:
             """
             Simplified Lee & Li parametric model — single common time index.
 
@@ -1518,7 +1548,7 @@ class LiLee:
             :returns: Updated ``(ax, bx, kappa, Fit_stat)``.
             :rtype: tuple
             """
-            #gradient descent parameter
+            #gradient descent step size
             eta = 1
             for it in range(nb_iter):
                 for ct_opt in np.arange(0, 3):
@@ -1551,7 +1581,7 @@ class LiLee:
                         dlnL_dpar = (np.sum(dlnL_baseline * kappaM, axis=(1, 2)) /
                                      (np.sum(Extg * np.exp(logmuxt_grp) * kappaM**2, axis=(1, 2))))
                         bx_new = bx + eta * dlnL_dpar.reshape(-1, 1)
-                        #we normalize
+                        #normalise
                         scal_bx = np.sum(bx_new)
                         bx_new  = bx_new / scal_bx
                         kappa   = kappa * scal_bx
@@ -1566,7 +1596,7 @@ class LiLee:
                         dlnL_dpar = (np.sum(dlnL_baseline * bxM, axis=(0, 2)) /
                                      (np.sum(Extg * np.exp(logmuxt_grp) * bxM**2, axis=(0, 2))))
                         kappa_new = kappa + eta * dlnL_dpar
-                        #we rescale
+                        #rescale
                         kappa_avg = np.mean(kappa_new)
                         kappa_new = (kappa_new - kappa_avg)  #*np.sum(bx)
                         ax        = ax + kappa_avg * bx
@@ -1584,19 +1614,19 @@ class LiLee:
             exp_logmuxt = np.exp(logmuxt_grp)
             logDxtgFact = gammaln(Dxtg + 1)
             lnL = np.sum(Dxtg * logmuxt_grp - Extg * exp_logmuxt + Dxtg * np.log(Extg) - logDxtgFact)
-            #dof's and numbers of records
+            #degrees of freedom and number of records
             nb_obs = Dxtg.size
             # Discrete parameters, no penalty.
             # Constraints: Σ_x β_x = 1 → -1 ; mean(κ_t) = 0 → -1
             dofs   = len(ax) + len(bx) + len(kappa) - 1 - 1
             AIC    = 2 * dofs - 2 * lnL
             BIC    = dofs * np.log(nb_obs) - 2 * lnL
-            #dataframe with statistics of goodness of fit
+            #dataframe with goodness-of-fit statistics
             Fit_stat = [[nb_obs, 'NA', 'NA', dofs, np.round(lnL, 2), np.round(AIC, 2), np.round(BIC, 2)]]
-            #We print the file
+            #print the dataframe
             Fit_stat         = pd.DataFrame(Fit_stat)
             Fit_stat.columns = ["N", "m", "degree", "dofs", "lnL", "AIC", "BIC"]
-            #we return ax, bx, kappa and stats
+            #return ax, bx, kappa and statistics
             return ax, bx, kappa, Fit_stat
 
         # ---------------------------------------------------------------------
@@ -1634,7 +1664,7 @@ class LiLee:
                 ``"fit_statistics"``.
             :rtype: dict
             """
-            #matrix of differences, order z
+            #difference matrix of order z
             Kz    = LiLee.difference_matrix(len(ax), self.z)
             KTK   = Kz.T @ Kz
             IdKTK = np.diag(KTK)
@@ -1642,7 +1672,7 @@ class LiLee:
             # ax and bx are computed with the Poisson LC
             ax, bx, kappa, _ = self._lc_fit(ax, bx, kappa, Extg, Dxtg, xv, tv, self.nb_iter)
 
-            #gradient descent parameter
+            #gradient descent step size
             eta = 0.80
 
             for it in range(self.nb_iter):
@@ -1764,4 +1794,5 @@ class LiLee:
                 },
                 "fit_statistics": Fit_stat,
             }
+
 

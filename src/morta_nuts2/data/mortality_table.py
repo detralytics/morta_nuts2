@@ -1,18 +1,58 @@
-"""
-MortalityCalculator - Optimized and Innovative Version
-=====================================================
+# """
+# MortalityCalculator - Optimized and Innovative Version
+# =====================================================
 
-Main improvements ::
+# Main improvements ::
 
-- Smart cache to avoid recomputations
-- Automatic data validation
-- Detailed operation logging
-- Support for different output formats
-- Integrated visualization methods
-- Advanced error handling
-- Configurable processing pipeline
-- Multi-format export (CSV, Parquet, Excel)
+# - Smart cache to avoid recomputations
+# - Automatic data validation
+# - Detailed operation logging
+# - Support for different output formats
+# - Integrated visualization methods
+# - Advanced error handling
+# - Configurable processing pipeline
+# - Multi-format export (CSV, Parquet, Excel)
+# """
+
 """
+mortality_table
+===============
+
+High-performance mortality data processing module.
+
+This module provides an optimized pipeline to compute mortality metrics
+from raw demographic datasets (mortality rates, exposures, deaths).
+
+Main features
+-------------
+- Efficient vectorized computations using NumPy and pandas
+- Parallel processing for regional computations
+- Smart caching system to avoid recomputation
+- Automatic data validation with detailed reports
+- Flexible configuration via dataclass
+- Multi-format export (CSV, Parquet, Excel, Feather)
+- Compatibility with actuarial models (e.g., Lee-Carter, Lee-Li)
+
+Typical workflow
+----------------
+1. Load raw datasets (mxt, Lxt, Dxt)
+2. Initialize ``MortalityCalculator``
+3. Run mortality computation
+4. Export or transform outputs for modeling
+
+Example
+-------
+>>> calc = MortalityCalculator()
+>>> df = calc.calculate_mortality(mxt, Lxt, Dxt)
+>>> calc.export_results(df, "output.csv")
+
+Notes
+-----
+This module is designed for actuarial and demographic applications,
+including mortality modeling and risk analysis.
+
+"""
+
 
 import numpy as np
 import pandas as pd
@@ -52,7 +92,38 @@ logging.basicConfig(
 
 @dataclass
 class MortalityConfig:
-    """Configuration for mortality calculations."""
+    """
+    Configuration class for mortality calculations.
+
+    This class centralizes all configurable parameters used in the
+    mortality computation pipeline.
+
+    Parameters
+    ----------
+    age_max : int, default=82
+        Maximum age considered in computations.
+
+    age_anomalies : np.ndarray
+        Ages where mortality anomalies are corrected via interpolation.
+
+    fill_value : float, default=1e-6
+        Value used to fill missing data in pivot tables.
+
+    n_jobs : int, default=-1
+        Number of parallel jobs (-1 means automatic detection).
+
+    enable_cache : bool, default=True
+        Whether to enable caching of intermediate results.
+
+    cache_dir : str, optional
+        Directory where cache files are stored.
+
+    validate_data : bool, default=True
+        Whether to validate input datasets before processing.
+
+    correct_anomalies : bool, default=True
+        Whether to apply anomaly correction on mortality rates.
+    """
     age_max: int = 82
     age_anomalies: np.ndarray = field(default_factory=lambda: np.array([11, 22, 33, 44, 55, 66, 77]))
     fill_value: float = 1e-6
@@ -70,7 +141,12 @@ class MortalityConfig:
 
 
 class DataValidator:
-    """Data validator with detailed reports."""
+    """
+    Utility class for validating input datasets.
+
+    Provides generic and domain-specific validation methods
+    for mortality-related data.
+    """
     
     @staticmethod
     def validate_dataframe(df: pd.DataFrame, 

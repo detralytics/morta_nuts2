@@ -11,7 +11,7 @@ Class hierarchy::
     LiLee                              ← general base class
     ├── LiLee.Parametric               ← parametric variants (B-splines + P-splines)
     │   ├── LiLee.Parametric.FullModel ← full Li-Lee model (two time indices)
-    │   └── LiLee.Parametric.LeeAndLi ← Lee & Li model (single common time index)
+    │   └── LiLee.Parametric.Variant   ← Lee & Li model (single common time index)
     └── LiLee.Classic                  ← classic Li-Lee (gradient descent)
 
 Model equations:
@@ -33,7 +33,7 @@ USAGE::
                         kappa_init, kappa_g_init, Extg, Dxtg, xv, tv)
 
     # Lee & Li parametric model
-    model = LiLee.Parametric.LeeAndLi(n_knots=10, lam=0.1)
+    model = LiLee.Parametric.Variant(n_knots=10, lam=0.1)
     results = model.fit(ax_coef_init, bx_coef_init, kappa_init, Extg, Dxtg, xv, tv)
 
     # Classic Li-Lee model
@@ -1057,7 +1057,7 @@ class LiLee:
         # Simplified Lee & Li model: α_x + β_{x,g}·κ_t
         # =====================================================================
 
-        class variant:
+        class Variant:
             """
             Simplified Lee & Li parametric model — single common time index.
 

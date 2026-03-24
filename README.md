@@ -41,9 +41,8 @@ morta_nuts2/
 │
 ├── notebook/                        # Jupyter notebooks for exploration
 ├── NUTS_files/                      # NUTS2 shapefiles (Eurostat)
-├── visualisation/
-│   └── MortalityPlotter.py          # High-level plotting interface
 └── docs/                            # Sphinx documentation
+
 ```
 
 ## Documentation

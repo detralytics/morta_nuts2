@@ -6,10 +6,10 @@ Lee-Carter — Object-oriented architecture
 
 Class hierarchy ::
 
-    LeeCarter                        ← general base class
-    ├── LeeCarter.Parametric         ← parametric Lee-Carter (B-splines + P-splines)
+    LeeCarter                                  ← general base class
+    ├── LeeCarter.Parametric                   ← parametric Lee-Carter (B-splines + P-splines)
     │   └── LeeCarter.Parametric.National      ← β_x shared across all regions
-    └── LeeCarter.Classic            ← classic Lee-Carter (gradient descent)
+    └── LeeCarter.Classic                      ← classic Lee-Carter (gradient descent)
 
 USAGE ::
 
@@ -25,11 +25,11 @@ USAGE ::
 
 USES STANDARD PYTHON LIBRARIES ::
 
-  ✓ scipy.interpolate.BSpline      — B-spline construction
+  ✓ scipy.interpolate.BSpline         — B-spline construction
   ✓ scipy.interpolate.make_lsq_spline — least squares fit
-  ✓ scipy.special.gammaln          — log-factorial
-  ✓ scipy.linalg                   — linear algebra
-  ✓ numpy                          — matrix computation
+  ✓ scipy.special.gammaln             — log-factorial
+  ✓ scipy.linalg                      — linear algebra
+  ✓ numpy                             — matrix computation
 
 
 """

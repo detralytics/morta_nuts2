@@ -56,18 +56,25 @@ import pandas as pd
 from dataclasses import dataclass, field
 from pathlib import Path
 
+# ── Global style : pure white background for all figures ────────────
+plt.rcParams.update({
+    "figure.facecolor":  "white",
+    "axes.facecolor":    "white",
+    "savefig.facecolor": "white",
+})
+
 
 # ── Default color palette for extra series (cycles if more series than colors) ──
 _DEFAULT_COLORS = [
     {"facecolor": "#1a1a2e", "edgecolor": "#e94560", "median": "#e94560"},  # red
-    {"facecolor": "#fff8e1", "edgecolor": "#e67e22", "median": "#e67e22"},  # orange
-    {"facecolor": "#e8f5e9", "edgecolor": "#27ae60", "median": "#27ae60"},  # green
-    {"facecolor": "#f3e5f5", "edgecolor": "#8e44ad", "median": "#8e44ad"},  # purple
+    {"facecolor": "#fefefe", "edgecolor": "#e67e22", "median": "#e67e22"},  # orange
+    {"facecolor": "#fefefe", "edgecolor": "#27ae60", "median": "#27ae60"},  # green
+    {"facecolor": "#fefefe", "edgecolor": "#8e44ad", "median": "#8e44ad"},  # purple
 ]
 
 # Default style applied to regional boxplots
 _REGIONAL_STYLE = {
-    "facecolor": "#eaf2fb",
+    "facecolor": "#fefefe",
     "edgecolor": "#2c3e50",
     "median":    "#f39c12",
 }
@@ -250,14 +257,11 @@ class RegionalCurvePlotter:
         fig, axes = plt.subplots(
             n_rows, self.n_cols,
             figsize=(5 * self.n_cols, 4 * n_rows),
-            facecolor="#F7F7F7",
         )
         axes = np.array(axes).reshape(-1)   # always 1-D for uniform indexing
 
         for pos, g in enumerate(region_indices):
             ax = axes[pos]
-            ax.set_facecolor("#F7F7F7")
-
             for label, array3d in self.curves_dict.items():
                 ax.plot(
                     self.x_values,
@@ -1015,7 +1019,6 @@ class AnnuityBoxPlotter:
         ax.set_xlabel("Region", fontsize=11, labelpad=8)
         ax.set_ylabel("Price (€)", fontsize=11, labelpad=8)
         ax.grid(True, axis="y", alpha=0.22, linestyle="--")
-        ax.set_facecolor("#fafafa")
 
         # Build the legend from colored patch handles
         legend_handles = [

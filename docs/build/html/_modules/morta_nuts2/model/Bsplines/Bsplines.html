@@ -1,0 +1,800 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>morta_nuts2.model.Bsplines.Bsplines &mdash; morta_nuts2 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            morta_nuts2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Data:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/data/eurostat.html">Eurostat API Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#eurostat-py-eurostat-data-manager">eurostat.py - Eurostat Data Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig"><code class="docutils literal notranslate"><span class="pre">EurostatConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_SHAPEFILE_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_DATA_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DATASETS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.EXCLUDE_REGIONS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#id0"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#id1"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#id2"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#id3"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_shapefile"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_data_path"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_data_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.register_dataset"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.register_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data"><code class="docutils literal notranslate"><span class="pre">Eurostat_data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.shapefile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.set_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.register_dataset"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.register_dataset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load_all"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.pivot_age_year"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.pivot_age_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.get_regions"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.filter_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.parse_age"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.parse_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.add_exclusion"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.add_exclusion()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.list_datasets"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.list_datasets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.cache_info"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.cache_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.clear_cache"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.stats"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.load_mxt_raw"><code class="docutils literal notranslate"><span class="pre">load_mxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.load_dxt_raw"><code class="docutils literal notranslate"><span class="pre">load_dxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.load_lxt_raw"><code class="docutils literal notranslate"><span class="pre">load_lxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.age_year_pivot_table"><code class="docutils literal notranslate"><span class="pre">age_year_pivot_table()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">filter_shapefile()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.parse_age"><code class="docutils literal notranslate"><span class="pre">parse_age()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/data/mortality_table.html">Mortality Table</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#id1">mortality_table</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#main-features">Main features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#typical-workflow">Typical workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig"><code class="docutils literal notranslate"><span class="pre">MortalityConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_max"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_max</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_anomalies</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.fill_value"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.fill_value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.n_jobs"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.n_jobs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.enable_cache"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.enable_cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.cache_dir"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.cache_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.validate_data"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.validate_data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.correct_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.correct_anomalies</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator"><code class="docutils literal notranslate"><span class="pre">DataValidator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_dataframe"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_mortality_data"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_mortality_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager"><code class="docutils literal notranslate"><span class="pre">CacheManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.get"><code class="docutils literal notranslate"><span class="pre">CacheManager.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.set"><code class="docutils literal notranslate"><span class="pre">CacheManager.set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.clear"><code class="docutils literal notranslate"><span class="pre">CacheManager.clear()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.timing_decorator"><code class="docutils literal notranslate"><span class="pre">timing_decorator()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.DEFAULT_SHAPEFILE"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.DEFAULT_SHAPEFILE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.FRANCE_OUTREMER"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.FRANCE_OUTREMER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.__init__"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.set_shapefile"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_regions"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.validate_input_data"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.validate_input_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.calculate_mortality"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.calculate_mortality()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.export_results"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.export_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_statistics"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_statistics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.clear_cache"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.summary"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">mortality_by_region()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">build_input_from_dataframe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Models:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/model/bsplines.html">B-Splines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#bsplines">Bsplines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/bsplines.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/bsplines.html#knot-vector-convention-scipy">Knot vector convention (scipy)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/bsplines.html#finite-difference-penalty-p-splines">Finite difference penalty (P-splines)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/bsplines.html#visual-illustration">Visual illustration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.difference_matrix"><code class="docutils literal notranslate"><span class="pre">difference_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.plot_Bsplines"><code class="docutils literal notranslate"><span class="pre">plot_Bsplines()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.basis_matrix_from_knots"><code class="docutils literal notranslate"><span class="pre">basis_matrix_from_knots()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.Bspline_approx"><code class="docutils literal notranslate"><span class="pre">Bspline_approx()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.make_bspline_basis"><code class="docutils literal notranslate"><span class="pre">make_bspline_basis()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.eval_bspline_from_coef"><code class="docutils literal notranslate"><span class="pre">eval_bspline_from_coef()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/model/lcp.html">Lee-Carter Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/lcp.html#lee-carter-object-oriented-architecture">Lee-Carter — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter"><code class="docutils literal notranslate"><span class="pre">LeeCarter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LeeCarter.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LeeCarter.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_ax_coef"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_ax_coef()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_kappa"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_kappa()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LeeCarter.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">LeeCarter.build_input_from_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric.National"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric.National</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/model/llp.html">Lee &amp; Li Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/llp.html#lilee-object-oriented-architecture">LiLee — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee"><code class="docutils literal notranslate"><span class="pre">LiLee</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LiLee.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block"><code class="docutils literal notranslate"><span class="pre">LiLee.effective_dof_spline_block()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LiLee.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.difference_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.difference_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.FullModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.Variant</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/model/param_init.html">Parameter Initialization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_bspline_init"><code class="docutils literal notranslate"><span class="pre">lcp_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lileep_bspline_init"><code class="docutils literal notranslate"><span class="pre">lileep_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_parametrique_init_national"><code class="docutils literal notranslate"><span class="pre">lcp_parametrique_init_national()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/model/projection.html">Mortality Projection Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#projection">Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.kannisto_log_mu"><code class="docutils literal notranslate"><span class="pre">kannisto_log_mu()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy.compute"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator.extrapolate"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator.extrapolate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.concat_logmu_time"><code class="docutils literal notranslate"><span class="pre">concat_logmu_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.Annuity_pricing"><code class="docutils literal notranslate"><span class="pre">Annuity_pricing()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.compute_mae"><code class="docutils literal notranslate"><span class="pre">compute_mae()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/visualisation/plot_class.html">Plot Class</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#id1">plot_class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.SHAPEF_PATH"><code class="docutils literal notranslate"><span class="pre">SHAPEF_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries"><code class="docutils literal notranslate"><span class="pre">ExtraSeries</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.data"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.label"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.label</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.position"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.position</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.style"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.style</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.save"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter"><code class="docutils literal notranslate"><span class="pre">MapPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_single_year"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_single_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_years"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_years()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_static"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_static()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.save"><code class="docutils literal notranslate"><span class="pre">MapPlotter.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_models"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_models()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats"><code class="docutils literal notranslate"><span class="pre">RegionalStats</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats.compute"><code class="docutils literal notranslate"><span class="pre">RegionalStats.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.plot"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.save"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.plot"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.save"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.save()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">morta_nuts2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">morta_nuts2.model.Bsplines.Bsplines</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for morta_nuts2.model.Bsplines.Bsplines</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Bsplines</span>
+<span class="sd">========</span>
+
+<span class="sd">B-spline toolbox for constructing, evaluating, and fitting spline curves</span>
+<span class="sd">to demographic or actuarial data.</span>
+
+<span class="sd">Overview</span>
+<span class="sd">--------</span>
+<span class="sd">A **B-spline of degree** :math:`p` over a knot vector</span>
+<span class="sd">:math:`t_0 \\le t_1 \\le \\ldots \\le t_{n+p}` is defined recursively by the</span>
+<span class="sd">**Cox–de Boor recurrence**:</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">    B_{i,0}(x) =</span>
+<span class="sd">    \\begin{cases}</span>
+<span class="sd">        1 &amp; \\text{if } t_i \\le x &lt; t_{i+1} \\\\</span>
+<span class="sd">        0 &amp; \\text{otherwise}</span>
+<span class="sd">    \\end{cases}</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">    B_{i,p}(x) =</span>
+<span class="sd">      \\frac{x - t_i}{t_{i+p} - t_i}\\, B_{i,p-1}(x)</span>
+<span class="sd">    + \\frac{t_{i+p+1} - x}{t_{i+p+1} - t_{i+1}}\\, B_{i+1,p-1}(x)</span>
+
+<span class="sd">A **spline curve** is the weighted sum of :math:`n` basis functions:</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">    S(x) = \\sum_{i=0}^{n-1} c_i\\, B_{i,p}(x)</span>
+
+<span class="sd">where :math:`c_i` are the **B-spline coefficients** (control points).</span>
+
+<span class="sd">Key properties:</span>
+
+<span class="sd">* **Local support** — :math:`B_{i,p}` is non-zero only on</span>
+<span class="sd">  :math:`[t_i,\\, t_{i+p+1})`, so each coefficient influences the curve</span>
+<span class="sd">  only locally.</span>
+<span class="sd">* **Partition of unity** — :math:`\\sum_i B_{i,p}(x) = 1` for all :math:`x`</span>
+<span class="sd">  in the domain.</span>
+<span class="sd">* **Non-negativity** — :math:`B_{i,p}(x) \\ge 0` for all :math:`x`.</span>
+
+<span class="sd">Knot vector convention (scipy)</span>
+<span class="sd">-------------------------------</span>
+<span class="sd">Given :math:`m` equally spaced internal knots in :math:`[x_{\\min}, x_{\\max}]`</span>
+<span class="sd">and a spline degree :math:`p`, the **full knot vector** is built as:</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">    \\underbrace{x_{\\min}, \\ldots, x_{\\min}}_{p \\text{ times}},\\;</span>
+<span class="sd">    t_1, \\ldots, t_m,\\;</span>
+<span class="sd">    \\underbrace{x_{\\max}, \\ldots, x_{\\max}}_{p \\text{ times}}</span>
+
+<span class="sd">which yields :math:`n_{\\text{basis}} = m + p - 1` basis functions.</span>
+
+<span class="sd">Finite difference penalty (P-splines)</span>
+<span class="sd">--------------------------------------</span>
+<span class="sd">To regularise a fit, the :math:`k`-th order **difference matrix**</span>
+<span class="sd">:math:`D_k \\in \\mathbb{R}^{(n-k) \\times n}` is used to penalise</span>
+<span class="sd">rough coefficient sequences:</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">    \\text{penalty} = \\lambda \\|D_k\\, \\mathbf{c}\\|^2</span>
+
+<span class="sd">The first-order difference operator is:</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">    D_1 = \\begin{pmatrix}</span>
+<span class="sd">        -1 &amp;  1 &amp;  0 &amp; \\cdots \\\\</span>
+<span class="sd">         0 &amp; -1 &amp;  1 &amp; \\cdots \\\\</span>
+<span class="sd">         \\vdots &amp; &amp; \\ddots &amp;</span>
+<span class="sd">    \\end{pmatrix}</span>
+
+<span class="sd">and the :math:`k`-th order matrix is obtained by applying :math:`D_1`</span>
+<span class="sd">recursively :math:`k` times, with coefficients given by:</span>
+
+<span class="sd">.. math::</span>
+
+<span class="sd">    (D_k)_{i,j} = (-1)^j \\binom{k}{j}, \\quad j = 0, \\ldots, k</span>
+
+<span class="sd">Visual illustration</span>
+<span class="sd">-------------------</span>
+<span class="sd">.. image:: ../../_static/bspline_illustration.png</span>
+<span class="sd">   :width: 700px</span>
+<span class="sd">   :align: center</span>
+<span class="sd">   :alt: B-spline basis functions and resulting curve</span>
+
+<span class="sd">   *Left* — Individual B-spline basis functions :math:`B_{i,3}(x)` of</span>
+<span class="sd">   degree 3 with 6 internal knots. The dashed vertical lines mark the knot</span>
+<span class="sd">   positions. The basis functions form a **partition of unity**.</span>
+<span class="sd">   *Right* — Resulting spline curve :math:`S(x) = \\sum_i c_i B_{i,3}(x)`</span>
+<span class="sd">   (thick dark line) as the weighted sum of the shaded basis functions.</span>
+<span class="sd">   Red dots are the control points :math:`c_i`.</span>
+
+<span class="sd">**Dependencies**: ``numpy``, ``scipy``, ``matplotlib``, ``math``.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">opt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">gammaln</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">comb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">BSpline</span><span class="p">,</span> <span class="n">make_lsq_spline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">lstsq</span>
+
+
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+<span class="c1"># FINITE DIFFERENCE MATRIX</span>
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+
+<div class="viewcode-block" id="difference_matrix">
+<a class="viewcode-back" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.difference_matrix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">difference_matrix</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Construct the finite-difference matrix of order *k* for vectors of</span>
+<span class="sd">    length *n*.</span>
+
+<span class="sd">    The :math:`k`-th order difference matrix :math:`D_k` of size</span>
+<span class="sd">    :math:`(n-k) \\times n` is defined entry-wise as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        (D_k)_{i,\\,i+j} = (-1)^j \\binom{k}{j}, \\quad j = 0, \\ldots, k</span>
+
+<span class="sd">    so that :math:`(D_k \\mathbf{c})_i = \\Delta^k c_i`, the :math:`k`-th</span>
+<span class="sd">    forward difference of the coefficient sequence.</span>
+
+<span class="sd">    It is used in **P-spline** regression to penalise roughness:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \\text{penalty} = \\lambda\\, \\|D_k \\mathbf{c}\\|^2</span>
+
+<span class="sd">    :param n: Length of the coefficient vector (number of columns).</span>
+<span class="sd">    :type n: int</span>
+<span class="sd">    :param k: Order of the finite difference operator.</span>
+<span class="sd">    :type k: int</span>
+<span class="sd">    :returns: Difference matrix :math:`D_k` of shape ``(n-k, n)``.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    :raises ValueError: If ``k &gt;= n``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    First-order difference matrix for n=4::</span>
+
+<span class="sd">        D = difference_matrix(4, 1)</span>
+<span class="sd">        # [[-1,  1,  0,  0],</span>
+<span class="sd">        #  [ 0, -1,  1,  0],</span>
+<span class="sd">        #  [ 0,  0, -1,  1]]</span>
+
+<span class="sd">    Second-order (curvature) matrix for n=5::</span>
+
+<span class="sd">        D = difference_matrix(5, 2)</span>
+<span class="sd">        # [[ 1, -2,  1,  0,  0],</span>
+<span class="sd">        #  [ 0,  1, -2,  1,  0],</span>
+<span class="sd">        #  [ 0,  0,  1, -2,  1]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Order k must be less than n.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Coefficients of the k-th order difference using binomial coefficients</span>
+    <span class="n">coeffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="n">j</span> <span class="o">*</span> <span class="n">comb</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
+
+    <span class="c1"># Initialise the (n-k) x n matrix</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+
+    <span class="c1"># Fill each row with the shifted coefficient pattern</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">):</span>
+        <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">coeffs</span>
+
+    <span class="k">return</span> <span class="n">D</span></div>
+
+
+
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+<span class="c1"># B-SPLINE TOOLBOX  (legacy / low-level helpers)</span>
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+
+<div class="viewcode-block" id="plot_Bsplines">
+<a class="viewcode-back" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.plot_Bsplines">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_Bsplines</span><span class="p">(</span><span class="n">all_knots</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot all B-spline basis functions defined by a full knot vector.</span>
+
+<span class="sd">    For a knot vector :math:`\\mathbf{t}` of length :math:`n + p + 1`,</span>
+<span class="sd">    there are :math:`n = |\\mathbf{t}| - p - 1` basis functions</span>
+<span class="sd">    :math:`B_{0,p}, \\ldots, B_{n-1,p}`.  Each is obtained by setting</span>
+<span class="sd">    the corresponding coefficient to 1 and all others to 0:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        B_{j,p}(x) = \\text{BSpline}(\\mathbf{t},\\, \\mathbf{e}_j,\\, p)(x)</span>
+
+<span class="sd">    :param all_knots: Full knot vector (including boundary repetitions).</span>
+<span class="sd">    :type all_knots: array-like</span>
+<span class="sd">    :param degree: Spline degree :math:`p`.</span>
+<span class="sd">    :type degree: int</span>
+<span class="sd">    :param xmin: Left boundary of the evaluation domain.</span>
+<span class="sd">    :type xmin: float</span>
+<span class="sd">    :param xmax: Right boundary of the evaluation domain.</span>
+<span class="sd">    :type xmax: float</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The function calls ``plt.show()`` directly. For non-interactive use,</span>
+<span class="sd">        call ``plt.savefig()`` before ``plt.show()``, or suppress display with</span>
+<span class="sd">        ``matplotlib.use(&quot;Agg&quot;)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">ncoef</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_knots</span><span class="p">)</span> <span class="o">-</span> <span class="n">degree</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">ncoef</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncoef</span><span class="p">):</span>
+        <span class="c1"># Activate basis function j by setting its coefficient to 1</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ncoef</span><span class="p">)</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">bs</span> <span class="o">=</span> <span class="n">BSpline</span><span class="p">(</span><span class="n">all_knots</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">extrapolate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">B</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">bs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">B</span><span class="p">[:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="basis_matrix_from_knots">
+<a class="viewcode-back" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.basis_matrix_from_knots">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">basis_matrix_from_knots</span><span class="p">(</span><span class="n">all_knots</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the B-spline basis matrix for a given full knot vector and</span>
+<span class="sd">    evaluation points.</span>
+
+<span class="sd">    Each column :math:`j` of the returned matrix contains the values of</span>
+<span class="sd">    the :math:`j`-th basis function evaluated at all points in *x*:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        B[i,\\, j] = B_{j,p}(x_i)</span>
+
+<span class="sd">    :param all_knots: Full knot vector :math:`\\mathbf{t}` (with boundary</span>
+<span class="sd">        multiplicity).</span>
+<span class="sd">    :type all_knots: array-like</span>
+<span class="sd">    :param degree: Spline degree :math:`p`.</span>
+<span class="sd">    :type degree: int</span>
+<span class="sd">    :param x: Evaluation points.</span>
+<span class="sd">    :type x: array-like</span>
+<span class="sd">    :returns: Basis matrix of shape ``(len(x), n_basis)`` where</span>
+<span class="sd">        ``n_basis = len(all_knots) - degree - 1``.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ncoef</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_knots</span><span class="p">)</span> <span class="o">-</span> <span class="n">degree</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">ncoef</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncoef</span><span class="p">):</span>
+        <span class="c1"># Activate basis function j by setting its coefficient to 1</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ncoef</span><span class="p">)</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">bs</span> <span class="o">=</span> <span class="n">BSpline</span><span class="p">(</span><span class="n">all_knots</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">extrapolate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">B</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">bs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">B</span></div>
+
+
+
+<div class="viewcode-block" id="Bspline_approx">
+<a class="viewcode-back" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.Bspline_approx">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">Bspline_approx</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate a B-spline approximation from coefficients and an equispaced</span>
+<span class="sd">    internal knot grid.</span>
+
+<span class="sd">    The full knot vector is constructed with spacing</span>
+<span class="sd">    :math:`\\delta = (x_{\\max} - x_{\\min}) / m` as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \\mathbf{t} = \\bigl[</span>
+<span class="sd">            x_{\\min} - p\\,\\delta,\\;</span>
+<span class="sd">            x_{\\min} - (p-1)\\,\\delta,\\;</span>
+<span class="sd">            \\ldots,\\;</span>
+<span class="sd">            x_{\\max} + p\\,\\delta</span>
+<span class="sd">        \\bigr]</span>
+
+<span class="sd">    so that the spline has support over :math:`[x_{\\min}, x_{\\max}]`.</span>
+
+<span class="sd">    The approximated curve is:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \\hat{y}(x) = B(x)\\,\\mathbf{c}</span>
+
+<span class="sd">    where :math:`B(x)` is the basis matrix and :math:`\\mathbf{c}` the</span>
+<span class="sd">    coefficient vector.</span>
+
+<span class="sd">    :param coeffs: B-spline coefficient vector :math:`\\mathbf{c}`.</span>
+<span class="sd">    :type coeffs: numpy.ndarray</span>
+<span class="sd">    :param x: Evaluation points.</span>
+<span class="sd">    :type x: array-like</span>
+<span class="sd">    :param degree: Spline degree :math:`p`.</span>
+<span class="sd">    :type degree: int</span>
+<span class="sd">    :param m: Number of equally-spaced internal knot intervals.</span>
+<span class="sd">        Internal knots do **not** include :math:`x_{\\min}` or</span>
+<span class="sd">        :math:`x_{\\max}`.</span>
+<span class="sd">    :type m: int</span>
+<span class="sd">    :param xmin: Left boundary of the spline domain.</span>
+<span class="sd">    :type xmin: float</span>
+<span class="sd">    :param xmax: Right boundary of the spline domain.</span>
+<span class="sd">    :type xmax: float</span>
+<span class="sd">    :returns: Tuple ``(yhat, all_knots, B)`` where</span>
+
+<span class="sd">        * ``yhat``      — approximated values at *x*, shape ``(len(x),)``.</span>
+<span class="sd">        * ``all_knots`` — full knot vector used.</span>
+<span class="sd">        * ``B``         — basis matrix of shape ``(len(x), n_basis)``.</span>
+
+<span class="sd">    :rtype: tuple(numpy.ndarray, numpy.ndarray, numpy.ndarray)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dx</span> <span class="o">=</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span><span class="p">)</span> <span class="o">/</span> <span class="n">m</span>
+    <span class="n">all_knots</span> <span class="o">=</span> <span class="n">xmin</span> <span class="o">-</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">degree</span> <span class="o">+</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">degree</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">B</span>    <span class="o">=</span> <span class="n">basis_matrix_from_knots</span><span class="p">(</span><span class="n">all_knots</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">yhat</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">coeffs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">yhat</span><span class="p">,</span> <span class="n">all_knots</span><span class="p">,</span> <span class="n">B</span></div>
+
+
+
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+<span class="c1"># SCIPY-BASED B-SPLINE CONSTRUCTION</span>
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+
+<div class="viewcode-block" id="make_bspline_basis">
+<a class="viewcode-back" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.make_bspline_basis">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_bspline_basis</span><span class="p">(</span><span class="n">xv</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">n_knots</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build the B-spline basis matrix using ``scipy.interpolate.BSpline``.</span>
+
+<span class="sd">    The **full knot vector** follows the scipy convention:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \\mathbf{t} =</span>
+<span class="sd">        \\underbrace{x_{\\min},\\,\\ldots,\\,x_{\\min}}_{p},\\;</span>
+<span class="sd">        t_1,\\,\\ldots,\\,t_{n_{\\text{knots}}},\\;</span>
+<span class="sd">        \\underbrace{x_{\\max},\\,\\ldots,\\,x_{\\max}}_{p}</span>
+
+<span class="sd">    where :math:`t_1, \\ldots, t_{n_{\\text{knots}}}` are equally spaced</span>
+<span class="sd">    internal knots (including the boundary values).</span>
+
+<span class="sd">    The number of basis functions is:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        n_{\\text{basis}} = n_{\\text{knots}} + p - 1</span>
+
+<span class="sd">    The basis matrix entry :math:`B[i,j]` is the value of the :math:`j`-th</span>
+<span class="sd">    basis function at the :math:`i`-th evaluation point:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        B[i,\\, j] = B_{j,\\, p}(x_i)</span>
+
+<span class="sd">    :param xv: Evaluation points (e.g. ages 0 to 82).</span>
+<span class="sd">    :type xv: array-like</span>
+<span class="sd">    :param degree: Spline degree :math:`p`.</span>
+<span class="sd">    :type degree: int</span>
+<span class="sd">    :param n_knots: Number of internal knots, including the two boundary</span>
+<span class="sd">        knots :math:`x_{\\min}` and :math:`x_{\\max}`.</span>
+<span class="sd">    :type n_knots: int</span>
+<span class="sd">    :param xmin: Left boundary of the spline domain (default: ``min(xv)``).</span>
+<span class="sd">    :type xmin: float, optional</span>
+<span class="sd">    :param xmax: Right boundary of the spline domain (default: ``max(xv)``).</span>
+<span class="sd">    :type xmax: float, optional</span>
+<span class="sd">    :returns: Tuple ``(B, knots, n_basis)`` where</span>
+
+<span class="sd">        * ``B``       — basis matrix of shape ``(len(xv), n_basis)``.</span>
+<span class="sd">        * ``knots``   — full knot vector.</span>
+<span class="sd">        * ``n_basis`` — number of basis functions.</span>
+
+<span class="sd">    :rtype: tuple(numpy.ndarray, numpy.ndarray, int)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Values outside the support :math:`[x_{\\min}, x_{\\max}]` are set to 0</span>
+<span class="sd">    (NaN produced by ``extrapolate=False`` are replaced).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        ages   = np.arange(0, 83)</span>
+<span class="sd">        B, t, n = make_bspline_basis(ages, degree=3, n_knots=10)</span>
+<span class="sd">        # B.shape == (83, 12)   since n_basis = 10 + 3 - 1 = 12</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">xmin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xmin</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">xv</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">xmax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xmax</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">xv</span><span class="p">))</span>
+
+    <span class="c1"># Equally spaced internal knots (boundary values included)</span>
+    <span class="n">internal_knots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">n_knots</span><span class="p">)</span>
+
+    <span class="c1"># Full knot vector with boundary multiplicity (scipy convention)</span>
+    <span class="n">knots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
+        <span class="p">[</span><span class="n">xmin</span><span class="p">]</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>        <span class="c1"># left boundary repetition</span>
+        <span class="n">internal_knots</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">xmax</span><span class="p">]</span> <span class="o">*</span> <span class="n">degree</span>         <span class="c1"># right boundary repetition</span>
+    <span class="p">])</span>
+
+    <span class="n">n_basis</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">knots</span><span class="p">)</span> <span class="o">-</span> <span class="n">degree</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="c1"># Build the basis matrix column by column</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">xv</span><span class="p">),</span> <span class="n">n_basis</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_basis</span><span class="p">):</span>
+        <span class="c1"># Basis function i: coefficient vector is the i-th standard basis vector</span>
+        <span class="n">coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_basis</span><span class="p">)</span>
+        <span class="n">coef</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="n">spline</span>   <span class="o">=</span> <span class="n">BSpline</span><span class="p">(</span><span class="n">knots</span><span class="p">,</span> <span class="n">coef</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">extrapolate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">B</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>  <span class="o">=</span> <span class="n">spline</span><span class="p">(</span><span class="n">xv</span><span class="p">)</span>
+
+    <span class="c1"># Replace NaN values with 0 (points outside the support)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">B</span><span class="p">,</span> <span class="n">knots</span><span class="p">,</span> <span class="n">n_basis</span></div>
+
+
+
+<div class="viewcode-block" id="eval_bspline_from_coef">
+<a class="viewcode-back" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.eval_bspline_from_coef">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">eval_bspline_from_coef</span><span class="p">(</span><span class="n">coef</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">knots</span><span class="p">,</span> <span class="n">degree</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate a B-spline curve from its coefficient vector.</span>
+
+<span class="sd">    Given coefficients :math:`\\mathbf{c} = (c_0, \\ldots, c_{n-1})` and a</span>
+<span class="sd">    full knot vector :math:`\\mathbf{t}`, the curve is:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        S(x) = \\sum_{i=0}^{n-1} c_i\\, B_{i,p}(x)</span>
+
+<span class="sd">    :param coef: B-spline coefficient vector :math:`\\mathbf{c}`, length</span>
+<span class="sd">        equal to ``len(knots) - degree - 1``.</span>
+<span class="sd">    :type coef: numpy.ndarray</span>
+<span class="sd">    :param xv: Evaluation points.</span>
+<span class="sd">    :type xv: array-like</span>
+<span class="sd">    :param knots: Full knot vector :math:`\\mathbf{t}` (with boundary</span>
+<span class="sd">        multiplicity).</span>
+<span class="sd">    :type knots: array-like</span>
+<span class="sd">    :param degree: Spline degree :math:`p`.</span>
+<span class="sd">    :type degree: int</span>
+<span class="sd">    :returns: Curve values :math:`S(x_i)` at each point in *xv*, shape</span>
+<span class="sd">        ``(len(xv),)``. Points outside the support return 0.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        B, knots, n = make_bspline_basis(ages, degree=3, n_knots=10)</span>
+<span class="sd">        coef = np.linalg.lstsq(B, y_obs, rcond=None)[0]</span>
+<span class="sd">        y_fit = eval_bspline_from_coef(coef, ages, knots, degree=3)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">spline</span> <span class="o">=</span> <span class="n">BSpline</span><span class="p">(</span><span class="n">knots</span><span class="p">,</span> <span class="n">coef</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">extrapolate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">y</span>      <span class="o">=</span> <span class="n">spline</span><span class="p">(</span><span class="n">xv</span><span class="p">)</span>
+
+    <span class="c1"># Replace NaN (outside support) with 0</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Innovation Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

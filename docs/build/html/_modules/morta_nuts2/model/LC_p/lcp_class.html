@@ -1,0 +1,1096 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>morta_nuts2.model.LC_p.lcp_class &mdash; morta_nuts2 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            morta_nuts2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Data:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/data/eurostat.html">Eurostat API Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#eurostat-py-eurostat-data-manager">eurostat.py - Eurostat Data Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig"><code class="docutils literal notranslate"><span class="pre">EurostatConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_SHAPEFILE_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_DATA_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DATASETS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.EXCLUDE_REGIONS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#id0"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#id1"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#id2"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#id3"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_shapefile"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_data_path"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_data_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.register_dataset"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.register_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data"><code class="docutils literal notranslate"><span class="pre">Eurostat_data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.shapefile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.set_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.register_dataset"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.register_dataset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load_all"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.pivot_age_year"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.pivot_age_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.get_regions"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.filter_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.parse_age"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.parse_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.add_exclusion"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.add_exclusion()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.list_datasets"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.list_datasets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.cache_info"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.cache_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.clear_cache"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.stats"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.load_mxt_raw"><code class="docutils literal notranslate"><span class="pre">load_mxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.load_dxt_raw"><code class="docutils literal notranslate"><span class="pre">load_dxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.load_lxt_raw"><code class="docutils literal notranslate"><span class="pre">load_lxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.age_year_pivot_table"><code class="docutils literal notranslate"><span class="pre">age_year_pivot_table()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">filter_shapefile()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/eurostat.html#morta_nuts2.data.eurostat.parse_age"><code class="docutils literal notranslate"><span class="pre">parse_age()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/data/mortality_table.html">Mortality Table</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#id1">mortality_table</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#main-features">Main features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#typical-workflow">Typical workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig"><code class="docutils literal notranslate"><span class="pre">MortalityConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_max"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_max</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_anomalies</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.fill_value"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.fill_value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.n_jobs"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.n_jobs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.enable_cache"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.enable_cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.cache_dir"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.cache_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.validate_data"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.validate_data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.correct_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.correct_anomalies</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator"><code class="docutils literal notranslate"><span class="pre">DataValidator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_dataframe"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_mortality_data"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_mortality_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager"><code class="docutils literal notranslate"><span class="pre">CacheManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.get"><code class="docutils literal notranslate"><span class="pre">CacheManager.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.set"><code class="docutils literal notranslate"><span class="pre">CacheManager.set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.clear"><code class="docutils literal notranslate"><span class="pre">CacheManager.clear()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.timing_decorator"><code class="docutils literal notranslate"><span class="pre">timing_decorator()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.DEFAULT_SHAPEFILE"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.DEFAULT_SHAPEFILE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.FRANCE_OUTREMER"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.FRANCE_OUTREMER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.__init__"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.set_shapefile"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_regions"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.validate_input_data"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.validate_input_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.calculate_mortality"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.calculate_mortality()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.export_results"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.export_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_statistics"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_statistics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.clear_cache"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.summary"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">mortality_by_region()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">build_input_from_dataframe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Models:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/model/bsplines.html">B-Splines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#bsplines">Bsplines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/bsplines.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/bsplines.html#knot-vector-convention-scipy">Knot vector convention (scipy)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/bsplines.html#finite-difference-penalty-p-splines">Finite difference penalty (P-splines)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/bsplines.html#visual-illustration">Visual illustration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.difference_matrix"><code class="docutils literal notranslate"><span class="pre">difference_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.plot_Bsplines"><code class="docutils literal notranslate"><span class="pre">plot_Bsplines()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.basis_matrix_from_knots"><code class="docutils literal notranslate"><span class="pre">basis_matrix_from_knots()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.Bspline_approx"><code class="docutils literal notranslate"><span class="pre">Bspline_approx()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.make_bspline_basis"><code class="docutils literal notranslate"><span class="pre">make_bspline_basis()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.eval_bspline_from_coef"><code class="docutils literal notranslate"><span class="pre">eval_bspline_from_coef()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/model/lcp.html">Lee-Carter Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/lcp.html#lee-carter-object-oriented-architecture">Lee-Carter — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter"><code class="docutils literal notranslate"><span class="pre">LeeCarter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LeeCarter.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LeeCarter.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_ax_coef"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_ax_coef()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_kappa"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_kappa()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LeeCarter.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">LeeCarter.build_input_from_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric.National"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric.National</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/model/llp.html">Lee &amp; Li Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/llp.html#lilee-object-oriented-architecture">LiLee — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee"><code class="docutils literal notranslate"><span class="pre">LiLee</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LiLee.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block"><code class="docutils literal notranslate"><span class="pre">LiLee.effective_dof_spline_block()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LiLee.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.difference_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.difference_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.FullModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.Variant</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/model/param_init.html">Parameter Initialization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_bspline_init"><code class="docutils literal notranslate"><span class="pre">lcp_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lileep_bspline_init"><code class="docutils literal notranslate"><span class="pre">lileep_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_parametrique_init_national"><code class="docutils literal notranslate"><span class="pre">lcp_parametrique_init_national()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/model/projection.html">Mortality Projection Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#projection">Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.kannisto_log_mu"><code class="docutils literal notranslate"><span class="pre">kannisto_log_mu()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy.compute"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator.extrapolate"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator.extrapolate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.concat_logmu_time"><code class="docutils literal notranslate"><span class="pre">concat_logmu_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.Annuity_pricing"><code class="docutils literal notranslate"><span class="pre">Annuity_pricing()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/model/projection.html#morta_nuts2.model.projection.project_class.compute_mae"><code class="docutils literal notranslate"><span class="pre">compute_mae()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/visualisation/plot_class.html">Plot Class</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#id1">plot_class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.SHAPEF_PATH"><code class="docutils literal notranslate"><span class="pre">SHAPEF_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries"><code class="docutils literal notranslate"><span class="pre">ExtraSeries</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.data"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.label"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.label</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.position"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.position</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.style"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.style</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.save"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter"><code class="docutils literal notranslate"><span class="pre">MapPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_single_year"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_single_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_years"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_years()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_static"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_static()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.save"><code class="docutils literal notranslate"><span class="pre">MapPlotter.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_models"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_models()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats"><code class="docutils literal notranslate"><span class="pre">RegionalStats</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats.compute"><code class="docutils literal notranslate"><span class="pre">RegionalStats.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.plot"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.save"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.plot"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.save"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.save()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">morta_nuts2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">morta_nuts2.model.LC_p.lcp_class</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for morta_nuts2.model.LC_p.lcp_class</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Lee-Carter — Object-oriented architecture</span>
+<span class="sd">===============================================================</span>
+
+
+<span class="sd">Class hierarchy ::</span>
+
+<span class="sd">    LeeCarter                                  ← general base class</span>
+<span class="sd">    ├── LeeCarter.Parametric                   ← parametric Lee-Carter (B-splines + P-splines)</span>
+<span class="sd">    │   └── LeeCarter.Parametric.National      ← β_x shared across all regions</span>
+<span class="sd">    └── LeeCarter.Classic                      ← classic Lee-Carter (gradient descent)</span>
+
+<span class="sd">USAGE ::</span>
+
+<span class="sd">    # National parametric model</span>
+<span class="sd">    model = LeeCarter.Parametric.National(n_knots=10, lam=0.1)</span>
+<span class="sd">    results = model.fit(ax_coef_init, bx_coef_init, kappa_init, Extg, Dxtg, xv, tv)</span>
+
+<span class="sd">    # Classic model</span>
+<span class="sd">    model = LeeCarter.Classic(nb_iter=500)</span>
+<span class="sd">    results = model.fit(ax, bx, kappa, Extg, Dxtg, xv, tv)</span>
+
+<span class="sd">    </span>
+
+<span class="sd">USES STANDARD PYTHON LIBRARIES ::</span>
+
+<span class="sd">  ✓ scipy.interpolate.BSpline         — B-spline construction</span>
+<span class="sd">  ✓ scipy.interpolate.make_lsq_spline — least squares fit</span>
+<span class="sd">  ✓ scipy.special.gammaln             — log-factorial</span>
+<span class="sd">  ✓ scipy.linalg                      — linear algebra</span>
+<span class="sd">  ✓ numpy                             — matrix computation</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">))</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">BSpline</span><span class="p">,</span> <span class="n">make_lsq_spline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">gammaln</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">lstsq</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">morta_nuts2.model.Bsplines.Bsplines</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_bspline_basis</span><span class="p">,</span> <span class="n">eval_bspline_from_coef</span>
+
+
+<span class="c1"># =============================================================================</span>
+<span class="c1"># BASE CLASS — LeeCarter</span>
+<span class="c1"># Contains :</span>
+<span class="c1">#   - shared static methods (penalty matrix, log-likelihood, fit stats...)</span>
+<span class="c1">#   - nested sub-classes : Parametric and Classic</span>
+<span class="c1"># =============================================================================</span>
+
+<div class="viewcode-block" id="LeeCarter">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LeeCarter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    General Lee-Carter class.</span>
+
+<span class="sd">    Groups together :</span>
+<span class="sd">      - shared mathematical tools (static methods)</span>
+<span class="sd">      - the two main model families as nested sub-classes :</span>
+<span class="sd">          · LeeCarter.Parametric   (B-splines, P-splines)</span>
+<span class="sd">          · LeeCarter.Classic      (non-parametric, gradient descent)</span>
+
+<span class="sd">    Quick usage example</span>
+<span class="sd">    -------------------</span>
+<span class="sd">    &gt;&gt;&gt; model = LeeCarter.Parametric.National(n_knots=10, lam=0.1, verbose=True)</span>
+<span class="sd">    &gt;&gt;&gt; results = model.fit(ax0, bx0, kappa0, Extg, Dxtg, xv, tv)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># =========================================================================</span>
+    <span class="c1"># SHARED STATIC METHODS</span>
+    <span class="c1"># =========================================================================</span>
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># 2. P-SPLINES PENALTY MATRIX — numpy</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="LeeCarter.make_penalty_matrix">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.make_penalty_matrix">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_penalty_matrix</span><span class="p">(</span><span class="n">n_basis</span><span class="p">,</span> <span class="n">diff_order</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build the **P-spline penalty matrix** :math:`D^T D`.</span>
+
+<span class="sd">        The penalty matrix is constructed from a finite difference operator</span>
+<span class="sd">        applied to the spline coefficients. It is used to enforce smoothness</span>
+<span class="sd">        in the spline representation.</span>
+
+<span class="sd">        The penalization term is:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            P(c) = \\lambda \\, c^T (D^T D) c</span>
+
+<span class="sd">        where:</span>
+
+<span class="sd">        - :math:`c` are the spline coefficients</span>
+<span class="sd">        - :math:`D` is the finite difference matrix</span>
+<span class="sd">        - :math:`\\lambda` is the smoothing parameter</span>
+
+<span class="sd">        The matrix :math:`D` approximates discrete derivatives of the spline</span>
+<span class="sd">        coefficients and is constructed using ``numpy.diff``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n_basis : int</span>
+<span class="sd">            Number of spline basis functions.</span>
+
+<span class="sd">        diff_order : int</span>
+<span class="sd">            Order of the finite difference operator.</span>
+
+<span class="sd">            - ``1`` → first-order differences (penalizes slope changes)</span>
+<span class="sd">            - ``2`` → second-order differences (penalizes curvature)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DtD : numpy.ndarray of shape (n_basis, n_basis)</span>
+<span class="sd">            Quadratic penalty matrix used in the penalized likelihood.</span>
+
+<span class="sd">        diag_DtD : numpy.ndarray of shape (n_basis,)</span>
+<span class="sd">            Diagonal of :math:`D^T D`, often used for Hessian approximation</span>
+<span class="sd">            or diagonal preconditioning.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This matrix is used in the penalized likelihood:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \\ell_p(\\theta) = \\ell(\\theta) - \\lambda c^T D^T D c</span>
+
+<span class="sd">        which controls the smoothness of the spline coefficients.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Difference matrix of order diff_order</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n_basis</span><span class="p">),</span> <span class="n">n</span><span class="o">=</span><span class="n">diff_order</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">DtD</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">D</span>
+        <span class="k">return</span> <span class="n">DtD</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">DtD</span><span class="p">)</span></div>
+
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># 4. POISSON LOG-LIKELIHOOD — scipy.special.gammaln</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="LeeCarter.poisson_lnL">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.poisson_lnL">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">poisson_lnL</span><span class="p">(</span><span class="n">Dxtg</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">logmu</span><span class="p">,</span> <span class="n">logDxtgFact</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Poisson log-likelihood (equation 2 of the paper).</span>
+<span class="sd">        Uses scipy.special.gammaln for log(D!).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">exp_logmu</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmu</span><span class="p">)</span>
+        <span class="n">weighted_exp</span> <span class="o">=</span> <span class="n">Extg</span> <span class="o">*</span> <span class="n">exp_logmu</span>
+        <span class="n">residual</span>     <span class="o">=</span> <span class="n">Dxtg</span> <span class="o">-</span> <span class="n">weighted_exp</span>
+        <span class="n">lnL</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+            <span class="n">Dxtg</span> <span class="o">*</span> <span class="n">logmu</span> <span class="o">-</span> <span class="n">weighted_exp</span> <span class="o">+</span> <span class="n">Dxtg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Extg</span><span class="p">)</span> <span class="o">-</span> <span class="n">logDxtgFact</span>
+        <span class="p">))</span>
+        <span class="k">return</span> <span class="n">lnL</span><span class="p">,</span> <span class="n">exp_logmu</span><span class="p">,</span> <span class="n">weighted_exp</span><span class="p">,</span> <span class="n">residual</span></div>
+
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># 5. NR UPDATE — ax_coef (shared by both parametric variants)</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="LeeCarter.update_ax_coef">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_ax_coef">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_ax_coef</span><span class="p">(</span><span class="n">ax_coef</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">residual</span><span class="p">,</span> <span class="n">weighted_exp</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">lam</span><span class="p">,</span> <span class="n">DtD</span><span class="p">,</span> <span class="n">diag_DtD</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;NR update of B-spline coefficients of α_x.&quot;&quot;&quot;</span>
+        <span class="n">n_basis</span>      <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ax_coef</span><span class="p">)</span>
+        <span class="n">ax_coef_new</span>  <span class="o">=</span> <span class="n">ax_coef</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">pen_grad</span>     <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">lam</span> <span class="o">*</span> <span class="p">(</span><span class="n">DtD</span> <span class="o">@</span> <span class="n">ax_coef</span><span class="p">)</span> <span class="k">if</span> <span class="n">lam</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_basis</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_basis</span><span class="p">):</span>
+            <span class="n">Bj3d</span> <span class="o">=</span> <span class="n">B</span><span class="p">[:,</span> <span class="n">j</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+            <span class="n">num</span>  <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residual</span>    <span class="o">*</span> <span class="n">Bj3d</span><span class="p">))</span> <span class="o">-</span> <span class="n">pen_grad</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">den</span>  <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weighted_exp</span> <span class="o">*</span> <span class="n">Bj3d</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">lam</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">den</span> <span class="o">+=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">diag_DtD</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">den</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">ax_coef_new</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">num</span> <span class="o">/</span> <span class="n">den</span>
+        <span class="k">return</span> <span class="n">ax_coef_new</span></div>
+
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># 5. NR UPDATE — kappa (shared by both parametric variants)</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="LeeCarter.update_kappa">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_kappa">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_kappa</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">bx_reg</span><span class="p">,</span> <span class="n">residual</span><span class="p">,</span> <span class="n">weighted_exp</span><span class="p">,</span> <span class="n">eta</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;NR update of κ_t.&quot;&quot;&quot;</span>
+        <span class="n">bx3d</span>  <span class="o">=</span> <span class="n">bx_reg</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">num_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residual</span>    <span class="o">*</span> <span class="n">bx3d</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">den_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weighted_exp</span> <span class="o">*</span> <span class="n">bx3d</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">kappa_new</span>       <span class="o">=</span> <span class="n">kappa</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">mask</span>            <span class="o">=</span> <span class="n">den_k</span> <span class="o">!=</span> <span class="mi">0</span>
+        <span class="n">kappa_new</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">+=</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">num_k</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">/</span> <span class="n">den_k</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">kappa_new</span></div>
+
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># 7. FIT STATISTICS — numpy</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="LeeCarter.compute_fit_stats">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.compute_fit_stats">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_fit_stats</span><span class="p">(</span><span class="n">Dxtg</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">logmu</span><span class="p">,</span> <span class="n">logDxtgFact</span><span class="p">,</span> <span class="n">n_basis</span><span class="p">,</span> <span class="n">nb_years</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">,</span>
+                          <span class="n">lam</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">DtD</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">weighted_exp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes Poisson deviance, AIC, BIC.</span>
+
+<span class="sd">        When lam &gt; 0 and B, DtD, weighted_exp are provided, the effective</span>
+<span class="sd">        degrees of freedom (edf) are used instead of the nominal n_basis,</span>
+<span class="sd">        so that AIC/BIC correctly penalize the P-spline smoothing.</span>
+
+<span class="sd">        Effective dofs per spline component:</span>
+<span class="sd">            edf = trace( B (B^T W B + 2λ D^T D)^{-1} B^T W )</span>
+<span class="sd">        where W = diag(weighted_exp summed over t and g).</span>
+
+<span class="sd">        dofs_mod = edf_ax + edf_bx + nb_years</span>
+<span class="sd">                   ↑ α_x    ↑ β_x    ↑ κ_t (unpenalized)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">exp_logmu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmu</span><span class="p">)</span>
+        <span class="n">lnL</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+            <span class="n">Dxtg</span> <span class="o">*</span> <span class="n">logmu</span> <span class="o">-</span> <span class="n">Extg</span> <span class="o">*</span> <span class="n">exp_logmu</span> <span class="o">+</span> <span class="n">Dxtg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Extg</span><span class="p">)</span> <span class="o">-</span> <span class="n">logDxtgFact</span>
+        <span class="p">))</span>
+
+        <span class="c1"># Poisson deviance</span>
+        <span class="n">safe_Dxtg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Dxtg</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Dxtg</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">lnL_sat</span>   <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">Dxtg</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">Dxtg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">safe_Dxtg</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">Extg</span><span class="p">,</span> <span class="mf">1e-12</span><span class="p">))</span> <span class="o">-</span> <span class="n">Dxtg</span><span class="p">,</span>
+            <span class="mf">0.0</span>
+        <span class="p">)))</span>
+        <span class="n">deviance</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">lnL_sat</span> <span class="o">-</span> <span class="n">lnL</span><span class="p">)</span>
+
+        <span class="n">nb_obs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Dxtg</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+        <span class="c1"># ------------------------------------------------------------------</span>
+        <span class="c1"># Effective degrees of freedom (edf) when penalization is active</span>
+        <span class="c1"># ------------------------------------------------------------------</span>
+        <span class="k">if</span> <span class="n">lam</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">B</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">DtD</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">weighted_exp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Weight vector: sum weighted_exp over years and regions → (nb_ages,)</span>
+            <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weighted_exp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="k">if</span> <span class="n">weighted_exp</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span> \
+                <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weighted_exp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">BtWB</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">W</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">B</span><span class="p">)</span>                    <span class="c1"># (n_basis, n_basis)</span>
+            <span class="n">A</span>    <span class="o">=</span> <span class="n">BtWB</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">DtD</span>                    <span class="c1"># penalized info matrix</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">A_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span><span class="p">:</span>
+                <span class="n">A_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+
+            <span class="c1"># trace(H) = trace(B A^{-1} B^T W) = sum_i [B A^{-1} B^T]_ii * W_i</span>
+            <span class="n">BA_inv</span>  <span class="o">=</span> <span class="n">B</span> <span class="o">@</span> <span class="n">A_inv</span>                               <span class="c1"># (nb_ages, n_basis)</span>
+            <span class="n">H_diag</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,ij-&gt;i&#39;</span><span class="p">,</span> <span class="n">BA_inv</span><span class="p">,</span> <span class="n">W</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">B</span><span class="p">)</span>
+            <span class="n">edf</span>     <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">H_diag</span><span class="p">))</span>
+
+            <span class="c1"># α_x and β_x share the same basis B and penalty → edf counted twice</span>
+            <span class="n">edf_ax</span>   <span class="o">=</span> <span class="n">edf</span>
+            <span class="n">edf_bx</span>   <span class="o">=</span> <span class="n">edf</span>
+            <span class="n">dofs_mod</span> <span class="o">=</span> <span class="n">edf_ax</span> <span class="o">+</span> <span class="n">edf_bx</span> <span class="o">+</span> <span class="n">nb_years</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># lam = 0 : no penalization → nominal dofs</span>
+            <span class="n">dofs_mod</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">n_basis</span> <span class="o">+</span> <span class="n">nb_years</span>
+
+        <span class="n">AIC</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">dofs_mod</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">lnL</span>
+        <span class="n">BIC</span> <span class="o">=</span> <span class="n">dofs_mod</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">nb_obs</span><span class="p">)</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">lnL</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="p">[[</span><span class="n">nb_obs</span><span class="p">,</span> <span class="n">n_basis</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">dofs_mod</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+              <span class="nb">round</span><span class="p">(</span><span class="n">lnL</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">deviance</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">AIC</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">BIC</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]],</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;n_basis&quot;</span><span class="p">,</span> <span class="s2">&quot;dofs&quot;</span><span class="p">,</span> <span class="s2">&quot;lnL&quot;</span><span class="p">,</span> <span class="s2">&quot;deviance&quot;</span><span class="p">,</span> <span class="s2">&quot;AIC&quot;</span><span class="p">,</span> <span class="s2">&quot;BIC&quot;</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># UTILITY — build input matrices from a long-format DataFrame</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="LeeCarter.build_input_from_dataframe">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.build_input_from_dataframe">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_input_from_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transforms a long DataFrame into 3D matrices compatible with .fit().</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : DataFrame with columns</span>
+<span class="sd">             [&#39;region&#39;, &#39;year&#39;, &#39;age&#39;, &#39;deaths&#39;, &#39;exposure&#39;, &#39;mortality_rate&#39;]</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        --------</span>
+<span class="sd">        Muxtg   : (nb_ages, nb_years, nb_regions)</span>
+<span class="sd">        Dxtg    : (nb_ages, nb_years, nb_regions)</span>
+<span class="sd">        Extg    : (nb_ages, nb_years, nb_regions)</span>
+<span class="sd">        xv      : sorted age vector</span>
+<span class="sd">        tv      : sorted year vector</span>
+<span class="sd">        regions : list of regions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Sort for safety</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;region&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="n">xv</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+        <span class="n">tv</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+        <span class="n">regions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;region&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+
+        <span class="n">nb_ages</span>    <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xv</span><span class="p">)</span>
+        <span class="n">nb_years</span>   <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tv</span><span class="p">)</span>
+        <span class="n">nb_regions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">)</span>
+
+        <span class="c1"># Index mapping</span>
+        <span class="n">age_idx</span>  <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xv</span><span class="p">)}</span>
+        <span class="n">year_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">y</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tv</span><span class="p">)}</span>
+        <span class="n">reg_idx</span>  <span class="o">=</span> <span class="p">{</span><span class="n">r</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">regions</span><span class="p">)}</span>
+
+        <span class="c1"># Allocation</span>
+        <span class="n">Dxtg</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nb_ages</span><span class="p">,</span> <span class="n">nb_years</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">))</span>
+        <span class="n">Extg</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">Dxtg</span><span class="p">)</span>
+        <span class="n">Muxtg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">Dxtg</span><span class="p">)</span>
+
+        <span class="c1"># Vectorization without triple loop</span>
+        <span class="n">Dxtg</span><span class="p">[</span> <span class="n">df</span><span class="o">.</span><span class="n">age</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">age_idx</span><span class="p">),</span> <span class="n">df</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">year_idx</span><span class="p">),</span> <span class="n">df</span><span class="o">.</span><span class="n">region</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">reg_idx</span><span class="p">)]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">deaths</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">Extg</span><span class="p">[</span> <span class="n">df</span><span class="o">.</span><span class="n">age</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">age_idx</span><span class="p">),</span> <span class="n">df</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">year_idx</span><span class="p">),</span> <span class="n">df</span><span class="o">.</span><span class="n">region</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">reg_idx</span><span class="p">)]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">exposure</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">Muxtg</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">age</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">age_idx</span><span class="p">),</span> <span class="n">df</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">year_idx</span><span class="p">),</span> <span class="n">df</span><span class="o">.</span><span class="n">region</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">reg_idx</span><span class="p">)]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mortality_rate</span><span class="o">.</span><span class="n">values</span>
+
+        <span class="c1"># Numerical safety</span>
+        <span class="n">Extg</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">Extg</span><span class="p">,</span> <span class="mf">1e-12</span><span class="p">)</span>
+        <span class="n">Dxtg</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">Dxtg</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Muxtg</span><span class="p">,</span> <span class="n">Dxtg</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">regions</span></div>
+
+
+
+    <span class="c1"># =========================================================================</span>
+    <span class="c1"># SUB-CLASS : Parametric</span>
+    <span class="c1"># Parametric Lee-Carter with B-splines + P-splines (national variant only)</span>
+    <span class="c1"># NOTE : the multi-region variant (Lee &amp; Li) has been moved to llp_class.py</span>
+    <span class="c1"># =========================================================================</span>
+
+<div class="viewcode-block" id="LeeCarter.Parametric">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Parametric</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parametric Lee–Carter model using B-splines — national variant.</span>
+
+<span class="sd">        The mortality intensity is modeled as:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \\ln(\\mu_{x,t,g}) = \\alpha_x + \\beta_x \\cdot \\kappa_t</span>
+
+<span class="sd">        where :math:`\\beta_x` is **common to all regions** (no ``g`` dimension).</span>
+
+<span class="sd">        Age effects are represented using **B-spline basis functions** in order</span>
+<span class="sd">        to obtain smooth age profiles.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The multi-region variant (β_{x,g} per region), which corresponds to</span>
+<span class="sd">        the Lee &amp; Li model, has been moved to ``llp_class.py → LeeAndLi``.</span>
+
+<span class="sd">        The spline representation allows flexible modeling of age patterns</span>
+<span class="sd">        while controlling smoothness through a penalization term (P-splines).</span>
+
+<span class="sd">        This approach improves stability compared to the classical</span>
+<span class="sd">        Lee–Carter model when mortality data are sparse or noisy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># ---------------------------------------------------------------------</span>
+        <span class="c1"># NATIONAL VARIANT</span>
+        <span class="c1"># ---------------------------------------------------------------------</span>
+<div class="viewcode-block" id="LeeCarter.Parametric.National">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric.National">[docs]</a>
+        <span class="k">class</span><span class="w"> </span><span class="nc">National</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Parametric Lee-Carter — national variant.</span>
+<span class="sd">            β_x is common to all regions (no g dimension).</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            degree     : int   B-spline degree</span>
+<span class="sd">            n_knots    : int   number of internal knots</span>
+<span class="sd">            xmin/xmax  : float age bounds (inferred from data if None)</span>
+<span class="sd">            lam        : float P-splines penalty</span>
+<span class="sd">            diff_order : int   penalty difference order</span>
+<span class="sd">            nb_iter    : int   max iterations</span>
+<span class="sd">            eta0       : float initial learning rate</span>
+<span class="sd">            tol        : float convergence tolerance</span>
+<span class="sd">            verbose    : bool</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span>
+                <span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="n">n_knots</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                <span class="n">xmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">xmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">lam</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">diff_order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="n">nb_iter</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+                <span class="n">eta0</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">degree</span>     <span class="o">=</span> <span class="n">degree</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">n_knots</span>    <span class="o">=</span> <span class="n">n_knots</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">xmin</span>       <span class="o">=</span> <span class="n">xmin</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">xmax</span>       <span class="o">=</span> <span class="n">xmax</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lam</span>        <span class="o">=</span> <span class="n">lam</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">diff_order</span> <span class="o">=</span> <span class="n">diff_order</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nb_iter</span>    <span class="o">=</span> <span class="n">nb_iter</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">eta0</span>       <span class="o">=</span> <span class="n">eta0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tol</span>        <span class="o">=</span> <span class="n">tol</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>    <span class="o">=</span> <span class="n">verbose</span>
+
+            <span class="c1"># -----------------------------------------------------------------</span>
+            <span class="c1"># COMPUTE LOGMU — national version (common β_x)</span>
+            <span class="c1"># -----------------------------------------------------------------</span>
+<div class="viewcode-block" id="LeeCarter.Parametric.National.compute_logmu_national">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric.National.compute_logmu_national">[docs]</a>
+            <span class="nd">@staticmethod</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">compute_logmu_national</span><span class="p">(</span><span class="n">ax_coef</span><span class="p">,</span> <span class="n">bx_coef</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                ln(µ_{x,t,g}) = α_x + β_x · κ_t</span>
+<span class="sd">                β_x common to all regions.</span>
+
+<span class="sd">                Parameters</span>
+<span class="sd">                ----------</span>
+<span class="sd">                ax_coef : (n_basis,)</span>
+<span class="sd">                bx_coef : (n_basis,)      ← no region dimension</span>
+<span class="sd">                kappa   : (nb_years,)</span>
+<span class="sd">                xv      : (nb_ages,)</span>
+<span class="sd">                B       : (nb_ages, n_basis)</span>
+
+<span class="sd">                Returns</span>
+<span class="sd">                --------</span>
+<span class="sd">                logmu  : (nb_ages, nb_years, 1)   broadcast over g</span>
+<span class="sd">                ax     : (nb_ages,)</span>
+<span class="sd">                bx     : (nb_ages,)</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+                <span class="n">ax</span> <span class="o">=</span> <span class="n">B</span> <span class="o">@</span> <span class="n">ax_coef</span>   <span class="c1"># (nb_ages,)</span>
+                <span class="n">bx</span> <span class="o">=</span> <span class="n">B</span> <span class="o">@</span> <span class="n">bx_coef</span>   <span class="c1"># (nb_ages,)</span>
+
+                <span class="c1"># broadcast: no region dimension → identical for all g</span>
+                <span class="n">logmu</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">bx</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">kappa</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>   <span class="c1"># (nb_ages, nb_years)</span>
+                <span class="n">logmu</span> <span class="o">=</span> <span class="n">logmu</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span>  <span class="c1"># (nb_ages, nb_years, 1) → broadcast over nb_regions</span>
+
+                <span class="k">return</span> <span class="n">logmu</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">bx</span></div>
+
+
+            <span class="c1"># -----------------------------------------------------------------</span>
+            <span class="c1"># UPDATE BX — national version</span>
+            <span class="c1"># -----------------------------------------------------------------</span>
+<div class="viewcode-block" id="LeeCarter.Parametric.National.update_bx_coef_national">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric.National.update_bx_coef_national">[docs]</a>
+            <span class="nd">@staticmethod</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">update_bx_coef_national</span><span class="p">(</span><span class="n">bx_coef</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">residual</span><span class="p">,</span> <span class="n">weighted_exp</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">lam</span><span class="p">,</span> <span class="n">DtD</span><span class="p">,</span> <span class="n">diag_DtD</span><span class="p">):</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                NR update of β_x (common to all regions).</span>
+<span class="sd">                residual / weighted_exp: (nb_ages, nb_years, nb_regions)</span>
+<span class="sd">                Sum over regions to aggregate the gradient.</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+                <span class="n">n_basis</span>     <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bx_coef</span><span class="p">)</span>
+                <span class="n">nb_ages</span>     <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">bx_coef_new</span> <span class="o">=</span> <span class="n">bx_coef</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+                <span class="n">pen_grad</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">lam</span> <span class="o">*</span> <span class="p">(</span><span class="n">DtD</span> <span class="o">@</span> <span class="n">bx_coef</span><span class="p">)</span> <span class="k">if</span> <span class="n">lam</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_basis</span><span class="p">)</span>
+
+                <span class="c1"># κ_t repeated over age axis: (nb_ages, nb_years)</span>
+                <span class="n">kappaM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">kappa</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="p">(</span><span class="n">nb_ages</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">kappa</span><span class="p">)))</span>
+
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_basis</span><span class="p">):</span>
+                    <span class="c1"># B[:, j] * κ_t  →  (nb_ages, nb_years)</span>
+                    <span class="n">BjKappa</span> <span class="o">=</span> <span class="n">B</span><span class="p">[:,</span> <span class="n">j</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">kappaM</span>          <span class="c1"># (nb_ages, nb_years)</span>
+                    <span class="n">BjK3d</span>   <span class="o">=</span> <span class="n">BjKappa</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span>                <span class="c1"># (nb_ages, nb_years, 1) → broadcast over g</span>
+
+                    <span class="c1"># Sum over (ages, years, regions)</span>
+                    <span class="n">num</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residual</span>    <span class="o">*</span> <span class="n">BjK3d</span><span class="p">))</span> <span class="o">-</span> <span class="n">pen_grad</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                    <span class="n">den</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weighted_exp</span> <span class="o">*</span> <span class="n">BjK3d</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">lam</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">den</span> <span class="o">+=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">diag_DtD</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">den</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">bx_coef_new</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">num</span> <span class="o">/</span> <span class="n">den</span>
+
+                <span class="k">return</span> <span class="n">bx_coef_new</span></div>
+
+
+            <span class="c1"># -----------------------------------------------------------------</span>
+            <span class="c1"># RESCALING — national version</span>
+            <span class="c1"># -----------------------------------------------------------------</span>
+<div class="viewcode-block" id="LeeCarter.Parametric.National.rescale_bx_kappa_national">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric.National.rescale_bx_kappa_national">[docs]</a>
+            <span class="nd">@staticmethod</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">rescale_bx_kappa_national</span><span class="p">(</span><span class="n">bx_coef</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">kappa</span><span class="p">):</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;Normalization: Σ_x β_x = 1&quot;&quot;&quot;</span>
+                <span class="n">scal_factor</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">bx</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">scal_factor</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">bx_coef</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">kappa</span>
+                <span class="k">return</span> <span class="n">bx_coef</span> <span class="o">/</span> <span class="n">scal_factor</span><span class="p">,</span> <span class="n">bx</span> <span class="o">/</span> <span class="n">scal_factor</span><span class="p">,</span> <span class="n">kappa</span> <span class="o">*</span> <span class="n">scal_factor</span></div>
+
+
+            <span class="c1"># -----------------------------------------------------------------</span>
+            <span class="c1"># MAIN FITTING METHOD — national version</span>
+            <span class="c1"># -----------------------------------------------------------------</span>
+<div class="viewcode-block" id="LeeCarter.Parametric.National.fit">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric.National.fit">[docs]</a>
+            <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax_coef_init</span><span class="p">,</span> <span class="n">bx_coef_init</span><span class="p">,</span> <span class="n">kappa_init</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">Dxtg</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">):</span>
+                <span class="n">nb_years</span>   <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tv</span><span class="p">)</span>
+                <span class="n">nb_regions</span> <span class="o">=</span> <span class="n">Extg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+                <span class="n">xmin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmin</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">xv</span><span class="p">))</span>
+                <span class="n">xmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmax</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">xv</span><span class="p">))</span>
+
+                <span class="n">B</span><span class="p">,</span> <span class="n">knots</span><span class="p">,</span> <span class="n">n_basis</span> <span class="o">=</span> <span class="n">make_bspline_basis</span><span class="p">(</span><span class="n">xv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_knots</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ax_coef_init</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_basis</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ax_coef_init must have </span><span class="si">{</span><span class="n">n_basis</span><span class="si">}</span><span class="s2"> elements, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ax_coef_init</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bx_coef_init</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_basis</span><span class="p">:</span>                          <span class="c1"># ← 1D check</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;bx_coef_init must have </span><span class="si">{</span><span class="n">n_basis</span><span class="si">}</span><span class="s2"> elements, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">bx_coef_init</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                <span class="n">ax_coef</span> <span class="o">=</span> <span class="n">ax_coef_init</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">bx_coef</span> <span class="o">=</span> <span class="n">bx_coef_init</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>   <span class="c1"># (n_basis,)</span>
+                <span class="n">kappa</span>   <span class="o">=</span> <span class="n">kappa_init</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+                <span class="n">DtD</span><span class="p">,</span> <span class="n">diag_DtD</span> <span class="o">=</span> <span class="n">LeeCarter</span><span class="o">.</span><span class="n">make_penalty_matrix</span><span class="p">(</span><span class="n">n_basis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">diff_order</span><span class="p">)</span>
+                <span class="n">logDxtgFact</span>   <span class="o">=</span> <span class="n">gammaln</span><span class="p">(</span><span class="n">Dxtg</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+                <span class="n">lnL</span>       <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+                <span class="n">Delta_lnL</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="n">eta</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eta0</span>
+                <span class="n">it</span>        <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+                <span class="n">best_lnL</span>  <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+                <span class="n">patience</span>  <span class="o">=</span> <span class="mi">40</span>
+                <span class="n">min_delta</span> <span class="o">=</span> <span class="mf">1e-2</span>
+                <span class="n">wait</span>      <span class="o">=</span> <span class="mi">0</span>
+
+                <span class="c1"># Snapshots for rollback when a step degrades the likelihood</span>
+                <span class="n">ax_coef_prev</span> <span class="o">=</span> <span class="n">ax_coef</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">bx_coef_prev</span> <span class="o">=</span> <span class="n">bx_coef</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">kappa_prev</span>   <span class="o">=</span> <span class="n">kappa</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+                <span class="k">while</span> <span class="n">it</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_iter</span><span class="p">:</span>
+                    <span class="n">it</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                    <span class="c1"># Reconstruction — common β_x, broadcast over nb_regions</span>
+                    <span class="n">logmu</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">bx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_logmu_national</span><span class="p">(</span><span class="n">ax_coef</span><span class="p">,</span> <span class="n">bx_coef</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+
+                    <span class="c1"># Log-likelihood (logmu automatically broadcast over nb_regions)</span>
+                    <span class="n">lnL_new</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">weighted_exp</span><span class="p">,</span> <span class="n">residual</span> <span class="o">=</span> <span class="n">LeeCarter</span><span class="o">.</span><span class="n">poisson_lnL</span><span class="p">(</span>
+                        <span class="n">Dxtg</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">logmu</span><span class="p">,</span> <span class="n">logDxtgFact</span>
+                    <span class="p">)</span>
+
+                    <span class="n">Delta_lnL</span> <span class="o">=</span> <span class="n">lnL_new</span> <span class="o">-</span> <span class="n">lnL</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="ow">and</span> <span class="p">(</span><span class="n">it</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;It </span><span class="si">{</span><span class="n">it</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> | lnL = </span><span class="si">{</span><span class="n">lnL_new</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | Δ = </span><span class="si">{</span><span class="n">Delta_lnL</span><span class="si">:</span><span class="s2">+.6f</span><span class="si">}</span><span class="s2"> | η = </span><span class="si">{</span><span class="n">eta</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                    <span class="c1"># ----------------------------------------------------------</span>
+                    <span class="c1"># Step degraded the likelihood → rollback + shrink eta</span>
+                    <span class="c1"># Do NOT update parameters, retry from previous state</span>
+                    <span class="c1"># ----------------------------------------------------------</span>
+                    <span class="k">if</span> <span class="n">Delta_lnL</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">it</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">ax_coef</span> <span class="o">=</span> <span class="n">ax_coef_prev</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                        <span class="n">bx_coef</span> <span class="o">=</span> <span class="n">bx_coef_prev</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                        <span class="n">kappa</span>   <span class="o">=</span> <span class="n">kappa_prev</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                        <span class="n">eta</span>    <span class="o">*=</span> <span class="mf">0.5</span>
+                        <span class="k">continue</span>
+
+                    <span class="c1"># ----------------------------------------------------------</span>
+                    <span class="c1"># Convergence: only triggered on a genuine positive step</span>
+                    <span class="c1"># ----------------------------------------------------------</span>
+                    <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">Delta_lnL</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Convergence reached (tolerance) at it </span><span class="si">{</span><span class="n">it</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                        <span class="k">break</span>
+
+                    <span class="c1"># Early stopping</span>
+                    <span class="k">if</span> <span class="n">lnL_new</span> <span class="o">&gt;</span> <span class="n">best_lnL</span> <span class="o">+</span> <span class="n">min_delta</span><span class="p">:</span>
+                        <span class="n">best_lnL</span> <span class="o">=</span> <span class="n">lnL_new</span>
+                        <span class="n">wait</span>     <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">wait</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                    <span class="k">if</span> <span class="n">wait</span> <span class="o">&gt;=</span> <span class="n">patience</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Early stopping: no more significant improvement.&quot;</span><span class="p">)</span>
+                        <span class="k">break</span>
+
+                    <span class="c1"># Snapshot current state before updating</span>
+                    <span class="n">ax_coef_prev</span> <span class="o">=</span> <span class="n">ax_coef</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                    <span class="n">bx_coef_prev</span> <span class="o">=</span> <span class="n">bx_coef</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                    <span class="n">kappa_prev</span>   <span class="o">=</span> <span class="n">kappa</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                    <span class="n">lnL</span>          <span class="o">=</span> <span class="n">lnL_new</span>
+
+                    <span class="c1"># Increase eta prudently after a successful step</span>
+                    <span class="n">eta</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">eta</span> <span class="o">*</span> <span class="mf">1.05</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+
+                    <span class="c1"># Updates</span>
+                    <span class="n">ax_coef</span> <span class="o">=</span> <span class="n">LeeCarter</span><span class="o">.</span><span class="n">update_ax_coef</span><span class="p">(</span>
+                        <span class="n">ax_coef</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">residual</span><span class="p">,</span> <span class="n">weighted_exp</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lam</span><span class="p">,</span> <span class="n">DtD</span><span class="p">,</span> <span class="n">diag_DtD</span>
+                    <span class="p">)</span>
+                    <span class="n">bx_coef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_bx_coef_national</span><span class="p">(</span>        <span class="c1"># ← national version</span>
+                        <span class="n">bx_coef</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">residual</span><span class="p">,</span> <span class="n">weighted_exp</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lam</span><span class="p">,</span> <span class="n">DtD</span><span class="p">,</span> <span class="n">diag_DtD</span>
+                    <span class="p">)</span>
+                    <span class="n">kappa</span> <span class="o">=</span> <span class="n">LeeCarter</span><span class="o">.</span><span class="n">update_kappa</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">bx</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">residual</span><span class="p">,</span> <span class="n">weighted_exp</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+                    <span class="c1">#                                      ↑ (nb_ages, 1) so that update_kappa works</span>
+
+                <span class="c1"># Final rescaling</span>
+                <span class="n">bx_coef</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">kappa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rescale_bx_kappa_national</span><span class="p">(</span><span class="n">bx_coef</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)</span>
+
+                <span class="n">logmu_final</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">bx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_logmu_national</span><span class="p">(</span><span class="n">ax_coef</span><span class="p">,</span> <span class="n">bx_coef</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+
+                <span class="c1"># Recompute final weighted_exp for edf calculation</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">weighted_exp_final</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">LeeCarter</span><span class="o">.</span><span class="n">poisson_lnL</span><span class="p">(</span>
+                    <span class="n">Dxtg</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">logmu_final</span><span class="p">,</span> <span class="n">logDxtgFact</span>
+                <span class="p">)</span>
+
+                <span class="n">Fit_stat</span> <span class="o">=</span> <span class="n">LeeCarter</span><span class="o">.</span><span class="n">compute_fit_stats</span><span class="p">(</span>
+                    <span class="n">Dxtg</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">logmu_final</span><span class="p">,</span> <span class="n">logDxtgFact</span><span class="p">,</span> <span class="n">n_basis</span><span class="p">,</span> <span class="n">nb_years</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">,</span>
+                    <span class="n">lam</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lam</span><span class="p">,</span> <span class="n">DtD</span><span class="o">=</span><span class="n">DtD</span><span class="p">,</span> <span class="n">B</span><span class="o">=</span><span class="n">B</span><span class="p">,</span> <span class="n">weighted_exp</span><span class="o">=</span><span class="n">weighted_exp_final</span>   <span class="c1"># ← edf inputs</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;FINAL STATISTICS&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">Fit_stat</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+                <span class="k">return</span> <span class="p">{</span>
+                    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;ax_coef&quot;</span><span class="p">:</span> <span class="n">ax_coef</span><span class="p">,</span>
+                        <span class="s2">&quot;bx_coef&quot;</span><span class="p">:</span> <span class="n">bx_coef</span><span class="p">,</span>        <span class="c1"># (n_basis,)</span>
+                        <span class="s2">&quot;kappa&quot;</span><span class="p">:</span>   <span class="n">kappa</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;curves&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;alpha_x&quot;</span><span class="p">:</span> <span class="n">ax</span><span class="p">,</span>             <span class="c1"># (nb_ages,)</span>
+                        <span class="s2">&quot;beta_x&quot;</span><span class="p">:</span>  <span class="n">bx</span><span class="p">,</span>             <span class="c1"># (nb_ages,)  ← no g dimension</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;fitted_values&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;log_mu&quot;</span><span class="p">:</span> <span class="n">logmu_final</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span>   <span class="c1"># (nb_ages, nb_years)</span>
+                        <span class="s2">&quot;mu&quot;</span><span class="p">:</span>     <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmu_final</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">])</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;fit_statistics&quot;</span><span class="p">:</span> <span class="n">Fit_stat</span>
+                <span class="p">}</span></div>
+</div>
+</div>
+
+
+
+    <span class="c1"># =========================================================================</span>
+    <span class="c1"># SUB-CLASS : Classic</span>
+    <span class="c1"># Classic non-parametric Lee-Carter (gradient descent)</span>
+    <span class="c1"># =========================================================================</span>
+
+<div class="viewcode-block" id="LeeCarter.Classic">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Classic</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Classic (non-parametric) Lee-Carter model fitted by gradient descent.</span>
+<span class="sd">        </span>
+<span class="sd">        ln(µ_{x,t}) = α_x + β_x · κ_t</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        nb_iter : int   number of gradient descent iterations</span>
+<span class="sd">        eta     : float learning rate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nb_iter</span> <span class="o">=</span> <span class="n">nb_iter</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eta</span>     <span class="o">=</span> <span class="n">eta</span>
+
+<div class="viewcode-block" id="LeeCarter.Classic.fit">
+<a class="viewcode-back" href="../../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic.fit">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">Dxtg</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">):</span>
+            <span class="c1">#gradient descent parameter</span>
+            <span class="n">eta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eta</span>
+            <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_iter</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">ct_opt</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+                    <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">;</span> <span class="n">bx</span> <span class="o">=</span> <span class="n">bx</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">nb_regions</span> <span class="o">=</span> <span class="n">Extg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="n">axM</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tv</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">bxM</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">bx</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tv</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">kappaM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">xv</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="n">logmuxt_baseline</span> <span class="o">=</span> <span class="n">axM</span> <span class="o">+</span> <span class="n">bxM</span> <span class="o">*</span> <span class="n">kappaM</span>
+                    <span class="n">logmuxt_grp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">xv</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">tv</span><span class="p">),</span> <span class="n">nb_regions</span><span class="p">))</span>
+                    <span class="c1">#computation of log(mu(x,t,g))</span>
+                    <span class="k">for</span> <span class="n">ct</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_regions</span><span class="p">):</span>
+                        <span class="n">logmuxt_grp</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">ct</span><span class="p">]</span> <span class="o">=</span> <span class="n">logmuxt_baseline</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                    <span class="c1">#baseline for update</span>
+                    <span class="n">dlnL_baseline</span> <span class="o">=</span> <span class="p">(</span><span class="n">Dxtg</span> <span class="o">-</span> <span class="n">Extg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmuxt_grp</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">ct_opt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                        <span class="c1">#--------------- ax --------------------</span>
+                        <span class="n">ax_new</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+                        <span class="n">dlnL_dpar</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dlnL_baseline</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span>
+                                     <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Extg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmuxt_grp</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+                        <span class="n">ax_new</span> <span class="o">=</span> <span class="n">ax</span> <span class="o">+</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">dlnL_dpar</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="c1">#update</span>
+                        <span class="n">ax</span> <span class="o">=</span> <span class="n">ax_new</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">ct_opt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                        <span class="c1">#--------------- bx --------------------</span>
+                        <span class="n">bx_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">bx</span><span class="p">)</span>
+                        <span class="n">kappaM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">xv</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                        <span class="n">kappaM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">kappaM</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+                        <span class="n">kappaM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">kappaM</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+                        <span class="n">dlnL_dpar</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dlnL_baseline</span> <span class="o">*</span> <span class="n">kappaM</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span>
+                                     <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Extg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmuxt_grp</span><span class="p">)</span> <span class="o">*</span> <span class="n">kappaM</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))))</span>
+                        <span class="n">bx_new</span> <span class="o">=</span> <span class="n">bx</span> <span class="o">+</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">dlnL_dpar</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="c1">#we normalize</span>
+                        <span class="n">scal_bx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">bx_new</span><span class="p">)</span>
+                        <span class="n">bx_new</span>  <span class="o">=</span> <span class="n">bx_new</span> <span class="o">/</span> <span class="n">scal_bx</span>
+                        <span class="n">kappa</span>   <span class="o">=</span> <span class="n">kappa</span> <span class="o">*</span> <span class="n">scal_bx</span>
+                        <span class="n">bx</span>      <span class="o">=</span> <span class="n">bx_new</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">ct_opt</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+                        <span class="c1">#---------------Kappa-----------------</span>
+                        <span class="c1"># warning we use the old betax(x)</span>
+                        <span class="n">kappa_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">kappa</span><span class="p">)</span>
+                        <span class="n">bxM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">bx</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tv</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="n">bxM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">bxM</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+                        <span class="n">bxM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">bxM</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+                        <span class="n">dlnL_dpar</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dlnL_baseline</span> <span class="o">*</span> <span class="n">bxM</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span>
+                                     <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Extg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmuxt_grp</span><span class="p">)</span> <span class="o">*</span> <span class="n">bxM</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))))</span>
+                        <span class="n">kappa_new</span> <span class="o">=</span> <span class="n">kappa</span> <span class="o">+</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">dlnL_dpar</span>
+                        <span class="c1">#we rescale</span>
+                        <span class="n">kappa_avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">kappa_new</span><span class="p">)</span>
+                        <span class="n">kappa_new</span> <span class="o">=</span> <span class="p">(</span><span class="n">kappa_new</span> <span class="o">-</span> <span class="n">kappa_avg</span><span class="p">)</span>  <span class="c1">#*np.sum(bx)</span>
+                        <span class="n">ax</span>        <span class="o">=</span> <span class="n">ax</span> <span class="o">+</span> <span class="n">kappa_avg</span> <span class="o">*</span> <span class="n">bx</span>
+                        <span class="c1">#update</span>
+                        <span class="n">kappa</span> <span class="o">=</span> <span class="n">kappa_new</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="c1">#end loop</span>
+            <span class="c1"># we recompute log-mort. rates</span>
+            
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">;</span> <span class="n">bx</span> <span class="o">=</span> <span class="n">bx</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">axM</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tv</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">bxM</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">bx</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tv</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">kappaM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">xv</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">logmuxt_grp</span> <span class="o">=</span> <span class="n">axM</span> <span class="o">+</span> <span class="n">bxM</span> <span class="o">*</span> <span class="n">kappaM</span>
+            <span class="n">logmuxt_grp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">logmuxt_grp</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">nb_regions</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="c1">#log-likelihood</span>
+            <span class="n">exp_logmuxt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmuxt_grp</span><span class="p">)</span>
+            <span class="n">logDxtgFact</span> <span class="o">=</span> <span class="n">gammaln</span><span class="p">(</span><span class="n">Dxtg</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">lnL</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Dxtg</span> <span class="o">*</span> <span class="n">logmuxt_grp</span> <span class="o">-</span> <span class="n">Extg</span> <span class="o">*</span> <span class="n">exp_logmuxt</span> <span class="o">+</span> <span class="n">Dxtg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Extg</span><span class="p">)</span> <span class="o">-</span> <span class="n">logDxtgFact</span><span class="p">)</span>
+            <span class="c1">#dof&#39;s and numbers of records</span>
+            <span class="n">nb_obs</span> <span class="o">=</span> <span class="n">Dxtg</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">dofs</span>   <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">bx</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">kappa</span><span class="p">)</span>
+            <span class="n">AIC</span>    <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dofs</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">lnL</span>
+            <span class="n">BIC</span>    <span class="o">=</span> <span class="n">dofs</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">nb_obs</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">lnL</span>
+            <span class="c1">#dataframe with statistics of goodness of fit</span>
+            <span class="n">Fit_stat</span> <span class="o">=</span> <span class="p">[[</span><span class="n">nb_obs</span><span class="p">,</span> <span class="s1">&#39;NA&#39;</span><span class="p">,</span> <span class="s1">&#39;NA&#39;</span><span class="p">,</span> <span class="n">dofs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">lnL</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">AIC</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">BIC</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]]</span>
+            <span class="c1">#We print the file</span>
+            <span class="n">Fit_stat</span>         <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Fit_stat</span><span class="p">)</span>
+            <span class="n">Fit_stat</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;degree&quot;</span><span class="p">,</span> <span class="s2">&quot;dofs&quot;</span><span class="p">,</span> <span class="s2">&quot;lnL&quot;</span><span class="p">,</span> <span class="s2">&quot;AIC&quot;</span><span class="p">,</span> <span class="s2">&quot;BIC&quot;</span><span class="p">]</span>
+
+            <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;ax_coef&quot;</span><span class="p">:</span> <span class="n">axM</span><span class="p">,</span>
+                    <span class="s2">&quot;bx_coef&quot;</span><span class="p">:</span> <span class="n">bxM</span><span class="p">,</span>
+                    <span class="s2">&quot;kappa&quot;</span><span class="p">:</span>   <span class="n">kappaM</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;fitted_values&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;log_mu&quot;</span><span class="p">:</span> <span class="n">axM</span> <span class="o">+</span> <span class="n">bxM</span> <span class="o">*</span> <span class="n">kappaM</span><span class="p">,</span>
+                    <span class="s2">&quot;mu&quot;</span><span class="p">:</span>     <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">axM</span> <span class="o">+</span> <span class="n">bxM</span> <span class="o">*</span> <span class="n">kappaM</span><span class="p">)</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;fit_statistics&quot;</span><span class="p">:</span> <span class="n">Fit_stat</span>
+            <span class="p">}</span>
+            <span class="c1">#we return ax, bx, kappa and stats</span>
+            <span class="k">return</span> <span class="n">results</span></div>
+</div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Detralytics Innovation Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

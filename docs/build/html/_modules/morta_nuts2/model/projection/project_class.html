@@ -1,0 +1,1175 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>morta_nuts2.model.projection.project_class &mdash; Morta-nuts  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            Morta-nuts
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu :</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Morta-nuts</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">morta_nuts2.model.projection.project_class</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for morta_nuts2.model.projection.project_class</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Projection </span>
+<span class="sd">=====================================================</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">curve_fit</span>
+
+
+
+<span class="c1"># ─────────────────────────────────────────────────────────────────────────────</span>
+<span class="c1"># Low-level utilities</span>
+<span class="c1"># ─────────────────────────────────────────────────────────────────────────────</span>
+
+<div class="viewcode-block" id="kannisto_log_mu">
+<a class="viewcode-back" href="../../../../api.html#morta_nuts2.model.projection.project_class.kannisto_log_mu">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">kannisto_log_mu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;log(μ(x)) for the Kannisto model: μ(x) = a·exp(b·x) / (1 + a·exp(b·x))&quot;&quot;&quot;</span>
+    <span class="n">ebx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">ebx</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">ebx</span><span class="p">))</span></div>
+
+
+
+<span class="c1"># ─────────────────────────────────────────────────────────────────────────────</span>
+<span class="c1"># 1. Life expectancy</span>
+<span class="c1"># ─────────────────────────────────────────────────────────────────────────────</span>
+
+<div class="viewcode-block" id="LifeExpectancy">
+<a class="viewcode-back" href="../../../../api.html#morta_nuts2.model.projection.project_class.LifeExpectancy">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LifeExpectancy</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes life expectancy from mortality rates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mu_future : ndarray</span>
+<span class="sd">        - (ages, horizon, regions)         -&gt; deterministic case</span>
+<span class="sd">        - (ages, horizon, regions, n_sim)  -&gt; stochastic case</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu_future</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">mu_future</span><span class="o">.</span><span class="n">ndim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;mu_future must be 3D or 4D&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mu_future</span> <span class="o">=</span> <span class="n">mu_future</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Vectorized life expectancy computation (works for both 3D and 4D).&quot;&quot;&quot;</span>
+        <span class="n">px</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">mu</span><span class="p">)</span>
+        <span class="n">log_px</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">px</span><span class="p">,</span> <span class="mf">1e-300</span><span class="p">))</span>
+        <span class="n">cumlog_px</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">log_px</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># shift cumulative log by 1 to get survival starting at each age x</span>
+        <span class="n">cumlog_shifted</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">cumlog_px</span><span class="p">)</span>
+        <span class="n">cumlog_shifted</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">cumlog_px</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+        <span class="n">surv_from_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">cumlog_px</span><span class="p">)</span>
+
+        <span class="c1"># reversed cumulative sum: sum of surv[y] for y &gt;= x</span>
+        <span class="n">rev_cumsum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">surv_from_0</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+        <span class="c1"># divisor: survival from age 0 to age x-1</span>
+        <span class="n">divisor</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">surv_from_0</span><span class="p">)</span>
+        <span class="n">divisor</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">surv_from_0</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">rev_cumsum</span> <span class="o">/</span> <span class="n">divisor</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="LifeExpectancy.compute">
+<a class="viewcode-back" href="../../../../api.html#morta_nuts2.model.projection.project_class.LifeExpectancy.compute">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ex with the same shape as mu_future.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu_future</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># ─────────────────────────────────────────────────────────────────────────────</span>
+<span class="c1"># 2. Lee-Carter SVD projection</span>
+<span class="c1"># ─────────────────────────────────────────────────────────────────────────────</span>
+
+<div class="viewcode-block" id="ProjectorLC_SVD">
+<a class="viewcode-back" href="../../../../api.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProjectorLC_SVD</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Multi-regional Lee-Carter prospective projection via SVD.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    results : dict</span>
+<span class="sd">        Must contain results[&quot;curves&quot;][&quot;alpha_x&quot;], results[&quot;curves&quot;][&quot;beta_xg&quot;],</span>
+<span class="sd">        and results[&quot;parameters&quot;][&quot;kappa&quot;].</span>
+<span class="sd">    tv : array-like</span>
+<span class="sd">        Observation year vector.</span>
+<span class="sd">    horizon : int</span>
+<span class="sd">    exclude_years : list</span>
+<span class="sd">    nb_components : int</span>
+<span class="sd">    model : {&#39;rw&#39;, &#39;linear&#39;}</span>
+<span class="sd">    stochastic : bool</span>
+<span class="sd">    n_sim : int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">tv</span><span class="p">,</span>
+        <span class="n">horizon</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="n">exclude_years</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nb_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;rw&quot;</span><span class="p">,</span>
+        <span class="n">stochastic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">n_sim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]</span>
+
+        <span class="c1"># ── Variante parametric : courbes dans results[&quot;curves&quot;] ─────────</span>
+        <span class="k">if</span> <span class="s2">&quot;curves&quot;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">curves</span>   <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;curves&quot;</span><span class="p">]</span>
+            <span class="n">beta_key</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">curves</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;beta&quot;</span><span class="p">)),</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">beta_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;No beta curve found in results[&#39;curves&#39;]&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span>        <span class="o">=</span> <span class="n">curves</span><span class="p">[</span><span class="s2">&quot;alpha_x&quot;</span><span class="p">]</span>          <span class="c1"># (nb_ages,)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bx</span>        <span class="o">=</span> <span class="n">curves</span><span class="p">[</span><span class="n">beta_key</span><span class="p">]</span>            <span class="c1"># (nb_ages,) ou (nb_ages, nb_regions)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kappa_raw</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;kappa&quot;</span><span class="p">]</span>             <span class="c1"># (nb_years,) ou (nb_regions, nb_years)</span>
+
+        <span class="c1"># ── Variante classic : ax/bx dans results[&quot;parameters&quot;] ─────────</span>
+        <span class="c1"># ax[x,g], bx[x,g] : (nb_ages, nb_regions)</span>
+        <span class="c1"># kappa[x,t]        : (nb_ages, nb_years) mais constant sur x → extraire kappa[0,:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span>        <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;ax_coef&quot;</span><span class="p">]</span>           <span class="c1"># (nb_ages, nb_regions)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bx</span>        <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;bx_coef&quot;</span><span class="p">]</span>           <span class="c1"># (nb_ages, nb_regions)</span>
+            <span class="n">kappa_raw</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;kappa&quot;</span><span class="p">])</span> <span class="c1"># (nb_ages, nb_years) ou (nb_years,)</span>
+            <span class="c1"># kappa ne dépend que de t : on prend la première ligne si 2D</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kappa_raw</span> <span class="o">=</span> <span class="n">kappa_raw</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="k">if</span> <span class="n">kappa_raw</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">kappa_raw</span>  <span class="c1"># (nb_years,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tv</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tv</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizon</span>       <span class="o">=</span> <span class="n">horizon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exclude_years</span> <span class="o">=</span> <span class="n">exclude_years</span> <span class="k">if</span> <span class="n">exclude_years</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2021</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span> <span class="o">=</span> <span class="n">nb_components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span>         <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span>    <span class="o">=</span> <span class="n">stochastic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_sim</span>         <span class="o">=</span> <span class="n">n_sim</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_svd_factors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds reduced Z and V matrices via SVD after masking excluded years.&quot;&quot;&quot;</span>
+        <span class="n">X_svd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_raw</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_raw</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_raw</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">X_svd</span> <span class="o">=</span> <span class="n">X_svd</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude_years</span><span class="p">),</span> <span class="p">:]</span>
+
+        <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">X_svd</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">Vred</span> <span class="o">=</span> <span class="n">Vt</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">T</span>                        <span class="c1"># (nb_regions, nb_components)</span>
+        <span class="n">Zred</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">]</span> <span class="o">*</span> <span class="n">S</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">]</span>  <span class="c1"># (T, nb_components)</span>
+        <span class="k">return</span> <span class="n">Zred</span><span class="p">,</span> <span class="n">Vred</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_project_rw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Zred</span><span class="p">,</span> <span class="n">Vred</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Random walk projection.&quot;&quot;&quot;</span>
+        <span class="n">diffs</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">Zred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">drift</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">diffs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">cov</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">diffs</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">)</span>
+        <span class="n">Z_last</span> <span class="o">=</span> <span class="n">Zred</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span><span class="p">:</span>
+            <span class="n">Z_future</span>     <span class="o">=</span> <span class="n">Z_last</span> <span class="o">+</span> <span class="n">drift</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizon</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+            <span class="n">kappa_future</span> <span class="o">=</span> <span class="n">Z_future</span> <span class="o">@</span> <span class="n">Vred</span><span class="o">.</span><span class="n">T</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">steps</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">drift</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sim</span><span class="p">))</span>
+            <span class="n">Z_future</span>     <span class="o">=</span> <span class="n">Z_last</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">kappa_future</span> <span class="o">=</span> <span class="n">Z_future</span> <span class="o">@</span> <span class="n">Vred</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">return</span> <span class="n">kappa_future</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_project_linear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Zred</span><span class="p">,</span> <span class="n">Vred</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Linear trend projection.&quot;&quot;&quot;</span>
+        <span class="n">T</span>          <span class="o">=</span> <span class="n">Zred</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">time_idx</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">X_des</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">time_idx</span><span class="p">])</span>
+        <span class="n">beta_lin</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">X_des</span><span class="p">,</span> <span class="n">Zred</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">future_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">)</span>
+        <span class="n">Xf</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">),</span> <span class="n">future_idx</span><span class="p">])</span>
+        <span class="n">Z_det</span>      <span class="o">=</span> <span class="n">Xf</span> <span class="o">@</span> <span class="n">beta_lin</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span><span class="p">:</span>
+            <span class="n">kappa_future</span> <span class="o">=</span> <span class="n">Z_det</span> <span class="o">@</span> <span class="n">Vred</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">residuals</span> <span class="o">=</span> <span class="n">Zred</span> <span class="o">-</span> <span class="n">X_des</span> <span class="o">@</span> <span class="n">beta_lin</span>
+            <span class="n">cov_res</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">)</span>
+            <span class="n">noise</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">),</span> <span class="n">cov_res</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sim</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">Z_future</span>     <span class="o">=</span> <span class="n">Z_det</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">noise</span>
+            <span class="n">kappa_future</span> <span class="o">=</span> <span class="n">Z_future</span> <span class="o">@</span> <span class="n">Vred</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">return</span> <span class="n">kappa_future</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_reconstruct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kappa_future</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reconstructs log(μ) and μ from projected kappa.</span>
+
+<span class="sd">        Shapes attendues selon le chemin emprunté :</span>
+
+<span class="sd">        ┌──────────────┬─────────────┬──────────────────────────────────────────────┐</span>
+<span class="sd">        │ variante     │ stochastic  │ kappa_future shape                           │</span>
+<span class="sd">        ├──────────────┼─────────────┼──────────────────────────────────────────────┤</span>
+<span class="sd">        │ classic 1D   │ False       │ (horizon,)                                   │</span>
+<span class="sd">        │ classic 1D   │ True        │ (horizon, n_sim)                             │</span>
+<span class="sd">        │ SVD (≥1 cp)  │ False       │ (horizon, nb_regions)                        │</span>
+<span class="sd">        │ SVD (≥1 cp)  │ True        │ (horizon, n_sim, nb_regions)                 │</span>
+<span class="sd">        └──────────────┴─────────────┴──────────────────────────────────────────────┘</span>
+
+<span class="sd">        Détection :</span>
+<span class="sd">          - classic sans SVD  →  ax.ndim == 2 ET kappa_future.ndim ∈ {1, 2}</span>
+<span class="sd">          - SVD (nb_components ≥ 1) ou parametric  →  kappa_future.ndim ∈ {2, 3}</span>
+<span class="sd">            avec la dernière dimension = nb_regions</span>
+
+<span class="sd">        ax.ndim == 2  →  classic (ax/bx par région),  ax.ndim == 1  →  parametric (ax scalaire par âge)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ax</span><span class="p">,</span> <span class="n">bx</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bx</span>
+        <span class="n">classic</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span>   <span class="c1"># classic: ax (nb_ages, nb_regions), parametric: ax (nb_ages,)</span>
+
+        <span class="c1"># ── Cas déterministe ────────────────────────────────────────────────</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">classic</span> <span class="ow">and</span> <span class="n">kappa_future</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># classic sans SVD : kappa_future (horizon,)</span>
+                <span class="c1"># logmu : (nb_ages, horizon, nb_regions)</span>
+                <span class="n">logmu_future</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">ax</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+                    <span class="o">+</span> <span class="n">bx</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">kappa_future</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># SVD (nb_components ≥ 1) ou parametric :</span>
+                <span class="c1"># kappa_future (horizon, nb_regions)  →  logmu : (nb_ages, horizon, nb_regions)</span>
+                <span class="n">kf</span> <span class="o">=</span> <span class="n">kappa_future</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="k">if</span> <span class="n">kappa_future</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">kappa_future</span>  <span class="c1"># (horizon, nb_regions)</span>
+                <span class="k">if</span> <span class="n">classic</span><span class="p">:</span>
+                    <span class="c1"># ax (nb_ages, nb_regions), bx (nb_ages, nb_regions)</span>
+                    <span class="n">logmu_future</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">bx</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">kf</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+                <span class="k">elif</span> <span class="n">bx</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">logmu_future</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">bx</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">kf</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logmu_future</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">bx</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">kf</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+            <span class="n">mu_future</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmu_future</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;kappa_future&quot;</span><span class="p">:</span> <span class="n">kappa_future</span><span class="p">,</span>
+                <span class="s2">&quot;logmu_future&quot;</span><span class="p">:</span> <span class="n">logmu_future</span><span class="p">,</span>
+                <span class="s2">&quot;mu_future&quot;</span><span class="p">:</span>    <span class="n">mu_future</span><span class="p">,</span>
+            <span class="p">}</span>
+
+        <span class="c1"># ── Cas stochastique ────────────────────────────────────────────────</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">classic</span> <span class="ow">and</span> <span class="n">kappa_future</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="c1"># classic sans SVD : kappa_future (horizon, n_sim)</span>
+                <span class="c1"># logmu_sim : (nb_ages, horizon, nb_regions, n_sim)</span>
+                <span class="n">logmu_sim</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">ax</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span>
+                    <span class="o">+</span> <span class="n">bx</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">kappa_future</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># SVD (nb_components ≥ 1) ou parametric :</span>
+                <span class="c1"># kappa_future (horizon, n_sim, nb_regions)</span>
+                <span class="c1"># reshape → (1, horizon, nb_regions, n_sim)</span>
+                <span class="n">kf</span> <span class="o">=</span> <span class="n">kappa_future</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="k">if</span> <span class="n">kappa_future</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">kappa_future</span>  <span class="c1"># (horizon, n_sim, nb_regions)</span>
+                <span class="n">kf_4d</span> <span class="o">=</span> <span class="n">kf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span>  <span class="c1"># (1, horizon, nb_regions, n_sim)</span>
+                <span class="k">if</span> <span class="n">classic</span><span class="p">:</span>
+                    <span class="c1"># ax (nb_ages, nb_regions), bx (nb_ages, nb_regions)</span>
+                    <span class="n">logmu_sim</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">bx</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">kf_4d</span>
+                <span class="k">elif</span> <span class="n">bx</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">logmu_sim</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">bx</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">kf_4d</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logmu_sim</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">bx</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">kf_4d</span>
+            <span class="n">mu_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmu_sim</span><span class="p">)</span>
+
+            <span class="n">mu_lower</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">mu_sim</span><span class="p">,</span>  <span class="mf">2.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">mu_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">mu_sim</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>   <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">mu_upper</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">mu_sim</span><span class="p">,</span> <span class="mf">97.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">kappa_lower</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">kappa_future</span><span class="p">,</span>  <span class="mf">2.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">kappa_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">kappa_future</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>   <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">kappa_upper</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">kappa_future</span><span class="p">,</span> <span class="mf">97.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;kappa_paths&quot;</span><span class="p">:</span>  <span class="n">kappa_future</span><span class="p">,</span>
+                <span class="s2">&quot;kappa_lower&quot;</span><span class="p">:</span>  <span class="n">kappa_lower</span><span class="p">,</span>
+                <span class="s2">&quot;kappa_median&quot;</span><span class="p">:</span> <span class="n">kappa_median</span><span class="p">,</span>
+                <span class="s2">&quot;kappa_upper&quot;</span><span class="p">:</span>  <span class="n">kappa_upper</span><span class="p">,</span>
+                <span class="s2">&quot;logmu_sim&quot;</span><span class="p">:</span>    <span class="n">logmu_sim</span><span class="p">,</span>
+                <span class="s2">&quot;mu_sim&quot;</span><span class="p">:</span>       <span class="n">mu_sim</span><span class="p">,</span>
+                <span class="s2">&quot;mu_lower&quot;</span><span class="p">:</span>     <span class="n">mu_lower</span><span class="p">,</span>
+                <span class="s2">&quot;mu_median&quot;</span><span class="p">:</span>    <span class="n">mu_median</span><span class="p">,</span>
+                <span class="s2">&quot;mu_upper&quot;</span><span class="p">:</span>     <span class="n">mu_upper</span><span class="p">,</span>
+            <span class="p">}</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_project_rw_1d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Random walk pour kappa 1D (variante classic).&quot;&quot;&quot;</span>
+        <span class="n">kappa_m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_raw</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude_years</span><span class="p">)]</span>
+        <span class="n">diffs</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">kappa_m</span><span class="p">)</span>
+        <span class="n">drift</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">diffs</span><span class="p">)</span>
+        <span class="n">sigma</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">diffs</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">k_last</span>  <span class="o">=</span> <span class="n">kappa_m</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">t_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizon</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">k_last</span> <span class="o">+</span> <span class="n">drift</span> <span class="o">*</span> <span class="n">t_range</span>                          <span class="c1"># (horizon,)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">drift</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sim</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">k_last</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>                 <span class="c1"># (horizon, n_sim)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_project_linear_1d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tendance linéaire pour kappa 1D (variante classic).&quot;&quot;&quot;</span>
+        <span class="n">kappa_m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_raw</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude_years</span><span class="p">)]</span>
+        <span class="n">T</span>        <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kappa_m</span><span class="p">)</span>
+        <span class="n">time_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">X_des</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">time_idx</span><span class="p">])</span>
+        <span class="n">beta_lin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">X_des</span><span class="p">,</span> <span class="n">kappa_m</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">Xf</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">)])</span>
+        <span class="n">k_det</span>    <span class="o">=</span> <span class="n">Xf</span> <span class="o">@</span> <span class="n">beta_lin</span>                                     <span class="c1"># (horizon,)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">k_det</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">residuals</span> <span class="o">=</span> <span class="n">kappa_m</span> <span class="o">-</span> <span class="n">X_des</span> <span class="o">@</span> <span class="n">beta_lin</span>
+            <span class="n">sigma</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">noise</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sim</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">k_det</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">noise</span>                            <span class="c1"># (horizon, n_sim)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="ProjectorLC_SVD.project">
+<a class="viewcode-back" href="../../../../api.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD.project">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs the projection and returns the results dict.&quot;&quot;&quot;</span>
+        <span class="n">classic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_raw</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span>   <span class="c1"># True pour le classic LC mono-kappa</span>
+
+        <span class="k">if</span> <span class="n">classic</span><span class="p">:</span>
+            <span class="c1"># Pas de SVD : projection directe de kappa 1D</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;rw&quot;</span><span class="p">:</span>
+                <span class="n">kappa_future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project_rw_1d</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;linear&quot;</span><span class="p">:</span>
+                <span class="n">kappa_future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project_linear_1d</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;model must be &#39;rw&#39; or &#39;linear&#39;&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">Zred</span><span class="p">,</span> <span class="n">Vred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_svd_factors</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;rw&quot;</span><span class="p">:</span>
+                <span class="n">kappa_future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project_rw</span><span class="p">(</span><span class="n">Zred</span><span class="p">,</span> <span class="n">Vred</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;linear&quot;</span><span class="p">:</span>
+                <span class="n">kappa_future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project_linear</span><span class="p">(</span><span class="n">Zred</span><span class="p">,</span> <span class="n">Vred</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;model must be &#39;rw&#39; or &#39;linear&#39;&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reconstruct</span><span class="p">(</span><span class="n">kappa_future</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># ─────────────────────────────────────────────────────────────────────────────</span>
+<span class="c1"># 3. Lee-Li projection</span>
+<span class="c1"># ─────────────────────────────────────────────────────────────────────────────</span>
+
+<div class="viewcode-block" id="ProjectorLeeLi">
+<a class="viewcode-back" href="../../../../api.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProjectorLeeLi</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Lee-Li prospective projection (common factor + regional components).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    results : dict</span>
+<span class="sd">        Must contain results[&quot;curves&quot;] (alpha_xg, beta_x, beta_xg)</span>
+<span class="sd">        and results[&quot;parameters&quot;] (kappa, kappa_g).</span>
+<span class="sd">    tv : array-like</span>
+<span class="sd">    horizon : int</span>
+<span class="sd">    exclude_years : list</span>
+<span class="sd">    model : {&#39;rw&#39;, &#39;linear&#39;}</span>
+<span class="sd">    stochastic : bool</span>
+<span class="sd">    n_sim : int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">tv</span><span class="p">,</span>
+        <span class="n">horizon</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="n">exclude_years</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nb_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;rw&quot;</span><span class="p">,</span>
+        <span class="n">stochastic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">n_sim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">curves</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;curves&quot;</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]</span>
+
+        <span class="c1"># ── Variante parametric : courbes dans results[&quot;curves&quot;] ─────────</span>
+        <span class="k">if</span> <span class="n">curves</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha_xg</span> <span class="o">=</span> <span class="n">curves</span><span class="p">[</span><span class="s2">&quot;alpha_xg&quot;</span><span class="p">]</span>   <span class="c1"># (nb_ages, nb_regions)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">beta_x</span>   <span class="o">=</span> <span class="n">curves</span><span class="p">[</span><span class="s2">&quot;beta_x&quot;</span><span class="p">]</span>     <span class="c1"># (nb_ages,)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">beta_xg</span>  <span class="o">=</span> <span class="n">curves</span><span class="p">[</span><span class="s2">&quot;beta_xg&quot;</span><span class="p">]</span>    <span class="c1"># (nb_ages, nb_regions)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kappa</span>    <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;kappa&quot;</span><span class="p">]</span>       <span class="c1"># (nb_years,)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kappa_g</span>  <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;kappa_g&quot;</span><span class="p">]</span>     <span class="c1"># (nb_regions, nb_years)</span>
+
+        <span class="c1"># ── Variante classic : tout dans results[&quot;parameters&quot;] ──────────</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span>           <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;ax&quot;</span><span class="p">])</span>    <span class="c1"># (nb_ages,) ou (nb_ages, 1) — alpha ne dépend que de x</span>
+            <span class="n">bx_gr</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;bx_gr&quot;</span><span class="p">])</span> <span class="c1"># (nb_ages, nb_regions)</span>
+            <span class="n">nb_regions</span>   <span class="o">=</span> <span class="n">bx_gr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># normalise ax en (nb_ages,) puis broadcast vers (nb_ages, nb_regions)</span>
+            <span class="n">ax_1d</span>         <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">if</span> <span class="n">ax</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">ax</span>   <span class="c1"># (nb_ages,)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha_xg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">ax_1d</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">))</span>  <span class="c1"># (nb_ages, nb_regions)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">beta_x</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;bx&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>   <span class="c1"># (nb_ages,)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">beta_xg</span>  <span class="o">=</span> <span class="n">bx_gr</span>                               <span class="c1"># (nb_ages, nb_regions)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kappa</span>    <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;kappa&quot;</span><span class="p">]</span>                     <span class="c1"># (nb_years,)</span>
+            <span class="n">kappa_gr</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;kappa_gr&quot;</span><span class="p">])</span>
+            <span class="c1"># kappa_gr peut être (nb_years, nb_regions) ou (nb_regions, nb_years) selon le modèle</span>
+            <span class="c1"># on normalise en (nb_regions, nb_years) pour ProjectorLeeLi.project()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kappa_g</span>  <span class="o">=</span> <span class="n">kappa_gr</span><span class="o">.</span><span class="n">T</span> <span class="k">if</span> <span class="n">kappa_gr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;kappa&quot;</span><span class="p">]))</span> <span class="k">else</span> <span class="n">kappa_gr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tv</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tv</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizon</span>       <span class="o">=</span> <span class="n">horizon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exclude_years</span> <span class="o">=</span> <span class="n">exclude_years</span> <span class="k">if</span> <span class="n">exclude_years</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2021</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span> <span class="o">=</span> <span class="n">nb_components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span>         <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span>    <span class="o">=</span> <span class="n">stochastic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_sim</span>         <span class="o">=</span> <span class="n">n_sim</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_ages</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_regions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha_xg</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fit_rw</span><span class="p">(</span><span class="n">series</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fits a random walk on series (T,) or (T, nb_regions).</span>
+<span class="sd">        Returns (drift, covariance, last_value).&quot;&quot;&quot;</span>
+        <span class="n">diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">drift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">diffs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">diffs</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">cov</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">diffs</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)]])</span>
+            <span class="n">drift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">drift</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">diffs</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="n">series</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">series</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">series</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">return</span> <span class="n">drift</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">last</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_svd_factors_g</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kappa_gm</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds reduced Z and V matrices for kappa_g via SVD.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        kappa_gm : (T, nb_regions)</span>
+<span class="sd">            Regional kappa series, already masked (excluded years removed).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Zred : (T, nb_components)        – scores in the reduced space</span>
+<span class="sd">        Vred : (nb_regions, nb_components) – regional loadings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">kappa_gm</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">Vred</span> <span class="o">=</span> <span class="n">Vt</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">T</span>                        <span class="c1"># (nb_regions, nb_components)</span>
+        <span class="n">Zred</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">]</span> <span class="o">*</span> <span class="n">S</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">]</span>  <span class="c1"># (T, nb_components)</span>
+        <span class="k">return</span> <span class="n">Zred</span><span class="p">,</span> <span class="n">Vred</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_project_rw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kappa_m</span><span class="p">,</span> <span class="n">Zred</span><span class="p">,</span> <span class="n">Vred</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Random walk projection for common and regional factors.&quot;&quot;&quot;</span>
+        <span class="n">drift_k</span><span class="p">,</span>  <span class="n">cov_k</span><span class="p">,</span>  <span class="n">k_last</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_rw</span><span class="p">(</span><span class="n">kappa_m</span><span class="p">)</span>
+        <span class="n">drift_z</span><span class="p">,</span>  <span class="n">cov_z</span><span class="p">,</span>  <span class="n">z_last</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_rw</span><span class="p">(</span><span class="n">Zred</span><span class="p">)</span>
+
+        <span class="n">t_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizon</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span><span class="p">:</span>
+            <span class="n">k_future</span>  <span class="o">=</span> <span class="n">k_last</span> <span class="o">+</span> <span class="n">drift_k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">t_range</span>                   <span class="c1"># (horizon,)</span>
+            <span class="n">Z_future</span>  <span class="o">=</span> <span class="n">z_last</span> <span class="o">+</span> <span class="n">drift_z</span> <span class="o">*</span> <span class="n">t_range</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>             <span class="c1"># (horizon, nb_components)</span>
+            <span class="n">kg_future</span> <span class="o">=</span> <span class="n">Z_future</span> <span class="o">@</span> <span class="n">Vred</span><span class="o">.</span><span class="n">T</span>                                <span class="c1"># (horizon, nb_regions)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">steps_k</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">drift_k</span><span class="p">,</span>  <span class="n">cov_k</span><span class="p">,</span>  <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sim</span><span class="p">))</span>
+            <span class="n">k_future</span>  <span class="o">=</span> <span class="n">k_last</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">steps_k</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>   <span class="c1"># (horizon, n_sim)</span>
+            <span class="n">steps_z</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">drift_z</span><span class="p">,</span> <span class="n">cov_z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">),</span>   <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sim</span><span class="p">))</span>
+            <span class="n">Z_future</span>  <span class="o">=</span> <span class="n">z_last</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">steps_z</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>             <span class="c1"># (horizon, n_sim, nb_components)</span>
+            <span class="n">kg_future</span> <span class="o">=</span> <span class="n">Z_future</span> <span class="o">@</span> <span class="n">Vred</span><span class="o">.</span><span class="n">T</span>                                <span class="c1"># (horizon, n_sim, nb_regions)</span>
+
+        <span class="k">return</span> <span class="n">k_future</span><span class="p">,</span> <span class="n">kg_future</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_project_linear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kappa_m</span><span class="p">,</span> <span class="n">Zred</span><span class="p">,</span> <span class="n">Vred</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Linear trend projection for common and regional factors.&quot;&quot;&quot;</span>
+        <span class="n">T</span>        <span class="o">=</span> <span class="n">kappa_m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">time_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">X_des</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">time_idx</span><span class="p">])</span>
+        <span class="n">Xf</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">)])</span>
+
+        <span class="n">beta_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">X_des</span><span class="p">,</span> <span class="n">kappa_m</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">beta_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">X_des</span><span class="p">,</span> <span class="n">Zred</span><span class="p">,</span>    <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">k_det</span>  <span class="o">=</span> <span class="n">Xf</span> <span class="o">@</span> <span class="n">beta_k</span>   <span class="c1"># (horizon,)</span>
+        <span class="n">Z_det</span>  <span class="o">=</span> <span class="n">Xf</span> <span class="o">@</span> <span class="n">beta_z</span>   <span class="c1"># (horizon, nb_components)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span><span class="p">:</span>
+            <span class="n">k_future</span>  <span class="o">=</span> <span class="n">k_det</span>
+            <span class="n">kg_future</span> <span class="o">=</span> <span class="n">Z_det</span> <span class="o">@</span> <span class="n">Vred</span><span class="o">.</span><span class="n">T</span>                                   <span class="c1"># (horizon, nb_regions)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">res_k</span>  <span class="o">=</span> <span class="n">kappa_m</span> <span class="o">-</span> <span class="n">X_des</span> <span class="o">@</span> <span class="n">beta_k</span>
+            <span class="n">res_z</span>  <span class="o">=</span> <span class="n">Zred</span>    <span class="o">-</span> <span class="n">X_des</span> <span class="o">@</span> <span class="n">beta_z</span>
+            <span class="n">cov_k</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">res_k</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)]])</span>
+            <span class="n">cov_z</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">res_z</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">)</span>
+
+            <span class="n">noise_k</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>              <span class="n">cov_k</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sim</span><span class="p">))</span>
+            <span class="n">noise_z</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_components</span><span class="p">),</span> <span class="n">cov_z</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">horizon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_sim</span><span class="p">))</span>
+
+            <span class="n">k_future</span>  <span class="o">=</span> <span class="n">k_det</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">noise_k</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>               <span class="c1"># (horizon, n_sim)</span>
+            <span class="n">Z_future</span>  <span class="o">=</span> <span class="n">Z_det</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">noise_z</span>                      <span class="c1"># (horizon, n_sim, nb_components)</span>
+            <span class="n">kg_future</span> <span class="o">=</span> <span class="n">Z_future</span> <span class="o">@</span> <span class="n">Vred</span><span class="o">.</span><span class="n">T</span>                                 <span class="c1"># (horizon, n_sim, nb_regions)</span>
+
+        <span class="k">return</span> <span class="n">k_future</span><span class="p">,</span> <span class="n">kg_future</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_reconstruct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k_future</span><span class="p">,</span> <span class="n">kg_future</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reconstructs log(μ) and μ from projected common and regional factors.&quot;&quot;&quot;</span>
+        <span class="n">alpha_xg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha_xg</span>
+        <span class="n">beta_x</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta_x</span>
+        <span class="n">beta_xg</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta_xg</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span><span class="p">:</span>
+            <span class="c1"># output shape: (nb_ages, horizon, nb_regions)</span>
+            <span class="n">logmu_future</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">alpha_xg</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="o">+</span> <span class="n">beta_x</span><span class="p">[:,</span>  <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">k_future</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span>
+                <span class="o">+</span> <span class="n">beta_xg</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>    <span class="o">*</span> <span class="n">kg_future</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+            <span class="p">)</span>
+            <span class="n">mu_future</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmu_future</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;kappa_future&quot;</span><span class="p">:</span>   <span class="n">k_future</span><span class="p">,</span>
+                <span class="s2">&quot;kappa_g_future&quot;</span><span class="p">:</span> <span class="n">kg_future</span><span class="p">,</span>
+                <span class="s2">&quot;logmu_future&quot;</span><span class="p">:</span>   <span class="n">logmu_future</span><span class="p">,</span>
+                <span class="s2">&quot;mu_future&quot;</span><span class="p">:</span>      <span class="n">mu_future</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># broadcast to (nb_ages, horizon, nb_regions, n_sim)</span>
+            <span class="n">k_4d</span>  <span class="o">=</span> <span class="n">k_future</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">kg_4d</span> <span class="o">=</span> <span class="n">kg_future</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+            <span class="n">logmu_sim</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">alpha_xg</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span>
+                <span class="o">+</span> <span class="n">beta_x</span><span class="p">[:,</span>  <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">k_4d</span>
+                <span class="o">+</span> <span class="n">beta_xg</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span>    <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">kg_4d</span>
+            <span class="p">)</span>
+            <span class="n">mu_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmu_sim</span><span class="p">)</span>
+
+            <span class="n">mu_lower</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">mu_sim</span><span class="p">,</span>  <span class="mf">2.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">mu_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">mu_sim</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>   <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">mu_upper</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">mu_sim</span><span class="p">,</span> <span class="mf">97.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">k_lower</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">k_future</span><span class="p">,</span>  <span class="mf">2.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">k_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">k_future</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>   <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">k_upper</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">k_future</span><span class="p">,</span> <span class="mf">97.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">kg_lower</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">kg_future</span><span class="p">,</span>  <span class="mf">2.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">kg_median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">kg_future</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>   <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">kg_upper</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">kg_future</span><span class="p">,</span> <span class="mf">97.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;kappa_paths&quot;</span><span class="p">:</span>    <span class="n">k_future</span><span class="p">,</span>
+                <span class="s2">&quot;kappa_lower&quot;</span><span class="p">:</span>    <span class="n">k_lower</span><span class="p">,</span>
+                <span class="s2">&quot;kappa_median&quot;</span><span class="p">:</span>   <span class="n">k_median</span><span class="p">,</span>
+                <span class="s2">&quot;kappa_upper&quot;</span><span class="p">:</span>    <span class="n">k_upper</span><span class="p">,</span>
+                <span class="s2">&quot;kappa_g_paths&quot;</span><span class="p">:</span>  <span class="n">kg_future</span><span class="p">,</span>
+                <span class="s2">&quot;kappa_g_lower&quot;</span><span class="p">:</span>  <span class="n">kg_lower</span><span class="p">,</span>
+                <span class="s2">&quot;kappa_g_median&quot;</span><span class="p">:</span> <span class="n">kg_median</span><span class="p">,</span>
+                <span class="s2">&quot;kappa_g_upper&quot;</span><span class="p">:</span>  <span class="n">kg_upper</span><span class="p">,</span>
+                <span class="s2">&quot;logmu_sim&quot;</span><span class="p">:</span>      <span class="n">logmu_sim</span><span class="p">,</span>
+                <span class="s2">&quot;mu_sim&quot;</span><span class="p">:</span>         <span class="n">mu_sim</span><span class="p">,</span>
+                <span class="s2">&quot;mu_lower&quot;</span><span class="p">:</span>       <span class="n">mu_lower</span><span class="p">,</span>
+                <span class="s2">&quot;mu_median&quot;</span><span class="p">:</span>      <span class="n">mu_median</span><span class="p">,</span>
+                <span class="s2">&quot;mu_upper&quot;</span><span class="p">:</span>       <span class="n">mu_upper</span><span class="p">,</span>
+            <span class="p">}</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="ProjectorLeeLi.project">
+<a class="viewcode-back" href="../../../../api.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi.project">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs the projection and returns the results dict.&quot;&quot;&quot;</span>
+        <span class="n">mask</span>     <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude_years</span><span class="p">)</span>
+        <span class="n">kappa_m</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="n">kappa_gm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_g</span><span class="p">[:,</span> <span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>   <span class="c1"># (T, nb_regions)</span>
+
+        <span class="n">Zred</span><span class="p">,</span> <span class="n">Vred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_svd_factors_g</span><span class="p">(</span><span class="n">kappa_gm</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;rw&quot;</span><span class="p">:</span>
+            <span class="n">k_future</span><span class="p">,</span> <span class="n">kg_future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project_rw</span><span class="p">(</span><span class="n">kappa_m</span><span class="p">,</span> <span class="n">Zred</span><span class="p">,</span> <span class="n">Vred</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;linear&quot;</span><span class="p">:</span>
+            <span class="n">k_future</span><span class="p">,</span> <span class="n">kg_future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project_linear</span><span class="p">(</span><span class="n">kappa_m</span><span class="p">,</span> <span class="n">Zred</span><span class="p">,</span> <span class="n">Vred</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;model must be &#39;rw&#39; or &#39;linear&#39;&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reconstruct</span><span class="p">(</span><span class="n">k_future</span><span class="p">,</span> <span class="n">kg_future</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># ─────────────────────────────────────────────────────────────────────────────</span>
+<span class="c1"># 4. High-age extrapolation</span>
+<span class="c1"># ─────────────────────────────────────────────────────────────────────────────</span>
+
+<div class="viewcode-block" id="HighAgeExtrapolator">
+<a class="viewcode-back" href="../../../../api.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">HighAgeExtrapolator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extrapolates log_Muxtg beyond max(xv) up to x_extrap.</span>
+
+<span class="sd">    Two methods available:</span>
+<span class="sd">      - &#39;linear&#39;   : no-intercept linear regression (base method)</span>
+<span class="sd">      - &#39;kannisto&#39; : Kannisto model with linear fallback</span>
+
+<span class="sd">    Expected shape of log_Muxtg:</span>
+<span class="sd">      - (nb_ages, nb_regions, horizon)         -&gt; deterministic  [linear]</span>
+<span class="sd">      - (nb_ages, nb_regions, horizon, n_sim)  -&gt; stochastic     [linear]</span>
+<span class="sd">      - (nb_ages, horizon, nb_regions)         -&gt; deterministic  [kannisto]</span>
+<span class="sd">      - (nb_ages, horizon, nb_regions, n_sim)  -&gt; stochastic     [kannisto]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">xv</span><span class="p">,</span>
+        <span class="n">x_extrap</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">x_extrap_start</span><span class="p">,</span>
+        <span class="n">log_Muxtg</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;kannisto&quot;</span><span class="p">,</span>
+        <span class="n">auto_start</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">fallback_linear</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xv</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xv</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_extrap</span>        <span class="o">=</span> <span class="n">x_extrap</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_extrap_start</span>  <span class="o">=</span> <span class="n">x_extrap_start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_Muxtg</span>       <span class="o">=</span> <span class="n">log_Muxtg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span>          <span class="o">=</span> <span class="n">method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_start</span>      <span class="o">=</span> <span class="n">auto_start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fallback_linear</span> <span class="o">=</span> <span class="n">fallback_linear</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span>      <span class="o">=</span> <span class="n">log_Muxtg</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">4</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_optimal_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_max</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">min_window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">max_window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Automatically selects x_extrap_start via leave-one-out cross-validation.&quot;&quot;&quot;</span>
+        <span class="n">age_to_idx</span> <span class="o">=</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">age</span><span class="p">):</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">age</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xv</span><span class="p">)}</span>
+        <span class="n">idx_max</span>    <span class="o">=</span> <span class="n">age_to_idx</span><span class="p">[</span><span class="n">x_max</span><span class="p">]</span>
+        <span class="n">anchor</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_Muxtg</span><span class="p">[</span><span class="n">idx_max</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+        <span class="n">best_start</span><span class="p">,</span> <span class="n">best_mse</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x_max</span><span class="p">)</span> <span class="o">-</span> <span class="n">min_window</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+        <span class="k">for</span> <span class="n">window</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_window</span><span class="p">,</span> <span class="n">max_window</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x_max</span><span class="p">)</span> <span class="o">-</span> <span class="n">window</span>
+            <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xv</span><span class="o">.</span><span class="n">min</span><span class="p">()):</span>
+                <span class="k">break</span>
+
+            <span class="n">xv_reg</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">idx_reg</span> <span class="o">=</span> <span class="p">[</span><span class="n">age_to_idx</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">xv_reg</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">age_to_idx</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_reg</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">dx</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xv</span><span class="p">[</span><span class="n">idx_reg</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_max</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+            <span class="n">Y</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_Muxtg</span><span class="p">[</span><span class="n">idx_reg</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">-</span> <span class="n">anchor</span>
+
+            <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">leave</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_reg</span><span class="p">)):</span>
+                <span class="n">mask</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">idx_reg</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+                <span class="n">mask</span><span class="p">[</span><span class="n">leave</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">dx_train</span><span class="p">,</span> <span class="n">dx_test</span> <span class="o">=</span> <span class="n">dx</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">dx</span><span class="p">[</span><span class="n">leave</span><span class="p">]</span>
+                <span class="n">Y_train</span><span class="p">,</span>  <span class="n">Y_test</span>  <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">leave</span><span class="p">]</span>
+                <span class="n">denom_loo</span> <span class="o">=</span> <span class="p">(</span><span class="n">dx_train</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">denom_loo</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;i,i...-&gt;...&#39;</span><span class="p">,</span> <span class="n">dx_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom_loo</span>
+                <span class="n">err</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">dx_test</span> <span class="o">*</span> <span class="n">slope</span> <span class="o">-</span> <span class="n">Y_test</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+                <span class="n">mse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">mse</span> <span class="o">&lt;</span> <span class="n">best_mse</span><span class="p">:</span>
+                    <span class="n">best_mse</span><span class="p">,</span> <span class="n">best_start</span> <span class="o">=</span> <span class="n">mse</span><span class="p">,</span> <span class="n">start</span>
+
+        <span class="k">return</span> <span class="n">best_start</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_extrapolate_linear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;No-intercept linear regression (convention: nb_ages, nb_regions, horizon[, n_sim]).&quot;&quot;&quot;</span>
+        <span class="n">x_max</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xv</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+        <span class="n">xv_reg</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_extrap_start</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">xv_add</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_extrap</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">xv_full</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xv</span><span class="o">.</span><span class="n">min</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_extrap</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">dx_reg</span> <span class="o">=</span> <span class="p">(</span><span class="n">xv_reg</span> <span class="o">-</span> <span class="n">x_max</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">dx_add</span> <span class="o">=</span> <span class="p">(</span><span class="n">xv_add</span> <span class="o">-</span> <span class="n">x_max</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_Muxtg</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span><span class="p">:</span>
+            <span class="n">nb_ages</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">,</span> <span class="n">horizon</span><span class="p">,</span> <span class="n">n_sim</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">shape</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">xv_full</span><span class="p">),</span> <span class="n">nb_regions</span><span class="p">,</span> <span class="n">horizon</span><span class="p">,</span> <span class="n">n_sim</span><span class="p">))</span>
+            <span class="n">out</span><span class="p">[:</span><span class="n">nb_ages</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_regions</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">horizon</span><span class="p">):</span>
+                    <span class="n">Y_reg</span>  <span class="o">=</span> <span class="n">mu</span><span class="p">[</span><span class="n">xv_reg</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="p">:]</span>
+                    <span class="n">anchor</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[</span><span class="n">x_max</span><span class="p">,</span>  <span class="n">r</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="p">:]</span>
+                    <span class="n">slope</span>  <span class="o">=</span> <span class="p">(</span><span class="n">dx_reg</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">Y_reg</span> <span class="o">-</span> <span class="n">anchor</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">dx_reg</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">dx_reg</span><span class="p">)</span>
+                    <span class="n">out</span><span class="p">[</span><span class="n">nb_ages</span><span class="p">:,</span> <span class="n">r</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">anchor</span> <span class="o">+</span> <span class="n">dx_add</span> <span class="o">*</span> <span class="n">slope</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nb_ages</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">,</span> <span class="n">horizon</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">shape</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">xv_full</span><span class="p">),</span> <span class="n">nb_regions</span><span class="p">,</span> <span class="n">horizon</span><span class="p">))</span>
+            <span class="n">out</span><span class="p">[:</span><span class="n">nb_ages</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_regions</span><span class="p">):</span>
+                <span class="n">Y_reg</span>  <span class="o">=</span> <span class="n">mu</span><span class="p">[</span><span class="n">xv_reg</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="n">anchor</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[</span><span class="n">x_max</span><span class="p">,</span>  <span class="n">r</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="n">slope</span>  <span class="o">=</span> <span class="p">(</span><span class="n">dx_reg</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">Y_reg</span> <span class="o">-</span> <span class="n">anchor</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">dx_reg</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">dx_reg</span><span class="p">)</span>
+                <span class="n">out</span><span class="p">[</span><span class="n">nb_ages</span><span class="p">:,</span> <span class="n">r</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">anchor</span> <span class="o">+</span> <span class="n">dx_add</span> <span class="o">*</span> <span class="n">slope</span>
+
+        <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">xv_full</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_extrapolate_kannisto</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Kannisto extrapolation with linear fallback (convention: nb_ages, horizon, nb_regions[, n_sim]).&quot;&quot;&quot;</span>
+        <span class="n">x_max</span>      <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xv</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+        <span class="n">idx_reg</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">xv</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_extrap_start</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xv</span> <span class="o">&lt;=</span> <span class="n">x_max</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">idx_anchor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xv</span> <span class="o">==</span> <span class="n">x_max</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_reg</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Regression window too small: &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;x_extrap_start=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x_extrap_start</span><span class="si">}</span><span class="s2">, x_max=</span><span class="si">{</span><span class="n">x_max</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">xv_fit</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xv</span><span class="p">[</span><span class="n">idx_reg</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">xv_add</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_extrap</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">xv_full</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">xv</span><span class="p">,</span> <span class="n">xv_add</span><span class="p">])</span>
+        <span class="n">nb_add</span>  <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xv_add</span><span class="p">)</span>
+
+        <span class="c1"># precompute distances for the linear fallback</span>
+        <span class="n">dx_reg_</span>   <span class="o">=</span> <span class="p">(</span><span class="n">xv_fit</span> <span class="o">-</span> <span class="n">x_max</span><span class="p">)</span>
+        <span class="n">dx_add_</span>   <span class="o">=</span> <span class="p">(</span><span class="n">xv_add</span> <span class="o">-</span> <span class="n">x_max</span><span class="p">)</span>
+        <span class="n">denom_lin</span> <span class="o">=</span> <span class="nb">float</span><span class="p">((</span><span class="n">dx_reg_</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_linear_1d</span><span class="p">(</span><span class="n">Y_reg_1d</span><span class="p">,</span> <span class="n">anchor_val</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Linear fallback on a single 1D slice.&quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">denom_lin</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">nb_add</span><span class="p">,</span> <span class="n">anchor_val</span><span class="p">)</span>
+            <span class="n">slope</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dx_reg_</span><span class="p">,</span> <span class="n">Y_reg_1d</span> <span class="o">-</span> <span class="n">anchor_val</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom_lin</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">anchor_val</span> <span class="o">+</span> <span class="n">dx_add_</span> <span class="o">*</span> <span class="n">slope</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_kannisto_1d</span><span class="p">(</span><span class="n">log_mu_1d</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Kannisto extrapolation on a single 1D slice.&quot;&quot;&quot;</span>
+            <span class="n">fit_vals</span>   <span class="o">=</span> <span class="n">log_mu_1d</span><span class="p">[</span><span class="n">idx_reg</span><span class="p">]</span>
+            <span class="n">anchor_val</span> <span class="o">=</span> <span class="n">log_mu_1d</span><span class="p">[</span><span class="n">idx_anchor</span><span class="p">]</span>
+
+            <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_kannisto</span><span class="p">(</span><span class="n">xv_fit</span><span class="p">,</span> <span class="n">fit_vals</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fallback_linear</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">_linear_1d</span><span class="p">(</span><span class="n">fit_vals</span><span class="p">,</span> <span class="n">anchor_val</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Kannisto fit failed and fallback is disabled.&quot;</span><span class="p">)</span>
+
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span>   <span class="o">=</span> <span class="n">params</span>
+            <span class="n">extrap</span> <span class="o">=</span> <span class="n">kannisto_log_mu</span><span class="p">(</span><span class="n">xv_add</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+            <span class="c1"># enforce monotonicity: log-mortality must not decrease at high ages</span>
+            <span class="n">extrap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="n">anchor_val</span><span class="p">],</span> <span class="n">extrap</span><span class="p">]))[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="k">return</span> <span class="n">extrap</span>
+
+        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_Muxtg</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stochastic</span><span class="p">:</span>
+            <span class="n">nb_ages</span><span class="p">,</span> <span class="n">horizon</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">,</span> <span class="n">n_sim</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">shape</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">xv_full</span><span class="p">),</span> <span class="n">horizon</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">,</span> <span class="n">n_sim</span><span class="p">))</span>
+            <span class="n">out</span><span class="p">[:</span><span class="n">nb_ages</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span>
+            <span class="c1"># flatten trailing dims to iterate over a single axis</span>
+            <span class="n">flat</span>        <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nb_ages</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">extrap_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nb_add</span><span class="p">,</span> <span class="n">flat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">flat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">extrap_flat</span><span class="p">[:,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">_kannisto_1d</span><span class="p">(</span><span class="n">flat</span><span class="p">[:,</span> <span class="n">col</span><span class="p">])</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">nb_ages</span><span class="p">:,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">extrap_flat</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nb_add</span><span class="p">,</span> <span class="n">horizon</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">,</span> <span class="n">n_sim</span><span class="p">)</span>
+            <span class="n">nan_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nb_ages</span><span class="p">,</span> <span class="n">horizon</span><span class="p">,</span> <span class="n">nb_regions</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">shape</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">xv_full</span><span class="p">),</span> <span class="n">horizon</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">))</span>
+            <span class="n">out</span><span class="p">[:</span><span class="n">nb_ages</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span>
+            <span class="n">flat</span>        <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nb_ages</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">extrap_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nb_add</span><span class="p">,</span> <span class="n">flat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">flat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">extrap_flat</span><span class="p">[:,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">_kannisto_1d</span><span class="p">(</span><span class="n">flat</span><span class="p">[:,</span> <span class="n">col</span><span class="p">])</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">nb_ages</span><span class="p">:,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">extrap_flat</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nb_add</span><span class="p">,</span> <span class="n">horizon</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">)</span>
+            <span class="n">nan_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">nan_mask</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;⚠️ NaN at age indices: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">nan_mask</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">xv_full</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fit_kannisto</span><span class="p">(</span><span class="n">xv_fit</span><span class="p">,</span> <span class="n">log_mu_fit</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fits Kannisto model on a 1D vector. Returns (a, b) or None on failure.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># initialize via Gompertz (log-linear regression)</span>
+            <span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">xv_fit</span><span class="p">,</span> <span class="n">log_mu_fit</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">b0</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">slope</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">)</span>
+            <span class="n">a0</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">intercept</span><span class="p">),</span> <span class="mf">1e-6</span><span class="p">)</span>
+            <span class="n">popt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">kannisto_log_mu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span>
+                <span class="n">xv_fit</span><span class="p">,</span> <span class="n">log_mu_fit</span><span class="p">,</span>
+                <span class="n">p0</span><span class="o">=</span><span class="p">[</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">],</span>
+                <span class="n">bounds</span><span class="o">=</span><span class="p">([</span><span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">],</span> <span class="p">[</span><span class="mf">1e2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]),</span>
+                <span class="n">maxfev</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">popt</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+<div class="viewcode-block" id="HighAgeExtrapolator.extrapolate">
+<a class="viewcode-back" href="../../../../api.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator.extrapolate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extrapolate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs the extrapolation using the selected method.</span>
+
+<span class="sd">        Returns (out, xv_full).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xv</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_start</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_extrap_start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x_extrap_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optimal_start</span><span class="p">(</span><span class="n">x_max</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;x_extrap_start automatically selected: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x_extrap_start</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;linear&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extrapolate_linear</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;kannisto&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extrapolate_kannisto</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;method must be &#39;linear&#39; or &#39;kannisto&#39;&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+
+
+<span class="c1">#pour stochastique</span>
+<div class="viewcode-block" id="concat_logmu_time">
+<a class="viewcode-back" href="../../../../api.html#morta_nuts2.model.projection.project_class.concat_logmu_time">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">concat_logmu_time</span><span class="p">(</span><span class="n">logmu_hist</span><span class="p">,</span> <span class="n">logmu_proj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Concatenate historical and projected log-mortality along time axis.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    logmu_hist : (nb_ages, nb_years_hist, nb_regions)</span>
+<span class="sd">    logmu_proj :</span>
+<span class="sd">        - deterministic : (nb_ages, horizon, nb_regions)</span>
+<span class="sd">        - stochastic    : (nb_ages, horizon, nb_regions, n_sim)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    - deterministic : (nb_ages, nb_years_hist + horizon, nb_regions)</span>
+<span class="sd">    - stochastic    : (nb_ages, nb_years_hist + horizon, nb_regions, n_sim)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">logmu_proj</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">logmu_hist</span><span class="p">,</span> <span class="n">logmu_proj</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">logmu_proj</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">n_sim</span> <span class="o">=</span> <span class="n">logmu_proj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">logmu_hist_expanded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span>
+            <span class="n">logmu_hist</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">],</span>   <span class="c1"># (nb_ages, nb_years_hist, nb_regions, 1)</span>
+            <span class="n">n_sim</span><span class="p">,</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">3</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">logmu_hist_expanded</span><span class="p">,</span> <span class="n">logmu_proj</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;logmu_proj must be 3D (deterministic) or 4D (stochastic)&quot;</span><span class="p">)</span></div>
+
+    
+
+
+<span class="c1"># #------------------------------------------------------------------------------</span>
+<span class="c1"># # Function for valuation of annuities</span>
+<span class="c1"># #------------------------------------------------------------------------------</span>
+<span class="c1"># def Annuity_pricing(xe,xv,log_Muxtg,duration,rate):</span>
+<span class="c1">#     _ , nby , nb_reg , nb_simul = log_Muxtg.shape</span>
+<span class="c1">#     price   = np.zeros((len(xe),nb_reg,nb_simul))    </span>
+<span class="c1">#     ctx      = 0</span>
+<span class="c1">#     v = 1/(1+rate)</span>
+<span class="c1">#     for xs in xe:</span>
+<span class="c1">#         for i in range(nb_reg):</span>
+<span class="c1">#             for s in range(nb_simul):</span>
+<span class="c1">#                 tpx = 1</span>
+<span class="c1">#                 tax = 0</span>
+<span class="c1">#                 for j in range(duration):    </span>
+<span class="c1">#                     #t_p_xs</span>
+<span class="c1">#                     Muxtg = np.exp(log_Muxtg[xs+j,j,i,s])</span>
+<span class="c1">#                     px    = np.exp(-Muxtg)  </span>
+<span class="c1">#                     tpx   = tpx*px</span>
+<span class="c1">#                     tax   = tax + tpx*v**j</span>
+<span class="c1">#                     price[ctx,i,s]  = taxcd</span>
+<span class="c1">#         ctx = ctx +1  </span>
+<span class="c1">#     return(price)</span>
+
+<div class="viewcode-block" id="Annuity_pricing">
+<a class="viewcode-back" href="../../../../api.html#morta_nuts2.model.projection.project_class.Annuity_pricing">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">Annuity_pricing</span><span class="p">(</span><span class="n">xe</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">log_Muxtg</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the present value of life annuities using simulated mortality rates.</span>
+
+<span class="sd">    This function evaluates the actuarial present value of a life annuity</span>
+<span class="sd">    for different entry ages, regions, and stochastic mortality scenarios.</span>
+<span class="sd">    The mortality intensity is provided in logarithmic form and transformed</span>
+<span class="sd">    to obtain the force of mortality.</span>
+
+<span class="sd">    The annuity is valued by computing survival probabilities year by year</span>
+<span class="sd">    and discounting future payments using a constant interest rate.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xe : array-like</span>
+<span class="sd">        Vector of entry ages at which the annuity starts.</span>
+<span class="sd">    xv : array-like</span>
+<span class="sd">        Vector of ages in the mortality table (not directly used in the function</span>
+<span class="sd">        but typically included for compatibility with the mortality grid).</span>
+<span class="sd">    log_Muxtg : numpy.ndarray</span>
+<span class="sd">        4D array containing the logarithm of mortality intensities with shape:</span>
+<span class="sd">        (age, projection_year, region, simulation).</span>
+
+<span class="sd">        Dimensions:</span>
+<span class="sd">        - age: index corresponding to the age in the mortality table</span>
+<span class="sd">        - projection_year: future year index</span>
+<span class="sd">        - region: geographical region</span>
+<span class="sd">        - simulation: stochastic mortality scenario</span>
+<span class="sd">    duration : int</span>
+<span class="sd">        Maximum duration (in years) of the annuity payments.</span>
+<span class="sd">    rate : float</span>
+<span class="sd">        Constant annual interest rate used for discounting.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Array containing the annuity prices with shape:</span>
+<span class="sd">        (len(xe), number_of_regions, number_of_simulations)</span>
+
+<span class="sd">        Each value corresponds to the actuarial present value of a life annuity</span>
+<span class="sd">        for a given entry age, region, and stochastic mortality scenario.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The survival probability is approximated using the force of mortality:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        p_x = \\exp(-\\mu_x)</span>
+
+<span class="sd">    where :math:`\\mu_x` is the force of mortality.</span>
+
+<span class="sd">    The annuity value is computed as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        a_x = \\sum_{t=1}^{T} v^t \\cdot {}_t p_x</span>
+
+<span class="sd">    where:</span>
+
+<span class="sd">    - :math:`v = \\frac{1}{1+i}` is the discount factor</span>
+<span class="sd">    - :math:`{}_t p_x` is the survival probability from age :math:`x` to :math:`x+t`</span>
+<span class="sd">    - :math:`T` is the annuity duration</span>
+
+<span class="sd">    The function evaluates the annuity value for each:</span>
+<span class="sd">    - entry age</span>
+<span class="sd">    - region</span>
+<span class="sd">    - stochastic mortality simulation.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Extract dimensions from the mortality array</span>
+    <span class="c1"># nby: number of projection years</span>
+    <span class="c1"># nb_reg: number of regions</span>
+    <span class="c1"># nb_simul: number of stochastic simulations</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">nby</span><span class="p">,</span> <span class="n">nb_reg</span><span class="p">,</span> <span class="n">nb_simul</span> <span class="o">=</span> <span class="n">log_Muxtg</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Initialize output array storing annuity prices</span>
+    <span class="c1"># Dimensions: entry_age × region × simulation</span>
+    <span class="n">price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">xe</span><span class="p">),</span> <span class="n">nb_reg</span><span class="p">,</span> <span class="n">nb_simul</span><span class="p">))</span>
+
+    <span class="c1"># Index for entry age</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Discount factor</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">rate</span><span class="p">)</span>
+
+    <span class="c1"># Loop over entry ages</span>
+    <span class="k">for</span> <span class="n">xs</span> <span class="ow">in</span> <span class="n">xe</span><span class="p">:</span>
+
+        <span class="c1"># Loop over regions</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_reg</span><span class="p">):</span>
+
+            <span class="c1"># Loop over stochastic mortality simulations</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_simul</span><span class="p">):</span>
+
+                <span class="c1"># Survival probability accumulator</span>
+                <span class="n">tpx</span> <span class="o">=</span> <span class="mi">1</span>
+
+                <span class="c1"># Present value of annuity payments</span>
+                <span class="n">tax</span> <span class="o">=</span> <span class="mi">0</span>
+
+                <span class="c1"># Loop over annuity duration</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">duration</span><span class="p">):</span>
+
+                    <span class="c1"># Retrieve mortality intensity for age xs+j</span>
+                    <span class="c1"># and projection year j</span>
+                    <span class="n">Muxtg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_Muxtg</span><span class="p">[</span><span class="n">xs</span> <span class="o">+</span> <span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">])</span>
+
+                    <span class="c1"># Convert force of mortality into survival probability</span>
+                    <span class="n">px</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">Muxtg</span><span class="p">)</span>
+
+                    <span class="c1"># Update cumulative survival probability</span>
+                    <span class="n">tpx</span> <span class="o">=</span> <span class="n">tpx</span> <span class="o">*</span> <span class="n">px</span>
+
+                    <span class="c1"># Add discounted payment conditional on survival</span>
+                    <span class="n">tax</span> <span class="o">=</span> <span class="n">tax</span> <span class="o">+</span> <span class="n">tpx</span> <span class="o">*</span> <span class="n">v</span><span class="o">**</span><span class="n">j</span>
+
+                    <span class="c1"># Store intermediate annuity value</span>
+                    <span class="n">price</span><span class="p">[</span><span class="n">ctx</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">tax</span>
+
+        <span class="c1"># Move to next entry age</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">ctx</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">price</span></div>
+
+
+
+<span class="c1">################################################################</span>
+<span class="c1">#                 COMPUTE MAE AND WMAE</span>
+<span class="c1">################################################################</span>
+
+<div class="viewcode-block" id="compute_mae">
+<a class="viewcode-back" href="../../../../api.html#morta_nuts2.model.projection.project_class.compute_mae">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_mae</span><span class="p">(</span><span class="n">mu_obs</span><span class="p">,</span> <span class="n">mu_model</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute MAE and WMAE between observed and modelled mortality rates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mu_obs   : (nb_ages, horizon) or (nb_ages, horizon, nb_regions)</span>
+<span class="sd">    mu_model : (nb_ages, horizon) or (nb_ages, horizon, nb_regions)</span>
+<span class="sd">    weights  : same shape as mu_obs, optional, e.g. exposures Extg</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict with MAE and WMAE (if weights provided) at different aggregation levels</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#  2D  →  broadcast to 3D</span>
+    <span class="k">if</span> <span class="n">mu_obs</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">mu_obs</span> <span class="o">=</span> <span class="n">mu_obs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">mu_model</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">mu_model</span> <span class="o">=</span> <span class="n">mu_model</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">weights</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span>
+
+    
+    <span class="k">if</span> <span class="n">mu_model</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">mu_obs</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="n">mu_model</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">mu_model</span><span class="p">,</span> <span class="n">mu_obs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="n">abs_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_model</span> <span class="o">-</span> <span class="n">mu_obs</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;by_region&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">abs_err</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>   <span class="c1"># (nb_regions,)</span>
+        <span class="s2">&quot;by_age&quot;</span><span class="p">:</span>    <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">abs_err</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>   <span class="c1"># (nb_ages,)</span>
+        <span class="s2">&quot;by_year&quot;</span><span class="p">:</span>   <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">abs_err</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>   <span class="c1"># (horizon,)</span>
+        <span class="s2">&quot;global&quot;</span><span class="p">:</span>    <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">abs_err</span><span class="p">)</span> <span class="o">/</span> <span class="n">abs_err</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>  <span class="c1"># scalar</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;wmae_by_region&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">abs_err</span> <span class="o">*</span> <span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+            <span class="s2">&quot;wmae_by_age&quot;</span><span class="p">:</span>    <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">abs_err</span> <span class="o">*</span> <span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+            <span class="s2">&quot;wmae_by_year&quot;</span><span class="p">:</span>   <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">abs_err</span> <span class="o">*</span> <span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+            <span class="s2">&quot;wmae_global&quot;</span><span class="p">:</span>    <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">abs_err</span> <span class="o">*</span> <span class="n">weights</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span>
+        <span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Innovation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

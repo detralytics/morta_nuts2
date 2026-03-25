@@ -1,0 +1,1477 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>morta_nuts2.data.eurostat &mdash; Morta-nuts  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Morta-nuts
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu :</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Morta-nuts</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">morta_nuts2.data.eurostat</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for morta_nuts2.data.eurostat</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">eurostat.py - Eurostat Data Manager</span>
+<span class="sd">=====================================</span>
+
+<span class="sd">This module provides a unified interface for fetching, caching, and processing</span>
+<span class="sd">demographic data from the `Eurostat REST API &lt;https://ec.europa.eu/eurostat/&gt;`_,</span>
+<span class="sd">coupled with NUTS geographic shapefiles for spatial operations.</span>
+
+<span class="sd">**Main features:**</span>
+
+<span class="sd">- Automatic loading of the NUTS shapefile (no manual handling required).</span>
+<span class="sd">- Centralized configuration via :class:`EurostatConfig` (paths, datasets, excluded regions).</span>
+<span class="sd">- Smart caching: data is downloaded once and stored as CSV files.</span>
+<span class="sd">- Dynamic dataset registration: add new Eurostat dataset codes at runtime</span>
+<span class="sd">  via :meth:`EurostatConfig.register_dataset` or</span>
+<span class="sd">  :meth:`Eurostat_data.register_dataset`.</span>
+<span class="sd">- Built-in data cleaning (age labels, year conversion).</span>
+<span class="sd">- Backward-compatible wrapper functions for legacy code.</span>
+
+<span class="sd">**Datasets available by default:**</span>
+
+<span class="sd">=============  =====================  =================================</span>
+<span class="sd">Key            Eurostat code          Description</span>
+<span class="sd">=============  =====================  =================================</span>
+<span class="sd">mortality      ``demo_r_mlife``       Life expectancy by NUTS region</span>
+<span class="sd">deaths         ``demo_r_magec``       Deaths by age, sex and region</span>
+<span class="sd">population     ``demo_r_d2jan``       Population on 1 January by region</span>
+<span class="sd">=============  =====================  =================================</span>
+
+<span class="sd">**Quick start example:**</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    from eurostat import Eurostat_data, EurostatConfig</span>
+
+<span class="sd">    # Instantiate the manager (shapefile auto-loaded)</span>
+<span class="sd">    manager = Eurostat_data()</span>
+
+<span class="sd">    # Load French mortality data (downloaded then cached as CSV)</span>
+<span class="sd">    mortality = manager.load(&quot;mortality&quot;, &quot;FR&quot;)</span>
+
+<span class="sd">    # Register a new dataset type at runtime</span>
+<span class="sd">    manager.register_dataset(&quot;fertility&quot;, &quot;demo_r_find3&quot;, filename=&quot;Fxt_raw&quot;)</span>
+
+<span class="sd">    # Load the newly registered dataset</span>
+<span class="sd">    fertility = manager.load(&quot;fertility&quot;, &quot;DE&quot;)</span>
+
+<span class="sd">**Dependencies:**</span>
+
+<span class="sd">- ``pandas``</span>
+<span class="sd">- ``geopandas``</span>
+<span class="sd">- ``numpy``</span>
+<span class="sd">- ``eurostatapiclient``</span>
+
+<span class="sd">.. note::</span>
+<span class="sd">    The NUTS shapefile must be present on disk. Configure its path via</span>
+<span class="sd">    ``EurostatConfig.set_default_shapefile()`` or pass ``shapefile_path``</span>
+<span class="sd">    to :class:`Eurostat_data`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">eurostatapiclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">EurostatAPIClient</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Base directory resolution</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Walk up from the current working directory until the NUTS_files folder is found.</span>
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;NUTS_files&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">BASE_DIR</span><span class="o">.</span><span class="n">parent</span>
+
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;NUTS_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;NUTS_RG_01M_2024_3035.shp&quot;</span>
+
+
+<span class="c1"># =============================================================================</span>
+<span class="c1"># EurostatConfig</span>
+<span class="c1"># =============================================================================</span>
+
+<div class="viewcode-block" id="EurostatConfig">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.EurostatConfig">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EurostatConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Centralized configuration for the Eurostat manager.</span>
+
+<span class="sd">    This class holds global defaults (paths, dataset codes, excluded regions)</span>
+<span class="sd">    shared across all :class:`Eurostat_data` instances.  All attributes are</span>
+<span class="sd">    class-level so they can be changed once and immediately reflected everywhere.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    DEFAULT_SHAPEFILE_PATH : Path</span>
+<span class="sd">        Default path to the NUTS shapefile used when no explicit path is given.</span>
+<span class="sd">    DEFAULT_DATA_PATH : Path</span>
+<span class="sd">        Default directory where downloaded CSV files are cached.</span>
+<span class="sd">    DATASETS : dict[str, str]</span>
+<span class="sd">        Mapping of human-readable dataset keys to Eurostat dataset codes.</span>
+<span class="sd">        Use :meth:`register_dataset` to add new entries at runtime.</span>
+<span class="sd">    EXCLUDE_REGIONS : dict[str, list[str]]</span>
+<span class="sd">        Mapping of ISO country codes to lists of NUTS region IDs that should</span>
+<span class="sd">        be excluded from queries (e.g. overseas territories).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Change the default shapefile path globally before creating any manager:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        EurostatConfig.set_default_shapefile(&quot;D:/data/NUTS_2024.shp&quot;)</span>
+<span class="sd">        manager = Eurostat_data()  # will use the new path</span>
+
+<span class="sd">    Register a new dataset so it becomes available to all managers:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        EurostatConfig.register_dataset(</span>
+<span class="sd">            &quot;fertility&quot;, &quot;demo_r_find3&quot;, filename=&quot;Fxt_raw&quot;</span>
+<span class="sd">        )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: Default path to the NUTS shapefile (resolved at import time).</span>
+    <span class="n">DEFAULT_SHAPEFILE_PATH</span> <span class="o">=</span> <span class="n">DATA_DIR</span>
+
+    <span class="c1">#: Default directory for cached CSV data files.</span>
+    <span class="n">DEFAULT_DATA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../data&quot;</span><span class="p">)</span>
+
+    <span class="c1">#: Built-in dataset registry: ``{key: eurostat_code}``.</span>
+    <span class="n">DATASETS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;mortality&quot;</span><span class="p">:</span> <span class="s2">&quot;demo_r_mlife&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;deaths&quot;</span><span class="p">:</span> <span class="s2">&quot;demo_r_magec&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;population&quot;</span><span class="p">:</span> <span class="s2">&quot;demo_r_d2jan&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1">#: Internal mapping of dataset keys to their cache filename stems.</span>
+    <span class="c1">#: Used by :meth:`Eurostat_data.load` and :meth:`Eurostat_data.cache_info`.</span>
+    <span class="n">_FILENAME_MAP</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;mortality&quot;</span><span class="p">:</span> <span class="s2">&quot;mxt_raw&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;deaths&quot;</span><span class="p">:</span> <span class="s2">&quot;Dxt_raw&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;population&quot;</span><span class="p">:</span> <span class="s2">&quot;Lxt_raw&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1">#: Regions excluded by country (e.g. overseas territories).</span>
+    <span class="n">EXCLUDE_REGIONS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;FR&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;FRY1&quot;</span><span class="p">,</span> <span class="s2">&quot;FRY2&quot;</span><span class="p">,</span> <span class="s2">&quot;FRY3&quot;</span><span class="p">,</span> <span class="s2">&quot;FRY4&quot;</span><span class="p">,</span> <span class="s2">&quot;FRY5&quot;</span><span class="p">],</span>  <span class="c1"># DOM-TOM</span>
+        <span class="s2">&quot;PT&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;PT20&quot;</span><span class="p">,</span> <span class="s2">&quot;PT30&quot;</span><span class="p">],</span>                            <span class="c1"># Azores, Madeira</span>
+        <span class="s2">&quot;ES&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ES63&quot;</span><span class="p">,</span> <span class="s2">&quot;ES64&quot;</span><span class="p">,</span> <span class="s2">&quot;ES70&quot;</span><span class="p">],</span>                    <span class="c1"># Ceuta, Melilla, Canary Islands</span>
+        <span class="s2">&quot;NO&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;NO0B&quot;</span><span class="p">],</span>                                    <span class="c1"># Svalbard</span>
+    <span class="p">}</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Configuration helpers</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="EurostatConfig.set_default_shapefile">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_shapefile">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_default_shapefile</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change the default NUTS shapefile path globally.</span>
+
+<span class="sd">        After calling this method, any new :class:`Eurostat_data` instance</span>
+<span class="sd">        created without an explicit ``shapefile_path`` will use *path*.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        path : str or Path</span>
+<span class="sd">            Absolute or relative path to the NUTS ``.shp`` file.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            EurostatConfig.set_default_shapefile(&quot;D:/data/NUTS_2024.shp&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">DEFAULT_SHAPEFILE_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EurostatConfig.set_default_data_path">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_data_path">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_default_data_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change the default data cache directory globally.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        path : str or Path</span>
+<span class="sd">            Directory where downloaded CSV files will be stored.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            EurostatConfig.set_default_data_path(&quot;D:/eurostat_cache&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">DEFAULT_DATA_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EurostatConfig.register_dataset">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.EurostatConfig.register_dataset">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_dataset</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">eurostat_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a new Eurostat dataset type in the global configuration.</span>
+
+<span class="sd">        Once registered, the dataset key becomes available in</span>
+<span class="sd">        :meth:`Eurostat_data.load`, :meth:`Eurostat_data.cache_info`, and</span>
+<span class="sd">        :meth:`Eurostat_data.clear_cache` for **all** manager instances.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        key : str</span>
+<span class="sd">            Short human-readable identifier for the dataset</span>
+<span class="sd">            (e.g. ``&quot;fertility&quot;``).  Must be unique unless *overwrite* is</span>
+<span class="sd">            ``True``.</span>
+<span class="sd">        eurostat_code : str</span>
+<span class="sd">            Official Eurostat dataset code as found in the Eurostat data</span>
+<span class="sd">            browser (e.g. ``&quot;demo_r_find3&quot;``).</span>
+<span class="sd">        filename : str, optional</span>
+<span class="sd">            Stem used for the cached CSV file, i.e. the file will be saved</span>
+<span class="sd">            as ``{country}_{filename}.csv``.  Defaults to ``&quot;{key}_raw&quot;``</span>
+<span class="sd">            when not provided.</span>
+<span class="sd">        overwrite : bool, optional</span>
+<span class="sd">            If ``False`` (default) and *key* already exists, a</span>
+<span class="sd">            :exc:`ValueError` is raised.  Set to ``True`` to silently</span>
+<span class="sd">            replace the existing entry.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If *key* is already registered and *overwrite* is ``False``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        Register a fertility dataset, then load it for Germany:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            EurostatConfig.register_dataset(</span>
+<span class="sd">                &quot;fertility&quot;, &quot;demo_r_find3&quot;, filename=&quot;Fxt_raw&quot;</span>
+<span class="sd">            )</span>
+<span class="sd">            manager = Eurostat_data()</span>
+<span class="sd">            fertility = manager.load(&quot;fertility&quot;, &quot;DE&quot;)</span>
+
+<span class="sd">        Overwrite an existing entry:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            EurostatConfig.register_dataset(</span>
+<span class="sd">                &quot;mortality&quot;, &quot;demo_r_mlife2&quot;, overwrite=True</span>
+<span class="sd">            )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">DATASETS</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Dataset key &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; is already registered &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(code: </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">DATASETS</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="si">}</span><span class="s2">). &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Use overwrite=True to replace it.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">cls</span><span class="o">.</span><span class="n">DATASETS</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">eurostat_code</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_FILENAME_MAP</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">filename</span> <span class="k">if</span> <span class="n">filename</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_raw&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ [Config] Dataset registered: &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; → &#39;</span><span class="si">{</span><span class="n">eurostat_code</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+              <span class="sa">f</span><span class="s2">&quot;(cache filename: &#39;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">_FILENAME_MAP</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;)&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># =============================================================================</span>
+<span class="c1"># Eurostat_data</span>
+<span class="c1"># =============================================================================</span>
+
+<div class="viewcode-block" id="Eurostat_data">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Eurostat_data</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Unified manager for all Eurostat scraping operations.</span>
+
+<span class="sd">    This class is the main entry point.  It handles:</span>
+
+<span class="sd">    - Automatic loading of the NUTS shapefile on first use (lazy loading).</span>
+<span class="sd">    - Fetching data from the Eurostat API and caching results as CSV files.</span>
+<span class="sd">    - Filtering NUTS regions by country, level, and exclusion lists.</span>
+<span class="sd">    - Building age × year pivot tables for actuarial / demographic analysis.</span>
+<span class="sd">    - Dynamic registration of new dataset types at the instance level.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shapefile : GeoDataFrame, optional</span>
+<span class="sd">        An already-loaded NUTS shapefile.  Takes priority over</span>
+<span class="sd">        *shapefile_path* when provided.</span>
+<span class="sd">    shapefile_path : str or Path, optional</span>
+<span class="sd">        Path to the NUTS ``.shp`` file.  Falls back to</span>
+<span class="sd">        :attr:`EurostatConfig.DEFAULT_SHAPEFILE_PATH` when ``None``.</span>
+<span class="sd">    data_path : str or Path, optional</span>
+<span class="sd">        Directory for cached CSV files.  Falls back to</span>
+<span class="sd">        :attr:`EurostatConfig.DEFAULT_DATA_PATH` when ``None``.</span>
+<span class="sd">    language : str, optional</span>
+<span class="sd">        Language code for Eurostat metadata labels (default ``&quot;en&quot;``).</span>
+<span class="sd">    nuts_level : int, optional</span>
+<span class="sd">        Default NUTS level used when not specified in method calls</span>
+<span class="sd">        (default ``2``).</span>
+<span class="sd">    auto_load_shapefile : bool, optional</span>
+<span class="sd">        When ``True`` (default), the shapefile is loaded automatically the</span>
+<span class="sd">        first time it is needed.  Set to ``False`` to skip shapefile loading</span>
+<span class="sd">        entirely (useful when only non-spatial operations are needed).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Standard usage — shapefile loaded automatically:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        manager = Eurostat_data()</span>
+<span class="sd">        mortality = manager.load(&quot;mortality&quot;, &quot;FR&quot;)</span>
+
+<span class="sd">    Provide a custom shapefile path:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        manager = Eurostat_data(shapefile_path=&quot;D:/custom/nuts.shp&quot;)</span>
+
+<span class="sd">    Pass an already-loaded GeoDataFrame:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import geopandas as gpd</span>
+<span class="sd">        custom_shapef = gpd.read_file(&quot;path/to/shapefile.shp&quot;)</span>
+<span class="sd">        manager = Eurostat_data(shapefile=custom_shapef)</span>
+
+<span class="sd">    Register a new dataset type and load it:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        manager = Eurostat_data()</span>
+<span class="sd">        manager.register_dataset(&quot;fertility&quot;, &quot;demo_r_find3&quot;, filename=&quot;Fxt_raw&quot;)</span>
+<span class="sd">        fertility = manager.load(&quot;fertility&quot;, &quot;DE&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">shapefile</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">shapefile_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">data_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">language</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
+        <span class="n">nuts_level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">auto_load_shapefile</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile</span> <span class="o">=</span> <span class="n">shapefile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile_path</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">Path</span><span class="p">(</span><span class="n">shapefile_path</span><span class="p">)</span> <span class="k">if</span> <span class="n">shapefile_path</span>
+            <span class="k">else</span> <span class="n">EurostatConfig</span><span class="o">.</span><span class="n">DEFAULT_SHAPEFILE_PATH</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_load</span> <span class="o">=</span> <span class="n">auto_load_shapefile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile_loaded</span> <span class="o">=</span> <span class="n">shapefile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span> <span class="k">if</span> <span class="n">data_path</span> <span class="k">else</span> <span class="n">EurostatConfig</span><span class="o">.</span><span class="n">DEFAULT_DATA_PATH</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nuts_level</span> <span class="o">=</span> <span class="n">nuts_level</span>
+
+        <span class="c1"># Eurostat REST API client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">EurostatAPIClient</span><span class="p">(</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
+
+        <span class="c1"># In-memory cache for NUTS region lists (avoids repeated shapefile queries)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_regions_cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Shapefile property and helpers</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shapefile</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The NUTS shapefile as a GeoDataFrame, loaded lazily on first access.</span>
+
+<span class="sd">        You never need to call this property directly; it is used internally</span>
+<span class="sd">        by :meth:`get_regions` and :meth:`filter_shapefile`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        GeoDataFrame</span>
+<span class="sd">            The loaded NUTS shapefile.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the shapefile could not be loaded (e.g. file not found and</span>
+<span class="sd">            auto-load is disabled).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_load</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_load_shapefile</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Shapefile not loaded. Path used: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_shapefile_path</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Check that the file exists or set another path:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;  EurostatConfig.set_default_shapefile(&#39;path/to/shapefile.shp&#39;)</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;  or manager = Eurostat_data(shapefile_path=&#39;path/to/shapefile.shp&#39;)&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_shapefile</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the NUTS shapefile from the configured path into memory.</span>
+
+<span class="sd">        This private method is called automatically the first time</span>
+<span class="sd">        :attr:`shapefile` is accessed.  It prints a warning if the file</span>
+<span class="sd">        does not exist, rather than raising an exception, so that</span>
+<span class="sd">        non-spatial operations can still proceed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;⚠️  Shapefile not found: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_shapefile_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;💡 Set the correct path with:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   EurostatConfig.set_default_shapefile(&#39;your/path.shp&#39;)&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📂 Loading NUTS shapefile... </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_shapefile_path</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shapefile_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile_loaded</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ Shapefile loaded (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shapefile</span><span class="p">)</span><span class="si">}</span><span class="s2"> features)&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Eurostat_data.set_shapefile">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data.set_shapefile">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_shapefile</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">shapefile</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">shapefile_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Eurostat_data&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace the current shapefile with a new one (chainable).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        shapefile : GeoDataFrame, optional</span>
+<span class="sd">            An already-loaded GeoDataFrame to use directly.</span>
+<span class="sd">        shapefile_path : str or Path, optional</span>
+<span class="sd">            Path to a new shapefile to load from disk.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Eurostat_data</span>
+<span class="sd">            The same instance (allows method chaining).</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            manager.set_shapefile(shapefile_path=&quot;D:/new.shp&quot;).load(&quot;mortality&quot;, &quot;FR&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">shapefile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile</span> <span class="o">=</span> <span class="n">shapefile</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile_loaded</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">shapefile_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">shapefile_path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile_loaded</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_load</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_load_shapefile</span><span class="p">()</span>
+
+        <span class="c1"># Invalidate the region cache because the shapefile changed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_regions_cache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Dataset registration (instance level)</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Eurostat_data.register_dataset">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data.register_dataset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_dataset</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">eurostat_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Eurostat_data&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a new Eurostat dataset type for this manager instance.</span>
+
+<span class="sd">        This is a convenience wrapper around :meth:`EurostatConfig.register_dataset`</span>
+<span class="sd">        that additionally returns ``self`` to allow method chaining.</span>
+
+<span class="sd">        The registered dataset is immediately available via :meth:`load`,</span>
+<span class="sd">        :meth:`cache_info`, and :meth:`clear_cache`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        key : str</span>
+<span class="sd">            Short human-readable identifier (e.g. ``&quot;fertility&quot;``).</span>
+<span class="sd">        eurostat_code : str</span>
+<span class="sd">            Official Eurostat dataset code (e.g. ``&quot;demo_r_find3&quot;``).</span>
+<span class="sd">        filename : str, optional</span>
+<span class="sd">            Stem for the cache CSV file (defaults to ``&quot;{key}_raw&quot;``).</span>
+<span class="sd">        overwrite : bool, optional</span>
+<span class="sd">            Allow replacing an existing dataset entry (default ``False``).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Eurostat_data</span>
+<span class="sd">            The same instance (allows method chaining).</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If *key* already exists and *overwrite* is ``False``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        Register and immediately load in one chain:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            fertility = (</span>
+<span class="sd">                Eurostat_data()</span>
+<span class="sd">                .register_dataset(&quot;fertility&quot;, &quot;demo_r_find3&quot;, filename=&quot;Fxt_raw&quot;)</span>
+<span class="sd">                .load(&quot;fertility&quot;, &quot;DE&quot;)</span>
+<span class="sd">            )</span>
+
+<span class="sd">        Register multiple datasets at once:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            manager = Eurostat_data()</span>
+<span class="sd">            manager.register_dataset(&quot;fertility&quot;, &quot;demo_r_find3&quot;)</span>
+<span class="sd">            manager.register_dataset(&quot;marriages&quot;, &quot;demo_r_marriages&quot;)</span>
+<span class="sd">            print(manager.list_datasets())</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">EurostatConfig</span><span class="o">.</span><span class="n">register_dataset</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">eurostat_code</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Main public API</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Eurostat_data.load">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data.load">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dataset_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">country</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;FR&quot;</span><span class="p">,</span>
+        <span class="n">nuts_level</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">exclude_outremer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load an Eurostat dataset for a given country, with caching.</span>
+
+<span class="sd">        On the first call, data is downloaded from the Eurostat API and saved</span>
+<span class="sd">        to a local CSV file.  Subsequent calls with the same arguments read</span>
+<span class="sd">        from the CSV unless *download* is ``True``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset_type : str</span>
+<span class="sd">            Key of the dataset to load.  Must be a key present in</span>
+<span class="sd">            :attr:`EurostatConfig.DATASETS` (e.g. ``&quot;mortality&quot;``,</span>
+<span class="sd">            ``&quot;deaths&quot;``, ``&quot;population&quot;``, or any key added via</span>
+<span class="sd">            :meth:`register_dataset`).</span>
+<span class="sd">        country : str, optional</span>
+<span class="sd">            ISO 3166-1 alpha-2 country code (default ``&quot;FR&quot;``).</span>
+<span class="sd">        nuts_level : int, optional</span>
+<span class="sd">            NUTS hierarchical level (1, 2 or 3).  Uses the instance default</span>
+<span class="sd">            when ``None``.</span>
+<span class="sd">        download : bool, optional</span>
+<span class="sd">            Force a fresh download even if a cached file already exists</span>
+<span class="sd">            (default ``False``).</span>
+<span class="sd">        exclude_outremer : bool, optional</span>
+<span class="sd">            Exclude non-continental regions listed in</span>
+<span class="sd">            :attr:`EurostatConfig.EXCLUDE_REGIONS` (default ``True``).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">            Cleaned DataFrame ready for analysis.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        KeyError</span>
+<span class="sd">            If *dataset_type* is not found in :attr:`EurostatConfig.DATASETS`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            manager = Eurostat_data()</span>
+<span class="sd">            mortality = manager.load(&quot;mortality&quot;, &quot;FR&quot;)</span>
+<span class="sd">            deaths    = manager.load(&quot;deaths&quot;, &quot;BE&quot;, download=True)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nuts_level</span> <span class="o">=</span> <span class="n">nuts_level</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">nuts_level</span>
+
+        <span class="k">if</span> <span class="n">dataset_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EurostatConfig</span><span class="o">.</span><span class="n">DATASETS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unknown dataset type: &#39;</span><span class="si">{</span><span class="n">dataset_type</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Available: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">EurostatConfig</span><span class="o">.</span><span class="n">DATASETS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Use register_dataset() to add new types.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Retrieve region codes (results are cached in _regions_cache)</span>
+        <span class="n">regions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_regions</span><span class="p">(</span><span class="n">country</span><span class="p">,</span> <span class="n">nuts_level</span><span class="p">,</span> <span class="n">exclude_outremer</span><span class="p">)</span>
+
+        <span class="n">dataset_code</span> <span class="o">=</span> <span class="n">EurostatConfig</span><span class="o">.</span><span class="n">DATASETS</span><span class="p">[</span><span class="n">dataset_type</span><span class="p">]</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">EurostatConfig</span><span class="o">.</span><span class="n">_FILENAME_MAP</span><span class="p">[</span><span class="n">dataset_type</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_and_cache</span><span class="p">(</span>
+            <span class="n">dataset_code</span><span class="o">=</span><span class="n">dataset_code</span><span class="p">,</span>
+            <span class="n">regions</span><span class="o">=</span><span class="n">regions</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span>
+            <span class="n">country</span><span class="o">=</span><span class="n">country</span><span class="p">,</span>
+            <span class="n">download</span><span class="o">=</span><span class="n">download</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Eurostat_data.load_all">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data.load_all">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_all</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">country</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;FR&quot;</span><span class="p">,</span>
+        <span class="n">nuts_level</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load all registered datasets for a given country.</span>
+
+<span class="sd">        Iterates over every key in :attr:`EurostatConfig.DATASETS` and calls</span>
+<span class="sd">        :meth:`load` for each one.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        country : str, optional</span>
+<span class="sd">            ISO 3166-1 alpha-2 country code (default ``&quot;FR&quot;``).</span>
+<span class="sd">        nuts_level : int, optional</span>
+<span class="sd">            NUTS level (uses instance default when ``None``).</span>
+<span class="sd">        download : bool, optional</span>
+<span class="sd">            Force fresh download for every dataset (default ``False``).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict[str, DataFrame]</span>
+<span class="sd">            Dictionary mapping each dataset key to its cleaned DataFrame.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            manager = Eurostat_data()</span>
+<span class="sd">            data = manager.load_all(&quot;FR&quot;)</span>
+<span class="sd">            mortality  = data[&quot;mortality&quot;]</span>
+<span class="sd">            deaths     = data[&quot;deaths&quot;]</span>
+<span class="sd">            population = data[&quot;population&quot;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">dataset</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="n">nuts_level</span><span class="p">,</span> <span class="n">download</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">EurostatConfig</span><span class="o">.</span><span class="n">DATASETS</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="Eurostat_data.pivot_age_year">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data.pivot_age_year">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pivot_age_year</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">gender</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">indicator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build an age × year cross-tabulation for a specific region.</span>
+
+<span class="sd">        Filters *data* to the requested *region*, *gender*, and *indicator*,</span>
+<span class="sd">        then produces a pivot table with ages as rows and years as columns.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : DataFrame</span>
+<span class="sd">            Source data returned by :meth:`load`.</span>
+<span class="sd">        region : str</span>
+<span class="sd">            NUTS region code (e.g. ``&quot;FR10&quot;``).</span>
+<span class="sd">        gender : str</span>
+<span class="sd">            Gender code as used by Eurostat: ``&quot;M&quot;`` (male), ``&quot;F&quot;`` (female),</span>
+<span class="sd">            or ``&quot;T&quot;`` (total).</span>
+<span class="sd">        indicator : str</span>
+<span class="sd">            Eurostat indicator code (e.g. ``&quot;LIFE_EXP&quot;``).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pivot : DataFrame</span>
+<span class="sd">            Age × year pivot table with numeric values.</span>
+<span class="sd">        ages : ndarray</span>
+<span class="sd">            Sorted integer array of age indices.</span>
+<span class="sd">        years : ndarray</span>
+<span class="sd">            Sorted integer array of year columns.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            mortality = manager.load(&quot;mortality&quot;, &quot;FR&quot;)</span>
+<span class="sd">            pivot, ages, years = manager.pivot_age_year(</span>
+<span class="sd">                mortality, &quot;FR10&quot;, &quot;M&quot;, &quot;LIFE_EXP&quot;</span>
+<span class="sd">            )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">subset</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span>
+            <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;geo&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">region</span><span class="p">)</span>
+            <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">gender</span><span class="p">)</span>
+            <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;indic_de&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">indicator</span><span class="p">)</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">pivot</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span>
+            <span class="n">subset</span><span class="p">,</span>
+            <span class="n">values</span><span class="o">=</span><span class="s2">&quot;values&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">],</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span>
+            <span class="n">aggfunc</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+            <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
+            <span class="n">observed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">pivot</span> <span class="o">=</span> <span class="n">pivot</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ages</span> <span class="o">=</span> <span class="n">pivot</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
+        <span class="n">years</span> <span class="o">=</span> <span class="n">pivot</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pivot</span><span class="p">,</span> <span class="n">ages</span><span class="p">,</span> <span class="n">years</span></div>
+
+
+<div class="viewcode-block" id="Eurostat_data.get_regions">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data.get_regions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_regions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">country</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;FR&quot;</span><span class="p">,</span>
+        <span class="n">nuts_level</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">exclude_outremer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the list of NUTS region codes for a country (cached).</span>
+
+<span class="sd">        Results are cached in ``_regions_cache`` so repeated calls with the</span>
+<span class="sd">        same arguments do not re-query the shapefile.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        country : str, optional</span>
+<span class="sd">            ISO 3166-1 alpha-2 country code (default ``&quot;FR&quot;``).</span>
+<span class="sd">        nuts_level : int, optional</span>
+<span class="sd">            NUTS level (uses instance default when ``None``).</span>
+<span class="sd">        exclude_outremer : bool, optional</span>
+<span class="sd">            Exclude non-continental regions (default ``True``).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[str]</span>
+<span class="sd">            Sorted list of NUTS_ID codes.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            regions_fr = manager.get_regions(&quot;FR&quot;, nuts_level=2)</span>
+<span class="sd">            regions_be = manager.get_regions(&quot;BE&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nuts_level</span> <span class="o">=</span> <span class="n">nuts_level</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">nuts_level</span>
+        <span class="n">cache_key</span> <span class="o">=</span> <span class="p">(</span><span class="n">country</span><span class="p">,</span> <span class="n">nuts_level</span><span class="p">,</span> <span class="n">exclude_outremer</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_regions_cache</span><span class="p">:</span>
+            <span class="n">filtered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_shapefile</span><span class="p">(</span><span class="n">country</span><span class="p">,</span> <span class="n">nuts_level</span><span class="p">,</span> <span class="n">exclude_outremer</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_regions_cache</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">filtered</span><span class="p">[</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_regions_cache</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Eurostat_data.filter_shapefile">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data.filter_shapefile">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">filter_shapefile</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">country</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;FR&quot;</span><span class="p">,</span>
+        <span class="n">nuts_level</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">exclude_outremer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter the NUTS shapefile by country, NUTS level, and exclusions.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        country : str, optional</span>
+<span class="sd">            ISO 3166-1 alpha-2 country code (default ``&quot;FR&quot;``).</span>
+<span class="sd">        nuts_level : int, optional</span>
+<span class="sd">            NUTS level (uses instance default when ``None``).</span>
+<span class="sd">        exclude_outremer : bool, optional</span>
+<span class="sd">            If ``True``, removes regions listed in</span>
+<span class="sd">            :attr:`EurostatConfig.EXCLUDE_REGIONS` for *country*</span>
+<span class="sd">            (default ``True``).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        GeoDataFrame</span>
+<span class="sd">            Filtered and sorted GeoDataFrame with one row per NUTS region.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nuts_level</span> <span class="o">=</span> <span class="n">nuts_level</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">nuts_level</span>
+
+        <span class="n">filtered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shapefile</span><span class="p">[</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shapefile</span><span class="p">[</span><span class="s2">&quot;CNTR_CODE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">country</span><span class="p">)</span>
+            <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shapefile</span><span class="p">[</span><span class="s2">&quot;LEVL_CODE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">nuts_level</span><span class="p">)</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">exclude_outremer</span> <span class="ow">and</span> <span class="n">country</span> <span class="ow">in</span> <span class="n">EurostatConfig</span><span class="o">.</span><span class="n">EXCLUDE_REGIONS</span><span class="p">:</span>
+            <span class="n">filtered</span> <span class="o">=</span> <span class="n">filtered</span><span class="p">[</span>
+                <span class="o">~</span><span class="n">filtered</span><span class="p">[</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">EurostatConfig</span><span class="o">.</span><span class="n">EXCLUDE_REGIONS</span><span class="p">[</span><span class="n">country</span><span class="p">])</span>
+            <span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">filtered</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Utility methods</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Eurostat_data.parse_age">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data.parse_age">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_age</span><span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse an Eurostat age label string into an integer age.</span>
+
+<span class="sd">        Eurostat uses string codes such as ``&quot;Y25&quot;`` or ``&quot;Y_LT1&quot;`` instead</span>
+<span class="sd">        of plain integers.  This method converts them to numeric values</span>
+<span class="sd">        suitable for analysis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        label : str or any</span>
+<span class="sd">            Eurostat age label.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int or None</span>
+<span class="sd">            Numeric age, or ``None`` if the label could not be parsed.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            Eurostat_data.parse_age(&quot;Y25&quot;)    # → 25</span>
+<span class="sd">            Eurostat_data.parse_age(&quot;Y_LT1&quot;)  # → 0</span>
+<span class="sd">            Eurostat_data.parse_age(&quot;Y_GE85&quot;) # → 85</span>
+<span class="sd">            Eurostat_data.parse_age(&quot;Y_GE95&quot;) # → 95</span>
+<span class="sd">            Eurostat_data.parse_age(&quot;TOTAL&quot;)  # → None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">label</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+                <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">label</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="k">elif</span> <span class="n">label</span> <span class="o">==</span> <span class="s2">&quot;Y_LT1&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="n">label</span> <span class="o">==</span> <span class="s2">&quot;Y_GE85&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">85</span>
+            <span class="k">elif</span> <span class="n">label</span> <span class="o">==</span> <span class="s2">&quot;Y_GE95&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">95</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Eurostat_data.add_exclusion">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data.add_exclusion">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_exclusion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">country</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">regions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;Eurostat_data&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add NUTS region codes to the exclusion list for a country (chainable).</span>
+
+<span class="sd">        Modifies :attr:`EurostatConfig.EXCLUDE_REGIONS` globally and clears</span>
+<span class="sd">        the region cache so the change is reflected immediately.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        country : str</span>
+<span class="sd">            ISO 3166-1 alpha-2 country code.</span>
+<span class="sd">        regions : list[str]</span>
+<span class="sd">            NUTS_ID codes to exclude for *country*.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Eurostat_data</span>
+<span class="sd">            The same instance (allows method chaining).</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            manager.add_exclusion(&quot;IT&quot;, [&quot;ITG1&quot;, &quot;ITG2&quot;]).load(&quot;mortality&quot;, &quot;IT&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">country</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EurostatConfig</span><span class="o">.</span><span class="n">EXCLUDE_REGIONS</span><span class="p">:</span>
+            <span class="n">EurostatConfig</span><span class="o">.</span><span class="n">EXCLUDE_REGIONS</span><span class="p">[</span><span class="n">country</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">EurostatConfig</span><span class="o">.</span><span class="n">EXCLUDE_REGIONS</span><span class="p">[</span><span class="n">country</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">regions</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_regions_cache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="Eurostat_data.list_datasets">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data.list_datasets">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">list_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the list of currently registered dataset keys.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[str]</span>
+<span class="sd">            All keys present in :attr:`EurostatConfig.DATASETS`.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            manager.list_datasets()</span>
+<span class="sd">            # → [&#39;mortality&#39;, &#39;deaths&#39;, &#39;population&#39;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">EurostatConfig</span><span class="o">.</span><span class="n">DATASETS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="Eurostat_data.cache_info">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data.cache_info">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cache_info</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">country</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check which datasets are available in the local cache.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        country : str, optional</span>
+<span class="sd">            ISO country code.  When provided, returns the cache status for</span>
+<span class="sd">            that country only.  When ``None``, auto-detects all cached</span>
+<span class="sd">            countries and returns a nested dict.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            If *country* is given: ``{dataset_key: bool}`` mapping.</span>
+
+<span class="sd">            If *country* is ``None``: ``{country: {dataset_key: bool}}``</span>
+<span class="sd">            nested mapping.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            manager.cache_info(&quot;FR&quot;)</span>
+<span class="sd">            # → {&#39;mortality&#39;: True, &#39;deaths&#39;: False, &#39;population&#39;: True}</span>
+
+<span class="sd">            manager.cache_info()</span>
+<span class="sd">            # → {&#39;FR&#39;: {&#39;mortality&#39;: True, ...}, &#39;BE&#39;: {...}}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filename_map</span> <span class="o">=</span> <span class="n">EurostatConfig</span><span class="o">.</span><span class="n">_FILENAME_MAP</span>
+
+        <span class="k">if</span> <span class="n">country</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="n">dataset</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">country</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filename_map</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Auto-detect countries from cached filenames</span>
+            <span class="n">countries</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*_*.csv&quot;</span><span class="p">):</span>
+                <span class="n">country_code</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">country_code</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># ISO 2-letter code heuristic</span>
+                    <span class="n">countries</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">country_code</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_info</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">countries</span><span class="p">)}</span></div>
+
+
+<div class="viewcode-block" id="Eurostat_data.clear_cache">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data.clear_cache">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear_cache</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">country</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dataset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete cached CSV files from the data directory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        country : str, optional</span>
+<span class="sd">            ISO country code.  When ``None``, all countries are targeted.</span>
+<span class="sd">        dataset : str, optional</span>
+<span class="sd">            Dataset key (e.g. ``&quot;mortality&quot;``).  When ``None``, all datasets</span>
+<span class="sd">            for the selected country are deleted.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            Number of files deleted.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            manager.clear_cache(&quot;FR&quot;)              # Delete all FR data</span>
+<span class="sd">            manager.clear_cache(&quot;FR&quot;, &quot;mortality&quot;) # Delete FR mortality only</span>
+<span class="sd">            manager.clear_cache()                  # Wipe entire cache</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">country</span> <span class="ow">and</span> <span class="n">dataset</span><span class="p">:</span>
+            <span class="c1"># Targeted single-file deletion</span>
+            <span class="n">filepath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">country</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">EurostatConfig</span><span class="o">.</span><span class="n">_FILENAME_MAP</span><span class="p">[</span><span class="n">dataset</span><span class="p">]</span><span class="si">}</span><span class="s2">.csv&quot;</span>
+            <span class="k">if</span> <span class="n">filepath</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">filepath</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🗑️  [Cache] Deleted: </span><span class="si">{</span><span class="n">filepath</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">country</span><span class="p">:</span>
+            <span class="c1"># Delete all cached files for one country</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">country</span><span class="si">}</span><span class="s2">_*.csv&quot;</span><span class="p">):</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🗑️  [Cache] Deleted: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> files for </span><span class="si">{</span><span class="n">country</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Full cache wipe</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*_*.csv&quot;</span><span class="p">):</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🗑️  [Cache] Deleted: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> files&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">count</span></div>
+
+
+<div class="viewcode-block" id="Eurostat_data.stats">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.Eurostat_data.stats">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return statistics about the current manager state.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary with the following keys:</span>
+
+<span class="sd">            - ``shapefile_loaded`` (bool): whether the shapefile is in memory.</span>
+<span class="sd">            - ``shapefile_path`` (str): configured shapefile path.</span>
+<span class="sd">            - ``cached_files`` (int): number of CSV files in the cache.</span>
+<span class="sd">            - ``cache_size_mb`` (float): total cache size in megabytes.</span>
+<span class="sd">            - ``cached_countries`` (int): number of distinct countries cached.</span>
+<span class="sd">            - ``regions_cache_entries`` (int): number of entries in the</span>
+<span class="sd">              in-memory region cache.</span>
+<span class="sd">            - ``data_path`` (str): path to the cache directory.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            print(manager.stats())</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cache_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*_*.csv&quot;</span><span class="p">))</span>
+        <span class="n">total_size</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_size</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">cache_files</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;shapefile_loaded&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shapefile_loaded</span><span class="p">,</span>
+            <span class="s2">&quot;shapefile_path&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shapefile_path</span><span class="p">),</span>
+            <span class="s2">&quot;cached_files&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">cache_files</span><span class="p">),</span>
+            <span class="s2">&quot;cache_size_mb&quot;</span><span class="p">:</span> <span class="n">total_size</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">),</span>
+            <span class="s2">&quot;cached_countries&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="nb">set</span><span class="p">(</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">cache_files</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span>
+                <span class="p">)</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;regions_cache_entries&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_regions_cache</span><span class="p">),</span>
+            <span class="s2">&quot;data_path&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">),</span>
+        <span class="p">}</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a human-readable summary of the manager.&quot;&quot;&quot;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="p">()</span>
+        <span class="n">shapefile_status</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;✓ loaded&quot;</span>
+            <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;shapefile_loaded&quot;</span><span class="p">]</span>
+            <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;⏳ will load from </span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;shapefile_path&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;EurostatManager(</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  shapefile=</span><span class="si">{</span><span class="n">shapefile_status</span><span class="si">}</span><span class="s2">,</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  cache=</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;cached_files&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> files (</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;cache_size_mb&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> MB),</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  countries=</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;cached_countries&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  data=&#39;</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;data_path&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;)&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Private helpers</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_and_cache</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dataset_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">regions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">country</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Orchestrate download-or-read and automatic cleaning for a dataset.</span>
+
+<span class="sd">        Checks whether a cached CSV exists for *country* and *filename*.</span>
+<span class="sd">        Downloads from Eurostat if the file is missing or *download* is</span>
+<span class="sd">        ``True``, saves the result, then returns a cleaned DataFrame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset_code : str</span>
+<span class="sd">            Eurostat dataset code (e.g. ``&quot;demo_r_mlife&quot;``).</span>
+<span class="sd">        regions : list[str]</span>
+<span class="sd">            NUTS region codes to query.</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            Stem of the CSV cache file (without country prefix or extension).</span>
+<span class="sd">        country : str</span>
+<span class="sd">            ISO country code used to name the cache file.</span>
+<span class="sd">        download : bool</span>
+<span class="sd">            If ``True``, forces a fresh download even if a cache file exists.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">            Cleaned DataFrame.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">country</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.csv&quot;</span>
+        <span class="n">should_download</span> <span class="o">=</span> <span class="n">download</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">filepath</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">should_download</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_download_dataset</span><span class="p">(</span><span class="n">dataset_code</span><span class="p">,</span> <span class="n">regions</span><span class="p">)</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;⬇️  [Eurostat] Downloaded → </span><span class="si">{</span><span class="n">filepath</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;💾 [Eurostat] Cache → </span><span class="si">{</span><span class="n">filepath</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clean_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_download_dataset</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dataset_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">regions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Download data for all specified NUTS regions via the Eurostat API.</span>
+
+<span class="sd">        Iterates over *regions* one by one, calling the API for each, and</span>
+<span class="sd">        concatenates the results into a single DataFrame.  Progress is printed</span>
+<span class="sd">        to stdout every 5 regions.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset_code : str</span>
+<span class="sd">            Eurostat dataset code.</span>
+<span class="sd">        regions : list[str]</span>
+<span class="sd">            List of NUTS_ID codes to query.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">            Raw (uncleaned) concatenated data for all regions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🌐 [Eurostat] Downloading... (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">)</span><span class="si">}</span><span class="s2"> regions)&quot;</span><span class="p">)</span>
+
+        <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">region</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  → Progress: </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_code</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;geo&quot;</span><span class="p">:</span> <span class="n">region</span><span class="p">})</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+            <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_clean_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clean a raw Eurostat DataFrame.</span>
+
+<span class="sd">        Performs the following transformations when the corresponding columns</span>
+<span class="sd">        are present:</span>
+
+<span class="sd">        - **age**: removes aggregate codes (``&quot;TOTAL&quot;``, ``&quot;UNK&quot;``,</span>
+<span class="sd">          ``&quot;Y_OPEN&quot;``), converts labels to integers via :meth:`parse_age`,</span>
+<span class="sd">          and drops rows where parsing fails.</span>
+<span class="sd">        - **time**: converts year strings to integers.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : DataFrame</span>
+<span class="sd">            Raw DataFrame as returned by the Eurostat API.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">            Cleaned DataFrame with reset integer index.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="s2">&quot;age&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">~</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">&quot;TOTAL&quot;</span><span class="p">,</span> <span class="s2">&quot;UNK&quot;</span><span class="p">,</span> <span class="s2">&quot;Y_OPEN&quot;</span><span class="p">])]</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_age</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">])</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># =============================================================================</span>
+<span class="c1"># Backward-compatible wrapper functions</span>
+<span class="c1"># =============================================================================</span>
+<span class="c1"># These thin wrappers preserve the old functional API for scripts written</span>
+<span class="c1"># before the Eurostat_data class was introduced.</span>
+
+<div class="viewcode-block" id="load_mxt_raw">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.load_mxt_raw">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_mxt_raw</span><span class="p">(</span><span class="n">shapef</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="s2">&quot;FR&quot;</span><span class="p">,</span> <span class="n">nuts_level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">data_path</span><span class="o">=</span><span class="s2">&quot;../data&quot;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load mortality rate data (backward-compatible wrapper).</span>
+
+<span class="sd">    .. deprecated::</span>
+<span class="sd">        Use :meth:`Eurostat_data.load` with ``dataset_type=&quot;mortality&quot;`` instead.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shapef : GeoDataFrame, optional</span>
+<span class="sd">        Pre-loaded NUTS shapefile.</span>
+<span class="sd">    country : str, optional</span>
+<span class="sd">        ISO country code (default ``&quot;FR&quot;``).</span>
+<span class="sd">    nuts_level : int, optional</span>
+<span class="sd">        NUTS level (default ``2``).</span>
+<span class="sd">    data_path : str, optional</span>
+<span class="sd">        Cache directory path (default ``&quot;../data&quot;``).</span>
+<span class="sd">    download : bool, optional</span>
+<span class="sd">        Force re-download (default ``False``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    DataFrame</span>
+<span class="sd">        Cleaned mortality DataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">manager</span> <span class="o">=</span> <span class="n">Eurostat_data</span><span class="p">(</span><span class="n">shapefile</span><span class="o">=</span><span class="n">shapef</span><span class="p">,</span> <span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span> <span class="n">nuts_level</span><span class="o">=</span><span class="n">nuts_level</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;mortality&quot;</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="n">download</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="load_dxt_raw">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.load_dxt_raw">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_dxt_raw</span><span class="p">(</span><span class="n">shapef</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="s2">&quot;FR&quot;</span><span class="p">,</span> <span class="n">nuts_level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">data_path</span><span class="o">=</span><span class="s2">&quot;../data&quot;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load death count data (backward-compatible wrapper).</span>
+
+<span class="sd">    .. deprecated::</span>
+<span class="sd">        Use :meth:`Eurostat_data.load` with ``dataset_type=&quot;deaths&quot;`` instead.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shapef : GeoDataFrame, optional</span>
+<span class="sd">        Pre-loaded NUTS shapefile.</span>
+<span class="sd">    country : str, optional</span>
+<span class="sd">        ISO country code (default ``&quot;FR&quot;``).</span>
+<span class="sd">    nuts_level : int, optional</span>
+<span class="sd">        NUTS level (default ``2``).</span>
+<span class="sd">    data_path : str, optional</span>
+<span class="sd">        Cache directory path (default ``&quot;../data&quot;``).</span>
+<span class="sd">    download : bool, optional</span>
+<span class="sd">        Force re-download (default ``False``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    DataFrame</span>
+<span class="sd">        Cleaned deaths DataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">manager</span> <span class="o">=</span> <span class="n">Eurostat_data</span><span class="p">(</span><span class="n">shapefile</span><span class="o">=</span><span class="n">shapef</span><span class="p">,</span> <span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span> <span class="n">nuts_level</span><span class="o">=</span><span class="n">nuts_level</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;deaths&quot;</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="n">download</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="load_lxt_raw">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.load_lxt_raw">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_lxt_raw</span><span class="p">(</span><span class="n">shapef</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="s2">&quot;FR&quot;</span><span class="p">,</span> <span class="n">nuts_level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">data_path</span><span class="o">=</span><span class="s2">&quot;../data&quot;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load population data (backward-compatible wrapper).</span>
+
+<span class="sd">    .. deprecated::</span>
+<span class="sd">        Use :meth:`Eurostat_data.load` with ``dataset_type=&quot;population&quot;`` instead.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shapef : GeoDataFrame, optional</span>
+<span class="sd">        Pre-loaded NUTS shapefile.</span>
+<span class="sd">    country : str, optional</span>
+<span class="sd">        ISO country code (default ``&quot;FR&quot;``).</span>
+<span class="sd">    nuts_level : int, optional</span>
+<span class="sd">        NUTS level (default ``2``).</span>
+<span class="sd">    data_path : str, optional</span>
+<span class="sd">        Cache directory path (default ``&quot;../data&quot;``).</span>
+<span class="sd">    download : bool, optional</span>
+<span class="sd">        Force re-download (default ``False``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    DataFrame</span>
+<span class="sd">        Cleaned population DataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">manager</span> <span class="o">=</span> <span class="n">Eurostat_data</span><span class="p">(</span><span class="n">shapefile</span><span class="o">=</span><span class="n">shapef</span><span class="p">,</span> <span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span> <span class="n">nuts_level</span><span class="o">=</span><span class="n">nuts_level</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;population&quot;</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="n">download</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="age_year_pivot_table">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.age_year_pivot_table">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">age_year_pivot_table</span><span class="p">(</span><span class="n">data_raw</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">gender</span><span class="p">,</span> <span class="n">indicator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an age × year pivot table (backward-compatible wrapper).</span>
+
+<span class="sd">    .. deprecated::</span>
+<span class="sd">        Use :meth:`Eurostat_data.pivot_age_year` instead.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data_raw : DataFrame</span>
+<span class="sd">        Source data returned by one of the ``load_*`` functions.</span>
+<span class="sd">    region : str</span>
+<span class="sd">        NUTS region code.</span>
+<span class="sd">    gender : str</span>
+<span class="sd">        Gender code (``&quot;M&quot;``, ``&quot;F&quot;``, ``&quot;T&quot;``).</span>
+<span class="sd">    indicator : str</span>
+<span class="sd">        Eurostat indicator code.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        ``(pivot_table, ages_array, years_array)``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># No shapefile needed for pivot operations</span>
+    <span class="n">manager</span> <span class="o">=</span> <span class="n">Eurostat_data</span><span class="p">(</span><span class="n">auto_load_shapefile</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">pivot_age_year</span><span class="p">(</span><span class="n">data_raw</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">gender</span><span class="p">,</span> <span class="n">indicator</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="filter_shapefile">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.filter_shapefile">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">filter_shapefile</span><span class="p">(</span><span class="n">shapef</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="s2">&quot;FR&quot;</span><span class="p">,</span> <span class="n">nuts_level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">exclude_outremer</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filter the NUTS shapefile (backward-compatible wrapper).</span>
+
+<span class="sd">    .. deprecated::</span>
+<span class="sd">        Use :meth:`Eurostat_data.filter_shapefile` instead.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shapef : GeoDataFrame, optional</span>
+<span class="sd">        Pre-loaded NUTS shapefile.</span>
+<span class="sd">    country : str, optional</span>
+<span class="sd">        ISO country code (default ``&quot;FR&quot;``).</span>
+<span class="sd">    nuts_level : int, optional</span>
+<span class="sd">        NUTS level (default ``2``).</span>
+<span class="sd">    exclude_outremer : bool, optional</span>
+<span class="sd">        Exclude non-continental regions (default ``True``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    GeoDataFrame</span>
+<span class="sd">        Filtered NUTS GeoDataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">manager</span> <span class="o">=</span> <span class="n">Eurostat_data</span><span class="p">(</span><span class="n">shapefile</span><span class="o">=</span><span class="n">shapef</span><span class="p">,</span> <span class="n">nuts_level</span><span class="o">=</span><span class="n">nuts_level</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">manager</span><span class="o">.</span><span class="n">filter_shapefile</span><span class="p">(</span><span class="n">country</span><span class="p">,</span> <span class="n">exclude_outremer</span><span class="o">=</span><span class="n">exclude_outremer</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="parse_age">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.eurostat.parse_age">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_age</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse an Eurostat age label to an integer (backward-compatible wrapper).</span>
+
+<span class="sd">    .. deprecated::</span>
+<span class="sd">        Use :meth:`Eurostat_data.parse_age` instead.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    label : str</span>
+<span class="sd">        Eurostat age label (e.g. ``&quot;Y25&quot;``, ``&quot;Y_LT1&quot;``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int or None</span>
+<span class="sd">        Parsed integer age, or ``None`` if the label is unrecognised.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Eurostat_data</span><span class="o">.</span><span class="n">parse_age</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Innovation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

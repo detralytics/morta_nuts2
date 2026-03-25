@@ -1,0 +1,477 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>morta_nuts2.graph.plot &mdash; Morta-nuts  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Morta-nuts
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu :</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Morta-nuts</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">morta_nuts2.graph.plot</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for morta_nuts2.graph.plot</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcolors</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+
+<div class="viewcode-block" id="plot_models_by_region">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.graph.plot.plot_models_by_region">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_models_by_region</span><span class="p">(</span>
+    <span class="n">x_values</span><span class="p">,</span>
+    <span class="n">curves_dict</span><span class="p">,</span>
+    <span class="n">year_to_plot</span><span class="p">,</span>
+    <span class="n">tv</span><span class="p">,</span>
+    <span class="n">regions</span><span class="p">,</span>
+    <span class="n">n_cols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">yscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Age&quot;</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Mortality rate&quot;</span><span class="p">,</span>
+    <span class="n">title_prefix</span><span class="o">=</span><span class="s2">&quot;Comparison&quot;</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction générique pour tracer plusieurs modèles par région.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x_values : array (abscisse)</span>
+<span class="sd">    curves_dict : dict {label: 3D array (age, year, region)}</span>
+<span class="sd">    year_to_plot : année à tracer</span>
+<span class="sd">    tv : vecteur des années</span>
+<span class="sd">    regions : liste des régions</span>
+<span class="sd">    n_cols : nombre de colonnes des subplots</span>
+<span class="sd">    yscale : &quot;log&quot; ou &quot;linear&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">year_to_plot</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tv</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Année </span><span class="si">{</span><span class="n">year_to_plot</span><span class="si">}</span><span class="s2"> non disponible.&quot;</span><span class="p">)</span>
+    
+    <span class="n">t_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tv</span> <span class="o">==</span> <span class="n">year_to_plot</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">n_regions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">)</span>
+    <span class="n">n_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n_regions</span> <span class="o">/</span> <span class="n">n_cols</span><span class="p">))</span>
+    
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">n_cols</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">n_rows</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="n">n_rows</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">axes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    
+    <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">region_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">regions</span><span class="p">):</span>
+        
+        <span class="n">ax_plot</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">g</span><span class="p">]</span>
+        
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">array3d</span> <span class="ow">in</span> <span class="n">curves_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            
+            <span class="n">ax_plot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="n">x_values</span><span class="p">,</span>
+                <span class="n">array3d</span><span class="p">[:,</span> <span class="n">t_index</span><span class="p">,</span> <span class="n">g</span><span class="p">],</span>
+                <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span> 
+            <span class="p">)</span>
+        
+        <span class="n">ax_plot</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">region_name</span><span class="p">)</span>
+        <span class="n">ax_plot</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
+        <span class="n">ax_plot</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
+        <span class="n">ax_plot</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="n">yscale</span><span class="p">)</span>
+        <span class="n">ax_plot</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ax_plot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    
+    <span class="c1"># Supprimer axes inutilisés</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_regions</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">)):</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">delaxes</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">title_prefix</span><span class="si">}</span><span class="s2"> - Year </span><span class="si">{</span><span class="n">year_to_plot</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="plot_map_compare_years">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.graph.plot.plot_map_compare_years">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_map_compare_years</span><span class="p">(</span>
+    <span class="n">regions</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">tv_future</span><span class="p">,</span>
+    <span class="n">country_code</span><span class="p">,</span> <span class="n">indicator_name</span><span class="p">,</span>
+    <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">2050</span><span class="p">],</span>
+    <span class="n">age</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">nuts_level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">):</span>
+    
+    <span class="n">shapef</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;C:/Users/Idrissa Belem/Documents/GitHub/test_projet/NUTS_files/NUTS_RG_01M_2024_3035.shp&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">age</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+    <span class="n">shp</span> <span class="o">=</span> <span class="n">shapef</span><span class="p">[</span>
+        <span class="p">(</span><span class="n">shapef</span><span class="p">[</span><span class="s2">&quot;CNTR_CODE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">country_code</span><span class="p">)</span> <span class="o">&amp;</span>
+        <span class="p">(</span><span class="n">shapef</span><span class="p">[</span><span class="s2">&quot;LEVL_CODE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">nuts_level</span><span class="p">)</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="o">=</span><span class="mi">2154</span><span class="p">)</span>
+
+    <span class="n">all_vals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">dfs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">yr</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+        <span class="n">idx</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tv_future</span> <span class="o">==</span> <span class="n">yr</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">all_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">shp</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+            <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">({</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">:</span> <span class="n">regions</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">values</span><span class="p">}),</span>
+            <span class="n">on</span><span class="o">=</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span>
+        <span class="p">)</span>
+        <span class="n">dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">all_vals</span><span class="p">)</span>
+    <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">all_vals</span><span class="p">)</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="p">),</span>
+        <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span>
+        <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">}</span>   <span class="c1"># ✅ espace réservé en bas</span>
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">yr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">years</span><span class="p">)):</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">column</span>    <span class="o">=</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="n">cmap</span>      <span class="o">=</span> <span class="n">cmap</span><span class="p">,</span>
+            <span class="n">linewidth</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">edgecolor</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+            <span class="n">ax</span>        <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="n">norm</span>      <span class="o">=</span> <span class="n">norm</span><span class="p">,</span>
+            <span class="n">legend</span>    <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">yr</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ✅ Colorbar dans axe dédié hors des cartes</span>
+    <span class="n">cbar_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">])</span>
+    <span class="n">sm</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+    <span class="n">sm</span><span class="o">.</span><span class="n">set_array</span><span class="p">([])</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sm</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cbar_ax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">indicator_name</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">indicator_name</span><span class="si">}</span><span class="s2"> — </span><span class="si">{</span><span class="n">country_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.98</span><span class="p">)</span>
+    <span class="c1">#plt.savefig(&quot;map.png&quot;, bbox_inches=&quot;tight&quot;, dpi=150)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+
+
+<div class="viewcode-block" id="plot_map_indicator">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.graph.plot.plot_map_indicator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_map_indicator</span><span class="p">(</span>
+    <span class="n">regions</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">tv_future</span><span class="p">,</span>
+    <span class="n">country_code</span><span class="p">,</span> <span class="n">indicator_name</span><span class="p">,</span>
+    <span class="n">year</span><span class="o">=</span><span class="mi">2023</span><span class="p">,</span>
+    <span class="n">age</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">nuts_level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">shapef</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;C:/Users/Idrissa Belem/Documents/GitHub/test_projet/NUTS_files/NUTS_RG_01M_2024_3035.shp&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">age</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>   <span class="c1"># (horizon, nb_regions)</span>
+
+    <span class="n">shp</span> <span class="o">=</span> <span class="n">shapef</span><span class="p">[</span>
+        <span class="p">(</span><span class="n">shapef</span><span class="p">[</span><span class="s2">&quot;CNTR_CODE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">country_code</span><span class="p">)</span> <span class="o">&amp;</span>
+        <span class="p">(</span><span class="n">shapef</span><span class="p">[</span><span class="s2">&quot;LEVL_CODE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">nuts_level</span><span class="p">)</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="o">=</span><span class="mi">2154</span><span class="p">)</span>
+
+    <span class="n">idx</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tv_future</span> <span class="o">==</span> <span class="n">year</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">shp</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">({</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">:</span> <span class="n">regions</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">values</span><span class="p">}),</span>
+        <span class="n">on</span><span class="o">=</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">})</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">column</span>    <span class="o">=</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+        <span class="n">cmap</span>      <span class="o">=</span> <span class="n">cmap</span><span class="p">,</span>
+        <span class="n">linewidth</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">edgecolor</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="n">ax</span>        <span class="o">=</span> <span class="n">ax</span><span class="p">,</span>
+        <span class="n">norm</span>      <span class="o">=</span> <span class="n">norm</span><span class="p">,</span>
+        <span class="n">legend</span>    <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+    <span class="n">cbar_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">])</span>
+    <span class="n">sm</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+    <span class="n">sm</span><span class="o">.</span><span class="n">set_array</span><span class="p">([])</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sm</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cbar_ax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">indicator_name</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">indicator_name</span><span class="si">}</span><span class="s2"> — </span><span class="si">{</span><span class="n">country_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.98</span><span class="p">)</span>
+    <span class="c1">#plt.savefig(&quot;map.png&quot;, bbox_inches=&quot;tight&quot;, dpi=150)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+
+<span class="c1"># import pandas as pd</span>
+<span class="c1"># import matplotlib.pyplot as plt</span>
+<span class="c1"># import matplotlib.colors as mcolors</span>
+<span class="c1"># import geopandas as gpd</span>
+<span class="c1"># import numpy as np</span>
+
+<span class="n">SHAPEF_PATH</span> <span class="o">=</span> <span class="s2">&quot;C:/Users/Idrissa Belem/Documents/GitHub/test_projet/NUTS_files/NUTS_RG_01M_2024_3035.shp&quot;</span>
+
+<span class="c1"># ═══════════════════════════════════════════════════════════════════</span>
+<span class="c1"># FUNCTION 1 : Regional summary statistics</span>
+<span class="c1"># ═══════════════════════════════════════════════════════════════════</span>
+<div class="viewcode-block" id="compute_regional_stats">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.graph.plot.compute_regional_stats">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_regional_stats</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="n">regions</span><span class="p">,</span> <span class="n">tv_future</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ex         : (nb_ages, horizon, nb_regions)</span>
+<span class="sd">    regions    : array of region codes</span>
+<span class="sd">    tv_future  : array of projection years</span>
+<span class="sd">    age        : target age (0 = e0, 65 = e65)</span>
+
+<span class="sd">    Returns a dict of DataFrames :</span>
+<span class="sd">      - &#39;by_year&#39;   : aggregated stats per year   (horizon, stats)</span>
+<span class="sd">      - &#39;by_region&#39; : aggregated stats per region (nb_regions, stats)</span>
+<span class="sd">      - &#39;full&#39;      : full DataFrame              (horizon x nb_regions)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">ex</span><span class="p">[</span><span class="n">age</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>   <span class="c1"># (horizon, nb_regions)</span>
+
+    <span class="c1"># ── Full DataFrame ─────────────────────────────────────────────</span>
+    <span class="n">df_full</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">tv_future</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">regions</span><span class="p">)</span>
+    <span class="n">df_full</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;year&quot;</span>
+
+    <span class="c1"># ── Stats per year ─────────────────────────────────────────────</span>
+    <span class="n">df_by_year</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s2">&quot;mean&quot;</span>        <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="s2">&quot;std&quot;</span>         <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="s2">&quot;min&quot;</span>         <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="s2">&quot;max&quot;</span>         <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="s2">&quot;range&quot;</span>       <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="s2">&quot;cv&quot;</span>          <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>  <span class="c1"># coefficient of variation</span>
+        <span class="s2">&quot;region_min&quot;</span>  <span class="p">:</span> <span class="n">regions</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)],</span>
+        <span class="s2">&quot;region_max&quot;</span>  <span class="p">:</span> <span class="n">regions</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)],</span>
+    <span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="n">tv_future</span><span class="p">)</span>
+    <span class="n">df_by_year</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;year&quot;</span>
+
+    <span class="c1"># ── Stats per region ───────────────────────────────────────────</span>
+    <span class="n">df_by_region</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s2">&quot;mean&quot;</span>        <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="s2">&quot;std&quot;</span>         <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="s2">&quot;min&quot;</span>         <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="s2">&quot;max&quot;</span>         <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="s2">&quot;avg_rank&quot;</span>    <span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                            <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+                            <span class="n">columns</span><span class="o">=</span><span class="n">regions</span>
+                          <span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="n">regions</span><span class="p">)</span>
+    <span class="n">df_by_region</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;region&quot;</span>
+    <span class="n">df_by_region</span> <span class="o">=</span> <span class="n">df_by_region</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;full&quot;</span>      <span class="p">:</span> <span class="n">df_full</span><span class="p">,</span>
+        <span class="s2">&quot;by_year&quot;</span>   <span class="p">:</span> <span class="n">df_by_year</span><span class="p">,</span>
+        <span class="s2">&quot;by_region&quot;</span> <span class="p">:</span> <span class="n">df_by_region</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+
+<span class="c1"># ═══════════════════════════════════════════════════════════════════</span>
+<span class="c1"># FUNCTION 2 : Map of deviations from national average</span>
+<span class="c1"># ═══════════════════════════════════════════════════════════════════</span>
+<span class="c1"># def plot_map_deviation(</span>
+<span class="c1">#     regions, data, tv_future,</span>
+<span class="c1">#     country_code, indicator_name,</span>
+<span class="c1">#     year=2023, age=0, nuts_level=2,</span>
+<span class="c1"># ):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Choropleth map showing deviations from the national average.</span>
+<span class="c1">#     Blue  = above average</span>
+<span class="c1">#     Red   = below average</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     shapef = gpd.read_file(SHAPEF_PATH)</span>
+
+<span class="c1">#     if data.ndim == 3:</span>
+<span class="c1">#         data = data[age, :, :]   # (horizon, nb_regions)</span>
+
+<span class="c1">#     # Filter shapefile by country and NUTS level, reproject to Lambert-93</span>
+<span class="c1">#     shp = shapef[</span>
+<span class="c1">#         (shapef[&quot;CNTR_CODE&quot;] == country_code) &amp;</span>
+<span class="c1">#         (shapef[&quot;LEVL_CODE&quot;] == nuts_level)</span>
+<span class="c1">#     ].copy().to_crs(epsg=2154)</span>
+
+<span class="c1">#     # Compute deviations from national mean for the selected year</span>
+<span class="c1">#     idx        = np.where(tv_future == year)[0][0]</span>
+<span class="c1">#     values     = data[idx, :]</span>
+<span class="c1">#     deviations = values - values.mean()</span>
+
+<span class="c1">#     # Merge deviations into the shapefile</span>
+<span class="c1">#     df = shp.merge(</span>
+<span class="c1">#         gpd.GeoDataFrame({&quot;NUTS_ID&quot;: regions, &quot;value&quot;: deviations}),</span>
+<span class="c1">#         on=&quot;NUTS_ID&quot;, how=&quot;left&quot;</span>
+<span class="c1">#     )</span>
+
+<span class="c1">#     # Symmetric colormap centered on 0</span>
+<span class="c1">#     vabs = np.nanmax(np.abs(deviations))</span>
+<span class="c1">#     norm = mcolors.TwoSlopeNorm(vmin=-vabs, vcenter=0, vmax=vabs)</span>
+
+<span class="c1">#     fig, ax = plt.subplots(1, 1, figsize=(8, 9), gridspec_kw={&quot;bottom&quot;: 0.15})</span>
+
+<span class="c1">#     df.plot(</span>
+<span class="c1">#         column      = &quot;value&quot;,</span>
+<span class="c1">#         cmap        = &quot;RdBu&quot;,</span>
+<span class="c1">#         linewidth   = 0.5,</span>
+<span class="c1">#         edgecolor   = &quot;black&quot;,</span>
+<span class="c1">#         ax          = ax,</span>
+<span class="c1">#         norm        = norm,</span>
+<span class="c1">#         legend      = False,</span>
+<span class="c1">#         missing_kwds= {&quot;color&quot;: &quot;lightgrey&quot;},</span>
+<span class="c1">#     )</span>
+<span class="c1">#     ax.set_title(str(year), fontsize=13, fontweight=&quot;bold&quot;)</span>
+<span class="c1">#     ax.axis(&quot;off&quot;)</span>
+
+<span class="c1">#     # Dedicated colorbar axis at the bottom</span>
+<span class="c1">#     cbar_ax = fig.add_axes([0.2, 0.06, 0.6, 0.025])</span>
+<span class="c1">#     sm = plt.cm.ScalarMappable(cmap=&quot;RdBu&quot;, norm=norm)</span>
+<span class="c1">#     sm.set_array([])</span>
+<span class="c1">#     fig.colorbar(sm, cax=cbar_ax, orientation=&quot;horizontal&quot;,</span>
+<span class="c1">#                  label=f&quot;Deviation from national average ({indicator_name})&quot;)</span>
+
+<span class="c1">#     plt.suptitle(</span>
+<span class="c1">#         f&quot;Deviations from average — {indicator_name} — {country_code} ({year})&quot;,</span>
+<span class="c1">#         fontsize=13, fontweight=&quot;bold&quot;, y=0.98</span>
+<span class="c1">#     )</span>
+<span class="c1">#     #plt.savefig(&quot;map_deviation.png&quot;, bbox_inches=&quot;tight&quot;, dpi=150)</span>
+<span class="c1">#     plt.show()</span>
+
+
+<span class="c1"># ═══════════════════════════════════════════════════════════════════</span>
+<span class="c1"># FUNCTION 3 : Inter-regional dispersion over time</span>
+<span class="c1"># ═══════════════════════════════════════════════════════════════════</span>
+<div class="viewcode-block" id="plot_dispersion_over_time">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.graph.plot.plot_dispersion_over_time">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_dispersion_over_time</span><span class="p">(</span>
+    <span class="n">ex</span><span class="p">,</span> <span class="n">regions</span><span class="p">,</span> <span class="n">tv_future</span><span class="p">,</span>
+    <span class="n">indicator_name</span><span class="o">=</span><span class="s2">&quot;Life expectancy&quot;</span><span class="p">,</span>
+    <span class="n">ages</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">65</span><span class="p">],</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots the evolution of inter-regional dispersion over projection years.</span>
+<span class="sd">    Shows standard deviation and range for each target age.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">colors</span>    <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">tab10</span><span class="o">.</span><span class="n">colors</span>
+
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">age</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ages</span><span class="p">):</span>
+        <span class="n">data</span>   <span class="o">=</span> <span class="n">ex</span><span class="p">[</span><span class="n">age</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>                          <span class="c1"># (horizon, nb_regions)</span>
+        <span class="n">std</span>    <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">range_</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">label</span>  <span class="o">=</span> <span class="s2">&quot;e₀&quot;</span> <span class="k">if</span> <span class="n">age</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;e</span><span class="si">{</span><span class="n">age</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tv_future</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span>    <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tv_future</span><span class="p">,</span> <span class="n">range_</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="c1"># Axis labels and formatting</span>
+    <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Inter-regional std dev&quot;</span><span class="p">,</span> <span class="s2">&quot;Range (max − min)&quot;</span><span class="p">]):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Year&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Years of life&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Inter-regional convergence — </span><span class="si">{</span><span class="n">indicator_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="c1">#plt.savefig(&quot;dispersion.png&quot;, bbox_inches=&quot;tight&quot;, dpi=150)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Innovation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

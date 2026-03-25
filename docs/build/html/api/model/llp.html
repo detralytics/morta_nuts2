@@ -1,0 +1,1123 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lee &amp; Li Parametric Model &mdash; morta_nuts2 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Parameter Initialization" href="param_init.html" />
+    <link rel="prev" title="Lee-Carter Parametric Model" href="lcp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            morta_nuts2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Data:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../data/eurostat.html">Eurostat API Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#eurostat-py-eurostat-data-manager">eurostat.py - Eurostat Data Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig"><code class="docutils literal notranslate"><span class="pre">EurostatConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_SHAPEFILE_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_DATA_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DATASETS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.EXCLUDE_REGIONS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#id0"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#id1"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#id2"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#id3"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_shapefile"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_data_path"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_data_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.register_dataset"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.register_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data"><code class="docutils literal notranslate"><span class="pre">Eurostat_data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.shapefile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.set_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.register_dataset"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.register_dataset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load_all"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.pivot_age_year"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.pivot_age_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.get_regions"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.filter_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.parse_age"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.parse_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.add_exclusion"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.add_exclusion()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.list_datasets"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.list_datasets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.cache_info"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.cache_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.clear_cache"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.stats"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.load_mxt_raw"><code class="docutils literal notranslate"><span class="pre">load_mxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.load_dxt_raw"><code class="docutils literal notranslate"><span class="pre">load_dxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.load_lxt_raw"><code class="docutils literal notranslate"><span class="pre">load_lxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.age_year_pivot_table"><code class="docutils literal notranslate"><span class="pre">age_year_pivot_table()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">filter_shapefile()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.parse_age"><code class="docutils literal notranslate"><span class="pre">parse_age()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../data/mortality_table.html">Mortality Table</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#id1">mortality_table</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#main-features">Main features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#typical-workflow">Typical workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig"><code class="docutils literal notranslate"><span class="pre">MortalityConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_max"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_max</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_anomalies</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.fill_value"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.fill_value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.n_jobs"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.n_jobs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.enable_cache"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.enable_cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.cache_dir"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.cache_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.validate_data"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.validate_data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.correct_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.correct_anomalies</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator"><code class="docutils literal notranslate"><span class="pre">DataValidator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_dataframe"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_mortality_data"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_mortality_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager"><code class="docutils literal notranslate"><span class="pre">CacheManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.get"><code class="docutils literal notranslate"><span class="pre">CacheManager.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.set"><code class="docutils literal notranslate"><span class="pre">CacheManager.set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.clear"><code class="docutils literal notranslate"><span class="pre">CacheManager.clear()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.timing_decorator"><code class="docutils literal notranslate"><span class="pre">timing_decorator()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.DEFAULT_SHAPEFILE"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.DEFAULT_SHAPEFILE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.FRANCE_OUTREMER"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.FRANCE_OUTREMER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.__init__"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.set_shapefile"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_regions"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.validate_input_data"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.validate_input_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.calculate_mortality"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.calculate_mortality()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.export_results"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.export_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_statistics"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_statistics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.clear_cache"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.summary"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">mortality_by_region()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">build_input_from_dataframe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Models:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="bsplines.html">B-Splines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bsplines.html#bsplines">Bsplines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bsplines.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bsplines.html#knot-vector-convention-scipy">Knot vector convention (scipy)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bsplines.html#finite-difference-penalty-p-splines">Finite difference penalty (P-splines)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bsplines.html#visual-illustration">Visual illustration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bsplines.html#morta_nuts2.model.Bsplines.Bsplines.difference_matrix"><code class="docutils literal notranslate"><span class="pre">difference_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="bsplines.html#morta_nuts2.model.Bsplines.Bsplines.plot_Bsplines"><code class="docutils literal notranslate"><span class="pre">plot_Bsplines()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="bsplines.html#morta_nuts2.model.Bsplines.Bsplines.basis_matrix_from_knots"><code class="docutils literal notranslate"><span class="pre">basis_matrix_from_knots()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="bsplines.html#morta_nuts2.model.Bsplines.Bsplines.Bspline_approx"><code class="docutils literal notranslate"><span class="pre">Bspline_approx()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="bsplines.html#morta_nuts2.model.Bsplines.Bsplines.make_bspline_basis"><code class="docutils literal notranslate"><span class="pre">make_bspline_basis()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="bsplines.html#morta_nuts2.model.Bsplines.Bsplines.eval_bspline_from_coef"><code class="docutils literal notranslate"><span class="pre">eval_bspline_from_coef()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lcp.html">Lee-Carter Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lcp.html#lee-carter-object-oriented-architecture">Lee-Carter — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter"><code class="docutils literal notranslate"><span class="pre">LeeCarter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LeeCarter.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LeeCarter.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_ax_coef"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_ax_coef()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_kappa"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_kappa()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LeeCarter.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">LeeCarter.build_input_from_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric.National"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric.National</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Lee &amp; Li Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#lilee-object-oriented-architecture">LiLee — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee"><code class="docutils literal notranslate"><span class="pre">LiLee</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LiLee.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block"><code class="docutils literal notranslate"><span class="pre">LiLee.effective_dof_spline_block()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LiLee.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.difference_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.difference_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.FullModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.Variant</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Classic"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="param_init.html">Parameter Initialization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_bspline_init"><code class="docutils literal notranslate"><span class="pre">lcp_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="param_init.html#morta_nuts2.model.parameters_init.param_init.lileep_bspline_init"><code class="docutils literal notranslate"><span class="pre">lileep_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_parametrique_init_national"><code class="docutils literal notranslate"><span class="pre">lcp_parametrique_init_national()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="projection.html">Mortality Projection Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="projection.html#projection">Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.kannisto_log_mu"><code class="docutils literal notranslate"><span class="pre">kannisto_log_mu()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy.compute"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator.extrapolate"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator.extrapolate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.concat_logmu_time"><code class="docutils literal notranslate"><span class="pre">concat_logmu_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.Annuity_pricing"><code class="docutils literal notranslate"><span class="pre">Annuity_pricing()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.compute_mae"><code class="docutils literal notranslate"><span class="pre">compute_mae()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../visualisation/plot_class.html">Plot Class</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../visualisation/plot_class.html#id1">plot_class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.SHAPEF_PATH"><code class="docutils literal notranslate"><span class="pre">SHAPEF_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries"><code class="docutils literal notranslate"><span class="pre">ExtraSeries</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.data"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.label"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.label</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.position"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.position</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.style"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.style</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.save"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter"><code class="docutils literal notranslate"><span class="pre">MapPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_single_year"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_single_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_years"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_years()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_static"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_static()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.save"><code class="docutils literal notranslate"><span class="pre">MapPlotter.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_models"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_models()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats"><code class="docutils literal notranslate"><span class="pre">RegionalStats</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats.compute"><code class="docutils literal notranslate"><span class="pre">RegionalStats.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.plot"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.save"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.plot"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.save"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.save()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">morta_nuts2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Lee &amp; Li Parametric Model</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/model/llp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-morta_nuts2.model.LL_p.llp_class">
+<span id="lee-li-parametric-model"></span><h1>Lee &amp; Li Parametric Model<a class="headerlink" href="#module-morta_nuts2.model.LL_p.llp_class" title="Link to this heading"></a></h1>
+<section id="lilee-object-oriented-architecture">
+<h2>LiLee — Object-oriented architecture<a class="headerlink" href="#lilee-object-oriented-architecture" title="Link to this heading"></a></h2>
+<p>Multi-population mortality models based on the Li-Lee family.</p>
+<p>Class hierarchy:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>LiLee                              ← general base class
+├── LiLee.Parametric               ← parametric variants (B-splines + P-splines)
+│   ├── LiLee.Parametric.FullModel ← full Li-Lee model (two time indices)
+│   └── LiLee.Parametric.Variant   ← Lee &amp; Li model (single common time index)
+└── LiLee.Classic                  ← classic Li-Lee (gradient descent)
+</pre></div>
+</div>
+<p>Model equations:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\text{FullModel:} \quad
+\ln(\mu_{x,t,g}) = \alpha_{x,g} + \beta_x \cdot \kappa_t
+                    + \beta_{x,g} \cdot \kappa_{g,t}\\\text{Variant:} \quad
+\ln(\mu_{x,t,g}) = \alpha_x + \beta_{x,g} \cdot \kappa_t\end{aligned}\end{align} \]</div>
+<p>USAGE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Full Li-Lee parametric model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LiLee</span><span class="o">.</span><span class="n">Parametric</span><span class="o">.</span><span class="n">FullModel</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_knots</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">alpha_coef_init</span><span class="p">,</span> <span class="n">beta_coef_init</span><span class="p">,</span> <span class="n">beta_g_coef_init</span><span class="p">,</span>
+                    <span class="n">kappa_init</span><span class="p">,</span> <span class="n">kappa_g_init</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">Dxtg</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">)</span>
+
+<span class="c1"># Lee &amp; Li parametric model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LiLee</span><span class="o">.</span><span class="n">Parametric</span><span class="o">.</span><span class="n">Variant</span><span class="p">(</span><span class="n">n_knots</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">ax_coef_init</span><span class="p">,</span> <span class="n">bx_coef_init</span><span class="p">,</span> <span class="n">kappa_init</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">Dxtg</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">)</span>
+
+<span class="c1"># Classic Li-Lee model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LiLee</span><span class="o">.</span><span class="n">Classic</span><span class="p">(</span><span class="n">nb_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">bx_gr</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">kappa_gr</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">Dxtg</span><span class="p">,</span> <span class="n">Muxtg</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Dependencies:</p>
+<ul class="simple">
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.interpolate.BSpline</span></code></p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.special.gammaln()</span></code></p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code></p></li>
+</ul>
+<p>Reference: Hainaut (2025), equation (1) page 3</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">morta_nuts2.model.LL_p.llp_class.</span></span><span class="sig-name descname"><span class="pre">LiLee</span></span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>General Li-Lee class.</p>
+<p>Groups together:</p>
+<ul class="simple">
+<li><p>shared mathematical tools (static methods)</p></li>
+<li><p>the two main model families as nested sub-classes:</p>
+<ul>
+<li><p><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric" title="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiLee.Parametric</span></code></a> — two parametric variants (B-splines, P-splines)</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Classic" title="morta_nuts2.model.LL_p.llp_class.LiLee.Classic"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiLee.Classic</span></code></a>    — non-parametric gradient descent</p></li>
+</ul>
+</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">LiLee</span><span class="o">.</span><span class="n">Parametric</span><span class="o">.</span><span class="n">FullModel</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_knots</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">alpha0</span><span class="p">,</span> <span class="n">beta0</span><span class="p">,</span> <span class="n">beta_g0</span><span class="p">,</span> <span class="n">kappa0</span><span class="p">,</span> <span class="n">kappa_g0</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">Dxtg</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.make_penalty_matrix">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">make_penalty_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diff_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.make_penalty_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.make_penalty_matrix" title="Link to this definition"></a></dt>
+<dd><p>Build the P-splines penalty matrix <span class="math notranslate nohighlight">\(D^T D\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_basis</strong> (<em>int</em>) – Number of spline basis functions.</p></li>
+<li><p><strong>diff_order</strong> (<em>int</em>) – Order of the finite difference operator.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>) — penalty matrix.</p></li>
+<li><p><strong>diag_DtD</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>) — diagonal of <code class="docutils literal notranslate"><span class="pre">DtD</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.poisson_lnL">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">poisson_lnL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Dxtg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Extg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logmu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logDxtgFact</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.poisson_lnL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.poisson_lnL" title="Link to this definition"></a></dt>
+<dd><p>Compute the Poisson log-likelihood.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Dxtg</strong> (<em>numpy.ndarray</em>) – Observed death counts, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>Extg</strong> (<em>numpy.ndarray</em>) – Exposures, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>logmu</strong> (<em>numpy.ndarray</em>) – Log mortality rates, same shape as <code class="docutils literal notranslate"><span class="pre">Dxtg</span></code>.</p></li>
+<li><p><strong>logDxtgFact</strong> (<em>numpy.ndarray</em>) – Pre-computed <span class="math notranslate nohighlight">\(\log(D_{x,t,g}!)\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">Dxtg</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>lnL</strong> (<em>float</em>) — scalar log-likelihood.</p></li>
+<li><p><strong>exp_logmu</strong> (<em>numpy.ndarray</em>) — <span class="math notranslate nohighlight">\(\exp(\ln \mu)\)</span>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) — <span class="math notranslate nohighlight">\(E_{x,t,g} \cdot \exp(\ln \mu)\)</span>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) — <span class="math notranslate nohighlight">\(D_{x,t,g} - E_{x,t,g} \cdot \exp(\ln \mu)\)</span>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">effective_dof_spline_block</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_flat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DtD</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.effective_dof_spline_block"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block" title="Link to this definition"></a></dt>
+<dd><p>Effective degrees of freedom for one B-spline block under P-splines penalty.</p>
+<p>For a penalized Poisson GLM, the effective dofs of a single spline block
+are the trace of its hat-matrix contribution:</p>
+<div class="math notranslate nohighlight">
+\[\text{dof}_\text{eff}
+= \text{tr}\!\left[
+    \left(B^T W B + \lambda D^T D\right)^{-1} B^T W B
+  \right]\]</div>
+<p>where <span class="math notranslate nohighlight">\(W = \text{diag}(w)\)</span> are the final Poisson weights.
+When <span class="math notranslate nohighlight">\(\lambda = 0\)</span> this reduces to <span class="math notranslate nohighlight">\(n_{\text{basis}}\)</span> exactly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>B</strong> (<em>numpy.ndarray</em>) – B-spline basis matrix, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>w_flat</strong> (<em>numpy.ndarray</em>) – Aggregated Poisson weights per age, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,)</span></code>.
+Typically <code class="docutils literal notranslate"><span class="pre">weighted_exp[:,</span> <span class="pre">:,</span> <span class="pre">g].sum(axis=1)</span></code> for region <code class="docutils literal notranslate"><span class="pre">g</span></code>,
+or <code class="docutils literal notranslate"><span class="pre">weighted_exp.sum(axis=(1,</span> <span class="pre">2))</span></code> for a common block.</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – P-splines penalty weight <span class="math notranslate nohighlight">\(\lambda\)</span>.</p></li>
+<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix <span class="math notranslate nohighlight">\(D^T D\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Effective dofs for this block (scalar).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.compute_fit_stats">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">compute_fit_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Dxtg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Extg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logmu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logDxtgFact</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dofs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.compute_fit_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.compute_fit_stats" title="Link to this definition"></a></dt>
+<dd><p>Compute Poisson deviance, AIC, and BIC given pre-computed effective dofs.</p>
+<p>The effective dofs must be computed by the calling <code class="docutils literal notranslate"><span class="pre">fit()</span></code> method
+using <a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block" title="morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block"><code class="xref py py-meth docutils literal notranslate"><span class="pre">LiLee.effective_dof_spline_block()</span></code></a>, so that the P-splines
+penalty is properly accounted for.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Dxtg</strong> (<em>numpy.ndarray</em>) – Death counts, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>Extg</strong> (<em>numpy.ndarray</em>) – Exposures, same shape as <code class="docutils literal notranslate"><span class="pre">Dxtg</span></code>.</p></li>
+<li><p><strong>logmu</strong> (<em>numpy.ndarray</em>) – Fitted log mortality rates, same shape as <code class="docutils literal notranslate"><span class="pre">Dxtg</span></code>.</p></li>
+<li><p><strong>logDxtgFact</strong> (<em>numpy.ndarray</em>) – Pre-computed <span class="math notranslate nohighlight">\(\log(D!)\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">Dxtg</span></code>.</p></li>
+<li><p><strong>dofs</strong> (<em>float</em>) – Effective number of parameters (float).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame with columns <code class="docutils literal notranslate"><span class="pre">[&quot;N&quot;,</span> <span class="pre">&quot;dofs&quot;,</span> <span class="pre">&quot;lnL&quot;,</span> <span class="pre">&quot;deviance&quot;,</span> <span class="pre">&quot;AIC&quot;,</span> <span class="pre">&quot;BIC&quot;]</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.difference_matrix">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">difference_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.difference_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.difference_matrix" title="Link to this definition"></a></dt>
+<dd><p>Construct the finite difference matrix of order <code class="docutils literal notranslate"><span class="pre">k</span></code> for vectors of length <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – Length of the input vector.</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – Difference order. Must be strictly less than <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Finite difference matrix of shape <code class="docutils literal notranslate"><span class="pre">(n</span> <span class="pre">-</span> <span class="pre">k,</span> <span class="pre">n)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">&gt;=</span> <span class="pre">n</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Parametric</span></span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Parametric Li-Lee model family — B-splines + P-splines penalty.</p>
+<p>This class acts as a <strong>namespace</strong> grouping two parametric variants:</p>
+<dl>
+<dt><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel" title="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiLee.Parametric.FullModel</span></code></a></dt><dd><p>Full Li-Lee model with region-specific baselines <span class="math notranslate nohighlight">\(\alpha_{x,g}\)</span>,
+a common sensitivity <span class="math notranslate nohighlight">\(\beta_x\)</span>, and regional deviations
+<span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\ln(\mu_{x,t,g}) = \alpha_{x,g} + \beta_x \cdot \kappa_t
+                    + \beta_{x,g} \cdot \kappa_{g,t}\]</div>
+</dd>
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">LiLee.Parametric.LeeAndLi</span></code></dt><dd><p>Simplified Lee &amp; Li model with a <strong>common</strong> baseline <span class="math notranslate nohighlight">\(\alpha_x\)</span>
+and region-specific sensitivities <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span> driven by
+a <strong>single</strong> time index:</p>
+<div class="math notranslate nohighlight">
+\[\ln(\mu_{x,t,g}) = \alpha_x + \beta_{x,g} \cdot \kappa_t\]</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Both variants share the same B-spline basis construction and
+P-splines roughness penalty. All age curves are smooth by construction.</p>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">FullModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_knots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diff_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Full parametric Li-Lee model.</p>
+<div class="math notranslate nohighlight">
+\[\ln(\mu_{x,t,g}) = \alpha_{x,g} + \beta_x \cdot \kappa_t
+                    + \beta_{x,g} \cdot \kappa_{g,t}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha_{x,g}\)</span> — region-specific age baseline (B-splines)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_x\)</span>      — common age sensitivity (B-splines)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\kappa_t\)</span>     — common time index</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_{x,g}\)</span> — regional age sensitivity (B-splines)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\kappa_{g,t}\)</span> — regional time index</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>degree</strong> (<em>int</em>) – B-spline degree (3 recommended).</p></li>
+<li><p><strong>n_knots</strong> (<em>int</em>) – Number of internal knots (6 recommended).</p></li>
+<li><p><strong>xmin</strong> (<em>float</em><em> or </em><em>None</em>) – Minimum age bound (inferred from data if <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></li>
+<li><p><strong>xmax</strong> (<em>float</em><em> or </em><em>None</em>) – Maximum age bound (inferred from data if <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – P-splines penalty weight.</p></li>
+<li><p><strong>diff_order</strong> (<em>int</em>) – Difference order for the penalty matrix (2 recommended).</p></li>
+<li><p><strong>nb_iter</strong> (<em>int</em>) – Maximum number of NR iterations.</p></li>
+<li><p><strong>eta0</strong> (<em>float</em>) – Initial learning rate (0.30 recommended).</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – Convergence tolerance.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Whether to display iteration progress.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.compute_logmu_lilee">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">compute_logmu_lilee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_g_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knots</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.compute_logmu_lilee"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.compute_logmu_lilee" title="Link to this definition"></a></dt>
+<dd><p>Reconstruct <span class="math notranslate nohighlight">\(\ln(\mu_{x,t,g})\)</span> for the full Li-Lee model:</p>
+<div class="math notranslate nohighlight">
+\[\ln(\mu_{x,t,g}) = \alpha_{x,g} + \beta_x \cdot \kappa_t
+                    + \beta_{x,g} \cdot \kappa_{g,t}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha_coef</strong> (<em>numpy.ndarray</em>) – B-spline coefficients of <span class="math notranslate nohighlight">\(\alpha_{x,g}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>beta_coef</strong> (<em>numpy.ndarray</em>) – B-spline coefficients of <span class="math notranslate nohighlight">\(\beta_x\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
+<li><p><strong>beta_g_coef</strong> (<em>numpy.ndarray</em>) – B-spline coefficients of <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>kappa</strong> (<em>numpy.ndarray</em>) – Common time index <span class="math notranslate nohighlight">\(\kappa_t\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+<li><p><strong>kappa_g</strong> (<em>numpy.ndarray</em>) – Regional time indices <span class="math notranslate nohighlight">\(\kappa_{g,t}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">nb_years)</span></code>.</p></li>
+<li><p><strong>xv</strong> (<em>numpy.ndarray</em>) – Age vector, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,)</span></code>.</p></li>
+<li><p><strong>B</strong> (<em>numpy.ndarray</em>) – Pre-computed B-spline basis matrix, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>knots</strong> (<em>numpy.ndarray</em>) – Full knot vector.</p></li>
+<li><p><strong>degree</strong> (<em>int</em>) – B-spline degree.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>logmu</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>)</p></li>
+<li><p><strong>alpha</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_regions)</span></code>)
+— evaluated <span class="math notranslate nohighlight">\(\alpha_{x,g}\)</span></p></li>
+<li><p><strong>beta</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,)</span></code>)
+— evaluated <span class="math notranslate nohighlight">\(\beta_x\)</span></p></li>
+<li><p><strong>beta_g</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_regions)</span></code>)
+— evaluated <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_alpha_coef">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_alpha_coef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DtD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag_DtD</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.update_alpha_coef"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_alpha_coef" title="Link to this definition"></a></dt>
+<dd><p>Newton-Raphson update of <span class="math notranslate nohighlight">\(\alpha_{x,g}\)</span> (region-specific baseline,
+one coefficient vector per region).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha_coef</strong> (<em>numpy.ndarray</em>) – Current coefficients, shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>B</strong> (<em>numpy.ndarray</em>) – B-spline basis matrix, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty.</p></li>
+<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>diag_DtD</strong> (<em>numpy.ndarray</em>) – Diagonal of <code class="docutils literal notranslate"><span class="pre">DtD</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated <code class="docutils literal notranslate"><span class="pre">alpha_coef</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_beta_coef">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_beta_coef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DtD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag_DtD</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.update_beta_coef"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_beta_coef" title="Link to this definition"></a></dt>
+<dd><p>Newton-Raphson update of <span class="math notranslate nohighlight">\(\beta_x\)</span> (common sensitivity,
+a single coefficient vector for all regions).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>beta_coef</strong> (<em>numpy.ndarray</em>) – Current coefficients, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
+<li><p><strong>B</strong> (<em>numpy.ndarray</em>) – B-spline basis matrix, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>kappa</strong> (<em>numpy.ndarray</em>) – Common time index <span class="math notranslate nohighlight">\(\kappa_t\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty.</p></li>
+<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>diag_DtD</strong> (<em>numpy.ndarray</em>) – Diagonal of <code class="docutils literal notranslate"><span class="pre">DtD</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated <code class="docutils literal notranslate"><span class="pre">beta_coef</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_beta_g_coef">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_beta_g_coef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta_g_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DtD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag_DtD</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.update_beta_g_coef"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_beta_g_coef" title="Link to this definition"></a></dt>
+<dd><p>Newton-Raphson update of <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span> (regional sensitivity,
+one coefficient vector per region).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>beta_g_coef</strong> (<em>numpy.ndarray</em>) – Current coefficients, shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>B</strong> (<em>numpy.ndarray</em>) – B-spline basis matrix, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>kappa_g</strong> (<em>numpy.ndarray</em>) – Regional time indices <span class="math notranslate nohighlight">\(\kappa_{g,t}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">nb_years)</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty.</p></li>
+<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>diag_DtD</strong> (<em>numpy.ndarray</em>) – Diagonal of <code class="docutils literal notranslate"><span class="pre">DtD</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated <code class="docutils literal notranslate"><span class="pre">beta_g_coef</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_kappa">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_kappa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.update_kappa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_kappa" title="Link to this definition"></a></dt>
+<dd><p>Newton-Raphson update of <span class="math notranslate nohighlight">\(\kappa_t\)</span> (common time factor).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kappa</strong> (<em>numpy.ndarray</em>) – Current time index, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+<li><p><strong>beta</strong> (<em>numpy.ndarray</em>) – Evaluated <span class="math notranslate nohighlight">\(\beta_x\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,)</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated <span class="math notranslate nohighlight">\(\kappa_t\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_kappa_g">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_kappa_g</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kappa_g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.update_kappa_g"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_kappa_g" title="Link to this definition"></a></dt>
+<dd><p>Newton-Raphson update of <span class="math notranslate nohighlight">\(\kappa_{g,t}\)</span> (regional time factors).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kappa_g</strong> (<em>numpy.ndarray</em>) – Current regional time indices,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">nb_years)</span></code>.</p></li>
+<li><p><strong>beta_g</strong> (<em>numpy.ndarray</em>) – Evaluated <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated <span class="math notranslate nohighlight">\(\kappa_{g,t}\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">nb_years)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.normalize_lilee">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">normalize_lilee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_g_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.normalize_lilee"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.normalize_lilee" title="Link to this definition"></a></dt>
+<dd><p>Enforce Li-Lee identifiability constraints.</p>
+<p>Constraints applied:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\sum_x \beta_x = 1\)</span>
+— fixes the scale of the common factor</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sum_x \beta_{x,g} = 1 \; \forall g\)</span>
+— fixes the scale of each regional factor</p></li>
+<li><p><span class="math notranslate nohighlight">\(\overline{\kappa}_t = 0\)</span>
+— centres <span class="math notranslate nohighlight">\(\kappa_t\)</span>; compensated in <span class="math notranslate nohighlight">\(\alpha_{x,g}\)</span></p></li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.init_params">
+<span class="sig-name descname"><span class="pre">init_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Dxtg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Extg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.init_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.init_params" title="Link to this definition"></a></dt>
+<dd><p>Robust initialisation for the parametric Li-Lee model.</p>
+<p>Strategy:</p>
+<ol class="arabic simple">
+<li><p>Aggregate data across regions → fit a common Lee-Carter (SVD)
+to extract <span class="math notranslate nohighlight">\(\alpha_{\text{common}}\)</span>, <span class="math notranslate nohighlight">\(\beta_x\)</span>, <span class="math notranslate nohighlight">\(\kappa_t\)</span>.</p></li>
+<li><p>For each region, compute the residual log-rate after removing
+the common component, then apply SVD to extract
+<span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>, <span class="math notranslate nohighlight">\(\kappa_{g,t}\)</span>.</p></li>
+<li><p>Project all age curves onto the B-spline basis via least squares.</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Dxtg</strong> (<em>numpy.ndarray</em>) – Death counts, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>Extg</strong> (<em>numpy.ndarray</em>) – Exposures, same shape as <code class="docutils literal notranslate"><span class="pre">Dxtg</span></code>.</p></li>
+<li><p><strong>xv</strong> (<em>numpy.ndarray</em>) – Age vector, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>alpha_coef</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>)</p></li>
+<li><p><strong>beta_coef</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>)</p></li>
+<li><p><strong>beta_g_coef</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>)</p></li>
+<li><p><strong>kappa</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>)</p></li>
+<li><p><strong>kappa_g</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">nb_years)</span></code>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha_coef_init</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_coef_init</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_g_coef_init</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_init</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_g_init</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Extg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dxtg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.fit" title="Link to this definition"></a></dt>
+<dd><p>Calibrate the full parametric Li-Lee model:</p>
+<div class="math notranslate nohighlight">
+\[\ln(\mu_{x,t,g}) = \alpha_{x,g} + \beta_x \cdot \kappa_t
+                    + \beta_{x,g} \cdot \kappa_{g,t}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha_coef_init</strong> (<em>numpy.ndarray</em>) – Initial coefficients of <span class="math notranslate nohighlight">\(\alpha_{x,g}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>beta_coef_init</strong> (<em>numpy.ndarray</em>) – Initial coefficients of <span class="math notranslate nohighlight">\(\beta_x\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
+<li><p><strong>beta_g_coef_init</strong> (<em>numpy.ndarray</em>) – Initial coefficients of <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>kappa_init</strong> (<em>numpy.ndarray</em>) – Initial common time index, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+<li><p><strong>kappa_g_init</strong> (<em>numpy.ndarray</em>) – Initial regional time indices,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">nb_years)</span></code>.</p></li>
+<li><p><strong>Extg</strong> (<em>numpy.ndarray</em>) – Exposures, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>Dxtg</strong> (<em>numpy.ndarray</em>) – Death counts, same shape as <code class="docutils literal notranslate"><span class="pre">Extg</span></code>.</p></li>
+<li><p><strong>xv</strong> (<em>numpy.ndarray</em>) – Age vector, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,)</span></code>.</p></li>
+<li><p><strong>tv</strong> (<em>numpy.ndarray</em>) – Year vector, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Dictionary with keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;parameters&quot;</span></code> — <code class="docutils literal notranslate"><span class="pre">alpha_coef</span></code>, <code class="docutils literal notranslate"><span class="pre">beta_coef</span></code>,
+<code class="docutils literal notranslate"><span class="pre">beta_g_coef</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_g</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;curves&quot;</span></code> — <code class="docutils literal notranslate"><span class="pre">alpha_xg</span></code>, <code class="docutils literal notranslate"><span class="pre">beta_x</span></code>, <code class="docutils literal notranslate"><span class="pre">beta_xg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;fitted_values&quot;</span></code> — <code class="docutils literal notranslate"><span class="pre">log_mu</span></code>, <code class="docutils literal notranslate"><span class="pre">mu</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;fit_statistics&quot;</span></code> — <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the shapes of the initial coefficient arrays
+are inconsistent with the computed B-spline basis.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Variant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_knots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diff_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.Variant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Simplified Lee &amp; Li parametric model — single common time index.</p>
+<div class="math notranslate nohighlight">
+\[\ln(\mu_{x,t,g}) = \alpha_x + \beta_{x,g} \cdot \kappa_t\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha_x\)</span>    — <strong>common</strong> age baseline (no region dimension)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_{x,g}\)</span> — <strong>region-specific</strong> age sensitivity
+(one B-spline curve per region <span class="math notranslate nohighlight">\(g\)</span>)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\kappa_t\)</span>    — <strong>single</strong> common time index</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This variant was previously implemented as
+<code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric.Multiregion</span></code> in <code class="docutils literal notranslate"><span class="pre">lcp_class.py</span></code>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>degree</strong> (<em>int</em>) – B-spline degree.</p></li>
+<li><p><strong>n_knots</strong> (<em>int</em>) – Number of internal knots.</p></li>
+<li><p><strong>xmin</strong> (<em>float</em><em> or </em><em>None</em>) – Minimum age bound (inferred from data if <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></li>
+<li><p><strong>xmax</strong> (<em>float</em><em> or </em><em>None</em>) – Maximum age bound (inferred from data if <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – P-splines penalty parameter.</p></li>
+<li><p><strong>diff_order</strong> (<em>int</em>) – Order of the penalty difference operator.</p></li>
+<li><p><strong>nb_iter</strong> (<em>int</em>) – Maximum number of iterations.</p></li>
+<li><p><strong>eta0</strong> (<em>float</em>) – Initial learning rate.</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – Convergence tolerance on the log-likelihood increment.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Whether to print iteration progress.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.compute_logmu">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">compute_logmu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bx_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">knots</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.Variant.compute_logmu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.compute_logmu" title="Link to this definition"></a></dt>
+<dd><p>Reconstruct <span class="math notranslate nohighlight">\(\ln(\mu_{x,t,g})\)</span> for the Lee &amp; Li model:</p>
+<div class="math notranslate nohighlight">
+\[\ln(\mu_{x,t,g}) = \alpha_x + \beta_{x,g} \cdot \kappa_t\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax_coef</strong> (<em>numpy.ndarray</em>) – B-spline coefficients of <span class="math notranslate nohighlight">\(\alpha_x\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
+<li><p><strong>bx_coef</strong> (<em>numpy.ndarray</em>) – B-spline coefficients of <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>kappa</strong> (<em>numpy.ndarray</em>) – Common time index <span class="math notranslate nohighlight">\(\kappa_t\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+<li><p><strong>xv</strong> (<em>numpy.ndarray</em>) – Age vector, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,)</span></code>.</p></li>
+<li><p><strong>B</strong> (<em>numpy.ndarray</em>) – Pre-computed B-spline basis matrix, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>knots</strong> (<em>numpy.ndarray</em>) – Full knot vector.</p></li>
+<li><p><strong>degree</strong> (<em>int</em>) – B-spline degree.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>logmu</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>)</p></li>
+<li><p><strong>ax</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,)</span></code>)
+— evaluated <span class="math notranslate nohighlight">\(\alpha_x\)</span></p></li>
+<li><p><strong>bx_reg</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_regions)</span></code>)
+— evaluated <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.update_bx_coef">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_bx_coef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bx_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DtD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag_DtD</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.Variant.update_bx_coef"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.update_bx_coef" title="Link to this definition"></a></dt>
+<dd><p>Newton-Raphson update of <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span> (one B-spline curve per region).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bx_coef</strong> (<em>numpy.ndarray</em>) – Current coefficients, shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>B</strong> (<em>numpy.ndarray</em>) – B-spline basis matrix, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>kappa</strong> (<em>numpy.ndarray</em>) – Common time index, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty.</p></li>
+<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>diag_DtD</strong> (<em>numpy.ndarray</em>) – Diagonal of <code class="docutils literal notranslate"><span class="pre">DtD</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated <code class="docutils literal notranslate"><span class="pre">bx_coef</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.update_ax_coef">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_ax_coef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DtD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag_DtD</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.Variant.update_ax_coef"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.update_ax_coef" title="Link to this definition"></a></dt>
+<dd><p>Newton-Raphson update of the B-spline coefficients of <span class="math notranslate nohighlight">\(\alpha_x\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax_coef</strong> (<em>numpy.ndarray</em>) – Current coefficients, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
+<li><p><strong>B</strong> (<em>numpy.ndarray</em>) – B-spline basis matrix, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty.</p></li>
+<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>diag_DtD</strong> (<em>numpy.ndarray</em>) – Diagonal of <code class="docutils literal notranslate"><span class="pre">DtD</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated <code class="docutils literal notranslate"><span class="pre">ax_coef</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.update_kappa">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_kappa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bx_reg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.Variant.update_kappa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.update_kappa" title="Link to this definition"></a></dt>
+<dd><p>Newton-Raphson update of the common time index <span class="math notranslate nohighlight">\(\kappa_t\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kappa</strong> (<em>numpy.ndarray</em>) – Current time index, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+<li><p><strong>bx_reg</strong> (<em>numpy.ndarray</em>) – Evaluated <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated <span class="math notranslate nohighlight">\(\kappa_t\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.rescale_bx_kappa">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">rescale_bx_kappa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bx_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bx_reg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.Variant.rescale_bx_kappa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.rescale_bx_kappa" title="Link to this definition"></a></dt>
+<dd><p>Normalize <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span> so that
+<span class="math notranslate nohighlight">\(\sum_x \overline{\beta}_x = 1\)</span>, where
+<span class="math notranslate nohighlight">\(\overline{\beta}_x = \frac{1}{G} \sum_g \beta_{x,g}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bx_coef</strong> (<em>numpy.ndarray</em>) – Coefficients of <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>bx_reg</strong> (<em>numpy.ndarray</em>) – Evaluated <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>kappa</strong> (<em>numpy.ndarray</em>) – Time index, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Rescaled <code class="docutils literal notranslate"><span class="pre">(bx_coef,</span> <span class="pre">bx_reg,</span> <span class="pre">kappa)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple(numpy.ndarray, numpy.ndarray, numpy.ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax_coef_init</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bx_coef_init</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_init</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Extg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dxtg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.Variant.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the Lee &amp; Li parametric model:</p>
+<div class="math notranslate nohighlight">
+\[\ln(\mu_{x,t,g}) = \alpha_x + \beta_{x,g} \cdot \kappa_t\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax_coef_init</strong> (<em>numpy.ndarray</em>) – Initial coefficients of <span class="math notranslate nohighlight">\(\alpha_x\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
+<li><p><strong>bx_coef_init</strong> (<em>numpy.ndarray</em>) – Initial coefficients of <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>kappa_init</strong> (<em>numpy.ndarray</em>) – Initial time index <span class="math notranslate nohighlight">\(\kappa_t\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+<li><p><strong>Extg</strong> (<em>numpy.ndarray</em>) – Exposures, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>Dxtg</strong> (<em>numpy.ndarray</em>) – Death counts, same shape as <code class="docutils literal notranslate"><span class="pre">Extg</span></code>.</p></li>
+<li><p><strong>xv</strong> (<em>numpy.ndarray</em>) – Age vector, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,)</span></code>.</p></li>
+<li><p><strong>tv</strong> (<em>numpy.ndarray</em>) – Year vector, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Dictionary with keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;parameters&quot;</span></code> — <code class="docutils literal notranslate"><span class="pre">ax_coef</span></code>, <code class="docutils literal notranslate"><span class="pre">bx_coef</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;curves&quot;</span></code> — <code class="docutils literal notranslate"><span class="pre">alpha_x</span></code>, <code class="docutils literal notranslate"><span class="pre">beta_xg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;fitted_values&quot;</span></code> — <code class="docutils literal notranslate"><span class="pre">log_mu</span></code>, <code class="docutils literal notranslate"><span class="pre">mu</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;fit_statistics&quot;</span></code> — <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the shapes of the initial coefficient arrays
+are inconsistent with the computed B-spline basis.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Classic">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Classic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nb_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Classic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Classic" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Classic (non-parametric) Li-Lee model fitted by gradient descent.</p>
+<p>Step 1 — fits a standard Lee-Carter model (<span class="math notranslate nohighlight">\(\alpha_x\)</span>, <span class="math notranslate nohighlight">\(\beta_x\)</span>,
+<span class="math notranslate nohighlight">\(\kappa_t\)</span>) on the data.</p>
+<p>Step 2 — fits the regional residual terms (<span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
+<span class="math notranslate nohighlight">\(\kappa_{g,t}\)</span>) on top:</p>
+<div class="math notranslate nohighlight">
+\[\ln(\mu_{x,t,g}) = \alpha_x + \beta_x \cdot \kappa_t
+                    + \beta_{x,g} \cdot \kappa_{g,t}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nb_iter</strong> (<em>int</em>) – Number of gradient descent iterations.</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – P-splines roughness penalty for <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>.</p></li>
+<li><p><strong>z</strong> (<em>int</em>) – Difference order for the penalty matrix.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Whether to display plots during fitting.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Classic.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bx_gr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_gr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Extg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dxtg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Muxtg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Classic.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Classic.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the classic Li-Lee model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>numpy.ndarray</em>) – Initial age baseline <span class="math notranslate nohighlight">\(\alpha_x\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">1)</span></code>.</p></li>
+<li><p><strong>bx</strong> (<em>numpy.ndarray</em>) – Initial common sensitivity <span class="math notranslate nohighlight">\(\beta_x\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">1)</span></code>.</p></li>
+<li><p><strong>bx_gr</strong> (<em>numpy.ndarray</em>) – Initial regional sensitivity <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>kappa</strong> (<em>numpy.ndarray</em>) – Initial common time factor <span class="math notranslate nohighlight">\(\kappa_t\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+<li><p><strong>kappa_gr</strong> (<em>numpy.ndarray</em>) – Initial regional time factors <span class="math notranslate nohighlight">\(\kappa_{g,t}\)</span>,
+shape <code class="docutils literal notranslate"><span class="pre">(nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>Extg</strong> (<em>numpy.ndarray</em>) – Exposures, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>Dxtg</strong> (<em>numpy.ndarray</em>) – Death counts, same shape as <code class="docutils literal notranslate"><span class="pre">Extg</span></code>.</p></li>
+<li><p><strong>Muxtg</strong> (<em>numpy.ndarray</em>) – Observed mortality rates, same shape as <code class="docutils literal notranslate"><span class="pre">Extg</span></code>.</p></li>
+<li><p><strong>xv</strong> (<em>numpy.ndarray</em>) – Age vector, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,)</span></code>.</p></li>
+<li><p><strong>tv</strong> (<em>numpy.ndarray</em>) – Year vector, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with keys <code class="docutils literal notranslate"><span class="pre">&quot;parameters&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;fitted_values&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;fit_statistics&quot;</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lcp.html" class="btn btn-neutral float-left" title="Lee-Carter Parametric Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="param_init.html" class="btn btn-neutral float-right" title="Parameter Initialization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Detralytics Innovation Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

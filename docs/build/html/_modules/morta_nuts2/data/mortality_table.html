@@ -1,0 +1,1169 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>morta_nuts2.data.mortality_table &mdash; Morta-nuts  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Morta-nuts
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu :</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Morta-nuts</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">morta_nuts2.data.mortality_table</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for morta_nuts2.data.mortality_table</h1><div class="highlight"><pre>
+<span></span><span class="c1"># &quot;&quot;&quot;</span>
+<span class="c1"># MortalityCalculator - Optimized and Innovative Version</span>
+<span class="c1"># =====================================================</span>
+
+<span class="c1"># Main improvements ::</span>
+
+<span class="c1"># - Smart cache to avoid recomputations</span>
+<span class="c1"># - Automatic data validation</span>
+<span class="c1"># - Detailed operation logging</span>
+<span class="c1"># - Support for different output formats</span>
+<span class="c1"># - Integrated visualization methods</span>
+<span class="c1"># - Advanced error handling</span>
+<span class="c1"># - Configurable processing pipeline</span>
+<span class="c1"># - Multi-format export (CSV, Parquet, Excel)</span>
+<span class="c1"># &quot;&quot;&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">mortality_table</span>
+<span class="sd">===============</span>
+
+<span class="sd">High-performance mortality data processing module.</span>
+
+<span class="sd">This module provides an optimized pipeline to compute mortality metrics</span>
+<span class="sd">from raw demographic datasets (mortality rates, exposures, deaths).</span>
+
+<span class="sd">Main features</span>
+<span class="sd">-------------</span>
+<span class="sd">- Efficient vectorized computations using NumPy and pandas</span>
+<span class="sd">- Parallel processing for regional computations</span>
+<span class="sd">- Smart caching system to avoid recomputation</span>
+<span class="sd">- Automatic data validation with detailed reports</span>
+<span class="sd">- Flexible configuration via dataclass</span>
+<span class="sd">- Multi-format export (CSV, Parquet, Excel, Feather)</span>
+<span class="sd">- Compatibility with actuarial models (e.g., Lee-Carter, Lee-Li)</span>
+
+<span class="sd">Typical workflow</span>
+<span class="sd">----------------</span>
+<span class="sd">1. Load raw datasets (mxt, Lxt, Dxt)</span>
+<span class="sd">2. Initialize ``MortalityCalculator``</span>
+<span class="sd">3. Run mortality computation</span>
+<span class="sd">4. Export or transform outputs for modeling</span>
+
+<span class="sd">Example</span>
+<span class="sd">-------</span>
+<span class="sd">&gt;&gt;&gt; calc = MortalityCalculator()</span>
+<span class="sd">&gt;&gt;&gt; df = calc.calculate_mortality(mxt, Lxt, Dxt)</span>
+<span class="sd">&gt;&gt;&gt; calc.export_results(df, &quot;output.csv&quot;)</span>
+
+<span class="sd">Notes</span>
+<span class="sd">-----</span>
+<span class="sd">This module is designed for actuarial and demographic applications,</span>
+<span class="sd">including mortality modeling and risk analysis.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span><span class="p">,</span> <span class="n">as_completed</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span><span class="p">,</span> <span class="n">wraps</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># Cherche la racine du projet en remontant jusqu&#39;à trouver NUTS_files/</span>
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;NUTS_files&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">BASE_DIR</span><span class="o">.</span><span class="n">parent</span>
+
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;NUTS_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;NUTS_RG_01M_2024_3035.shp&quot;</span>
+<span class="c1"># Path to the NUTS shapefile used for choropleth maps</span>
+<span class="c1">#SHAPEF_PATH = DATA_DIR</span>
+
+
+
+<span class="c1"># Logging configuration</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="MortalityConfig">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.MortalityConfig">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MortalityConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configuration class for mortality calculations.</span>
+
+<span class="sd">    This class centralizes all configurable parameters used in the</span>
+<span class="sd">    mortality computation pipeline.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    age_max : int, default=82</span>
+<span class="sd">        Maximum age considered in computations.</span>
+
+<span class="sd">    age_anomalies : np.ndarray</span>
+<span class="sd">        Ages where mortality anomalies are corrected via interpolation.</span>
+
+<span class="sd">    fill_value : float, default=1e-6</span>
+<span class="sd">        Value used to fill missing data in pivot tables.</span>
+
+<span class="sd">    n_jobs : int, default=-1</span>
+<span class="sd">        Number of parallel jobs (-1 means automatic detection).</span>
+
+<span class="sd">    enable_cache : bool, default=True</span>
+<span class="sd">        Whether to enable caching of intermediate results.</span>
+
+<span class="sd">    cache_dir : str, optional</span>
+<span class="sd">        Directory where cache files are stored.</span>
+
+<span class="sd">    validate_data : bool, default=True</span>
+<span class="sd">        Whether to validate input datasets before processing.</span>
+
+<span class="sd">    correct_anomalies : bool, default=True</span>
+<span class="sd">        Whether to apply anomaly correction on mortality rates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">age_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">82</span>
+    <span class="n">age_anomalies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">11</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">77</span><span class="p">]))</span>
+    <span class="n">fill_value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span>
+    <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">enable_cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">validate_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">correct_anomalies</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">age_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cache_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s1">&#39;.mortality_cache&#39;</span><span class="p">)</span>
+        <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_dir</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="DataValidator">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.DataValidator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DataValidator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Utility class for validating input datasets.</span>
+
+<span class="sd">    Provides generic and domain-specific validation methods</span>
+<span class="sd">    for mortality-related data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="DataValidator.validate_dataframe">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.DataValidator.validate_dataframe">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> 
+                          <span class="n">required_columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                          <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;DataFrame&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validates a DataFrame and returns a report.&quot;&quot;&quot;</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;valid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s1">&#39;warnings&#39;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s1">&#39;stats&#39;</span><span class="p">:</span> <span class="p">{}</span>
+        <span class="p">}</span>
+        
+        <span class="c1"># Check required columns</span>
+        <span class="n">missing_cols</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">required_columns</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">missing_cols</span><span class="p">:</span>
+            <span class="n">report</span><span class="p">[</span><span class="s1">&#39;valid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">report</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing columns in </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">missing_cols</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Basic statistics</span>
+        <span class="n">report</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">][</span><span class="s1">&#39;n_rows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">][</span><span class="s1">&#39;n_cols&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">][</span><span class="s1">&#39;memory_mb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1024</span><span class="o">**</span><span class="mi">2</span>
+        
+        <span class="c1"># Check missing values</span>
+        <span class="n">null_counts</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">null_counts</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="n">report</span><span class="p">[</span><span class="s1">&#39;warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing values detected: </span><span class="si">{</span><span class="n">null_counts</span><span class="p">[</span><span class="n">null_counts</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Check duplicates</span>
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="n">n_duplicates</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="n">report</span><span class="p">[</span><span class="s1">&#39;warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n_duplicates</span><span class="si">}</span><span class="s2"> duplicate rows detected&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">report</span></div>
+
+    
+<div class="viewcode-block" id="DataValidator.validate_mortality_data">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.DataValidator.validate_mortality_data">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_mortality_data</span><span class="p">(</span><span class="n">mxt_raw</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> 
+                               <span class="n">Lxt_raw</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> 
+                               <span class="n">Dxt_raw</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Specific validation for mortality data.&quot;&quot;&quot;</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;overall_valid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;datasets&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+        
+        <span class="c1"># Validate each dataset</span>
+        <span class="n">report</span><span class="p">[</span><span class="s1">&#39;datasets&#39;</span><span class="p">][</span><span class="s1">&#39;mxt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataValidator</span><span class="o">.</span><span class="n">validate_dataframe</span><span class="p">(</span>
+            <span class="n">mxt_raw</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;geo&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">,</span> <span class="s1">&#39;indic_de&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">],</span> <span class="s1">&#39;mxt_raw&#39;</span>
+        <span class="p">)</span>
+        <span class="n">report</span><span class="p">[</span><span class="s1">&#39;datasets&#39;</span><span class="p">][</span><span class="s1">&#39;Lxt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataValidator</span><span class="o">.</span><span class="n">validate_dataframe</span><span class="p">(</span>
+            <span class="n">Lxt_raw</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;geo&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">],</span> <span class="s1">&#39;Lxt_raw&#39;</span>
+        <span class="p">)</span>
+        <span class="n">report</span><span class="p">[</span><span class="s1">&#39;datasets&#39;</span><span class="p">][</span><span class="s1">&#39;Dxt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataValidator</span><span class="o">.</span><span class="n">validate_dataframe</span><span class="p">(</span>
+            <span class="n">Dxt_raw</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;geo&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">],</span> <span class="s1">&#39;Dxt_raw&#39;</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># Check consistency between datasets</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">report</span><span class="p">[</span><span class="s1">&#39;datasets&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">[</span><span class="s1">&#39;valid&#39;</span><span class="p">]:</span>
+                <span class="n">report</span><span class="p">[</span><span class="s1">&#39;overall_valid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="k">return</span> <span class="n">report</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CacheManager">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.CacheManager">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CacheManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cache manager to optimize repeated calculations.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="n">enabled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_cache_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates a unique cache key.&quot;&quot;&quot;</span>
+        <span class="n">key_data</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">key_data</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+    
+<div class="viewcode-block" id="CacheManager.get">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.CacheManager.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieves a value from the cache.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="n">cache_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.pkl&quot;</span>
+        <span class="k">if</span> <span class="n">cache_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cache_file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading from cache: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    
+<div class="viewcode-block" id="CacheManager.set">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.CacheManager.set">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">any</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stores a value in the cache.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
+            <span class="k">return</span>
+        
+        <span class="n">cache_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.pkl&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cache_file</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error writing to cache: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="CacheManager.clear">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.CacheManager.clear">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clears the cache.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">cache_file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.pkl&quot;</span><span class="p">):</span>
+            <span class="n">cache_file</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="timing_decorator">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.timing_decorator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">timing_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator to measure execution time.&quot;&quot;&quot;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> executed in </span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+
+
+
+<div class="viewcode-block" id="MortalityCalculator">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.MortalityCalculator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MortalityCalculator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Optimized mortality calculator with advanced features.</span>
+<span class="sd">    </span>
+<span class="sd">    Innovative features:</span>
+<span class="sd">    - Smart cache to avoid recomputations</span>
+<span class="sd">    - Automatic data validation</span>
+<span class="sd">    - Multi-format export support</span>
+<span class="sd">    - Configurable pipeline</span>
+<span class="sd">    - Detailed logging</span>
+<span class="sd">    - Robust error handling</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Default path for the NUTS shapefile</span>
+    <span class="c1">#DEFAULT_SHAPEFILE = &quot;C:/Users/Idrissa Belem/Documents/GitHub/test_projet/NUTS_files/NUTS_RG_01M_2024_3035.shp&quot;</span>
+    <span class="n">DEFAULT_SHAPEFILE</span><span class="o">=</span><span class="n">DATA_DIR</span>
+    <span class="n">FRANCE_OUTREMER</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;FRY1&#39;</span><span class="p">,</span> <span class="s1">&#39;FRY2&#39;</span><span class="p">,</span> <span class="s1">&#39;FRY3&#39;</span><span class="p">,</span> <span class="s1">&#39;FRY4&#39;</span><span class="p">,</span> <span class="s1">&#39;FRY5&#39;</span><span class="p">]</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                 <span class="n">shapefile_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MortalityConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">auto_load_regions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the mortality calculator.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        shapefile_path : str, optional</span>
+<span class="sd">            Path to the NUTS shapefile.</span>
+<span class="sd">            If None, uses the default path.</span>
+<span class="sd">        config : MortalityConfig, optional</span>
+<span class="sd">            Custom configuration</span>
+<span class="sd">        auto_load_regions : bool, default=True</span>
+<span class="sd">            Automatically loads regions from the shapefile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span> <span class="ow">or</span> <span class="n">MortalityConfig</span><span class="p">()</span>
+        
+        <span class="c1"># Cache manager</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache_manager</span> <span class="o">=</span> <span class="n">CacheManager</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">cache_dir</span><span class="p">,</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">enable_cache</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># Data validator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validator</span> <span class="o">=</span> <span class="n">DataValidator</span><span class="p">()</span>
+        
+        <span class="c1"># Regions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shapefile_path</span> <span class="o">=</span> <span class="n">shapefile_path</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_SHAPEFILE</span>
+        
+        <span class="k">if</span> <span class="n">auto_load_regions</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_load_regions</span><span class="p">()</span>
+        
+        <span class="c1"># Execution statistics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execution_stats</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;total_calculations&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s1">&#39;cache_hits&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s1">&#39;cache_misses&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s1">&#39;total_processing_time&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+        <span class="p">}</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MortalityCalculator initialized with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">)</span><span class="si">}</span><span class="s2"> regions&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_regions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads regions from the shapefile.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shapefile_path</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading shapefile: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shapefile_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">shapef</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shapefile_path</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">regions</span> <span class="o">=</span> <span class="n">shapef</span><span class="p">[</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span> <span class="k">if</span> <span class="n">r</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">FRANCE_OUTREMER</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">)</span><span class="si">}</span><span class="s2"> regions loaded&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shapefile not found: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shapefile_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error loading shapefile: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="MortalityCalculator.set_shapefile">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.MortalityCalculator.set_shapefile">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_shapefile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shapefile_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Changes the shapefile and reloads regions.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        shapefile_path : str</span>
+<span class="sd">            New path to the shapefile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shapefile_path</span> <span class="o">=</span> <span class="n">shapefile_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_regions</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="MortalityCalculator.get_regions">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_regions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_regions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">country</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;FR&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the list of regions filtered by country.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        country : str, default=&quot;FR&quot;</span>
+<span class="sd">            Country code (FR to filter overseas territories)</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        List[str]</span>
+<span class="sd">            List of region codes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">country</span> <span class="o">==</span> <span class="s2">&quot;FR&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span> <span class="k">if</span> <span class="n">r</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">FRANCE_OUTREMER</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span></div>
+
+    
+<div class="viewcode-block" id="MortalityCalculator.validate_input_data">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.MortalityCalculator.validate_input_data">[docs]</a>
+    <span class="nd">@timing_decorator</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_input_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                           <span class="n">mxt_raw</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+                           <span class="n">Lxt_raw</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+                           <span class="n">Dxt_raw</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates the input data.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dict</span>
+<span class="sd">            Validation report</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">validate_data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;overall_valid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Validation disabled&#39;</span><span class="p">}</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Validating input data...&quot;</span><span class="p">)</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validator</span><span class="o">.</span><span class="n">validate_mortality_data</span><span class="p">(</span><span class="n">mxt_raw</span><span class="p">,</span> <span class="n">Lxt_raw</span><span class="p">,</span> <span class="n">Dxt_raw</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">report</span><span class="p">[</span><span class="s1">&#39;overall_valid&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Validation failed!&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">report</span><span class="p">[</span><span class="s1">&#39;datasets&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]:</span>
+                    <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">dataset</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Validation successful&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">report</span></div>
+
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_pivot_mu</span><span class="p">(</span><span class="n">mxt_raw</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> 
+                       <span class="n">gender</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                       <span class="n">common_ages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+                       <span class="n">fill_value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builds pivots for mortality rates.</span>
+<span class="sd">        Optimized with full vectorization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sub</span> <span class="o">=</span> <span class="n">mxt_raw</span><span class="p">[</span>
+            <span class="p">(</span><span class="n">mxt_raw</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">gender</span><span class="p">)</span> <span class="o">&amp;</span>
+            <span class="p">(</span><span class="n">mxt_raw</span><span class="p">[</span><span class="s2">&quot;indic_de&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;DEATHRATE&quot;</span><span class="p">)</span> <span class="o">&amp;</span>
+            <span class="p">(</span><span class="n">mxt_raw</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">common_ages</span><span class="p">))</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
+        
+        <span class="n">pivot</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span>
+            <span class="n">sub</span><span class="p">,</span>
+            <span class="n">values</span><span class="o">=</span><span class="s2">&quot;values&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;geo&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">],</span>
+            <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span>
+            <span class="n">aggfunc</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+            <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span><span class="p">,</span>
+            <span class="n">observed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        
+        <span class="n">pivot</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">pivot</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">pivot</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pivot</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">set_levels</span><span class="p">(</span>
+            <span class="n">pivot</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">reg</span><span class="p">:</span> <span class="n">grp</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">reg</span><span class="p">,</span> <span class="n">grp</span> <span class="ow">in</span> <span class="n">pivot</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s2">&quot;geo&quot;</span><span class="p">)</span>
+        <span class="p">}</span>
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_pivot_L</span><span class="p">(</span><span class="n">Lxt_raw</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> 
+                      <span class="n">gender</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                      <span class="n">common_ages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+                      <span class="n">fill_value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builds pivots for exposure.</span>
+<span class="sd">        Optimized with full vectorization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sub</span> <span class="o">=</span> <span class="n">Lxt_raw</span><span class="p">[</span>
+            <span class="p">(</span><span class="n">Lxt_raw</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">gender</span><span class="p">)</span> <span class="o">&amp;</span>
+            <span class="p">(</span><span class="n">Lxt_raw</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">common_ages</span><span class="p">))</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
+        
+        <span class="n">pivot</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span>
+            <span class="n">sub</span><span class="p">,</span>
+            <span class="n">values</span><span class="o">=</span><span class="s2">&quot;values&quot;</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;geo&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">],</span>
+            <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span>
+            <span class="n">aggfunc</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+            <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span><span class="p">,</span>
+            <span class="n">observed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        
+        <span class="n">pivot</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">pivot</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">pivot</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pivot</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">set_levels</span><span class="p">(</span>
+            <span class="n">pivot</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">reg</span><span class="p">:</span> <span class="n">grp</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">reg</span><span class="p">,</span> <span class="n">grp</span> <span class="ow">in</span> <span class="n">pivot</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s2">&quot;geo&quot;</span><span class="p">)</span>
+        <span class="p">}</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_correct_age_anomalies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mu</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">age_arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Corrects age anomalies by interpolation.</span>
+<span class="sd">        </span>
+<span class="sd">        Optimized with numpy vectorization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">correct_anomalies</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Mu</span>
+        
+        <span class="n">Mu_corrected</span> <span class="o">=</span> <span class="n">Mu</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">age_anomalies</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">age_arr</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+            <span class="n">idx_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">age_arr</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">idx_m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">age_arr</span><span class="p">,</span> <span class="n">a</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="p">(</span><span class="n">idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">age_arr</span><span class="p">)</span> <span class="ow">and</span> <span class="n">age_arr</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">a</span> <span class="ow">and</span>
+                <span class="n">idx_p</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">age_arr</span><span class="p">)</span> <span class="ow">and</span> <span class="n">age_arr</span><span class="p">[</span><span class="n">idx_p</span><span class="p">]</span> <span class="o">==</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span> <span class="ow">and</span>
+                <span class="n">idx_m</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">age_arr</span><span class="p">[</span><span class="n">idx_m</span><span class="p">]</span> <span class="o">==</span> <span class="n">a</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">Mu_corrected</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Mu</span><span class="p">[</span><span class="n">idx_p</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">Mu</span><span class="p">[</span><span class="n">idx_m</span><span class="p">,</span> <span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>
+        
+        <span class="k">return</span> <span class="n">Mu_corrected</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_exposure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes exposure (Extg method).</span>
+<span class="sd">        </span>
+<span class="sd">        Optimized vectorized formula.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+        <span class="n">E</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">E</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">L</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">E</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">return</span> <span class="n">E</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_process_region_optimized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                                  <span class="n">reg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                                  <span class="n">mu_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> 
+                                  <span class="n">L_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+                                  <span class="n">aggregate_age</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Processes a region with an optimized pipeline.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reg : str</span>
+<span class="sd">            Region code</span>
+<span class="sd">        mu_df : pd.DataFrame</span>
+<span class="sd">            Mortality rates DataFrame</span>
+<span class="sd">        L_df : pd.DataFrame</span>
+<span class="sd">            Exposure DataFrame</span>
+<span class="sd">        aggregate_age : bool</span>
+<span class="sd">            If True, aggregates by age</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Tuple or None</span>
+<span class="sd">            Calculation results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Year alignment</span>
+            <span class="n">common_years</span> <span class="o">=</span> <span class="n">mu_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">L_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">common_years</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            
+            <span class="c1"># Age alignment</span>
+            <span class="n">common_ages</span> <span class="o">=</span> <span class="n">mu_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">L_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">common_ages</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            
+            <span class="c1"># Matrix extraction</span>
+            <span class="n">Mu</span> <span class="o">=</span> <span class="n">mu_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">common_ages</span><span class="p">,</span> <span class="n">common_years</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">L</span> <span class="o">=</span> <span class="n">L_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">common_ages</span><span class="p">,</span> <span class="n">common_years</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+            <span class="n">age_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">common_ages</span><span class="p">)</span>
+            
+            <span class="c1"># Anomaly correction</span>
+            <span class="n">Mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_correct_age_anomalies</span><span class="p">(</span><span class="n">Mu</span><span class="p">,</span> <span class="n">age_arr</span><span class="p">)</span>
+            
+            <span class="c1"># Max age truncation</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">age_arr</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">age_max</span>
+            <span class="n">age_arr</span> <span class="o">=</span> <span class="n">age_arr</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+            <span class="n">Mu</span> <span class="o">=</span> <span class="n">Mu</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">L</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="p">:]</span>
+            
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">age_arr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            
+            <span class="c1"># Exposure calculation</span>
+            <span class="n">E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_exposure</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+            
+            <span class="c1"># Deaths calculation</span>
+            <span class="n">D</span> <span class="o">=</span> <span class="n">Mu</span> <span class="o">*</span> <span class="n">E</span>
+            
+            <span class="k">if</span> <span class="n">aggregate_age</span><span class="p">:</span>
+                <span class="c1"># Aggregate by age</span>
+                <span class="n">D_t</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">E_t</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">reg</span><span class="p">,</span> <span class="n">common_years</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">D_t</span><span class="p">,</span> <span class="n">E_t</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Without aggregation</span>
+                <span class="k">return</span> <span class="n">reg</span><span class="p">,</span> <span class="n">common_years</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">age_arr</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">E</span>
+        
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error processing region </span><span class="si">{</span><span class="n">reg</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="nd">@timing_decorator</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parallel_processing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">regions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                            <span class="n">mu_by_region</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
+                            <span class="n">L_by_region</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
+                            <span class="n">aggregate_age</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parallel processing of regions with optimal thread management.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_jobs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_jobs</span>
+        <span class="k">if</span> <span class="n">n_jobs</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">n_jobs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">))</span>
+        
+        <span class="n">valid_regions</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">regions</span> <span class="k">if</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">mu_by_region</span> <span class="ow">and</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">L_by_region</span><span class="p">]</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">valid_regions</span><span class="p">)</span><span class="si">}</span><span class="s2"> regions with </span><span class="si">{</span><span class="n">n_jobs</span><span class="si">}</span><span class="s2"> threads&quot;</span><span class="p">)</span>
+        
+        <span class="n">raw_results</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">if</span> <span class="n">n_jobs</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Sequential mode</span>
+            <span class="k">for</span> <span class="n">reg</span> <span class="ow">in</span> <span class="n">valid_regions</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_region_optimized</span><span class="p">(</span>
+                    <span class="n">reg</span><span class="p">,</span> <span class="n">mu_by_region</span><span class="p">[</span><span class="n">reg</span><span class="p">],</span> <span class="n">L_by_region</span><span class="p">[</span><span class="n">reg</span><span class="p">],</span> <span class="n">aggregate_age</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">raw_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Parallel mode with progress tracking</span>
+            <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+                <span class="n">futures</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_process_region_optimized</span><span class="p">,</span>
+                        <span class="n">reg</span><span class="p">,</span>
+                        <span class="n">mu_by_region</span><span class="p">[</span><span class="n">reg</span><span class="p">],</span>
+                        <span class="n">L_by_region</span><span class="p">[</span><span class="n">reg</span><span class="p">],</span>
+                        <span class="n">aggregate_age</span>
+                    <span class="p">):</span> <span class="n">reg</span> <span class="k">for</span> <span class="n">reg</span> <span class="ow">in</span> <span class="n">valid_regions</span>
+                <span class="p">}</span>
+                
+                <span class="n">completed</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">futures</span><span class="p">)</span>
+                
+                <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">):</span>
+                    <span class="n">completed</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">completed</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">completed</span> <span class="o">==</span> <span class="n">total</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Progress: </span><span class="si">{</span><span class="n">completed</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2"> regions processed&quot;</span><span class="p">)</span>
+                    
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">raw_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">raw_results</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_final_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                               <span class="n">raw_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">],</span>
+                               <span class="n">aggregate_age</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builds the final DataFrame in an optimized way.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">aggregate_age</span><span class="p">:</span>
+            <span class="n">all_regions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">],</span> 
+                <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">all_years</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">])</span>
+            <span class="n">all_deaths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">])</span>
+            <span class="n">all_exposure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">r</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">])</span>
+            
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+                <span class="s2">&quot;region&quot;</span><span class="p">:</span> <span class="n">all_regions</span><span class="p">,</span>
+                <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">all_years</span><span class="p">,</span>
+                <span class="s2">&quot;deaths&quot;</span><span class="p">:</span> <span class="n">all_deaths</span><span class="p">,</span>
+                <span class="s2">&quot;exposure&quot;</span><span class="p">:</span> <span class="n">all_exposure</span><span class="p">,</span>
+                <span class="s2">&quot;mortality_rate&quot;</span><span class="p">:</span> <span class="n">all_deaths</span> <span class="o">/</span> <span class="n">all_exposure</span><span class="p">,</span>
+            <span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">regions_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">years_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">ages_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">deaths_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">exposure_list</span> <span class="o">=</span> <span class="p">[]</span>
+            
+            <span class="k">for</span> <span class="n">reg</span><span class="p">,</span> <span class="n">years</span><span class="p">,</span> <span class="n">ages</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">E</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">:</span>
+                <span class="n">A</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">shape</span>
+                
+                <span class="n">regions_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">A</span> <span class="o">*</span> <span class="n">T</span><span class="p">))</span>
+                <span class="n">years_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span>
+                <span class="n">ages_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+                <span class="n">deaths_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+                <span class="n">exposure_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+            
+            <span class="n">all_regions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">regions_list</span><span class="p">)</span>
+            <span class="n">all_years</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">years_list</span><span class="p">)</span>
+            <span class="n">all_ages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">ages_list</span><span class="p">)</span>
+            <span class="n">all_deaths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">deaths_list</span><span class="p">)</span>
+            <span class="n">all_exposure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">exposure_list</span><span class="p">)</span>
+            
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+                <span class="s2">&quot;region&quot;</span><span class="p">:</span> <span class="n">all_regions</span><span class="p">,</span>
+                <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">all_years</span><span class="p">,</span>
+                <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="n">all_ages</span><span class="p">,</span>
+                <span class="s2">&quot;deaths&quot;</span><span class="p">:</span> <span class="n">all_deaths</span><span class="p">,</span>
+                <span class="s2">&quot;exposure&quot;</span><span class="p">:</span> <span class="n">all_exposure</span><span class="p">,</span>
+                <span class="s2">&quot;mortality_rate&quot;</span><span class="p">:</span> <span class="n">all_deaths</span> <span class="o">/</span> <span class="n">all_exposure</span><span class="p">,</span>
+            <span class="p">})</span>
+    
+<div class="viewcode-block" id="MortalityCalculator.calculate_mortality">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.MortalityCalculator.calculate_mortality">[docs]</a>
+    <span class="nd">@timing_decorator</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_mortality</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">mxt_raw</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+                           <span class="n">Lxt_raw</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+                           <span class="n">Dxt_raw</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+                           <span class="n">regions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                           <span class="n">gender</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span>
+                           <span class="n">country</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;FR&quot;</span><span class="p">,</span>
+                           <span class="n">aggregate_age</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                           <span class="n">use_cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unified main method to calculate mortality.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mxt_raw : pd.DataFrame</span>
+<span class="sd">            Mortality rate data</span>
+<span class="sd">        Lxt_raw : pd.DataFrame</span>
+<span class="sd">            Exposure data</span>
+<span class="sd">        Dxt_raw : pd.DataFrame</span>
+<span class="sd">            Deaths data</span>
+<span class="sd">        regions : List[str], optional</span>
+<span class="sd">            List of regions to process. If None, uses self.regions</span>
+<span class="sd">        gender : str, default=&quot;T&quot;</span>
+<span class="sd">            Gender (&quot;T&quot;, &quot;M&quot;, &quot;F&quot;)</span>
+<span class="sd">        country : str, default=&quot;FR&quot;</span>
+<span class="sd">            Country code</span>
+<span class="sd">        aggregate_age : bool, default=True</span>
+<span class="sd">            If True, aggregates results by age</span>
+<span class="sd">        use_cache : bool, default=True</span>
+<span class="sd">            Uses cache if available</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pd.DataFrame</span>
+<span class="sd">            Mortality calculation results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        
+        <span class="c1"># Validation</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">validate_data</span><span class="p">:</span>
+            <span class="n">validation_report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_input_data</span><span class="p">(</span><span class="n">mxt_raw</span><span class="p">,</span> <span class="n">Lxt_raw</span><span class="p">,</span> <span class="n">Dxt_raw</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">validation_report</span><span class="p">[</span><span class="s1">&#39;overall_valid&#39;</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Data validation failed&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Determine regions</span>
+        <span class="k">if</span> <span class="n">regions</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">regions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_regions</span><span class="p">(</span><span class="n">country</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">country</span> <span class="o">==</span> <span class="s2">&quot;FR&quot;</span><span class="p">:</span>
+            <span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">regions</span> <span class="k">if</span> <span class="n">r</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">FRANCE_OUTREMER</span><span class="p">]</span>
+        
+        <span class="c1"># Check cache</span>
+        <span class="n">cache_key</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">use_cache</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">enable_cache</span><span class="p">:</span>
+            <span class="n">cache_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_manager</span><span class="o">.</span><span class="n">_get_cache_key</span><span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">mxt_raw</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">Lxt_raw</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">Dxt_raw</span><span class="p">),</span>
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">regions</span><span class="p">),</span> <span class="n">gender</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="n">aggregate_age</span>
+            <span class="p">)</span>
+            <span class="n">cached_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache_manager</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cache_key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cached_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Result retrieved from cache&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">execution_stats</span><span class="p">[</span><span class="s1">&#39;cache_hits&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="n">cached_result</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">execution_stats</span><span class="p">[</span><span class="s1">&#39;cache_misses&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="c1"># Age harmonization</span>
+        <span class="n">mxt_g</span> <span class="o">=</span> <span class="n">mxt_raw</span><span class="p">[</span><span class="n">mxt_raw</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">gender</span><span class="p">]</span>
+        <span class="n">Lxt_g</span> <span class="o">=</span> <span class="n">Lxt_raw</span><span class="p">[</span><span class="n">Lxt_raw</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">gender</span><span class="p">]</span>
+        <span class="n">Dxt_g</span> <span class="o">=</span> <span class="n">Dxt_raw</span><span class="p">[</span><span class="n">Dxt_raw</span><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">gender</span><span class="p">]</span>
+        
+        <span class="n">common_ages</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="nb">set</span><span class="p">(</span><span class="n">mxt_g</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">&amp;</span>
+            <span class="nb">set</span><span class="p">(</span><span class="n">Lxt_g</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">&amp;</span>
+            <span class="nb">set</span><span class="p">(</span><span class="n">Dxt_g</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+        <span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">common_ages</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No common ages after harmonization&quot;</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Harmonized ages: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">common_ages</span><span class="p">)</span><span class="si">}</span><span class="s2"> common ages&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Global parallel pre-pivot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Building pivots...&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+            <span class="n">fut_mu</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_build_pivot_mu</span><span class="p">,</span> <span class="n">mxt_raw</span><span class="p">,</span> <span class="n">gender</span><span class="p">,</span> <span class="n">common_ages</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_value</span>
+            <span class="p">)</span>
+            <span class="n">fut_L</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_build_pivot_L</span><span class="p">,</span> <span class="n">Lxt_raw</span><span class="p">,</span> <span class="n">gender</span><span class="p">,</span> <span class="n">common_ages</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_value</span>
+            <span class="p">)</span>
+            <span class="n">mu_by_region</span> <span class="o">=</span> <span class="n">fut_mu</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="n">L_by_region</span> <span class="o">=</span> <span class="n">fut_L</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+        
+        <span class="c1"># Parallel region processing</span>
+        <span class="n">raw_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parallel_processing</span><span class="p">(</span>
+            <span class="n">regions</span><span class="p">,</span> <span class="n">mu_by_region</span><span class="p">,</span> <span class="n">L_by_region</span><span class="p">,</span> <span class="n">aggregate_age</span>
+        <span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">raw_results</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No usable region after age/year alignment&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Build final DataFrame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Building final DataFrame...&quot;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_final_dataframe</span><span class="p">(</span><span class="n">raw_results</span><span class="p">,</span> <span class="n">aggregate_age</span><span class="p">)</span>
+        
+        <span class="c1"># Cache storage</span>
+        <span class="k">if</span> <span class="n">use_cache</span> <span class="ow">and</span> <span class="n">cache_key</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cache_manager</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">cache_key</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+        
+        <span class="c1"># Statistics</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execution_stats</span><span class="p">[</span><span class="s1">&#39;total_calculations&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execution_stats</span><span class="p">[</span><span class="s1">&#39;total_processing_time&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">duration</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Calculation complete: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows generated&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">result</span></div>
+
+    
+<div class="viewcode-block" id="MortalityCalculator.mortality_by_region">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mortality_by_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates mortality aggregated by region and year.</span>
+<span class="sd">        Alias for calculate_mortality with aggregate_age=True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;aggregate_age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_mortality</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="MortalityCalculator.mortality_by_region_by_age">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region_by_age">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mortality_by_region_by_age</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates mortality by region, year and age.</span>
+<span class="sd">        Alias for calculate_mortality with aggregate_age=False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;aggregate_age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_mortality</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="MortalityCalculator.export_results">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.MortalityCalculator.export_results">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">export_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                      <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+                      <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                      <span class="nb">format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;csv&#39;</span><span class="p">,</span> <span class="s1">&#39;parquet&#39;</span><span class="p">,</span> <span class="s1">&#39;excel&#39;</span><span class="p">,</span> <span class="s1">&#39;feather&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;csv&#39;</span><span class="p">,</span>
+                      <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Exports results in different formats.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : pd.DataFrame</span>
+<span class="sd">            DataFrame to export</span>
+<span class="sd">        output_path : str</span>
+<span class="sd">            Output path</span>
+<span class="sd">        format : str</span>
+<span class="sd">            Export format (&#39;csv&#39;, &#39;parquet&#39;, &#39;excel&#39;, &#39;feather&#39;)</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Additional arguments for the export function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exporting results in </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="s2"> format...&quot;</span><span class="p">)</span>
+        
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+        <span class="n">output_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;csv&#39;</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;parquet&#39;</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;excel&#39;</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;feather&#39;</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">to_feather</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported format: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Export successful: </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="MortalityCalculator.get_statistics">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_statistics">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns execution statistics.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dict</span>
+<span class="sd">            Complete statistics</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execution_stats</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;total_calculations&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;avg_processing_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;total_processing_time&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;total_calculations&#39;</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;cache_hit_rate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;cache_hits&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;cache_hits&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;cache_misses&#39;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;cache_hits&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;cache_misses&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">stats</span></div>
+
+    
+<div class="viewcode-block" id="MortalityCalculator.clear_cache">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.MortalityCalculator.clear_cache">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clears the cache.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache_manager</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Cache cleared&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="MortalityCalculator.summary">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.MortalityCalculator.summary">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Displays a summary of the configuration and statistics.&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MortalityCalculator - Summary&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shapefile: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shapefile_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Regions loaded: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum age: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">age_max</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Anomaly correction: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">correct_anomalies</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cache enabled: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">enable_cache</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Threads: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_jobs</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_jobs</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;auto&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Execution statistics:&quot;</span><span class="p">)</span>
+        <span class="n">stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_statistics</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">stats</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># Compatibility functions with the old API</span>
+<div class="viewcode-block" id="mortality_by_region">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.mortality_by_region">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mortality_by_region</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compatibility function - creates an instance and calculates.&quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+        <span class="s2">&quot;Use of deprecated standalone function. &quot;</span>
+        <span class="s2">&quot;Prefer using MortalityCalculator.calculate_mortality()&quot;</span><span class="p">,</span>
+        <span class="ne">DeprecationWarning</span>
+    <span class="p">)</span>
+    <span class="n">calculator</span> <span class="o">=</span> <span class="n">MortalityCalculator</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">calculator</span><span class="o">.</span><span class="n">mortality_by_region</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="mortality_by_region_by_age">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.mortality_by_region_by_age">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mortality_by_region_by_age</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compatibility function - creates an instance and calculates.&quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+        <span class="s2">&quot;Use of deprecated standalone function. &quot;</span>
+        <span class="s2">&quot;Prefer using MortalityCalculator.calculate_mortality()&quot;</span><span class="p">,</span>
+        <span class="ne">DeprecationWarning</span>
+    <span class="p">)</span>
+    <span class="n">calculator</span> <span class="o">=</span> <span class="n">MortalityCalculator</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">calculator</span><span class="o">.</span><span class="n">mortality_by_region_by_age</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+
+<div class="viewcode-block" id="build_input_from_dataframe">
+<a class="viewcode-back" href="../../../api.html#morta_nuts2.data.mortality_table.build_input_from_dataframe">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_input_from_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms a long DataFrame into 3D matrices compatible with LCp_fit.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : DataFrame with columns</span>
+<span class="sd">         [&#39;region&#39;, &#39;year&#39;, &#39;age&#39;, &#39;deaths&#39;, &#39;exposure&#39;,&#39;mortality_rate&#39;]</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    Muxtg: (nb_ages, nb_years, nb_regions)</span>
+<span class="sd">    Dxtg : (nb_ages, nb_years, nb_regions)</span>
+<span class="sd">    Extg : (nb_ages, nb_years, nb_regions)</span>
+<span class="sd">    xv   : sorted age vector</span>
+<span class="sd">    tv   : sorted year vector</span>
+<span class="sd">    regions : list of regions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Sort for safety</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;region&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+    <span class="n">xv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+    <span class="n">tv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+    <span class="n">regions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;region&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+    
+    <span class="n">nb_ages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xv</span><span class="p">)</span>
+    <span class="n">nb_years</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tv</span><span class="p">)</span>
+    <span class="n">nb_regions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">)</span>
+    
+    <span class="c1"># Index mapping</span>
+    <span class="n">age_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">:</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xv</span><span class="p">)}</span>
+    <span class="n">year_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">y</span><span class="p">:</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tv</span><span class="p">)}</span>
+    <span class="n">reg_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">r</span><span class="p">:</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">regions</span><span class="p">)}</span>
+    
+    <span class="c1"># Allocation</span>
+    <span class="n">Dxtg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nb_ages</span><span class="p">,</span> <span class="n">nb_years</span><span class="p">,</span> <span class="n">nb_regions</span><span class="p">))</span>
+    <span class="n">Extg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">Dxtg</span><span class="p">)</span>
+    <span class="n">Muxtg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">Dxtg</span><span class="p">)</span>
+    
+    <span class="c1"># Vectorization without triple loop</span>
+    <span class="n">Dxtg</span><span class="p">[</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">age</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">age_idx</span><span class="p">),</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">year_idx</span><span class="p">),</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">region</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">reg_idx</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">deaths</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="n">Extg</span><span class="p">[</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">age</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">age_idx</span><span class="p">),</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">year_idx</span><span class="p">),</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">region</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">reg_idx</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">exposure</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="n">Muxtg</span><span class="p">[</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">age</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">age_idx</span><span class="p">),</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">year_idx</span><span class="p">),</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">region</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">reg_idx</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mortality_rate</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="c1"># Numerical safety</span>
+    <span class="n">Extg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">Extg</span><span class="p">,</span> <span class="mf">1e-12</span><span class="p">)</span>
+    <span class="n">Dxtg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">Dxtg</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">Muxtg</span><span class="p">,</span> <span class="n">Dxtg</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">regions</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Innovation.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

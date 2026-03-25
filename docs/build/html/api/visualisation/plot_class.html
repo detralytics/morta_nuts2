@@ -1,0 +1,803 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plot Class &mdash; morta_nuts2 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Mortality Projection Engine" href="../model/projection.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            morta_nuts2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Data:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../data/eurostat.html">Eurostat API Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#eurostat-py-eurostat-data-manager">eurostat.py - Eurostat Data Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig"><code class="docutils literal notranslate"><span class="pre">EurostatConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_SHAPEFILE_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_DATA_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DATASETS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.EXCLUDE_REGIONS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#id0"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#id1"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#id2"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#id3"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_shapefile"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_data_path"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_data_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.register_dataset"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.register_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data"><code class="docutils literal notranslate"><span class="pre">Eurostat_data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.shapefile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.set_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.register_dataset"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.register_dataset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load_all"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.pivot_age_year"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.pivot_age_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.get_regions"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.filter_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.parse_age"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.parse_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.add_exclusion"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.add_exclusion()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.list_datasets"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.list_datasets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.cache_info"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.cache_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.clear_cache"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.stats"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.load_mxt_raw"><code class="docutils literal notranslate"><span class="pre">load_mxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.load_dxt_raw"><code class="docutils literal notranslate"><span class="pre">load_dxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.load_lxt_raw"><code class="docutils literal notranslate"><span class="pre">load_lxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.age_year_pivot_table"><code class="docutils literal notranslate"><span class="pre">age_year_pivot_table()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">filter_shapefile()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/eurostat.html#morta_nuts2.data.eurostat.parse_age"><code class="docutils literal notranslate"><span class="pre">parse_age()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../data/mortality_table.html">Mortality Table</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#id1">mortality_table</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#main-features">Main features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#typical-workflow">Typical workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig"><code class="docutils literal notranslate"><span class="pre">MortalityConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_max"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_max</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_anomalies</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.fill_value"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.fill_value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.n_jobs"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.n_jobs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.enable_cache"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.enable_cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.cache_dir"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.cache_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.validate_data"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.validate_data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.correct_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.correct_anomalies</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator"><code class="docutils literal notranslate"><span class="pre">DataValidator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_dataframe"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_mortality_data"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_mortality_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager"><code class="docutils literal notranslate"><span class="pre">CacheManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.get"><code class="docutils literal notranslate"><span class="pre">CacheManager.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.set"><code class="docutils literal notranslate"><span class="pre">CacheManager.set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.clear"><code class="docutils literal notranslate"><span class="pre">CacheManager.clear()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.timing_decorator"><code class="docutils literal notranslate"><span class="pre">timing_decorator()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.DEFAULT_SHAPEFILE"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.DEFAULT_SHAPEFILE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.FRANCE_OUTREMER"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.FRANCE_OUTREMER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.__init__"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.set_shapefile"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_regions"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.validate_input_data"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.validate_input_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.calculate_mortality"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.calculate_mortality()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.export_results"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.export_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_statistics"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_statistics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.clear_cache"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.summary"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">mortality_by_region()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/mortality_table.html#morta_nuts2.data.mortality_table.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">build_input_from_dataframe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Models:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../model/bsplines.html">B-Splines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../model/bsplines.html#bsplines">Bsplines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../model/bsplines.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/bsplines.html#knot-vector-convention-scipy">Knot vector convention (scipy)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/bsplines.html#finite-difference-penalty-p-splines">Finite difference penalty (P-splines)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/bsplines.html#visual-illustration">Visual illustration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.difference_matrix"><code class="docutils literal notranslate"><span class="pre">difference_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.plot_Bsplines"><code class="docutils literal notranslate"><span class="pre">plot_Bsplines()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.basis_matrix_from_knots"><code class="docutils literal notranslate"><span class="pre">basis_matrix_from_knots()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.Bspline_approx"><code class="docutils literal notranslate"><span class="pre">Bspline_approx()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.make_bspline_basis"><code class="docutils literal notranslate"><span class="pre">make_bspline_basis()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.eval_bspline_from_coef"><code class="docutils literal notranslate"><span class="pre">eval_bspline_from_coef()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../model/lcp.html">Lee-Carter Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../model/lcp.html#lee-carter-object-oriented-architecture">Lee-Carter — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter"><code class="docutils literal notranslate"><span class="pre">LeeCarter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LeeCarter.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LeeCarter.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_ax_coef"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_ax_coef()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_kappa"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_kappa()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LeeCarter.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">LeeCarter.build_input_from_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric.National"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric.National</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../model/llp.html">Lee &amp; Li Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../model/llp.html#lilee-object-oriented-architecture">LiLee — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee"><code class="docutils literal notranslate"><span class="pre">LiLee</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LiLee.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block"><code class="docutils literal notranslate"><span class="pre">LiLee.effective_dof_spline_block()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LiLee.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.difference_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.difference_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.FullModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.Variant</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../model/param_init.html">Parameter Initialization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../model/param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_bspline_init"><code class="docutils literal notranslate"><span class="pre">lcp_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/param_init.html#morta_nuts2.model.parameters_init.param_init.lileep_bspline_init"><code class="docutils literal notranslate"><span class="pre">lileep_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_parametrique_init_national"><code class="docutils literal notranslate"><span class="pre">lcp_parametrique_init_national()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../model/projection.html">Mortality Projection Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../model/projection.html#projection">Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/projection.html#morta_nuts2.model.projection.project_class.kannisto_log_mu"><code class="docutils literal notranslate"><span class="pre">kannisto_log_mu()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../model/projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy.compute"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../model/projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../model/projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator.extrapolate"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator.extrapolate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../model/projection.html#morta_nuts2.model.projection.project_class.concat_logmu_time"><code class="docutils literal notranslate"><span class="pre">concat_logmu_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/projection.html#morta_nuts2.model.projection.project_class.Annuity_pricing"><code class="docutils literal notranslate"><span class="pre">Annuity_pricing()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/projection.html#morta_nuts2.model.projection.project_class.compute_mae"><code class="docutils literal notranslate"><span class="pre">compute_mae()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Plot Class</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">plot_class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.graph.plot_class.SHAPEF_PATH"><code class="docutils literal notranslate"><span class="pre">SHAPEF_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.graph.plot_class.ExtraSeries"><code class="docutils literal notranslate"><span class="pre">ExtraSeries</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.ExtraSeries.data"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.ExtraSeries.label"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.label</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.ExtraSeries.position"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.position</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.ExtraSeries.style"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.style</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.graph.plot_class.RegionalCurvePlotter"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.RegionalCurvePlotter.save"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter"><code class="docutils literal notranslate"><span class="pre">MapPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter.plot_single_year"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_single_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_years"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_years()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter.plot_static"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_static()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter.save"><code class="docutils literal notranslate"><span class="pre">MapPlotter.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_models"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_models()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.graph.plot_class.RegionalStats"><code class="docutils literal notranslate"><span class="pre">RegionalStats</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.RegionalStats.compute"><code class="docutils literal notranslate"><span class="pre">RegionalStats.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.graph.plot_class.DispersionPlotter"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.DispersionPlotter.plot"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.DispersionPlotter.save"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.graph.plot_class.AnnuityBoxPlotter"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.plot"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.save"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.save()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">morta_nuts2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Plot Class</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/visualisation/plot_class.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-morta_nuts2.graph.plot_class">
+<span id="plot-class"></span><h1>Plot Class<a class="headerlink" href="#module-morta_nuts2.graph.plot_class" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>plot_class<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>This module gathers all visualisation classes and utilities used for
+demographic and actuarial analysis at the regional (NUTS) level.</p>
+<p>It provides five main classes:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#morta_nuts2.graph.plot_class.RegionalCurvePlotter" title="morta_nuts2.graph.plot_class.RegionalCurvePlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegionalCurvePlotter</span></code></a> — compares mortality curves across models
+and regions as a grid of subplots.</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter" title="morta_nuts2.graph.plot_class.MapPlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">MapPlotter</span></code></a> — generates NUTS-level choropleth maps from
+demographic indicators (life expectancy, model errors, etc.).</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.graph.plot_class.RegionalStats" title="morta_nuts2.graph.plot_class.RegionalStats"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegionalStats</span></code></a> — computes descriptive statistics
+(mean, standard deviation, average rank) on a projected regional indicator.</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.graph.plot_class.DispersionPlotter" title="morta_nuts2.graph.plot_class.DispersionPlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">DispersionPlotter</span></code></a> — visualises the evolution of inter-regional
+dispersion (standard deviation and range) over the projection horizon.</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.graph.plot_class.AnnuityBoxPlotter" title="morta_nuts2.graph.plot_class.AnnuityBoxPlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnuityBoxPlotter</span></code></a> — draws regional boxplots of annuity prices,
+with optional overlay of national or benchmark series.</p></li>
+</ul>
+<p>The module also exposes the dataclass <a class="reference internal" href="#morta_nuts2.graph.plot_class.ExtraSeries" title="morta_nuts2.graph.plot_class.ExtraSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtraSeries</span></code></a> and two internal
+helper functions for boxplot styling (<code class="xref py py-func docutils literal notranslate"><span class="pre">_resolve_style()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">_boxplot_kwargs()</span></code>).</p>
+<p><strong>Dependencies</strong>: <code class="docutils literal notranslate"><span class="pre">geopandas</span></code>, <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>, <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code>,
+<code class="docutils literal notranslate"><span class="pre">pathlib</span></code>, <code class="docutils literal notranslate"><span class="pre">dataclasses</span></code>.</p>
+<p><strong>NUTS shapefile</strong>: <code class="docutils literal notranslate"><span class="pre">SHAPEF_PATH</span></code> is resolved automatically by walking up
+the directory tree from the current working directory until a <code class="docutils literal notranslate"><span class="pre">NUTS_files</span></code>
+folder is found.</p>
+<p>Quick-start example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare mortality curves for the year 2040</span>
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">RegionalCurvePlotter</span><span class="p">(</span>
+    <span class="n">x_values</span><span class="o">=</span><span class="n">ages</span><span class="p">,</span>
+    <span class="n">curves_dict</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Model A&quot;</span><span class="p">:</span> <span class="n">arr_a</span><span class="p">,</span> <span class="s2">&quot;Model B&quot;</span><span class="p">:</span> <span class="n">arr_b</span><span class="p">},</span>
+    <span class="n">tv</span><span class="o">=</span><span class="n">tv_vector</span><span class="p">,</span>
+    <span class="n">regions</span><span class="o">=</span><span class="n">region_list</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">year_to_plot</span><span class="o">=</span><span class="mi">2040</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;output/curves_2040.png&quot;</span><span class="p">)</span>
+
+<span class="c1"># Choropleth map for 2030</span>
+<span class="n">mp</span> <span class="o">=</span> <span class="n">MapPlotter</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="n">data_3d</span><span class="p">,</span> <span class="n">tv_future</span><span class="p">,</span> <span class="s2">&quot;FR&quot;</span><span class="p">,</span> <span class="s2">&quot;Life expectancy e0&quot;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">plot_single_year</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2030</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;output/map_2030.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.SHAPEF_PATH">
+<span class="sig-prename descclassname"><span class="pre">morta_nuts2.graph.plot_class.</span></span><span class="sig-name descname"><span class="pre">SHAPEF_PATH</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">WindowsPath('C:/Users/Idrissa</span> <span class="pre">Belem/Documents/GitHub/morta_nuts2/NUTS_files/NUTS_RG_01M_2024_3035.shp')</span></span><a class="headerlink" href="#morta_nuts2.graph.plot_class.SHAPEF_PATH" title="Link to this definition"></a></dt>
+<dd><p>Path to the NUTS shapefile used for choropleth maps.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.ExtraSeries">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">morta_nuts2.graph.plot_class.</span></span><span class="sig-name descname"><span class="pre">ExtraSeries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'last'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#ExtraSeries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.ExtraSeries" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Describes an additional data series to overlay on top of the regional
+boxplots in <a class="reference internal" href="#morta_nuts2.graph.plot_class.AnnuityBoxPlotter" title="morta_nuts2.graph.plot_class.AnnuityBoxPlotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnuityBoxPlotter</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em>) – Numpy array of shape <code class="docutils literal notranslate"><span class="pre">(nb_xe,</span> <span class="pre">1,</span> <span class="pre">nb_simul)</span></code> containing
+the simulations for this series.</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – Display name used in the legend and x-axis tick labels.</p></li>
+<li><p><strong>position</strong> (<em>str</em>) – Insertion position of the boxplot relative to regions.
+<code class="docutils literal notranslate"><span class="pre">&quot;first&quot;</span></code> places it before the regional boxes, <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> after.</p></li>
+<li><p><strong>style</strong> (<em>dict</em>) – Optional visual override dictionary. Valid keys:
+<code class="docutils literal notranslate"><span class="pre">facecolor</span></code>, <code class="docutils literal notranslate"><span class="pre">edgecolor</span></code>, <code class="docutils literal notranslate"><span class="pre">median</span></code>, <code class="docutils literal notranslate"><span class="pre">linewidth</span></code>.
+If empty or <code class="docutils literal notranslate"><span class="pre">None</span></code>, a color from the default palette is applied.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.ExtraSeries.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></span><a class="headerlink" href="#morta_nuts2.graph.plot_class.ExtraSeries.data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.ExtraSeries.label">
+<span class="sig-name descname"><span class="pre">label</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#morta_nuts2.graph.plot_class.ExtraSeries.label" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.ExtraSeries.position">
+<span class="sig-name descname"><span class="pre">position</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'last'</span></span><a class="headerlink" href="#morta_nuts2.graph.plot_class.ExtraSeries.position" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.ExtraSeries.style">
+<span class="sig-name descname"><span class="pre">style</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></span><a class="headerlink" href="#morta_nuts2.graph.plot_class.ExtraSeries.style" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.RegionalCurvePlotter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">morta_nuts2.graph.plot_class.</span></span><span class="sig-name descname"><span class="pre">RegionalCurvePlotter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curves_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Age'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Mortality</span> <span class="pre">rate'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Comparison'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#RegionalCurvePlotter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.RegionalCurvePlotter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Plots multiple model curves for each region as a grid of subplots,
+producing one figure per group of <code class="docutils literal notranslate"><span class="pre">n_cols</span></code> regions.</p>
+<p>Typically used to compare mortality rates or other demographic indicators
+from different models for a given projection year.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_values</strong> (<em>array-like</em>) – Common x-axis values shared by all curves
+(e.g. age groups).</p></li>
+<li><p><strong>curves_dict</strong> (<em>dict</em>) – Dictionary <code class="docutils literal notranslate"><span class="pre">{label:</span> <span class="pre">3D_array}</span></code> where each array
+has shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>tv</strong> (<em>numpy.ndarray</em>) – 1D array of available projection years.</p></li>
+<li><p><strong>regions</strong> (<em>list</em>) – List of region names.</p></li>
+<li><p><strong>n_cols</strong> (<em>int</em>) – Number of columns in the subplot grid (default: 3).</p></li>
+<li><p><strong>yscale</strong> (<em>str</em>) – Y-axis scale, <code class="docutils literal notranslate"><span class="pre">&quot;log&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code> (default: <code class="docutils literal notranslate"><span class="pre">&quot;log&quot;</span></code>).</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em>) – X-axis label (default: <code class="docutils literal notranslate"><span class="pre">&quot;Age&quot;</span></code>).</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em>) – Y-axis label (default: <code class="docutils literal notranslate"><span class="pre">&quot;Mortality</span> <span class="pre">rate&quot;</span></code>).</p></li>
+<li><p><strong>title_prefix</strong> (<em>str</em>) – Prefix string used in the figure title
+(default: <code class="docutils literal notranslate"><span class="pre">&quot;Comparison&quot;</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year_to_plot</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#RegionalCurvePlotter.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot" title="Link to this definition"></a></dt>
+<dd><p>Generate and display one figure per group of <code class="docutils literal notranslate"><span class="pre">n_cols</span></code> regions
+for the requested projection year.</p>
+<p>With <code class="docutils literal notranslate"><span class="pre">n_cols=3</span></code> (default) and 22 regions, this produces 8 figures
+of 3 panels each. Figures are also stored in <code class="docutils literal notranslate"><span class="pre">self._figs</span></code> for a
+subsequent call to <a class="reference internal" href="#morta_nuts2.graph.plot_class.RegionalCurvePlotter.save" title="morta_nuts2.graph.plot_class.RegionalCurvePlotter.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>year_to_plot</strong> (<em>int</em>) – Year to display. Must exist in <code class="docutils literal notranslate"><span class="pre">self.tv</span></code>.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">year_to_plot</span></code> is not found in <code class="docutils literal notranslate"><span class="pre">self.tv</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.RegionalCurvePlotter.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">150</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#RegionalCurvePlotter.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.RegionalCurvePlotter.save" title="Link to this definition"></a></dt>
+<dd><p>Save all figures produced by <a class="reference internal" href="#morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot" title="morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> to disk.</p>
+<p><em>path</em> is used as a base: the suffix <code class="docutils literal notranslate"><span class="pre">_part1</span></code>, <code class="docutils literal notranslate"><span class="pre">_part2</span></code>, … is
+inserted before the file extension.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">&quot;output/curves_2040.png&quot;</span></code> produces
+<code class="docutils literal notranslate"><span class="pre">&quot;output/curves_2040_part1.png&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;output/curves_2040_part2.png&quot;</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Base destination file path.</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – Resolution in dots per inch (default: 150).</p></li>
+<li><p><strong>kwargs</strong> – Additional arguments forwarded to <code class="docutils literal notranslate"><span class="pre">matplotlib.savefig()</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If <a class="reference internal" href="#morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot" title="morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> has not been called yet.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.MapPlotter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">morta_nuts2.graph.plot_class.</span></span><span class="sig-name descname"><span class="pre">MapPlotter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv_future</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indicator_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shapef_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">WindowsPath('C:/Users/Idrissa</span> <span class="pre">Belem/Documents/GitHub/morta_nuts2/NUTS_files/NUTS_RG_01M_2024_3035.shp')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Blues'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nuts_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#MapPlotter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.MapPlotter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Renders choropleth maps of a demographic indicator at the NUTS regional
+level from an Eurostat shapefile.</p>
+<p>Several display modes are available:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter.plot_single_year" title="morta_nuts2.graph.plot_class.MapPlotter.plot_single_year"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_single_year()</span></code></a> — one map for a given year.</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_years" title="morta_nuts2.graph.plot_class.MapPlotter.plot_compare_years"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_compare_years()</span></code></a> — side-by-side maps for multiple years
+sharing a common colour scale.</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter.plot_static" title="morta_nuts2.graph.plot_class.MapPlotter.plot_static"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_static()</span></code></a> — map without a time dimension (aggregated data
+or mean errors).</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_models" title="morta_nuts2.graph.plot_class.MapPlotter.plot_compare_models"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot_compare_models()</span></code></a> — side-by-side comparison of two models
+using a shared diverging colour scale.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>regions</strong> (<em>array-like</em>) – NUTS region codes (e.g. <code class="docutils literal notranslate"><span class="pre">[&quot;FR10&quot;,</span> <span class="pre">&quot;FR21&quot;,</span> <span class="pre">...]</span></code>).</p></li>
+<li><p><strong>data</strong> (<em>numpy.ndarray</em>) – Data array of shape
+<code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">horizon,</span> <span class="pre">nb_regions)</span></code> or <code class="docutils literal notranslate"><span class="pre">(horizon,</span> <span class="pre">nb_regions)</span></code>.
+If 3-D, the age slice <em>age</em> is extracted at initialisation.</p></li>
+<li><p><strong>tv_future</strong> (<em>numpy.ndarray</em>) – 1D array of projection years.</p></li>
+<li><p><strong>country_code</strong> (<em>str</em>) – ISO country code used to filter the shapefile
+(e.g. <code class="docutils literal notranslate"><span class="pre">&quot;FR&quot;</span></code>).</p></li>
+<li><p><strong>indicator_name</strong> (<em>str</em>) – Indicator label displayed in the colorbar and title.</p></li>
+<li><p><strong>shapef_path</strong> (<em>pathlib.Path</em>) – Path to the NUTS shapefile (default: <code class="docutils literal notranslate"><span class="pre">SHAPEF_PATH</span></code>).</p></li>
+<li><p><strong>cmap</strong> (<em>str</em>) – Matplotlib colormap name (default: <code class="docutils literal notranslate"><span class="pre">&quot;Blues&quot;</span></code>).</p></li>
+<li><p><strong>nuts_level</strong> (<em>int</em>) – NUTS level to display (default: 2).</p></li>
+<li><p><strong>age</strong> (<em>int</em>) – Age index to slice when <em>data</em> is 3-D (default: 0).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.MapPlotter.plot_single_year">
+<span class="sig-name descname"><span class="pre">plot_single_year</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2023</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#MapPlotter.plot_single_year"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.MapPlotter.plot_single_year" title="Link to this definition"></a></dt>
+<dd><p>Draw a single choropleth map for the specified projection year.</p>
+<p>The figure is stored in <code class="docutils literal notranslate"><span class="pre">self._fig</span></code> for a subsequent call to
+<a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter.save" title="morta_nuts2.graph.plot_class.MapPlotter.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>year</strong> (<em>int</em>) – Projection year to display (default: 2023).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.MapPlotter.plot_compare_years">
+<span class="sig-name descname"><span class="pre">plot_compare_years</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#MapPlotter.plot_compare_years"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_years" title="Link to this definition"></a></dt>
+<dd><p>Draw side-by-side choropleth maps for several years using a shared
+colour scale to allow direct comparison.</p>
+<p>The figure is stored in <code class="docutils literal notranslate"><span class="pre">self._fig</span></code> for a subsequent call to
+<a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter.save" title="morta_nuts2.graph.plot_class.MapPlotter.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>years</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – List of years to compare (default: <code class="docutils literal notranslate"><span class="pre">[2023,</span> <span class="pre">2050]</span></code>).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.MapPlotter.plot_static">
+<span class="sig-name descname"><span class="pre">plot_static</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">static_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#MapPlotter.plot_static"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.MapPlotter.plot_static" title="Link to this definition"></a></dt>
+<dd><p>Draw a choropleth map from data that has no time dimension
+(e.g. mean errors or aggregated indicators).</p>
+<p>Accepts shapes <code class="docutils literal notranslate"><span class="pre">(nb_regions,)</span></code> or <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_regions)</span></code>.
+In the latter case, the age index defined at initialisation is used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>static_data</strong> (<em>numpy.ndarray</em>) – Data to map, of shape
+<code class="docutils literal notranslate"><span class="pre">(nb_regions,)</span></code> or <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>title_suffix</strong> (<em>str</em>) – Optional subtitle displayed on the map
+(e.g. <code class="docutils literal notranslate"><span class="pre">&quot;Mean</span> <span class="pre">error&quot;</span></code>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <em>static_data</em> is neither 1-D nor 2-D.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.MapPlotter.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">150</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#MapPlotter.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.MapPlotter.save" title="Link to this definition"></a></dt>
+<dd><p>Save the last rendered map to disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Destination file path (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;output/map_2030.png&quot;</span></code>).</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – Resolution in dots per inch (default: 150).</p></li>
+<li><p><strong>kwargs</strong> – Additional arguments forwarded to <code class="docutils literal notranslate"><span class="pre">matplotlib.savefig()</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If no plot method has been called yet.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.MapPlotter.plot_compare_models">
+<span class="sig-name descname"><span class="pre">plot_compare_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('Model</span> <span class="pre">A',</span> <span class="pre">'Model</span> <span class="pre">B')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">static</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap_diverging</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdYlGn_r'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#MapPlotter.plot_compare_models"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_models" title="Link to this definition"></a></dt>
+<dd><p>Display the values (errors or any indicator) of two models side by side
+on a map, with a shared diverging colour scale so differences are
+immediately visible.</p>
+<p>The normalisation is symmetric around zero for signed data (e.g. bias)
+and min/max for strictly positive data (e.g. RMSE, MAE).</p>
+<p>The figure is stored in <code class="docutils literal notranslate"><span class="pre">self._fig</span></code> for a subsequent call to
+<a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter.save" title="morta_nuts2.graph.plot_class.MapPlotter.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other_data</strong> (<em>numpy.ndarray</em>) – Data for the second model, same shape as
+<code class="docutils literal notranslate"><span class="pre">self.data</span></code> (<code class="docutils literal notranslate"><span class="pre">(horizon,</span> <span class="pre">nb_regions)</span></code>) or <code class="docutils literal notranslate"><span class="pre">(nb_regions,)</span></code>
+when <em>static=True</em>.</p></li>
+<li><p><strong>model_labels</strong> (<em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – Titles for the left and right panels
+(default: <code class="docutils literal notranslate"><span class="pre">(&quot;Model</span> <span class="pre">A&quot;,</span> <span class="pre">&quot;Model</span> <span class="pre">B&quot;)</span></code>).</p></li>
+<li><p><strong>static</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, both datasets are treated as
+time-independent (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
+<li><p><strong>year</strong> (<em>int</em><em> or </em><em>None</em>) – Projection year to display when <code class="docutils literal notranslate"><span class="pre">static=False</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the first year in <code class="docutils literal notranslate"><span class="pre">tv_future</span></code> is used.</p></li>
+<li><p><strong>cmap_diverging</strong> (<em>str</em>) – Colormap applied to both panels simultaneously.
+A diverging colormap (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;RdYlGn_r&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;coolwarm&quot;</span></code>) is
+recommended for error maps (default: <code class="docutils literal notranslate"><span class="pre">&quot;RdYlGn_r&quot;</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The figure produced can be saved with <a class="reference internal" href="#morta_nuts2.graph.plot_class.MapPlotter.save" title="morta_nuts2.graph.plot_class.MapPlotter.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a>.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mp</span> <span class="o">=</span> <span class="n">MapPlotter</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="n">errors_model_a</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="s2">&quot;FR&quot;</span><span class="p">,</span> <span class="s2">&quot;RMSE&quot;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">plot_compare_models</span><span class="p">(</span><span class="n">errors_model_b</span><span class="p">,</span> <span class="n">model_labels</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;LLP&quot;</span><span class="p">,</span> <span class="s2">&quot;Lee-Carter&quot;</span><span class="p">))</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;output/compare_models.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.RegionalStats">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">morta_nuts2.graph.plot_class.</span></span><span class="sig-name descname"><span class="pre">RegionalStats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv_future</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#RegionalStats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.RegionalStats" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Computes descriptive statistics on a projected regional indicator
+over the full projection horizon.</p>
+<p>Produces three tables: the complete <code class="docutils literal notranslate"><span class="pre">(horizon</span> <span class="pre">×</span> <span class="pre">nb_regions)</span></code> matrix,
+per-year aggregates, and per-region aggregates sorted by descending mean.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ex</strong> (<em>numpy.ndarray</em>) – Data array of shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">horizon,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>regions</strong> (<em>array-like</em>) – Region codes or names.</p></li>
+<li><p><strong>tv_future</strong> (<em>numpy.ndarray</em>) – 1D array of projection years.</p></li>
+<li><p><strong>age</strong> (<em>int</em>) – Age index to extract (0 = e0, 65 = e65, …) (default: 0).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.RegionalStats.compute">
+<span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#RegionalStats.compute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.RegionalStats.compute" title="Link to this definition"></a></dt>
+<dd><p>Run all aggregations and return a dictionary of pandas DataFrames.</p>
+<p>Per-year statistics include mean, standard deviation, minimum,
+maximum, range, and coefficient of variation.
+Per-region statistics additionally include the average rank
+(rank 1 = highest value each year).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Dictionary containing three DataFrames:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;full&quot;</span></code>      — complete <code class="docutils literal notranslate"><span class="pre">(horizon</span> <span class="pre">×</span> <span class="pre">nb_regions)</span></code> matrix.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;by_year&quot;</span></code>   — statistics aggregated per projection year.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;by_region&quot;</span></code> — statistics aggregated per region, sorted by
+descending mean.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, pandas.DataFrame]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.DispersionPlotter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">morta_nuts2.graph.plot_class.</span></span><span class="sig-name descname"><span class="pre">DispersionPlotter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv_future</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indicator_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Life</span> <span class="pre">expectancy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ages</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#DispersionPlotter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.DispersionPlotter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Visualises the evolution of inter-regional dispersion of an indicator
+over the full projection horizon.</p>
+<p>Two metrics are plotted side by side: the inter-regional standard
+deviation and the range (max − min), making it easy to assess whether
+regions are converging or diverging over time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ex</strong> (<em>numpy.ndarray</em>) – Data array of shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">horizon,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>regions</strong> (<em>array-like</em>) – Region codes or names (kept for consistency with other
+classes; not directly used in the plot).</p></li>
+<li><p><strong>tv_future</strong> (<em>numpy.ndarray</em>) – 1D array of projection years.</p></li>
+<li><p><strong>indicator_name</strong> (<em>str</em>) – Indicator label displayed in the figure title
+(default: <code class="docutils literal notranslate"><span class="pre">&quot;Life</span> <span class="pre">expectancy&quot;</span></code>).</p></li>
+<li><p><strong>ages</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – List of age indices to compare (default: <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">65]</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.DispersionPlotter.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#DispersionPlotter.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.DispersionPlotter.plot" title="Link to this definition"></a></dt>
+<dd><p>Generate and display two side-by-side panels:</p>
+<ul class="simple">
+<li><p><strong>Left panel</strong>  — inter-regional standard deviation over time.</p></li>
+<li><p><strong>Right panel</strong> — inter-regional range (max − min) over time.</p></li>
+</ul>
+<p>One curve per age index in <code class="docutils literal notranslate"><span class="pre">self.ages</span></code> is drawn in each panel.
+The figure is stored in <code class="docutils literal notranslate"><span class="pre">self._fig</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.DispersionPlotter.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">150</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#DispersionPlotter.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.DispersionPlotter.save" title="Link to this definition"></a></dt>
+<dd><p>Save the last rendered dispersion figure to disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Destination file path.</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – Resolution in dots per inch (default: 150).</p></li>
+<li><p><strong>kwargs</strong> – Additional arguments forwarded to <code class="docutils literal notranslate"><span class="pre">matplotlib.savefig()</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If <a class="reference internal" href="#morta_nuts2.graph.plot_class.DispersionPlotter.plot" title="morta_nuts2.graph.plot_class.DispersionPlotter.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> has not been called yet.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.AnnuityBoxPlotter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">morta_nuts2.graph.plot_class.</span></span><span class="sig-name descname"><span class="pre">AnnuityBoxPlotter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">price_regional</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_series</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xe_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(18,</span> <span class="pre">7)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#AnnuityBoxPlotter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.AnnuityBoxPlotter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Draws regional boxplots of annuity prices, with optional overlay of
+extra series (national price, benchmark, etc.) placed before or after
+the regional boxes.</p>
+<p>Extra series are defined via <a class="reference internal" href="#morta_nuts2.graph.plot_class.ExtraSeries" title="morta_nuts2.graph.plot_class.ExtraSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtraSeries</span></code></a> instances and can be
+positioned before (<code class="docutils literal notranslate"><span class="pre">&quot;first&quot;</span></code>) or after (<code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code>) the regional block.
+Thin vertical separators visually delimit the groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>price_regional</strong> (<em>numpy.ndarray</em>) – Regional price array of shape
+<code class="docutils literal notranslate"><span class="pre">(nb_xe,</span> <span class="pre">nb_reg,</span> <span class="pre">nb_simul)</span></code>.</p></li>
+<li><p><strong>region_names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of region label strings.</p></li>
+<li><p><strong>extra_series</strong> (<em>list</em><em>[</em><a class="reference internal" href="#morta_nuts2.graph.plot_class.ExtraSeries" title="morta_nuts2.graph.plot_class.ExtraSeries"><em>ExtraSeries</em></a><em>] or </em><em>None</em>) – List of <a class="reference internal" href="#morta_nuts2.graph.plot_class.ExtraSeries" title="morta_nuts2.graph.plot_class.ExtraSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtraSeries</span></code></a> objects to overlay.
+Pass <code class="docutils literal notranslate"><span class="pre">[]</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code> to display regional data only.</p></li>
+<li><p><strong>xe_idx</strong> (<em>int</em>) – Index along the age dimension of <em>price_regional</em>
+(default: 0).</p></li>
+<li><p><strong>duration</strong> (<em>int</em>) – Annuity duration in years, used in the chart title
+(default: 20).</p></li>
+<li><p><strong>age</strong> (<em>int</em>) – Policyholder age, used in the chart title (default: 60).</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em>) – Figure size in inches (default: <code class="docutils literal notranslate"><span class="pre">(18,</span> <span class="pre">7)</span></code>).</p></li>
+<li><p><strong>show</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, calls <code class="docutils literal notranslate"><span class="pre">plt.show()</span></code> after rendering
+(default: <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.AnnuityBoxPlotter.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#AnnuityBoxPlotter.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.plot" title="Link to this definition"></a></dt>
+<dd><p>Render and display the boxplot chart.</p>
+<p>Display order: <code class="docutils literal notranslate"><span class="pre">&quot;first&quot;</span></code> extra series → regional boxes →
+<code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code> extra series. Thin vertical separators delimit the blocks
+when extra series are present.</p>
+<p>The figure is stored in <code class="docutils literal notranslate"><span class="pre">self._fig</span></code> for a subsequent call to
+<a class="reference internal" href="#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.save" title="morta_nuts2.graph.plot_class.AnnuityBoxPlotter.save"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em><em> or </em><em>None</em>) – Existing matplotlib axes to draw into.
+If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a new figure is created.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The figure and axes used.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple(matplotlib.figure.Figure, matplotlib.axes.Axes)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="morta_nuts2.graph.plot_class.AnnuityBoxPlotter.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">150</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/graph/plot_class.html#AnnuityBoxPlotter.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.save" title="Link to this definition"></a></dt>
+<dd><p>Save the last rendered boxplot figure to disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Destination file path.</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – Resolution in dots per inch (default: 150).</p></li>
+<li><p><strong>kwargs</strong> – Additional arguments forwarded to <code class="docutils literal notranslate"><span class="pre">matplotlib.savefig()</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If <a class="reference internal" href="#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.plot" title="morta_nuts2.graph.plot_class.AnnuityBoxPlotter.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> has not been called yet.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../model/projection.html" class="btn btn-neutral float-left" title="Mortality Projection Engine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Detralytics Innovation Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

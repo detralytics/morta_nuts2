@@ -1,0 +1,1511 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>morta_nuts2.graph.plot_class &mdash; morta_nuts2 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            morta_nuts2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Data:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/data/eurostat.html">Eurostat API Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#eurostat-py-eurostat-data-manager">eurostat.py - Eurostat Data Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig"><code class="docutils literal notranslate"><span class="pre">EurostatConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_SHAPEFILE_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_DATA_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DATASETS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.EXCLUDE_REGIONS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#id0"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#id1"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#id2"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#id3"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_shapefile"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_data_path"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_data_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.register_dataset"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.register_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data"><code class="docutils literal notranslate"><span class="pre">Eurostat_data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.shapefile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.set_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.register_dataset"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.register_dataset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load_all"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.pivot_age_year"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.pivot_age_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.get_regions"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.filter_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.parse_age"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.parse_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.add_exclusion"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.add_exclusion()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.list_datasets"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.list_datasets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.cache_info"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.cache_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.clear_cache"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.stats"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.load_mxt_raw"><code class="docutils literal notranslate"><span class="pre">load_mxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.load_dxt_raw"><code class="docutils literal notranslate"><span class="pre">load_dxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.load_lxt_raw"><code class="docutils literal notranslate"><span class="pre">load_lxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.age_year_pivot_table"><code class="docutils literal notranslate"><span class="pre">age_year_pivot_table()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">filter_shapefile()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.parse_age"><code class="docutils literal notranslate"><span class="pre">parse_age()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/data/mortality_table.html">Mortality Table</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#id1">mortality_table</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#main-features">Main features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#typical-workflow">Typical workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig"><code class="docutils literal notranslate"><span class="pre">MortalityConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_max"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_max</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_anomalies</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.fill_value"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.fill_value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.n_jobs"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.n_jobs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.enable_cache"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.enable_cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.cache_dir"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.cache_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.validate_data"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.validate_data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.correct_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.correct_anomalies</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator"><code class="docutils literal notranslate"><span class="pre">DataValidator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_dataframe"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_mortality_data"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_mortality_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager"><code class="docutils literal notranslate"><span class="pre">CacheManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.get"><code class="docutils literal notranslate"><span class="pre">CacheManager.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.set"><code class="docutils literal notranslate"><span class="pre">CacheManager.set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.clear"><code class="docutils literal notranslate"><span class="pre">CacheManager.clear()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.timing_decorator"><code class="docutils literal notranslate"><span class="pre">timing_decorator()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.DEFAULT_SHAPEFILE"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.DEFAULT_SHAPEFILE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.FRANCE_OUTREMER"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.FRANCE_OUTREMER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.__init__"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.set_shapefile"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_regions"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.validate_input_data"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.validate_input_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.calculate_mortality"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.calculate_mortality()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.export_results"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.export_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_statistics"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_statistics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.clear_cache"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.summary"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">mortality_by_region()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">build_input_from_dataframe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Models:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model/bsplines.html">B-Splines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.difference_matrix"><code class="docutils literal notranslate"><span class="pre">difference_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.plot_Bsplines"><code class="docutils literal notranslate"><span class="pre">plot_Bsplines()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.basis_matrix_from_knots"><code class="docutils literal notranslate"><span class="pre">basis_matrix_from_knots()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.Bspline_approx"><code class="docutils literal notranslate"><span class="pre">Bspline_approx()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.make_bspline_basis"><code class="docutils literal notranslate"><span class="pre">make_bspline_basis()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.eval_bspline_from_coef"><code class="docutils literal notranslate"><span class="pre">eval_bspline_from_coef()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model/lcp.html">Lee-Carter Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/lcp.html#lee-carter-object-oriented-architecture">Lee-Carter — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter"><code class="docutils literal notranslate"><span class="pre">LeeCarter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LeeCarter.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LeeCarter.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_ax_coef"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_ax_coef()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_kappa"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_kappa()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LeeCarter.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">LeeCarter.build_input_from_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric.National"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric.National</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model/llp.html">Lee &amp; Li Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/llp.html#lilee-object-oriented-architecture">LiLee — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee"><code class="docutils literal notranslate"><span class="pre">LiLee</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LiLee.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block"><code class="docutils literal notranslate"><span class="pre">LiLee.effective_dof_spline_block()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LiLee.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.difference_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.difference_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.FullModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.variant"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.variant</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model/param_init.html">Parameter Initialization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_bspline_init"><code class="docutils literal notranslate"><span class="pre">lcp_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lileep_bspline_init"><code class="docutils literal notranslate"><span class="pre">lileep_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_parametrique_init_national"><code class="docutils literal notranslate"><span class="pre">lcp_parametrique_init_national()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model/projection.html">Mortality Projection Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#projection">Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.kannisto_log_mu"><code class="docutils literal notranslate"><span class="pre">kannisto_log_mu()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy.compute"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator.extrapolate"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator.extrapolate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.concat_logmu_time"><code class="docutils literal notranslate"><span class="pre">concat_logmu_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.Annuity_pricing"><code class="docutils literal notranslate"><span class="pre">Annuity_pricing()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.compute_mae"><code class="docutils literal notranslate"><span class="pre">compute_mae()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/visualisation/plot_class.html">Plot Class</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#id1">plot_class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.SHAPEF_PATH"><code class="docutils literal notranslate"><span class="pre">SHAPEF_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries"><code class="docutils literal notranslate"><span class="pre">ExtraSeries</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.data"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.label"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.label</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.position"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.position</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.style"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.style</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.save"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter"><code class="docutils literal notranslate"><span class="pre">MapPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_single_year"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_single_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_years"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_years()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_static"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_static()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.save"><code class="docutils literal notranslate"><span class="pre">MapPlotter.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_models"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_models()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats"><code class="docutils literal notranslate"><span class="pre">RegionalStats</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats.compute"><code class="docutils literal notranslate"><span class="pre">RegionalStats.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.plot"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.save"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.plot"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.save"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.save()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/visualisation/mortality_plotter.html">Mortality Plotter</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">morta_nuts2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">morta_nuts2.graph.plot_class</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for morta_nuts2.graph.plot_class</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">plot_class</span>
+<span class="sd">==========</span>
+
+<span class="sd">This module gathers all visualisation classes and utilities used for</span>
+<span class="sd">demographic and actuarial analysis at the regional (NUTS) level.</span>
+
+<span class="sd">It provides five main classes:</span>
+
+<span class="sd">* :class:`RegionalCurvePlotter` — compares mortality curves across models</span>
+<span class="sd">  and regions as a grid of subplots.</span>
+<span class="sd">* :class:`MapPlotter` — generates NUTS-level choropleth maps from</span>
+<span class="sd">  demographic indicators (life expectancy, model errors, etc.).</span>
+<span class="sd">* :class:`RegionalStats` — computes descriptive statistics</span>
+<span class="sd">  (mean, standard deviation, average rank) on a projected regional indicator.</span>
+<span class="sd">* :class:`DispersionPlotter` — visualises the evolution of inter-regional</span>
+<span class="sd">  dispersion (standard deviation and range) over the projection horizon.</span>
+<span class="sd">* :class:`AnnuityBoxPlotter` — draws regional boxplots of annuity prices,</span>
+<span class="sd">  with optional overlay of national or benchmark series.</span>
+
+<span class="sd">The module also exposes the dataclass :class:`ExtraSeries` and two internal</span>
+<span class="sd">helper functions for boxplot styling (:func:`_resolve_style`,</span>
+<span class="sd">:func:`_boxplot_kwargs`).</span>
+
+<span class="sd">**Dependencies**: ``geopandas``, ``matplotlib``, ``numpy``, ``pandas``,</span>
+<span class="sd">``pathlib``, ``dataclasses``.</span>
+
+<span class="sd">**NUTS shapefile**: ``SHAPEF_PATH`` is resolved automatically by walking up</span>
+<span class="sd">the directory tree from the current working directory until a ``NUTS_files``</span>
+<span class="sd">folder is found.</span>
+
+<span class="sd">Quick-start example::</span>
+
+<span class="sd">    # Compare mortality curves for the year 2040</span>
+<span class="sd">    plotter = RegionalCurvePlotter(</span>
+<span class="sd">        x_values=ages,</span>
+<span class="sd">        curves_dict={&quot;Model A&quot;: arr_a, &quot;Model B&quot;: arr_b},</span>
+<span class="sd">        tv=tv_vector,</span>
+<span class="sd">        regions=region_list,</span>
+<span class="sd">    )</span>
+<span class="sd">    plotter.plot(year_to_plot=2040)</span>
+<span class="sd">    plotter.save(&quot;output/curves_2040.png&quot;)</span>
+
+<span class="sd">    # Choropleth map for 2030</span>
+<span class="sd">    mp = MapPlotter(regions, data_3d, tv_future, &quot;FR&quot;, &quot;Life expectancy e0&quot;)</span>
+<span class="sd">    mp.plot_single_year(year=2030)</span>
+<span class="sd">    mp.save(&quot;output/map_2030.png&quot;)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcolors</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpatches</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+
+<span class="c1"># ── Default color palette for extra series (cycles if more series than colors) ──</span>
+<span class="n">_DEFAULT_COLORS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#1a1a2e&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#e94560&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="s2">&quot;#e94560&quot;</span><span class="p">},</span>  <span class="c1"># red</span>
+    <span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#fff8e1&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#e67e22&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="s2">&quot;#e67e22&quot;</span><span class="p">},</span>  <span class="c1"># orange</span>
+    <span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#e8f5e9&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#27ae60&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="s2">&quot;#27ae60&quot;</span><span class="p">},</span>  <span class="c1"># green</span>
+    <span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#f3e5f5&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#8e44ad&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="s2">&quot;#8e44ad&quot;</span><span class="p">},</span>  <span class="c1"># purple</span>
+<span class="p">]</span>
+
+<span class="c1"># Default style applied to regional boxplots</span>
+<span class="n">_REGIONAL_STYLE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#eaf2fb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#2c3e50&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;median&quot;</span><span class="p">:</span>    <span class="s2">&quot;#f39c12&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># ── Resolve path to the NUTS shapefile ──────────────────────────────────────</span>
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;NUTS_files&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">BASE_DIR</span><span class="o">.</span><span class="n">parent</span>
+
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;NUTS_files&quot;</span> <span class="o">/</span> <span class="s2">&quot;NUTS_RG_01M_2024_3035.shp&quot;</span>
+<span class="c1">#: Path to the NUTS shapefile used for choropleth maps.</span>
+<span class="n">SHAPEF_PATH</span> <span class="o">=</span> <span class="n">DATA_DIR</span>
+
+
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+<span class="c1"># DATACLASS : ExtraSeries</span>
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+
+<div class="viewcode-block" id="ExtraSeries">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExtraSeries</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Describes an additional data series to overlay on top of the regional</span>
+<span class="sd">    boxplots in :class:`AnnuityBoxPlotter`.</span>
+
+<span class="sd">    :param data: Numpy array of shape ``(nb_xe, 1, nb_simul)`` containing</span>
+<span class="sd">        the simulations for this series.</span>
+<span class="sd">    :type data: numpy.ndarray</span>
+<span class="sd">    :param label: Display name used in the legend and x-axis tick labels.</span>
+<span class="sd">    :type label: str</span>
+<span class="sd">    :param position: Insertion position of the boxplot relative to regions.</span>
+<span class="sd">        ``&quot;first&quot;`` places it before the regional boxes, ``&quot;last&quot;`` after.</span>
+<span class="sd">    :type position: str</span>
+<span class="sd">    :param style: Optional visual override dictionary. Valid keys:</span>
+<span class="sd">        ``facecolor``, ``edgecolor``, ``median``, ``linewidth``.</span>
+<span class="sd">        If empty or ``None``, a color from the default palette is applied.</span>
+<span class="sd">    :type style: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span><span class="p">:</span>     <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">label</span><span class="p">:</span>    <span class="nb">str</span>
+    <span class="n">position</span><span class="p">:</span> <span class="nb">str</span>  <span class="o">=</span> <span class="s2">&quot;last&quot;</span>
+    <span class="n">style</span><span class="p">:</span>    <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+<span class="c1"># INTERNAL HELPER FUNCTIONS</span>
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_resolve_style</span><span class="p">(</span><span class="n">user_style</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">linewidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Merge user-provided style overrides with a default style dictionary.</span>
+
+<span class="sd">    Keys present in *user_style* override those in *default*.</span>
+<span class="sd">    The ``linewidth`` key is added with value *linewidth* if it is not</span>
+<span class="sd">    already present after merging.</span>
+
+<span class="sd">    :param user_style: Overrides provided by the user (may be empty).</span>
+<span class="sd">    :type user_style: dict</span>
+<span class="sd">    :param default: Base style to use as a fallback.</span>
+<span class="sd">    :type default: dict</span>
+<span class="sd">    :param linewidth: Default line width if not specified elsewhere.</span>
+<span class="sd">    :type linewidth: float</span>
+<span class="sd">    :returns: Merged style dictionary ready for use.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">merged</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">default</span><span class="p">,</span> <span class="o">**</span><span class="n">user_style</span><span class="p">}</span>
+    <span class="n">merged</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;linewidth&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">merged</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_boxplot_kwargs</span><span class="p">(</span><span class="n">style</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.88</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build the keyword-argument dictionary to pass to ``ax.boxplot()``</span>
+<span class="sd">    from a style dictionary.</span>
+
+<span class="sd">    Sets the visual properties of the box, median line, whiskers, caps,</span>
+<span class="sd">    and outlier markers.</span>
+
+<span class="sd">    :param style: Style dictionary with keys ``facecolor``, ``edgecolor``,</span>
+<span class="sd">        ``median``, and optionally ``linewidth``.</span>
+<span class="sd">    :type style: dict</span>
+<span class="sd">    :param alpha: Transparency applied to the box fill.</span>
+<span class="sd">    :type alpha: float</span>
+<span class="sd">    :returns: ``**kwargs`` dictionary ready to be unpacked into ``ax.boxplot()``.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lw</span> <span class="o">=</span> <span class="n">style</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;linewidth&quot;</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">patch_artist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">boxprops</span>    <span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">style</span><span class="p">[</span><span class="s2">&quot;facecolor&quot;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">style</span><span class="p">[</span><span class="s2">&quot;edgecolor&quot;</span><span class="p">],</span>
+                          <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">),</span>
+        <span class="n">medianprops</span> <span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">style</span><span class="p">[</span><span class="s2">&quot;median&quot;</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">),</span>
+        <span class="n">whiskerprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">style</span><span class="p">[</span><span class="s2">&quot;edgecolor&quot;</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">),</span>
+        <span class="n">capprops</span>    <span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">style</span><span class="p">[</span><span class="s2">&quot;edgecolor&quot;</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">),</span>
+        <span class="n">flierprops</span>  <span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">style</span><span class="p">[</span><span class="s2">&quot;edgecolor&quot;</span><span class="p">],</span>
+                          <span class="n">markeredgecolor</span><span class="o">=</span><span class="n">style</span><span class="p">[</span><span class="s2">&quot;edgecolor&quot;</span><span class="p">],</span>
+                          <span class="n">markersize</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">),</span>
+        <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+<span class="c1"># CLASS 1 : Regional curve comparison</span>
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+
+<div class="viewcode-block" id="RegionalCurvePlotter">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RegionalCurvePlotter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots multiple model curves for each region as a grid of subplots,</span>
+<span class="sd">    producing one figure per group of ``n_cols`` regions.</span>
+
+<span class="sd">    Typically used to compare mortality rates or other demographic indicators</span>
+<span class="sd">    from different models for a given projection year.</span>
+
+<span class="sd">    :param x_values: Common x-axis values shared by all curves</span>
+<span class="sd">        (e.g. age groups).</span>
+<span class="sd">    :type x_values: array-like</span>
+<span class="sd">    :param curves_dict: Dictionary ``{label: 3D_array}`` where each array</span>
+<span class="sd">        has shape ``(nb_ages, nb_years, nb_regions)``.</span>
+<span class="sd">    :type curves_dict: dict</span>
+<span class="sd">    :param tv: 1D array of available projection years.</span>
+<span class="sd">    :type tv: numpy.ndarray</span>
+<span class="sd">    :param regions: List of region names.</span>
+<span class="sd">    :type regions: list</span>
+<span class="sd">    :param n_cols: Number of columns in the subplot grid (default: 3).</span>
+<span class="sd">    :type n_cols: int</span>
+<span class="sd">    :param yscale: Y-axis scale, ``&quot;log&quot;`` or ``&quot;linear&quot;`` (default: ``&quot;log&quot;``).</span>
+<span class="sd">    :type yscale: str</span>
+<span class="sd">    :param xlabel: X-axis label (default: ``&quot;Age&quot;``).</span>
+<span class="sd">    :type xlabel: str</span>
+<span class="sd">    :param ylabel: Y-axis label (default: ``&quot;Mortality rate&quot;``).</span>
+<span class="sd">    :type ylabel: str</span>
+<span class="sd">    :param title_prefix: Prefix string used in the figure title</span>
+<span class="sd">        (default: ``&quot;Comparison&quot;``).</span>
+<span class="sd">    :type title_prefix: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x_values</span><span class="p">,</span>
+        <span class="n">curves_dict</span><span class="p">,</span>
+        <span class="n">tv</span><span class="p">,</span>
+        <span class="n">regions</span><span class="p">,</span>
+        <span class="n">n_cols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">yscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Age&quot;</span><span class="p">,</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Mortality rate&quot;</span><span class="p">,</span>
+        <span class="n">title_prefix</span><span class="o">=</span><span class="s2">&quot;Comparison&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_values</span>     <span class="o">=</span> <span class="n">x_values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curves_dict</span>  <span class="o">=</span> <span class="n">curves_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tv</span>           <span class="o">=</span> <span class="n">tv</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regions</span>      <span class="o">=</span> <span class="n">regions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span>       <span class="o">=</span> <span class="n">n_cols</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yscale</span>       <span class="o">=</span> <span class="n">yscale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xlabel</span>       <span class="o">=</span> <span class="n">xlabel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ylabel</span>       <span class="o">=</span> <span class="n">ylabel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title_prefix</span> <span class="o">=</span> <span class="n">title_prefix</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_render_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region_indices</span><span class="p">,</span> <span class="n">t_index</span><span class="p">,</span> <span class="n">year_to_plot</span><span class="p">,</span> <span class="n">group_label</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Internal — renders one matplotlib figure for a subset of regions</span>
+<span class="sd">        (one row of ``n_cols`` panels).</span>
+
+<span class="sd">        :param region_indices: Indices of regions to display in this group,</span>
+<span class="sd">            referring to positions in ``self.regions``.</span>
+<span class="sd">        :type region_indices: list[int]</span>
+<span class="sd">        :param t_index: Time index in the curve arrays corresponding to</span>
+<span class="sd">            ``year_to_plot``.</span>
+<span class="sd">        :type t_index: int</span>
+<span class="sd">        :param year_to_plot: Year shown in the figure title.</span>
+<span class="sd">        :type year_to_plot: int</span>
+<span class="sd">        :param group_label: Group label, e.g. ``&quot;1/2&quot;`` or ``&quot;2/2&quot;``,</span>
+<span class="sd">            appended to the overall title.</span>
+<span class="sd">        :type group_label: str</span>
+<span class="sd">        :returns: The generated matplotlib figure.</span>
+<span class="sd">        :rtype: matplotlib.figure.Figure</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n</span>      <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">region_indices</span><span class="p">)</span>
+        <span class="n">n_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
+
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+            <span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">,</span>
+            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">n_rows</span><span class="p">),</span>
+            <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;#F7F7F7&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">axes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># always 1-D for uniform indexing</span>
+
+        <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">region_indices</span><span class="p">):</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;#F7F7F7&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">array3d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">curves_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">x_values</span><span class="p">,</span>
+                    <span class="n">array3d</span><span class="p">[:,</span> <span class="n">t_index</span><span class="p">,</span> <span class="n">g</span><span class="p">],</span>
+                    <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+                    <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">g</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xlabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yscale</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">framealpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+
+        <span class="c1"># Remove unused subplot slots when regions don&#39;t fill the grid</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">)):</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">delaxes</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">fig</span>
+
+<div class="viewcode-block" id="RegionalCurvePlotter.plot">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year_to_plot</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate and display one figure per group of ``n_cols`` regions</span>
+<span class="sd">        for the requested projection year.</span>
+
+<span class="sd">        With ``n_cols=3`` (default) and 22 regions, this produces 8 figures</span>
+<span class="sd">        of 3 panels each. Figures are also stored in ``self._figs`` for a</span>
+<span class="sd">        subsequent call to :meth:`save`.</span>
+
+<span class="sd">        :param year_to_plot: Year to display. Must exist in ``self.tv``.</span>
+<span class="sd">        :type year_to_plot: int</span>
+<span class="sd">        :raises ValueError: If ``year_to_plot`` is not found in ``self.tv``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">year_to_plot</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tv</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Year </span><span class="si">{</span><span class="n">year_to_plot</span><span class="si">}</span><span class="s2"> is not available in tv.&quot;</span><span class="p">)</span>
+
+        <span class="n">t_index</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tv</span> <span class="o">==</span> <span class="n">year_to_plot</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">n_regions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">)</span>
+        <span class="n">n_figs</span>    <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n_regions</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_figs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_figs</span><span class="p">):</span>
+            <span class="n">start</span>   <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span>
+            <span class="n">end</span>     <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">,</span> <span class="n">n_regions</span><span class="p">)</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+            <span class="n">label</span>   <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n_figs</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">fig</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_render_group</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">t_index</span><span class="p">,</span> <span class="n">year_to_plot</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_figs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="RegionalCurvePlotter.save">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.save">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save all figures produced by :meth:`plot` to disk.</span>
+
+<span class="sd">        *path* is used as a base: the suffix ``_part1``, ``_part2``, … is</span>
+<span class="sd">        inserted before the file extension.</span>
+
+<span class="sd">        Example: ``&quot;output/curves_2040.png&quot;`` produces</span>
+<span class="sd">        ``&quot;output/curves_2040_part1.png&quot;`` and ``&quot;output/curves_2040_part2.png&quot;``.</span>
+
+<span class="sd">        :param path: Base destination file path.</span>
+<span class="sd">        :type path: str or pathlib.Path</span>
+<span class="sd">        :param dpi: Resolution in dots per inch (default: 150).</span>
+<span class="sd">        :type dpi: int</span>
+<span class="sd">        :param kwargs: Additional arguments forwarded to ``matplotlib.savefig()``.</span>
+<span class="sd">        :raises RuntimeError: If :meth:`plot` has not been called yet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_figs&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call plot() before save().&quot;</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fig</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figs</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_part</span><span class="si">{</span><span class="n">i</span><span class="si">}{</span><span class="n">p</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ Saved → </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+<span class="c1"># CLASS 2 : Choropleth map plotter</span>
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+
+<div class="viewcode-block" id="MapPlotter">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MapPlotter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Renders choropleth maps of a demographic indicator at the NUTS regional</span>
+<span class="sd">    level from an Eurostat shapefile.</span>
+
+<span class="sd">    Several display modes are available:</span>
+
+<span class="sd">    * :meth:`plot_single_year` — one map for a given year.</span>
+<span class="sd">    * :meth:`plot_compare_years` — side-by-side maps for multiple years</span>
+<span class="sd">      sharing a common colour scale.</span>
+<span class="sd">    * :meth:`plot_static` — map without a time dimension (aggregated data</span>
+<span class="sd">      or mean errors).</span>
+<span class="sd">    * :meth:`plot_compare_models` — side-by-side comparison of two models</span>
+<span class="sd">      using a shared diverging colour scale.</span>
+
+<span class="sd">    :param regions: NUTS region codes (e.g. ``[&quot;FR10&quot;, &quot;FR21&quot;, ...]``).</span>
+<span class="sd">    :type regions: array-like</span>
+<span class="sd">    :param data: Data array of shape</span>
+<span class="sd">        ``(nb_ages, horizon, nb_regions)`` or ``(horizon, nb_regions)``.</span>
+<span class="sd">        If 3-D, the age slice *age* is extracted at initialisation.</span>
+<span class="sd">    :type data: numpy.ndarray</span>
+<span class="sd">    :param tv_future: 1D array of projection years.</span>
+<span class="sd">    :type tv_future: numpy.ndarray</span>
+<span class="sd">    :param country_code: ISO country code used to filter the shapefile</span>
+<span class="sd">        (e.g. ``&quot;FR&quot;``).</span>
+<span class="sd">    :type country_code: str</span>
+<span class="sd">    :param indicator_name: Indicator label displayed in the colorbar and title.</span>
+<span class="sd">    :type indicator_name: str</span>
+<span class="sd">    :param shapef_path: Path to the NUTS shapefile (default: ``SHAPEF_PATH``).</span>
+<span class="sd">    :type shapef_path: pathlib.Path</span>
+<span class="sd">    :param cmap: Matplotlib colormap name (default: ``&quot;Blues&quot;``).</span>
+<span class="sd">    :type cmap: str</span>
+<span class="sd">    :param nuts_level: NUTS level to display (default: 2).</span>
+<span class="sd">    :type nuts_level: int</span>
+<span class="sd">    :param age: Age index to slice when *data* is 3-D (default: 0).</span>
+<span class="sd">    :type age: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">regions</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">,</span>
+        <span class="n">tv_future</span><span class="p">,</span>
+        <span class="n">country_code</span><span class="p">,</span>
+        <span class="n">indicator_name</span><span class="p">,</span>
+        <span class="n">shapef_path</span><span class="o">=</span><span class="n">SHAPEF_PATH</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span>
+        <span class="n">nuts_level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">age</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regions</span>        <span class="o">=</span> <span class="n">regions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tv_future</span>      <span class="o">=</span> <span class="n">tv_future</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">country_code</span>   <span class="o">=</span> <span class="n">country_code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indicator_name</span> <span class="o">=</span> <span class="n">indicator_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shapef_path</span>    <span class="o">=</span> <span class="n">shapef_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span>           <span class="o">=</span> <span class="n">cmap</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nuts_level</span>     <span class="o">=</span> <span class="n">nuts_level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age</span>            <span class="o">=</span> <span class="n">age</span>
+
+        <span class="c1"># Reduce to 2D (horizon, nb_regions) if a 3D array is provided</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">age</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="n">data</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_shapefile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the NUTS shapefile, filter to the target country and NUTS level,</span>
+<span class="sd">        then reproject to Lambert-93 (EPSG:2154).</span>
+
+<span class="sd">        :returns: Filtered and reprojected GeoDataFrame.</span>
+<span class="sd">        :rtype: geopandas.GeoDataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">shapef</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shapef_path</span><span class="p">)</span>
+        <span class="n">shp</span> <span class="o">=</span> <span class="n">shapef</span><span class="p">[</span>
+            <span class="p">(</span><span class="n">shapef</span><span class="p">[</span><span class="s2">&quot;CNTR_CODE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">country_code</span><span class="p">)</span> <span class="o">&amp;</span>
+            <span class="p">(</span><span class="n">shapef</span><span class="p">[</span><span class="s2">&quot;LEVL_CODE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">nuts_level</span><span class="p">)</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="o">=</span><span class="mi">2154</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">shp</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_colorbar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">norm</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Append a horizontal colorbar in a dedicated axes at the bottom</span>
+<span class="sd">        of the figure.</span>
+
+<span class="sd">        :param fig: Matplotlib figure in which to insert the colorbar.</span>
+<span class="sd">        :type fig: matplotlib.figure.Figure</span>
+<span class="sd">        :param norm: Colour normalisation to associate with the colorbar.</span>
+<span class="sd">        :type norm: matplotlib.colors.Normalize</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cbar_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">])</span>
+        <span class="n">sm</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+        <span class="n">sm</span><span class="o">.</span><span class="n">set_array</span><span class="p">([])</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sm</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cbar_ax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">indicator_name</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MapPlotter.plot_single_year">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_single_year">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_single_year</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="mi">2023</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draw a single choropleth map for the specified projection year.</span>
+
+<span class="sd">        The figure is stored in ``self._fig`` for a subsequent call to</span>
+<span class="sd">        :meth:`save`.</span>
+
+<span class="sd">        :param year: Projection year to display (default: 2023).</span>
+<span class="sd">        :type year: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">shp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_shapefile</span><span class="p">()</span>
+
+        <span class="c1"># Extract values for the target year</span>
+        <span class="n">idx</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tv_future</span> <span class="o">==</span> <span class="n">year</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="c1"># Merge indicator values into the shapefile geometry</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">shp</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+            <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">({</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">values</span><span class="p">}),</span>
+            <span class="n">on</span><span class="o">=</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">})</span>
+
+        <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">column</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_colorbar</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">norm</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MapPlotter.plot_compare_years">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_years">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_compare_years</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draw side-by-side choropleth maps for several years using a shared</span>
+<span class="sd">        colour scale to allow direct comparison.</span>
+
+<span class="sd">        The figure is stored in ``self._fig`` for a subsequent call to</span>
+<span class="sd">        :meth:`save`.</span>
+
+<span class="sd">        :param years: List of years to compare (default: ``[2023, 2050]``).</span>
+<span class="sd">        :type years: list[int]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">years</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">years</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">2050</span><span class="p">]</span>
+
+        <span class="n">shp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_shapefile</span><span class="p">()</span>
+
+        <span class="c1"># Build merged GeoDataFrames and collect values for each target year</span>
+        <span class="n">all_vals</span><span class="p">,</span> <span class="n">dfs</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">yr</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+            <span class="n">idx</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tv_future</span> <span class="o">==</span> <span class="n">yr</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">all_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">shp</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+                <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">({</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">values</span><span class="p">}),</span>
+                <span class="n">on</span><span class="o">=</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+        <span class="c1"># Common normalisation range across all years for a fair comparison</span>
+        <span class="n">vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">all_vals</span><span class="p">)</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">all_vals</span><span class="p">)</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+            <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="p">),</span>
+            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span>
+            <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">},</span>  <span class="c1"># Reserve space at the bottom for the colorbar</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">yr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">years</span><span class="p">)):</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="n">column</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">yr</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+            <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_colorbar</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">norm</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MapPlotter.plot_static">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_static">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_static</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">static_data</span><span class="p">,</span> <span class="n">title_suffix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draw a choropleth map from data that has no time dimension</span>
+<span class="sd">        (e.g. mean errors or aggregated indicators).</span>
+
+<span class="sd">        Accepts shapes ``(nb_regions,)`` or ``(nb_ages, nb_regions)``.</span>
+<span class="sd">        In the latter case, the age index defined at initialisation is used.</span>
+
+<span class="sd">        :param static_data: Data to map, of shape</span>
+<span class="sd">            ``(nb_regions,)`` or ``(nb_ages, nb_regions)``.</span>
+<span class="sd">        :type static_data: numpy.ndarray</span>
+<span class="sd">        :param title_suffix: Optional subtitle displayed on the map</span>
+<span class="sd">            (e.g. ``&quot;Mean error&quot;``).</span>
+<span class="sd">        :type title_suffix: str</span>
+<span class="sd">        :raises ValueError: If *static_data* is neither 1-D nor 2-D.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">shp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_shapefile</span><span class="p">()</span>
+
+        <span class="c1"># Select the age slice if the data array is 2-D</span>
+        <span class="k">if</span> <span class="n">static_data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">static_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">age</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">elif</span> <span class="n">static_data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">static_data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;static_data must be 1D (nb_regions,) or 2D (nb_ages, nb_regions), &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;got shape </span><span class="si">{</span><span class="n">static_data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">shp</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+            <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">({</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">values</span><span class="p">}),</span>
+            <span class="n">on</span><span class="o">=</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">})</span>
+
+        <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">column</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">title_suffix</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title_suffix</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_colorbar</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">norm</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MapPlotter.save">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.save">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the last rendered map to disk.</span>
+
+<span class="sd">        :param path: Destination file path (e.g. ``&quot;output/map_2030.png&quot;``).</span>
+<span class="sd">        :type path: str or pathlib.Path</span>
+<span class="sd">        :param dpi: Resolution in dots per inch (default: 150).</span>
+<span class="sd">        :type dpi: int</span>
+<span class="sd">        :param kwargs: Additional arguments forwarded to ``matplotlib.savefig()``.</span>
+<span class="sd">        :raises RuntimeError: If no plot method has been called yet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_fig&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call a plot method before save().&quot;</span><span class="p">)</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ Saved → </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MapPlotter.plot_compare_models">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_models">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_compare_models</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">other_data</span><span class="p">,</span>
+        <span class="n">model_labels</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Model A&quot;</span><span class="p">,</span> <span class="s2">&quot;Model B&quot;</span><span class="p">),</span>
+        <span class="n">static</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cmap_diverging</span><span class="o">=</span><span class="s2">&quot;RdYlGn_r&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Display the values (errors or any indicator) of two models side by side</span>
+<span class="sd">        on a map, with a shared diverging colour scale so differences are</span>
+<span class="sd">        immediately visible.</span>
+
+<span class="sd">        The normalisation is symmetric around zero for signed data (e.g. bias)</span>
+<span class="sd">        and min/max for strictly positive data (e.g. RMSE, MAE).</span>
+
+<span class="sd">        The figure is stored in ``self._fig`` for a subsequent call to</span>
+<span class="sd">        :meth:`save`.</span>
+
+<span class="sd">        :param other_data: Data for the second model, same shape as</span>
+<span class="sd">            ``self.data`` (``(horizon, nb_regions)``) or ``(nb_regions,)``</span>
+<span class="sd">            when *static=True*.</span>
+<span class="sd">        :type other_data: numpy.ndarray</span>
+<span class="sd">        :param model_labels: Titles for the left and right panels</span>
+<span class="sd">            (default: ``(&quot;Model A&quot;, &quot;Model B&quot;)``).</span>
+<span class="sd">        :type model_labels: tuple[str, str]</span>
+<span class="sd">        :param static: If ``True``, both datasets are treated as</span>
+<span class="sd">            time-independent (default: ``False``).</span>
+<span class="sd">        :type static: bool</span>
+<span class="sd">        :param year: Projection year to display when ``static=False``.</span>
+<span class="sd">            If ``None``, the first year in ``tv_future`` is used.</span>
+<span class="sd">        :type year: int or None</span>
+<span class="sd">        :param cmap_diverging: Colormap applied to both panels simultaneously.</span>
+<span class="sd">            A diverging colormap (e.g. ``&quot;RdYlGn_r&quot;``, ``&quot;coolwarm&quot;``) is</span>
+<span class="sd">            recommended for error maps (default: ``&quot;RdYlGn_r&quot;``).</span>
+<span class="sd">        :type cmap_diverging: str</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The figure produced can be saved with :meth:`save`.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            mp = MapPlotter(regions, errors_model_a, tv, &quot;FR&quot;, &quot;RMSE&quot;)</span>
+<span class="sd">            mp.plot_compare_models(errors_model_b, model_labels=(&quot;LLP&quot;, &quot;Lee-Carter&quot;))</span>
+<span class="sd">            mp.save(&quot;output/compare_models.png&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">shp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_shapefile</span><span class="p">()</span>
+
+        <span class="c1"># ── Extract values for each model ────────────────────────────</span>
+        <span class="k">if</span> <span class="n">static</span><span class="p">:</span>
+            <span class="n">vals_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">age</span><span class="p">,</span> <span class="p">:]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">vals_b</span> <span class="o">=</span> <span class="n">other_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">age</span><span class="p">,</span> <span class="p">:]</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">other_data</span><span class="p">)</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">other_data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">year</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tv_future</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">idx</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tv_future</span> <span class="o">==</span> <span class="n">year</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">vals_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">vals_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">other_data</span><span class="p">)[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="c1"># ── Shared symmetric normalisation (best for error maps) ─────</span>
+        <span class="n">abs_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vals_a</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vals_b</span><span class="p">)))</span>
+        <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="o">-</span><span class="n">abs_max</span><span class="p">,</span> <span class="n">abs_max</span>
+        <span class="c1"># Fall back to min/max if all values are positive (e.g. RMSE, MAE)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">([</span><span class="n">vals_a</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">vals_b</span><span class="o">.</span><span class="n">min</span><span class="p">()])</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">vmin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">vals_a</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">vals_b</span><span class="p">))</span>
+            <span class="n">vmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">vals_a</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">vals_b</span><span class="p">))</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+
+        <span class="c1"># ── Build GeoDataFrames ──────────────────────────────────────</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_merge</span><span class="p">(</span><span class="n">vals</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">shp</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+                <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">({</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">vals</span><span class="p">}),</span>
+                <span class="n">on</span><span class="o">=</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">df_a</span><span class="p">,</span> <span class="n">df_b</span> <span class="o">=</span> <span class="n">_merge</span><span class="p">(</span><span class="n">vals_a</span><span class="p">),</span> <span class="n">_merge</span><span class="p">(</span><span class="n">vals_b</span><span class="p">)</span>
+
+        <span class="c1"># ── Plot both panels ─────────────────────────────────────────</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+            <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+            <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="mf">0.12</span><span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">[</span><span class="n">df_a</span><span class="p">,</span> <span class="n">df_b</span><span class="p">],</span> <span class="n">model_labels</span><span class="p">):</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="n">column</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_diverging</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Shared colorbar for both panels</span>
+        <span class="n">cbar_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">])</span>
+        <span class="n">sm</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="n">cmap_diverging</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+        <span class="n">sm</span><span class="o">.</span><span class="n">set_array</span><span class="p">([])</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sm</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cbar_ax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">indicator_name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+</div>
+
+
+
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+<span class="c1"># CLASS 3 : Regional statistics</span>
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+
+<div class="viewcode-block" id="RegionalStats">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RegionalStats</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes descriptive statistics on a projected regional indicator</span>
+<span class="sd">    over the full projection horizon.</span>
+
+<span class="sd">    Produces three tables: the complete ``(horizon × nb_regions)`` matrix,</span>
+<span class="sd">    per-year aggregates, and per-region aggregates sorted by descending mean.</span>
+
+<span class="sd">    :param ex: Data array of shape ``(nb_ages, horizon, nb_regions)``.</span>
+<span class="sd">    :type ex: numpy.ndarray</span>
+<span class="sd">    :param regions: Region codes or names.</span>
+<span class="sd">    :type regions: array-like</span>
+<span class="sd">    :param tv_future: 1D array of projection years.</span>
+<span class="sd">    :type tv_future: numpy.ndarray</span>
+<span class="sd">    :param age: Age index to extract (0 = e0, 65 = e65, …) (default: 0).</span>
+<span class="sd">    :type age: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ex</span><span class="p">,</span> <span class="n">regions</span><span class="p">,</span> <span class="n">tv_future</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ex</span>        <span class="o">=</span> <span class="n">ex</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regions</span>   <span class="o">=</span> <span class="n">regions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tv_future</span> <span class="o">=</span> <span class="n">tv_future</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age</span>       <span class="o">=</span> <span class="n">age</span>
+
+        <span class="c1"># Reduce 3D array to (horizon, nb_regions) for the target age</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">ex</span><span class="p">[</span><span class="n">age</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+<div class="viewcode-block" id="RegionalStats.compute">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats.compute">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run all aggregations and return a dictionary of pandas DataFrames.</span>
+
+<span class="sd">        Per-year statistics include mean, standard deviation, minimum,</span>
+<span class="sd">        maximum, range, and coefficient of variation.</span>
+<span class="sd">        Per-region statistics additionally include the average rank</span>
+<span class="sd">        (rank 1 = highest value each year).</span>
+
+<span class="sd">        :returns: Dictionary containing three DataFrames:</span>
+
+<span class="sd">            * ``&quot;full&quot;``      — complete ``(horizon × nb_regions)`` matrix.</span>
+<span class="sd">            * ``&quot;by_year&quot;``   — statistics aggregated per projection year.</span>
+<span class="sd">            * ``&quot;by_region&quot;`` — statistics aggregated per region, sorted by</span>
+<span class="sd">              descending mean.</span>
+
+<span class="sd">        :rtype: dict[str, pandas.DataFrame]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">regions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span>
+        <span class="n">tv</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tv_future</span>
+
+        <span class="c1"># ── Full matrix ────────────────────────────────────────────</span>
+        <span class="n">df_full</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">tv</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">regions</span><span class="p">)</span>
+        <span class="n">df_full</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;year&quot;</span>
+
+        <span class="c1"># ── Statistics per year ────────────────────────────────────</span>
+        <span class="n">df_by_year</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="s2">&quot;mean&quot;</span>       <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="s2">&quot;std&quot;</span>        <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="s2">&quot;min&quot;</span>        <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="s2">&quot;max&quot;</span>        <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="s2">&quot;range&quot;</span>      <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="s2">&quot;cv&quot;</span>         <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>  <span class="c1"># coefficient of variation (%)</span>
+            <span class="s2">&quot;region_min&quot;</span> <span class="p">:</span> <span class="n">regions</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)],</span>
+            <span class="s2">&quot;region_max&quot;</span> <span class="p">:</span> <span class="n">regions</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)],</span>
+        <span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="n">tv</span><span class="p">)</span>
+        <span class="n">df_by_year</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;year&quot;</span>
+
+        <span class="c1"># ── Statistics per region ──────────────────────────────────</span>
+        <span class="n">df_by_region</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="s2">&quot;mean&quot;</span>     <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="s2">&quot;std&quot;</span>      <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="s2">&quot;min&quot;</span>      <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="s2">&quot;max&quot;</span>      <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="c1"># Average rank across years (rank 1 = highest value each year)</span>
+            <span class="s2">&quot;avg_rank&quot;</span> <span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                             <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+                             <span class="n">columns</span><span class="o">=</span><span class="n">regions</span><span class="p">,</span>
+                         <span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="n">regions</span><span class="p">)</span>
+        <span class="n">df_by_region</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;region&quot;</span>
+        <span class="n">df_by_region</span> <span class="o">=</span> <span class="n">df_by_region</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;full&quot;</span>      <span class="p">:</span> <span class="n">df_full</span><span class="p">,</span>
+            <span class="s2">&quot;by_year&quot;</span>   <span class="p">:</span> <span class="n">df_by_year</span><span class="p">,</span>
+            <span class="s2">&quot;by_region&quot;</span> <span class="p">:</span> <span class="n">df_by_region</span><span class="p">,</span>
+        <span class="p">}</span></div>
+</div>
+
+
+
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+<span class="c1"># CLASS 4 : Inter-regional dispersion over time</span>
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+
+<div class="viewcode-block" id="DispersionPlotter">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DispersionPlotter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualises the evolution of inter-regional dispersion of an indicator</span>
+<span class="sd">    over the full projection horizon.</span>
+
+<span class="sd">    Two metrics are plotted side by side: the inter-regional standard</span>
+<span class="sd">    deviation and the range (max − min), making it easy to assess whether</span>
+<span class="sd">    regions are converging or diverging over time.</span>
+
+<span class="sd">    :param ex: Data array of shape ``(nb_ages, horizon, nb_regions)``.</span>
+<span class="sd">    :type ex: numpy.ndarray</span>
+<span class="sd">    :param regions: Region codes or names (kept for consistency with other</span>
+<span class="sd">        classes; not directly used in the plot).</span>
+<span class="sd">    :type regions: array-like</span>
+<span class="sd">    :param tv_future: 1D array of projection years.</span>
+<span class="sd">    :type tv_future: numpy.ndarray</span>
+<span class="sd">    :param indicator_name: Indicator label displayed in the figure title</span>
+<span class="sd">        (default: ``&quot;Life expectancy&quot;``).</span>
+<span class="sd">    :type indicator_name: str</span>
+<span class="sd">    :param ages: List of age indices to compare (default: ``[0, 65]``).</span>
+<span class="sd">    :type ages: list[int]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ex</span><span class="p">,</span>
+        <span class="n">regions</span><span class="p">,</span>
+        <span class="n">tv_future</span><span class="p">,</span>
+        <span class="n">indicator_name</span><span class="o">=</span><span class="s2">&quot;Life expectancy&quot;</span><span class="p">,</span>
+        <span class="n">ages</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ex</span>             <span class="o">=</span> <span class="n">ex</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regions</span>        <span class="o">=</span> <span class="n">regions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tv_future</span>      <span class="o">=</span> <span class="n">tv_future</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indicator_name</span> <span class="o">=</span> <span class="n">indicator_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ages</span>           <span class="o">=</span> <span class="n">ages</span> <span class="k">if</span> <span class="n">ages</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">65</span><span class="p">]</span>
+
+<div class="viewcode-block" id="DispersionPlotter.plot">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate and display two side-by-side panels:</span>
+
+<span class="sd">        * **Left panel**  — inter-regional standard deviation over time.</span>
+<span class="sd">        * **Right panel** — inter-regional range (max − min) over time.</span>
+
+<span class="sd">        One curve per age index in ``self.ages`` is drawn in each panel.</span>
+<span class="sd">        The figure is stored in ``self._fig``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="n">colors</span>    <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">tab10</span><span class="o">.</span><span class="n">colors</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">age</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ages</span><span class="p">):</span>
+            <span class="n">data</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ex</span><span class="p">[</span><span class="n">age</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>                   <span class="c1"># (horizon, nb_regions)</span>
+            <span class="n">std</span>    <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">range_</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">label</span>  <span class="o">=</span> <span class="s2">&quot;e₀&quot;</span> <span class="k">if</span> <span class="n">age</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;e</span><span class="si">{</span><span class="n">age</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tv_future</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span>    <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+            <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tv_future</span><span class="p">,</span> <span class="n">range_</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+        <span class="c1"># Apply shared formatting to both panels</span>
+        <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Inter-regional std dev&quot;</span><span class="p">,</span> <span class="s2">&quot;Range (max − min)&quot;</span><span class="p">]):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Year&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Years of life&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Inter-regional convergence — </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">indicator_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="DispersionPlotter.save">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.save">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the last rendered dispersion figure to disk.</span>
+
+<span class="sd">        :param path: Destination file path.</span>
+<span class="sd">        :type path: str or pathlib.Path</span>
+<span class="sd">        :param dpi: Resolution in dots per inch (default: 150).</span>
+<span class="sd">        :type dpi: int</span>
+<span class="sd">        :param kwargs: Additional arguments forwarded to ``matplotlib.savefig()``.</span>
+<span class="sd">        :raises RuntimeError: If :meth:`plot` has not been called yet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_fig&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call plot() before save().&quot;</span><span class="p">)</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ Saved → </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+<span class="c1"># CLASS 5 : Annuity price boxplots</span>
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+
+<div class="viewcode-block" id="AnnuityBoxPlotter">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AnnuityBoxPlotter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Draws regional boxplots of annuity prices, with optional overlay of</span>
+<span class="sd">    extra series (national price, benchmark, etc.) placed before or after</span>
+<span class="sd">    the regional boxes.</span>
+
+<span class="sd">    Extra series are defined via :class:`ExtraSeries` instances and can be</span>
+<span class="sd">    positioned before (``&quot;first&quot;``) or after (``&quot;last&quot;``) the regional block.</span>
+<span class="sd">    Thin vertical separators visually delimit the groups.</span>
+
+<span class="sd">    :param price_regional: Regional price array of shape</span>
+<span class="sd">        ``(nb_xe, nb_reg, nb_simul)``.</span>
+<span class="sd">    :type price_regional: numpy.ndarray</span>
+<span class="sd">    :param region_names: List of region label strings.</span>
+<span class="sd">    :type region_names: list[str]</span>
+<span class="sd">    :param extra_series: List of :class:`ExtraSeries` objects to overlay.</span>
+<span class="sd">        Pass ``[]`` or ``None`` to display regional data only.</span>
+<span class="sd">    :type extra_series: list[ExtraSeries] or None</span>
+<span class="sd">    :param xe_idx: Index along the age dimension of *price_regional*</span>
+<span class="sd">        (default: 0).</span>
+<span class="sd">    :type xe_idx: int</span>
+<span class="sd">    :param duration: Annuity duration in years, used in the chart title</span>
+<span class="sd">        (default: 20).</span>
+<span class="sd">    :type duration: int</span>
+<span class="sd">    :param age: Policyholder age, used in the chart title (default: 60).</span>
+<span class="sd">    :type age: int</span>
+<span class="sd">    :param figsize: Figure size in inches (default: ``(18, 7)``).</span>
+<span class="sd">    :type figsize: tuple</span>
+<span class="sd">    :param show: If ``True``, calls ``plt.show()`` after rendering</span>
+<span class="sd">        (default: ``True``).</span>
+<span class="sd">    :type show: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">price_regional</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">region_names</span><span class="p">:</span>   <span class="nb">list</span><span class="p">,</span>
+        <span class="n">extra_series</span><span class="p">:</span>   <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">xe_idx</span><span class="p">:</span>         <span class="nb">int</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">duration</span><span class="p">:</span>       <span class="nb">int</span>   <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="n">age</span><span class="p">:</span>            <span class="nb">int</span>   <span class="o">=</span> <span class="mi">60</span><span class="p">,</span>
+        <span class="n">figsize</span><span class="p">:</span>        <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+        <span class="n">show</span><span class="p">:</span>           <span class="nb">bool</span>  <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">price_regional</span> <span class="o">=</span> <span class="n">price_regional</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">region_names</span>   <span class="o">=</span> <span class="n">region_names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extra_series</span>   <span class="o">=</span> <span class="n">extra_series</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xe_idx</span>         <span class="o">=</span> <span class="n">xe_idx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>       <span class="o">=</span> <span class="n">duration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age</span>            <span class="o">=</span> <span class="n">age</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">figsize</span>        <span class="o">=</span> <span class="n">figsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span>           <span class="o">=</span> <span class="n">show</span>
+
+<div class="viewcode-block" id="AnnuityBoxPlotter.plot">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Render and display the boxplot chart.</span>
+
+<span class="sd">        Display order: ``&quot;first&quot;`` extra series → regional boxes →</span>
+<span class="sd">        ``&quot;last&quot;`` extra series. Thin vertical separators delimit the blocks</span>
+<span class="sd">        when extra series are present.</span>
+
+<span class="sd">        The figure is stored in ``self._fig`` for a subsequent call to</span>
+<span class="sd">        :meth:`save`.</span>
+
+<span class="sd">        :param ax: Existing matplotlib axes to draw into.</span>
+<span class="sd">            If ``None``, a new figure is created.</span>
+<span class="sd">        :type ax: matplotlib.axes.Axes or None</span>
+<span class="sd">        :returns: The figure and axes used.</span>
+<span class="sd">        :rtype: tuple(matplotlib.figure.Figure, matplotlib.axes.Axes)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nb_reg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">price_regional</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Assign a color from the default palette to each extra series (cyclic)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">es</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_series</span><span class="p">):</span>
+            <span class="n">default_col</span> <span class="o">=</span> <span class="n">_DEFAULT_COLORS</span><span class="p">[</span><span class="n">k</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">_DEFAULT_COLORS</span><span class="p">)]</span>
+            <span class="n">es</span><span class="o">.</span><span class="n">style</span> <span class="o">=</span> <span class="n">_resolve_style</span><span class="p">(</span><span class="n">es</span><span class="o">.</span><span class="n">style</span><span class="p">,</span> <span class="n">default_col</span><span class="p">)</span>
+
+        <span class="c1"># Build the ordered series list: &quot;first&quot; extras → regional boxes → &quot;last&quot; extras</span>
+        <span class="n">regional_entries</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">price_regional</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">xe_idx</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="p">:],</span>
+             <span class="n">_resolve_style</span><span class="p">({},</span> <span class="n">_REGIONAL_STYLE</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">),</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">region_names</span><span class="p">[</span><span class="n">g</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_reg</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">firsts</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">es</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">xe_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">es</span><span class="o">.</span><span class="n">style</span><span class="p">,</span> <span class="n">es</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">es</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_series</span> <span class="k">if</span> <span class="n">es</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="s2">&quot;first&quot;</span>
+        <span class="p">]</span>
+        <span class="n">lasts</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">es</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">xe_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">es</span><span class="o">.</span><span class="n">style</span><span class="p">,</span> <span class="n">es</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">es</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_series</span> <span class="k">if</span> <span class="n">es</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="s2">&quot;last&quot;</span>
+        <span class="p">]</span>
+        <span class="n">series</span> <span class="o">=</span> <span class="n">firsts</span> <span class="o">+</span> <span class="n">regional_entries</span> <span class="o">+</span> <span class="n">lasts</span>
+
+        <span class="c1"># Create a new figure if no axes was provided</span>
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">figsize</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
+
+        <span class="c1"># Draw one boxplot per entry in the ordered series list</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">widths</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span> <span class="o">**</span><span class="n">_boxplot_kwargs</span><span class="p">(</span><span class="n">style</span><span class="p">))</span>
+
+        <span class="c1"># Thin vertical separators between &quot;first&quot;, regional, and &quot;last&quot; blocks</span>
+        <span class="n">n_first</span><span class="p">,</span> <span class="n">n_last</span><span class="p">,</span> <span class="n">n_total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">firsts</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">lasts</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">series</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_first</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">n_first</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#bbb&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_last</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">n_total</span> <span class="o">-</span> <span class="n">n_last</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#bbb&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Axis labels and tick configuration</span>
+        <span class="n">tick_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">series</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_total</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">tick_labels</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">n_total</span> <span class="o">+</span> <span class="mf">0.7</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Annuity price — </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">age</span><span class="si">}</span><span class="s2"> y.o. | duration </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="si">}</span><span class="s2">y&quot;</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Region&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Price (€)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.22</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;#fafafa&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Build the legend from colored patch handles</span>
+        <span class="n">legend_handles</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span>
+                <span class="n">facecolor</span><span class="o">=</span><span class="n">_REGIONAL_STYLE</span><span class="p">[</span><span class="s2">&quot;facecolor&quot;</span><span class="p">],</span>
+                <span class="n">edgecolor</span><span class="o">=</span><span class="n">_REGIONAL_STYLE</span><span class="p">[</span><span class="s2">&quot;edgecolor&quot;</span><span class="p">],</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Regions&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">es</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_series</span><span class="p">:</span>
+            <span class="n">legend_handles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span>
+                    <span class="n">facecolor</span><span class="o">=</span><span class="n">es</span><span class="o">.</span><span class="n">style</span><span class="p">[</span><span class="s2">&quot;facecolor&quot;</span><span class="p">],</span>
+                    <span class="n">edgecolor</span><span class="o">=</span><span class="n">es</span><span class="o">.</span><span class="n">style</span><span class="p">[</span><span class="s2">&quot;edgecolor&quot;</span><span class="p">],</span>
+                    <span class="n">label</span><span class="o">=</span><span class="n">es</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">legend_handles</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">framealpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+        <span class="c1"># Display the figure (IPython / Jupyter-aware)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span> <span class="k">as</span> <span class="n">ipy_display</span>
+            <span class="n">ipy_display</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="AnnuityBoxPlotter.save">
+<a class="viewcode-back" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.save">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the last rendered boxplot figure to disk.</span>
+
+<span class="sd">        :param path: Destination file path.</span>
+<span class="sd">        :type path: str or pathlib.Path</span>
+<span class="sd">        :param dpi: Resolution in dots per inch (default: 150).</span>
+<span class="sd">        :type dpi: int</span>
+<span class="sd">        :param kwargs: Additional arguments forwarded to ``matplotlib.savefig()``.</span>
+<span class="sd">        :raises RuntimeError: If :meth:`plot` has not been called yet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_fig&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call plot() before save().&quot;</span><span class="p">)</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ Saved → </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+<span class="c1"># USAGE EXAMPLES</span>
+<span class="c1"># ════════════════════════════════════════════════════════════════════</span>
+
+<span class="c1"># ── RegionalCurvePlotter ────────────────────────────────────────────</span>
+<span class="c1"># plotter = RegionalCurvePlotter(</span>
+<span class="c1">#     x_values=ages,</span>
+<span class="c1">#     curves_dict={&quot;Model A&quot;: arr_a, &quot;Model B&quot;: arr_b},</span>
+<span class="c1">#     tv=tv_vector,</span>
+<span class="c1">#     regions=region_list,</span>
+<span class="c1"># )</span>
+<span class="c1"># plotter.plot(year_to_plot=2040)</span>
+<span class="c1"># plotter.save(&quot;output/curves_2040.png&quot;)</span>
+
+<span class="c1"># ── MapPlotter — single year ────────────────────────────────────────</span>
+<span class="c1"># mp = MapPlotter(regions, data_3d, tv_future, &quot;FR&quot;, &quot;Life expectancy e0&quot;)</span>
+<span class="c1"># mp.plot_single_year(year=2030)</span>
+<span class="c1"># mp.save(&quot;output/map_2030.png&quot;)</span>
+
+<span class="c1"># ── MapPlotter — compare years ──────────────────────────────────────</span>
+<span class="c1"># mp.plot_compare_years(years=[2023, 2050])</span>
+<span class="c1"># mp.save(&quot;output/map_compare_years.png&quot;)</span>
+
+<span class="c1"># ── MapPlotter — compare two models side by side ────────────────────</span>
+<span class="c1"># mp = MapPlotter(regions, errors_model_a, tv_future, &quot;FR&quot;, &quot;RMSE&quot;)</span>
+<span class="c1"># mp.plot_compare_models(</span>
+<span class="c1">#     other_data=errors_model_b,</span>
+<span class="c1">#     model_labels=(&quot;LLP&quot;, &quot;Lee-Carter&quot;),</span>
+<span class="c1">#     year=2040,</span>
+<span class="c1">#     cmap_diverging=&quot;RdYlGn_r&quot;,</span>
+<span class="c1"># )</span>
+<span class="c1"># mp.save(&quot;output/compare_llp_vs_lc.png&quot;)</span>
+<span class="c1">#</span>
+<span class="c1"># For static error arrays (no time dimension):</span>
+<span class="c1"># mp.plot_compare_models(errors_b, model_labels=(&quot;LLP&quot;, &quot;LC&quot;), static=True)</span>
+<span class="c1"># mp.save(&quot;output/compare_static.png&quot;)</span>
+
+<span class="c1"># ── RegionalStats ───────────────────────────────────────────────────</span>
+<span class="c1"># stats = RegionalStats(ex, regions, tv_future, age=0)</span>
+<span class="c1"># results = stats.compute()</span>
+<span class="c1"># print(results[&quot;by_year&quot;])</span>
+
+<span class="c1"># ── DispersionPlotter ───────────────────────────────────────────────</span>
+<span class="c1"># dp = DispersionPlotter(ex, regions, tv_future, indicator_name=&quot;Life expectancy&quot;)</span>
+<span class="c1"># dp.plot()</span>
+<span class="c1"># dp.save(&quot;output/dispersion.png&quot;)</span>
+
+<span class="c1"># ── AnnuityBoxPlotter — no extra series ────────────────────────────</span>
+<span class="c1"># bp = AnnuityBoxPlotter(price_reg, names)</span>
+<span class="c1"># bp.plot()</span>
+<span class="c1"># bp.save(&quot;output/annuity_boxes.png&quot;)</span>
+
+<span class="c1"># ── AnnuityBoxPlotter — one extra series ───────────────────────────</span>
+<span class="c1"># bp = AnnuityBoxPlotter(price_reg, names, extra_series=[</span>
+<span class="c1">#     ExtraSeries(price_nat, &quot;National&quot;, position=&quot;last&quot;),</span>
+<span class="c1"># ])</span>
+<span class="c1"># bp.plot()</span>
+<span class="c1"># bp.save(&quot;output/annuity_with_national.png&quot;)</span>
+
+<span class="c1"># ── AnnuityBoxPlotter — two extra series at different positions ─────</span>
+<span class="c1"># AnnuityBoxPlotter(price_reg, names, extra_series=[</span>
+<span class="c1">#     ExtraSeries(price_nat,   &quot;National&quot;,  position=&quot;last&quot;),</span>
+<span class="c1">#     ExtraSeries(price_bench, &quot;Benchmark&quot;, position=&quot;first&quot;),</span>
+<span class="c1"># ]).plot()</span>
+
+<span class="c1"># ── AnnuityBoxPlotter — custom style on one series ──────────────────</span>
+<span class="c1"># AnnuityBoxPlotter(price_reg, names, extra_series=[</span>
+<span class="c1">#     ExtraSeries(price_nat, &quot;National&quot;,</span>
+<span class="c1">#                 style={&quot;edgecolor&quot;: &quot;#00e5ff&quot;, &quot;median&quot;: &quot;#00e5ff&quot;}),</span>
+<span class="c1"># ]).plot()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Innovation Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

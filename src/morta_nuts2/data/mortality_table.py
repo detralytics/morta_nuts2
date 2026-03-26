@@ -72,12 +72,8 @@ import pickle
 
 from pathlib import Path
 
-# Cherche la racine du projet en remontant jusqu'à trouver NUTS_files/
-BASE_DIR = Path.cwd()
-while not (BASE_DIR / "NUTS_files").exists():
-    BASE_DIR = BASE_DIR.parent
 
-DATA_DIR = BASE_DIR / "NUTS_files" / "NUTS_RG_01M_2024_3035.shp"
+DATA_DIR = Path(__file__).parent.parent / "NUTS_files" / "NUTS_RG_01M_2024_3035.shp"
 # Path to the NUTS shapefile used for choropleth maps
 #SHAPEF_PATH = DATA_DIR
 

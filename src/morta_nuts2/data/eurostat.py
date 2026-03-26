@@ -66,15 +66,7 @@ import os
 from pathlib import Path
 from typing import List, Optional, Dict, Tuple, Literal, Union
 
-# ---------------------------------------------------------------------------
-# Base directory resolution
-# ---------------------------------------------------------------------------
-# Walk up from the current working directory until the NUTS_files folder is found.
-BASE_DIR = Path.cwd()
-while not (BASE_DIR / "NUTS_files").exists():
-    BASE_DIR = BASE_DIR.parent
 
-DATA_DIR = BASE_DIR / "NUTS_files" / "NUTS_RG_01M_2024_3035.shp"
 
 
 # =============================================================================
@@ -119,8 +111,8 @@ class EurostatConfig:
         )
     """
 
-    #: Default path to the NUTS shapefile (resolved at import time).
-    DEFAULT_SHAPEFILE_PATH = DATA_DIR
+    #: Default path to the NUTS shapefile (resolved relative to this file).
+    DEFAULT_SHAPEFILE_PATH = Path(__file__).parent.parent / "NUTS_files" / "NUTS_RG_01M_2024_3035.shp"
 
     #: Default directory for cached CSV data files.
     DEFAULT_DATA_PATH = Path("../data")

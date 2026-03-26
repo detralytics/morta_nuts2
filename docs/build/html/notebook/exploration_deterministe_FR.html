@@ -1,0 +1,2162 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exploration deterministe FR &mdash; morta_nuts2 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Exploration stochastique FR" href="exploration_stochastique_FR.html" />
+    <link rel="prev" title="Exploration stochastique BE" href="exploration_stochastique_BE.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            morta_nuts2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Data:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/data/eurostat.html">Eurostat API Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/eurostat.html#eurostat-py-eurostat-data-manager">eurostat.py - Eurostat Data Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig"><code class="docutils literal notranslate"><span class="pre">EurostatConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_SHAPEFILE_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_DATA_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DATASETS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.EXCLUDE_REGIONS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#id0"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#id1"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#id2"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#id3"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_shapefile"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_data_path"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_data_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.register_dataset"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.register_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data"><code class="docutils literal notranslate"><span class="pre">Eurostat_data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.shapefile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.set_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.register_dataset"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.register_dataset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load_all"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.pivot_age_year"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.pivot_age_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.get_regions"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.filter_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.parse_age"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.parse_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.add_exclusion"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.add_exclusion()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.list_datasets"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.list_datasets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.cache_info"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.cache_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.clear_cache"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.stats"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.load_mxt_raw"><code class="docutils literal notranslate"><span class="pre">load_mxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.load_dxt_raw"><code class="docutils literal notranslate"><span class="pre">load_dxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.load_lxt_raw"><code class="docutils literal notranslate"><span class="pre">load_lxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.age_year_pivot_table"><code class="docutils literal notranslate"><span class="pre">age_year_pivot_table()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">filter_shapefile()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/eurostat.html#morta_nuts2.data.eurostat.parse_age"><code class="docutils literal notranslate"><span class="pre">parse_age()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/data/mortality_table.html">Mortality Table</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/mortality_table.html#id1">mortality_table</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#main-features">Main features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#typical-workflow">Typical workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig"><code class="docutils literal notranslate"><span class="pre">MortalityConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_max"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_max</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_anomalies</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.fill_value"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.fill_value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.n_jobs"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.n_jobs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.enable_cache"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.enable_cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.cache_dir"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.cache_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.validate_data"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.validate_data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.correct_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.correct_anomalies</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator"><code class="docutils literal notranslate"><span class="pre">DataValidator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_dataframe"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_mortality_data"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_mortality_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager"><code class="docutils literal notranslate"><span class="pre">CacheManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.get"><code class="docutils literal notranslate"><span class="pre">CacheManager.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.set"><code class="docutils literal notranslate"><span class="pre">CacheManager.set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.clear"><code class="docutils literal notranslate"><span class="pre">CacheManager.clear()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.timing_decorator"><code class="docutils literal notranslate"><span class="pre">timing_decorator()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.DEFAULT_SHAPEFILE"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.DEFAULT_SHAPEFILE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.FRANCE_OUTREMER"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.FRANCE_OUTREMER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.__init__"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.set_shapefile"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_regions"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.validate_input_data"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.validate_input_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.calculate_mortality"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.calculate_mortality()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.export_results"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.export_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_statistics"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_statistics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.clear_cache"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.summary"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">mortality_by_region()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/data/mortality_table.html#morta_nuts2.data.mortality_table.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">build_input_from_dataframe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Models:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/model/bsplines.html">B-Splines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/bsplines.html#bsplines">Bsplines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/bsplines.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/bsplines.html#knot-vector-convention-scipy">Knot vector convention (scipy)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/bsplines.html#finite-difference-penalty-p-splines">Finite difference penalty (P-splines)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/bsplines.html#visual-illustration">Visual illustration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.difference_matrix"><code class="docutils literal notranslate"><span class="pre">difference_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.plot_Bsplines"><code class="docutils literal notranslate"><span class="pre">plot_Bsplines()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.basis_matrix_from_knots"><code class="docutils literal notranslate"><span class="pre">basis_matrix_from_knots()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.Bspline_approx"><code class="docutils literal notranslate"><span class="pre">Bspline_approx()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.make_bspline_basis"><code class="docutils literal notranslate"><span class="pre">make_bspline_basis()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.eval_bspline_from_coef"><code class="docutils literal notranslate"><span class="pre">eval_bspline_from_coef()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/model/lcp.html">Lee-Carter Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/lcp.html#lee-carter-object-oriented-architecture">Lee-Carter — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter"><code class="docutils literal notranslate"><span class="pre">LeeCarter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LeeCarter.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LeeCarter.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_ax_coef"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_ax_coef()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_kappa"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_kappa()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LeeCarter.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">LeeCarter.build_input_from_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric.National"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric.National</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/model/llp.html">Lee &amp; Li Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/llp.html#lilee-object-oriented-architecture">LiLee — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee"><code class="docutils literal notranslate"><span class="pre">LiLee</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LiLee.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block"><code class="docutils literal notranslate"><span class="pre">LiLee.effective_dof_spline_block()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LiLee.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.difference_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.difference_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.FullModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.Variant</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/model/param_init.html">Parameter Initialization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_bspline_init"><code class="docutils literal notranslate"><span class="pre">lcp_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lileep_bspline_init"><code class="docutils literal notranslate"><span class="pre">lileep_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_parametrique_init_national"><code class="docutils literal notranslate"><span class="pre">lcp_parametrique_init_national()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/model/projection.html">Mortality Projection Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/projection.html#projection">Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/projection.html#morta_nuts2.model.projection.project_class.kannisto_log_mu"><code class="docutils literal notranslate"><span class="pre">kannisto_log_mu()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy.compute"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/model/projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator.extrapolate"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator.extrapolate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/projection.html#morta_nuts2.model.projection.project_class.concat_logmu_time"><code class="docutils literal notranslate"><span class="pre">concat_logmu_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/projection.html#morta_nuts2.model.projection.project_class.Annuity_pricing"><code class="docutils literal notranslate"><span class="pre">Annuity_pricing()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/model/projection.html#morta_nuts2.model.projection.project_class.compute_mae"><code class="docutils literal notranslate"><span class="pre">compute_mae()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/visualisation/plot_class.html">Plot Class</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/visualisation/plot_class.html#id1">plot_class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.SHAPEF_PATH"><code class="docutils literal notranslate"><span class="pre">SHAPEF_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries"><code class="docutils literal notranslate"><span class="pre">ExtraSeries</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.data"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.label"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.label</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.position"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.position</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.style"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.style</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.save"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter"><code class="docutils literal notranslate"><span class="pre">MapPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_single_year"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_single_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_years"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_years()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_static"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_static()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.save"><code class="docutils literal notranslate"><span class="pre">MapPlotter.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_models"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_models()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats"><code class="docutils literal notranslate"><span class="pre">RegionalStats</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats.compute"><code class="docutils literal notranslate"><span class="pre">RegionalStats.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.plot"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.save"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.plot"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.save"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.save()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="exploration_deterministe_BE.html">Exploration deterministe BE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="exploration_deterministe_BE.html#1.-Imports">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_deterministe_BE.html#2.-Data-Loading">2. Data Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_deterministe_BE.html#3.-Data-Preparation">3. Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_deterministe_BE.html#4.-Model-Fitting">4. Model Fitting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="exploration_deterministe_BE.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="exploration_deterministe_BE.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exploration_deterministe_BE.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_deterministe_BE.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="exploration_deterministe_BE.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exploration_deterministe_BE.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_deterministe_BE.html#5.-Model-Comparison">5. Model Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="exploration_deterministe_BE.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_deterministe_BE.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_deterministe_BE.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_deterministe_BE.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_deterministe_BE.html#5.5-Fitted-Mortality-Curves">5.5 Fitted Mortality Curves</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_deterministe_BE.html#6.-Projection">6. Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_deterministe_BE.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_deterministe_BE.html#8.-Life-Expectancy">8. Life Expectancy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="exploration_deterministe_BE.html#8.1-Export-to-CSV">8.1 Export to CSV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_deterministe_BE.html#8.2-Maps-—-Life-Expectancy-at-Birth">8.2 Maps — Life Expectancy at Birth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_deterministe_BE.html#8.3-Life-Expectancy-Curves-by-Region">8.3 Life Expectancy Curves by Region</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="exploration_stochastique_BE.html">Exploration stochastique BE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_BE.html#1.-Imports">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_BE.html#2.-Data-Loading">2. Data Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_BE.html#3.-Data-Preparation">3. Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_BE.html#4.-Model-Fitting">4. Model Fitting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_BE.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="exploration_stochastique_BE.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exploration_stochastique_BE.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_BE.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="exploration_stochastique_BE.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exploration_stochastique_BE.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_BE.html#5.-Model-Comparison">5. Model Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_BE.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_BE.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_BE.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_BE.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_BE.html#5.5-Regional-Beta-Curves">5.5 Regional Beta Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_BE.html#5.6-Fitted-Mortality-Curves">5.6 Fitted Mortality Curves</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_BE.html#6.-Stochastic-Projection">6. Stochastic Projection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_BE.html#6.1-Regional-kappa_g-Trajectories">6.1 Regional kappa_g Trajectories</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_BE.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_BE.html#8.-Annuity-Pricing">8. Annuity Pricing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_BE.html#8.1-Box-Plots">8.1 Box Plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_BE.html#8.2-Export-Simulation-Table">8.2 Export Simulation Table</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Exploration deterministe FR</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#1.-Imports">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#2.-Data-Loading">2. Data Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#3.-Data-Preparation">3. Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#4.-Model-Fitting">4. Model Fitting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#5.-Model-Comparison">5. Model Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#5.4-WMAE-Maps">5.4 WMAE Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#5.5-Fitted-Mortality-Curves">5.5 Fitted Mortality Curves</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#6.-Projection">6. Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#8.-Life-Expectancy">8. Life Expectancy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#8.1-Export-to-CSV">8.1 Export to CSV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#8.2-Maps-—-Life-Expectancy-at-Birth">8.2 Maps — Life Expectancy at Birth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#8.3-Life-Expectancy-Curves-by-Region">8.3 Life Expectancy Curves by Region</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="exploration_stochastique_FR.html">Exploration stochastique FR</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_FR.html#1.-Imports">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_FR.html#2.-Data-Loading">2. Data Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_FR.html#3.-Data-Preparation">3. Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_FR.html#4.-Model-Fitting">4. Model Fitting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_FR.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="exploration_stochastique_FR.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exploration_stochastique_FR.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_FR.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="exploration_stochastique_FR.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exploration_stochastique_FR.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_FR.html#5.-Model-Comparison">5. Model Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_FR.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_FR.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_FR.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_FR.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_FR.html#5.5-Regional-Beta-Curves">5.5 Regional Beta Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_FR.html#5.6-Fitted-Mortality-Curves">5.6 Fitted Mortality Curves</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_FR.html#6.-Stochastic-Projection">6. Stochastic Projection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_FR.html#6.1-Regional-kappa_g-Trajectories">6.1 Regional kappa_g Trajectories</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_FR.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_stochastique_FR.html#8.-Annuity-Pricing">8. Annuity Pricing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_FR.html#8.1-Box-Plots">8.1 Box Plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exploration_stochastique_FR.html#8.2-Export-Simulation-Table">8.2 Export Simulation Table</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">morta_nuts2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Exploration deterministe FR</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notebook/exploration_deterministe_FR.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Exploration-deterministe-FR">
+<h1>Exploration deterministe FR<a class="headerlink" href="#Exploration-deterministe-FR" title="Link to this heading"></a></h1>
+<section id="1.-Imports">
+<h2>1. Imports<a class="headerlink" href="#1.-Imports" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpatches</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.ticker</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ticker</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.cm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.lines</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line2D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+
+<span class="c1"># If the project was cloned from GitHub, replace &quot;..&quot; with &quot;../../src&quot; below.</span>
+<span class="c1"># If morta_nuts2 is installed as a package (e.g. via pip/uv), keep &quot;..&quot; as is.</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">))</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">morta_nuts2.data.eurostat</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">morta_nuts2.data.mortality_table</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">morta_nuts2.model.Bsplines.Bsplines</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_bspline_basis</span><span class="p">,</span> <span class="n">plot_Bsplines</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">morta_nuts2.model.parameters_init.param_init</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">morta_nuts2.model.projection.project_class</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">morta_nuts2.model.LC_p.lcp_class</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">morta_nuts2.model.LL_p.llp_class</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">morta_nuts2.graph.plot_class</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="2.-Data-Loading">
+<h2>2. Data Loading<a class="headerlink" href="#2.-Data-Loading" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># By default, downloaded data is stored in the same directory as the script.</span>
+<span class="c1"># Use EurostatConfig.set_default_data_path() to redirect storage to a custom path.</span>
+<span class="c1"># ── Change the path below to match your local setup ──────────────────────────</span>
+
+<span class="n">EurostatConfig</span><span class="o">.</span><span class="n">set_default_data_path</span><span class="p">(</span><span class="s2">&quot;C:/Users/Idrissa Belem/Documents/GitHub/morta_nuts2/data&quot;</span><span class="p">)</span>
+
+<span class="n">data_brute</span> <span class="o">=</span> <span class="n">Eurostat_data</span><span class="p">()</span>
+<span class="n">mortality_fr</span>  <span class="o">=</span> <span class="n">data_brute</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;mortality&quot;</span><span class="p">,</span>  <span class="s2">&quot;FR&quot;</span><span class="p">)</span>
+<span class="n">deaths_fr</span>     <span class="o">=</span> <span class="n">data_brute</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;deaths&quot;</span><span class="p">,</span>     <span class="s2">&quot;FR&quot;</span><span class="p">)</span>
+<span class="n">population_fr</span> <span class="o">=</span> <span class="n">data_brute</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;population&quot;</span><span class="p">,</span> <span class="s2">&quot;FR&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+⚠️  [Eurostat] DATA QUALITY WARNING
+   Eurostat datasets may contain anomalies such as missing values,
+   suppressed cells, inconsistent time series, or regional boundary
+   changes. It is strongly recommended to perform thorough data
+   quality checks before proceeding with any analysis.
+
+📂 Loading NUTS shapefile... NUTS_RG_01M_2024_3035.shp
+✅ Shapefile loaded (1798 features)
+💾 [Eurostat] Cache → FR_mxt_raw.csv
+💾 [Eurostat] Cache → FR_Dxt_raw.csv
+💾 [Eurostat] Cache → FR_Lxt_raw.csv
+</pre></div></div>
+</div>
+</section>
+<section id="3.-Data-Preparation">
+<h2>3. Data Preparation<a class="headerlink" href="#3.-Data-Preparation" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">morta</span> <span class="o">=</span> <span class="n">MortalityCalculator</span><span class="p">()</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">morta</span><span class="o">.</span><span class="n">calculate_mortality</span><span class="p">(</span><span class="n">mortality_fr</span><span class="p">,</span> <span class="n">population_fr</span><span class="p">,</span> <span class="n">deaths_fr</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2024</span><span class="p">]</span>  <span class="c1"># exclude incomplete year</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2026-03-26 14:59:15,505 - MortalityCalculator - INFO - Loading shapefile: c:\Users\Idrissa Belem\Documents\GitHub\morta_nuts2\NUTS_files\NUTS_RG_01M_2024_3035.shp
+2026-03-26 14:59:15,681 - MortalityCalculator - INFO - 1793 regions loaded
+2026-03-26 14:59:15,690 - MortalityCalculator - INFO - MortalityCalculator initialized with 1793 regions
+2026-03-26 14:59:15,691 - MortalityCalculator - INFO - Validating input data...
+2026-03-26 14:59:17,870 - MortalityCalculator - INFO - Validation successful
+2026-03-26 14:59:17,871 - root - INFO - validate_input_data executed in 2.18 seconds
+2026-03-26 14:59:17,880 - MortalityCalculator - INFO - Result retrieved from cache
+2026-03-26 14:59:17,881 - root - INFO - calculate_mortality executed in 2.19 seconds
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Muxtg</span><span class="p">,</span> <span class="n">Dxtg</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">regions</span> <span class="o">=</span> <span class="n">build_input_from_dataframe</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape Dxtg  :&quot;</span><span class="p">,</span> <span class="n">Dxtg</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape Extg  :&quot;</span><span class="p">,</span> <span class="n">Extg</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape Muxtg :&quot;</span><span class="p">,</span> <span class="n">Muxtg</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ages   :&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">xv</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Years  :&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tv</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Regions:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">))</span>
+
+<span class="n">nb_regions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">)</span>
+<span class="n">nb_years</span>   <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tv</span><span class="p">)</span>
+
+<span class="c1"># B-spline hyperparameters</span>
+<span class="n">degree</span>  <span class="o">=</span> <span class="mi">3</span>
+<span class="n">n_knots</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">lam</span>     <span class="o">=</span> <span class="mi">0</span>
+<span class="n">nb_iter</span> <span class="o">=</span> <span class="mi">5000</span>
+
+<span class="c1"># Aggregate national exposure and deaths</span>
+<span class="n">Dxt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Dxtg</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">Ext</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Extg</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Output path</span>
+<span class="n">path_fr</span> <span class="o">=</span> <span class="s2">&quot;C:/Users/Idrissa Belem/Documents/GitHub/morta_nuts2/output_note/FR&quot;</span>
+
+<span class="c1"># France NUTS2 region labels</span>
+<span class="n">France_nuts2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;FR10&quot;</span><span class="p">:</span> <span class="s2">&quot;IDF&quot;</span><span class="p">,</span>  <span class="s2">&quot;FRB0&quot;</span><span class="p">:</span> <span class="s2">&quot;CVL&quot;</span><span class="p">,</span>  <span class="s2">&quot;FRC1&quot;</span><span class="p">:</span> <span class="s2">&quot;BOU&quot;</span><span class="p">,</span>  <span class="s2">&quot;FRC2&quot;</span><span class="p">:</span> <span class="s2">&quot;FCO&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRD1&quot;</span><span class="p">:</span> <span class="s2">&quot;BN&quot;</span><span class="p">,</span>   <span class="s2">&quot;FRD2&quot;</span><span class="p">:</span> <span class="s2">&quot;HN&quot;</span><span class="p">,</span>   <span class="s2">&quot;FRE1&quot;</span><span class="p">:</span> <span class="s2">&quot;NPC&quot;</span><span class="p">,</span>  <span class="s2">&quot;FRE2&quot;</span><span class="p">:</span> <span class="s2">&quot;PIC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRF1&quot;</span><span class="p">:</span> <span class="s2">&quot;ALS&quot;</span><span class="p">,</span>  <span class="s2">&quot;FRF2&quot;</span><span class="p">:</span> <span class="s2">&quot;CHA&quot;</span><span class="p">,</span>  <span class="s2">&quot;FRF3&quot;</span><span class="p">:</span> <span class="s2">&quot;LOR&quot;</span><span class="p">,</span>  <span class="s2">&quot;FRG0&quot;</span><span class="p">:</span> <span class="s2">&quot;PDL&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRH0&quot;</span><span class="p">:</span> <span class="s2">&quot;BRE&quot;</span><span class="p">,</span>  <span class="s2">&quot;FRI1&quot;</span><span class="p">:</span> <span class="s2">&quot;AQU&quot;</span><span class="p">,</span>  <span class="s2">&quot;FRI2&quot;</span><span class="p">:</span> <span class="s2">&quot;LIM&quot;</span><span class="p">,</span>  <span class="s2">&quot;FRI3&quot;</span><span class="p">:</span> <span class="s2">&quot;POI&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRJ1&quot;</span><span class="p">:</span> <span class="s2">&quot;LR&quot;</span><span class="p">,</span>   <span class="s2">&quot;FRJ2&quot;</span><span class="p">:</span> <span class="s2">&quot;MPY&quot;</span><span class="p">,</span>  <span class="s2">&quot;FRK1&quot;</span><span class="p">:</span> <span class="s2">&quot;AUV&quot;</span><span class="p">,</span>  <span class="s2">&quot;FRK2&quot;</span><span class="p">:</span> <span class="s2">&quot;RA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRL0&quot;</span><span class="p">:</span> <span class="s2">&quot;PACA&quot;</span><span class="p">,</span> <span class="s2">&quot;FRM0&quot;</span><span class="p">:</span> <span class="s2">&quot;COR&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">France_nuts2_full</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;FR10&quot;</span><span class="p">:</span> <span class="s2">&quot;Ile-de-France&quot;</span><span class="p">,</span>           <span class="s2">&quot;FRB0&quot;</span><span class="p">:</span> <span class="s2">&quot;Centre — Val de Loire&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRC1&quot;</span><span class="p">:</span> <span class="s2">&quot;Bourgogne&quot;</span><span class="p">,</span>               <span class="s2">&quot;FRC2&quot;</span><span class="p">:</span> <span class="s2">&quot;Franche-Comté&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRD1&quot;</span><span class="p">:</span> <span class="s2">&quot;Basse-Normandie&quot;</span><span class="p">,</span>         <span class="s2">&quot;FRD2&quot;</span><span class="p">:</span> <span class="s2">&quot;Haute-Normandie&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRE1&quot;</span><span class="p">:</span> <span class="s2">&quot;Nord-Pas de Calais&quot;</span><span class="p">,</span>      <span class="s2">&quot;FRE2&quot;</span><span class="p">:</span> <span class="s2">&quot;Picardie&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRF1&quot;</span><span class="p">:</span> <span class="s2">&quot;Alsace&quot;</span><span class="p">,</span>                  <span class="s2">&quot;FRF2&quot;</span><span class="p">:</span> <span class="s2">&quot;Champagne-Ardenne&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRF3&quot;</span><span class="p">:</span> <span class="s2">&quot;Lorraine&quot;</span><span class="p">,</span>                <span class="s2">&quot;FRG0&quot;</span><span class="p">:</span> <span class="s2">&quot;Pays de la Loire&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRH0&quot;</span><span class="p">:</span> <span class="s2">&quot;Bretagne&quot;</span><span class="p">,</span>                <span class="s2">&quot;FRI1&quot;</span><span class="p">:</span> <span class="s2">&quot;Aquitaine&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRI2&quot;</span><span class="p">:</span> <span class="s2">&quot;Limousin&quot;</span><span class="p">,</span>                <span class="s2">&quot;FRI3&quot;</span><span class="p">:</span> <span class="s2">&quot;Poitou-Charentes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRJ1&quot;</span><span class="p">:</span> <span class="s2">&quot;Languedoc-Roussillon&quot;</span><span class="p">,</span>    <span class="s2">&quot;FRJ2&quot;</span><span class="p">:</span> <span class="s2">&quot;Midi-Pyrénées&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRK1&quot;</span><span class="p">:</span> <span class="s2">&quot;Auvergne&quot;</span><span class="p">,</span>                <span class="s2">&quot;FRK2&quot;</span><span class="p">:</span> <span class="s2">&quot;Rhône-Alpes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FRL0&quot;</span><span class="p">:</span> <span class="s2">&quot;Provence-Alpes-Côte d&#39;Azur&quot;</span><span class="p">,</span> <span class="s2">&quot;FRM0&quot;</span><span class="p">:</span> <span class="s2">&quot;Corse&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">region_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">France_nuts2</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">regions</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Shape Dxtg  : (83, 34, 22)
+Shape Extg  : (83, 34, 22)
+Shape Muxtg : (83, 34, 22)
+Ages   : 83
+Years  : 34
+Regions: 22
+</pre></div></div>
+</div>
+</section>
+<section id="4.-Model-Fitting">
+<h2>4. Model Fitting<a class="headerlink" href="#4.-Model-Fitting" title="Link to this heading"></a></h2>
+<section id="4.1-Lee-Carter-Model">
+<h3>4.1 Lee-Carter Model<a class="headerlink" href="#4.1-Lee-Carter-Model" title="Link to this heading"></a></h3>
+<section id="Non-Parametric-Lee-Carter">
+<h4>Non-Parametric Lee-Carter<a class="headerlink" href="#Non-Parametric-Lee-Carter" title="Link to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initial values</span>
+<span class="n">ax_init</span>    <span class="o">=</span> <span class="o">-</span><span class="mf">0.001</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">xv</span><span class="p">)</span>
+<span class="n">bx_init</span>    <span class="o">=</span>  <span class="mf">0.001</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">xv</span><span class="p">)</span>
+<span class="n">kappa_init</span> <span class="o">=</span>          <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tv</span><span class="p">))</span>
+
+<span class="n">model_lc_classic</span> <span class="o">=</span> <span class="n">LeeCarter</span><span class="o">.</span><span class="n">Classic</span><span class="p">(</span><span class="n">nb_iter</span><span class="o">=</span><span class="n">nb_iter</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">results_lc_classic</span> <span class="o">=</span> <span class="n">model_lc_classic</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">ax</span>    <span class="o">=</span> <span class="n">ax_init</span><span class="p">,</span>
+    <span class="n">bx</span>    <span class="o">=</span> <span class="n">bx_init</span><span class="p">,</span>
+    <span class="n">kappa</span> <span class="o">=</span> <span class="n">kappa_init</span><span class="p">,</span>
+    <span class="n">Extg</span>  <span class="o">=</span> <span class="n">Extg</span><span class="p">,</span>
+    <span class="n">Dxtg</span>  <span class="o">=</span> <span class="n">Dxtg</span><span class="p">,</span>
+    <span class="n">xv</span>    <span class="o">=</span> <span class="n">xv</span><span class="p">,</span>
+    <span class="n">tv</span>    <span class="o">=</span> <span class="n">tv</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">results_lc_classic</span><span class="p">[</span><span class="s1">&#39;fit_statistics&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>N</th>
+      <th>m</th>
+      <th>degree</th>
+      <th>dofs</th>
+      <th>lnL</th>
+      <th>AIC</th>
+      <th>BIC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>62084</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>200</td>
+      <td>-282530.49</td>
+      <td>565460.97</td>
+      <td>567268.22</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Parametric-Lee-Carter">
+<h4>Parametric Lee-Carter<a class="headerlink" href="#Parametric-Lee-Carter" title="Link to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">n_basis</span> <span class="o">=</span> <span class="n">make_bspline_basis</span><span class="p">(</span><span class="n">xv</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">n_knots</span><span class="p">)</span>
+
+<span class="n">ax_coef_init</span><span class="p">,</span> <span class="n">bx_coef_init</span><span class="p">,</span> <span class="n">kappa_init</span> <span class="o">=</span> <span class="n">lcp_parametrique_init_national</span><span class="p">(</span>
+    <span class="n">Dxtg</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span> <span class="n">n_basis</span><span class="o">=</span><span class="n">n_basis</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">,</span> <span class="n">n_knots</span><span class="o">=</span><span class="n">n_knots</span>
+<span class="p">)</span>
+
+<span class="n">model_lcp_nat</span> <span class="o">=</span> <span class="n">LeeCarter</span><span class="o">.</span><span class="n">Parametric</span><span class="o">.</span><span class="n">National</span><span class="p">(</span>
+    <span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">n_knots</span><span class="o">=</span><span class="n">n_knots</span><span class="p">,</span>
+    <span class="n">lam</span><span class="o">=</span><span class="n">lam</span><span class="p">,</span>
+    <span class="n">nb_iter</span><span class="o">=</span><span class="n">nb_iter</span><span class="p">,</span>
+    <span class="n">eta0</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">results_lcp_nat</span> <span class="o">=</span> <span class="n">model_lcp_nat</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">ax_coef_init</span> <span class="o">=</span> <span class="n">ax_coef_init</span><span class="p">,</span>
+    <span class="n">bx_coef_init</span> <span class="o">=</span> <span class="n">bx_coef_init</span><span class="p">,</span>
+    <span class="n">kappa_init</span>   <span class="o">=</span> <span class="n">kappa_init</span><span class="p">,</span>
+    <span class="n">Extg</span>         <span class="o">=</span> <span class="n">Extg</span><span class="p">,</span>
+    <span class="n">Dxtg</span>         <span class="o">=</span> <span class="n">Dxtg</span><span class="p">,</span>
+    <span class="n">xv</span>           <span class="o">=</span> <span class="n">xv</span><span class="p">,</span>
+    <span class="n">tv</span>           <span class="o">=</span> <span class="n">tv</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">results_lcp_nat</span><span class="p">[</span><span class="s1">&#39;fit_statistics&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>N</th>
+      <th>n_basis</th>
+      <th>dofs</th>
+      <th>lnL</th>
+      <th>deviance</th>
+      <th>AIC</th>
+      <th>BIC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>62084</td>
+      <td>27</td>
+      <td>88.0</td>
+      <td>-282989.13</td>
+      <td>-1.103963e+08</td>
+      <td>566154.26</td>
+      <td>566949.45</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+<section id="4.2-Li-and-Lee-Model">
+<h3>4.2 Li and Lee Model<a class="headerlink" href="#4.2-Li-and-Lee-Model" title="Link to this heading"></a></h3>
+<section id="Non-Parametric-Li-and-Lee">
+<h4>Non-Parametric Li and Lee<a class="headerlink" href="#Non-Parametric-Li-and-Lee" title="Link to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Regional initial values</span>
+<span class="n">bx_gr_init</span>    <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">xv</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">)))</span>
+<span class="n">kappa_gr_init</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">tv</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">)))</span>
+
+<span class="n">model_ll_classic</span> <span class="o">=</span> <span class="n">LiLee</span><span class="o">.</span><span class="n">Classic</span><span class="p">(</span><span class="n">nb_iter</span><span class="o">=</span><span class="n">nb_iter</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">result_ll</span> <span class="o">=</span> <span class="n">model_ll_classic</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">ax</span>       <span class="o">=</span> <span class="n">ax_init</span><span class="p">,</span>
+    <span class="n">bx</span>       <span class="o">=</span> <span class="n">bx_init</span><span class="p">,</span>
+    <span class="n">bx_gr</span>    <span class="o">=</span> <span class="n">bx_gr_init</span><span class="p">,</span>
+    <span class="n">kappa</span>    <span class="o">=</span> <span class="n">kappa_init</span><span class="p">,</span>
+    <span class="n">kappa_gr</span> <span class="o">=</span> <span class="n">kappa_gr_init</span><span class="p">,</span>
+    <span class="n">Extg</span>     <span class="o">=</span> <span class="n">Extg</span><span class="p">,</span>
+    <span class="n">Dxtg</span>     <span class="o">=</span> <span class="n">Dxtg</span><span class="p">,</span>
+    <span class="n">Muxtg</span>    <span class="o">=</span> <span class="n">Muxtg</span><span class="p">,</span>
+    <span class="n">xv</span>       <span class="o">=</span> <span class="n">xv</span><span class="p">,</span>
+    <span class="n">tv</span>       <span class="o">=</span> <span class="n">tv</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">result_ll</span><span class="p">[</span><span class="s1">&#39;fit_statistics&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>N</th>
+      <th>m</th>
+      <th>degree</th>
+      <th>dofs</th>
+      <th>lnL</th>
+      <th>AIC</th>
+      <th>BIC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>62084</td>
+      <td>NA</td>
+      <td>NA</td>
+      <td>2750</td>
+      <td>-215387.22</td>
+      <td>436274.44</td>
+      <td>461124.11</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Parametric-Li-and-Lee-with-B-Splines">
+<h4>Parametric Li and Lee with B-Splines<a class="headerlink" href="#Parametric-Li-and-Lee-with-B-Splines" title="Link to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_llp</span> <span class="o">=</span> <span class="n">LiLee</span><span class="o">.</span><span class="n">Parametric</span><span class="o">.</span><span class="n">FullModel</span><span class="p">(</span>
+    <span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">n_knots</span><span class="o">=</span><span class="n">n_knots</span><span class="p">,</span>
+    <span class="n">lam</span><span class="o">=</span><span class="n">lam</span><span class="p">,</span>
+    <span class="n">nb_iter</span><span class="o">=</span><span class="n">nb_iter</span><span class="p">,</span>
+    <span class="n">eta0</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">init</span>      <span class="o">=</span> <span class="n">model_llp</span><span class="o">.</span><span class="n">init_params</span><span class="p">(</span><span class="n">Dxtg</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">xv</span><span class="p">)</span>
+<span class="n">result_llp</span> <span class="o">=</span> <span class="n">model_llp</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><span class="n">init</span><span class="p">,</span> <span class="n">Extg</span><span class="p">,</span> <span class="n">Dxtg</span><span class="p">,</span> <span class="n">xv</span><span class="p">,</span> <span class="n">tv</span><span class="p">)</span>
+<span class="n">result_llp</span><span class="p">[</span><span class="s1">&#39;fit_statistics&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>N</th>
+      <th>dofs</th>
+      <th>lnL</th>
+      <th>deviance</th>
+      <th>AIC</th>
+      <th>BIC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>62084</td>
+      <td>1952.0</td>
+      <td>-209899.18</td>
+      <td>-110542495.6</td>
+      <td>423702.35</td>
+      <td>441341.1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+</section>
+<section id="5.-Model-Comparison">
+<h2>5. Model Comparison<a class="headerlink" href="#5.-Model-Comparison" title="Link to this heading"></a></h2>
+<section id="5.1-AIC-/-BIC-/-Log-Likelihood">
+<h3>5.1 AIC / BIC / Log-Likelihood<a class="headerlink" href="#5.1-AIC-/-BIC-/-Log-Likelihood" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;LC&quot;</span><span class="p">:</span>              <span class="n">results_lc_classic</span><span class="p">,</span>
+    <span class="s2">&quot;LC parametric&quot;</span><span class="p">:</span>   <span class="n">results_lcp_nat</span><span class="p">,</span>
+    <span class="s2">&quot;Li-Lee&quot;</span><span class="p">:</span>          <span class="n">result_ll</span><span class="p">,</span>
+    <span class="s2">&quot;Li-Lee parametric&quot;</span><span class="p">:</span> <span class="n">result_llp</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;fit_statistics&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s2">&quot;Model&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s2">&quot;N&quot;</span><span class="p">:</span>    <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;dofs&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;dofs&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;lnL&quot;</span><span class="p">:</span>  <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;lnL&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;AIC&quot;</span><span class="p">:</span>  <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;AIC&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;BIC&quot;</span><span class="p">:</span>  <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;BIC&quot;</span><span class="p">],</span>
+    <span class="p">})</span>
+
+<span class="n">comparison_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+<span class="c1"># comparison_table.to_csv(path_fr + &quot;/models.csv&quot;, index=False)</span>
+<span class="n">comparison_table</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Model</th>
+      <th>N</th>
+      <th>dofs</th>
+      <th>lnL</th>
+      <th>AIC</th>
+      <th>BIC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>LC</td>
+      <td>62084.0</td>
+      <td>200.0</td>
+      <td>-282530.49</td>
+      <td>565460.97</td>
+      <td>567268.22</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>LC parametric</td>
+      <td>62084.0</td>
+      <td>88.0</td>
+      <td>-282989.13</td>
+      <td>566154.26</td>
+      <td>566949.45</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Li-Lee</td>
+      <td>62084.0</td>
+      <td>2750.0</td>
+      <td>-215387.22</td>
+      <td>436274.44</td>
+      <td>461124.11</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Li-Lee parametric</td>
+      <td>62084.0</td>
+      <td>1952.0</td>
+      <td>-209899.18</td>
+      <td>423702.35</td>
+      <td>441341.10</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="5.2-MAE-&amp;-WMAE">
+<h3>5.2 MAE &amp; WMAE<a class="headerlink" href="#5.2-MAE-&-WMAE" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mae_ll</span>  <span class="o">=</span> <span class="n">compute_mae</span><span class="p">(</span><span class="n">Muxtg</span><span class="p">,</span> <span class="n">result_ll</span><span class="p">[</span><span class="s1">&#39;fitted_values&#39;</span><span class="p">][</span><span class="s1">&#39;mu&#39;</span><span class="p">],</span>       <span class="n">weights</span><span class="o">=</span><span class="n">Extg</span><span class="p">)</span>
+<span class="n">mae_llp</span> <span class="o">=</span> <span class="n">compute_mae</span><span class="p">(</span><span class="n">Muxtg</span><span class="p">,</span> <span class="n">result_llp</span><span class="p">[</span><span class="s1">&#39;fitted_values&#39;</span><span class="p">][</span><span class="s1">&#39;mu&#39;</span><span class="p">],</span>      <span class="n">weights</span><span class="o">=</span><span class="n">Extg</span><span class="p">)</span>
+<span class="n">mae_lcp</span> <span class="o">=</span> <span class="n">compute_mae</span><span class="p">(</span><span class="n">Muxtg</span><span class="p">,</span> <span class="n">results_lcp_nat</span><span class="p">[</span><span class="s1">&#39;fitted_values&#39;</span><span class="p">][</span><span class="s1">&#39;mu&#39;</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="n">Extg</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MAE  global — Li-Lee classic : </span><span class="si">{</span><span class="n">mae_ll</span><span class="p">[</span><span class="s1">&#39;global&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> | Li-Lee parametric : </span><span class="si">{</span><span class="n">mae_llp</span><span class="p">[</span><span class="s1">&#39;global&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WMAE global — Li-Lee classic : </span><span class="si">{</span><span class="n">mae_ll</span><span class="p">[</span><span class="s1">&#39;wmae_global&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> | Li-Lee parametric : </span><span class="si">{</span><span class="n">mae_llp</span><span class="p">[</span><span class="s1">&#39;wmae_global&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># WMAE by region</span>
+<span class="n">mae</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Li-Lee&quot;</span><span class="p">:</span>            <span class="n">mae_ll</span><span class="p">[</span><span class="s1">&#39;wmae_by_region&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;Li-Lee parametric&quot;</span><span class="p">:</span> <span class="n">mae_llp</span><span class="p">[</span><span class="s1">&#39;wmae_by_region&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;LC parametric&quot;</span><span class="p">:</span>     <span class="n">mae_lcp</span><span class="p">[</span><span class="s1">&#39;wmae_by_region&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="n">df_wmae</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mae</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">region_labels</span><span class="p">)</span>
+
+<span class="c1"># Relative differences (%)</span>
+<span class="n">df_final</span> <span class="o">=</span> <span class="n">df_wmae</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_final</span><span class="p">[</span><span class="s2">&quot;LLp vs LL (%)&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">df_wmae</span><span class="p">[</span><span class="s2">&quot;Li-Lee parametric&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_wmae</span><span class="p">[</span><span class="s2">&quot;Li-Lee&quot;</span><span class="p">])</span>         <span class="o">/</span> <span class="n">df_wmae</span><span class="p">[</span><span class="s2">&quot;Li-Lee&quot;</span><span class="p">]</span>         <span class="o">*</span> <span class="mi">100</span>
+<span class="n">df_final</span><span class="p">[</span><span class="s2">&quot;LCp vs LL (%)&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">df_wmae</span><span class="p">[</span><span class="s2">&quot;LC parametric&quot;</span><span class="p">]</span>     <span class="o">-</span> <span class="n">df_wmae</span><span class="p">[</span><span class="s2">&quot;Li-Lee&quot;</span><span class="p">])</span>         <span class="o">/</span> <span class="n">df_wmae</span><span class="p">[</span><span class="s2">&quot;Li-Lee&quot;</span><span class="p">]</span>         <span class="o">*</span> <span class="mi">100</span>
+<span class="n">df_final</span><span class="p">[</span><span class="s2">&quot;LLp vs LCp (%)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_wmae</span><span class="p">[</span><span class="s2">&quot;Li-Lee parametric&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_wmae</span><span class="p">[</span><span class="s2">&quot;LC parametric&quot;</span><span class="p">])</span>  <span class="o">/</span> <span class="n">df_wmae</span><span class="p">[</span><span class="s2">&quot;LC parametric&quot;</span><span class="p">]</span>  <span class="o">*</span> <span class="mi">100</span>
+
+<span class="n">df_final</span><span class="p">[[</span><span class="s2">&quot;LLp vs LL (%)&quot;</span><span class="p">,</span> <span class="s2">&quot;LCp vs LL (%)&quot;</span><span class="p">,</span> <span class="s2">&quot;LLp vs LCp (%)&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df_final</span><span class="p">[[</span><span class="s2">&quot;LLp vs LL (%)&quot;</span><span class="p">,</span> <span class="s2">&quot;LCp vs LL (%)&quot;</span><span class="p">,</span> <span class="s2">&quot;LLp vs LCp (%)&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">df_final</span><span class="p">[[</span><span class="s2">&quot;Li-Lee&quot;</span><span class="p">,</span> <span class="s2">&quot;Li-Lee parametric&quot;</span><span class="p">,</span> <span class="s2">&quot;LC parametric&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df_final</span><span class="p">[[</span><span class="s2">&quot;Li-Lee&quot;</span><span class="p">,</span> <span class="s2">&quot;Li-Lee parametric&quot;</span><span class="p">,</span> <span class="s2">&quot;LC parametric&quot;</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">10000</span>
+<span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">()</span> <span class="o">/</span> <span class="mi">100000</span>
+
+<span class="n">nuts2_inv</span>  <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">France_nuts2</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="n">df_final</span>   <span class="o">=</span> <span class="n">df_final</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="s2">&quot;label&quot;</span><span class="p">})</span>
+<span class="n">df_final</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;nuts2&quot;</span><span class="p">,</span>  <span class="n">df_final</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">nuts2_inv</span><span class="p">))</span>
+<span class="n">df_final</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;region&quot;</span><span class="p">,</span> <span class="n">df_final</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">nuts2_inv</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">France_nuts2_full</span><span class="p">))</span>
+<span class="c1"># df_final.to_csv(path_fr + &quot;/wmae.csv&quot;, index=False)</span>
+<span class="n">df_final</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+MAE  global — Li-Lee classic : 0.000459 | Li-Lee parametric : 0.000429
+WMAE global — Li-Lee classic : 0.000294 | Li-Lee parametric : 0.000266
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>nuts2</th>
+      <th>region</th>
+      <th>label</th>
+      <th>Li-Lee</th>
+      <th>Li-Lee parametric</th>
+      <th>LC parametric</th>
+      <th>LLp vs LL (%)</th>
+      <th>LCp vs LL (%)</th>
+      <th>LLp vs LCp (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>FR10</td>
+      <td>Ile-de-France</td>
+      <td>IDF</td>
+      <td>0.00002</td>
+      <td>0.00002</td>
+      <td>0.00004</td>
+      <td>-22.63</td>
+      <td>100.55</td>
+      <td>-61.42</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>FRB0</td>
+      <td>Centre — Val de Loire</td>
+      <td>CVL</td>
+      <td>0.00003</td>
+      <td>0.00003</td>
+      <td>0.00004</td>
+      <td>-5.39</td>
+      <td>22.32</td>
+      <td>-22.65</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>FRC1</td>
+      <td>Bourgogne</td>
+      <td>BOU</td>
+      <td>0.00004</td>
+      <td>0.00004</td>
+      <td>0.00004</td>
+      <td>-3.68</td>
+      <td>15.05</td>
+      <td>-16.28</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>FRC2</td>
+      <td>Franche-Comté</td>
+      <td>FCO</td>
+      <td>0.00004</td>
+      <td>0.00004</td>
+      <td>0.00004</td>
+      <td>-4.50</td>
+      <td>5.96</td>
+      <td>-9.87</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>FRD1</td>
+      <td>Basse-Normandie</td>
+      <td>BN</td>
+      <td>0.00004</td>
+      <td>0.00004</td>
+      <td>0.00005</td>
+      <td>-7.64</td>
+      <td>12.56</td>
+      <td>-17.95</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="5.3-WMAE-Bar-Chart-by-Region">
+<h3>5.3 WMAE Bar Chart by Region<a class="headerlink" href="#5.3-WMAE-Bar-Chart-by-Region" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mpl</span><span class="o">.</span><span class="n">rc_file_defaults</span><span class="p">()</span>
+
+<span class="n">colors</span>   <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#1f77b4&quot;</span><span class="p">,</span> <span class="s2">&quot;#ff7f0e&quot;</span><span class="p">,</span> <span class="s2">&quot;#2ca02c&quot;</span><span class="p">]</span>
+<span class="n">n</span>        <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">region_labels</span><span class="p">)</span>
+<span class="n">n_models</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mae</span><span class="p">)</span>
+<span class="n">width</span>    <span class="o">=</span> <span class="mf">0.8</span> <span class="o">/</span> <span class="n">n_models</span>
+<span class="n">x</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">mae</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">colors</span><span class="p">)):</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">n_models</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">width</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span> <span class="n">mae</span><span class="p">[</span><span class="n">model_name</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">region_labels</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Region&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;WMAE&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="c1"># plt.savefig(path_fr + &quot;/Histogram_wmae.png&quot;, dpi=150, bbox_inches=&quot;tight&quot;)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_25_0.png" src="../_images/notebook_exploration_deterministe_FR_25_0.png" />
+</div>
+</div>
+</section>
+<section id="5.4-WMAE-Maps">
+<h3>5.4 WMAE Maps<a class="headerlink" href="#5.4-WMAE-Maps" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tv_future</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">2024</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Li and Lee parametric &amp; LC parametric errors&quot;</span><span class="p">)</span>
+<span class="n">mp</span> <span class="o">=</span> <span class="n">MapPlotter</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="n">mae_llp</span><span class="p">[</span><span class="s1">&#39;wmae_by_region&#39;</span><span class="p">],</span> <span class="n">tv_future</span><span class="p">,</span> <span class="s2">&quot;FR&quot;</span><span class="p">,</span> <span class="s2">&quot;WMAE&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greens&quot;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">plot_compare_models</span><span class="p">(</span>
+    <span class="n">other_data</span><span class="o">=</span><span class="n">mae_lcp</span><span class="p">[</span><span class="s1">&#39;wmae_by_region&#39;</span><span class="p">],</span>
+    <span class="n">model_labels</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Li and Lee parametric&quot;</span><span class="p">,</span> <span class="s2">&quot;LC parametric&quot;</span><span class="p">),</span>
+    <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cmap_diverging</span><span class="o">=</span><span class="s2">&quot;Greens&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1">#mp.save(path_fr + &quot;/WMAE_llp_vs_lc_color_detra.png&quot;)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Li and Lee parametric errors&quot;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">plot_static</span><span class="p">(</span><span class="n">mae_llp</span><span class="p">[</span><span class="s1">&#39;wmae_by_region&#39;</span><span class="p">])</span>
+<span class="c1">#mp.save(path_fr + &quot;/WMAE_llp_color_detra.png&quot;)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Li and Lee parametric &amp; LC parametric errors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\Idrissa Belem\Documents\GitHub\morta_nuts2\src\morta_nuts2\graph\plot_class.py:702: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout()
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_27_2.png" src="../_images/notebook_exploration_deterministe_FR_27_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Li and Lee parametric errors
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_27_4.png" src="../_images/notebook_exploration_deterministe_FR_27_4.png" />
+</div>
+</div>
+</section>
+<section id="5.5-Fitted-Mortality-Curves">
+<h3>5.5 Fitted Mortality Curves<a class="headerlink" href="#5.5-Fitted-Mortality-Curves" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mu_obs</span>     <span class="o">=</span> <span class="n">Dxtg</span> <span class="o">/</span> <span class="n">Extg</span>
+<span class="n">mu_nat_rep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">results_lcp_nat</span><span class="p">[</span><span class="s2">&quot;fitted_values&quot;</span><span class="p">][</span><span class="s2">&quot;mu&quot;</span><span class="p">][:,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">curves</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Observed&quot;</span><span class="p">:</span>         <span class="n">mu_obs</span><span class="p">,</span>
+    <span class="s2">&quot;Li-Lee&quot;</span><span class="p">:</span>           <span class="n">result_ll</span><span class="p">[</span><span class="s1">&#39;fitted_values&#39;</span><span class="p">][</span><span class="s1">&#39;mu&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;Li-Lee parametric&quot;</span><span class="p">:</span> <span class="n">result_llp</span><span class="p">[</span><span class="s2">&quot;fitted_values&quot;</span><span class="p">][</span><span class="s2">&quot;mu&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;LC parametric&quot;</span><span class="p">:</span>    <span class="n">mu_nat_rep</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">RegionalCurvePlotter</span><span class="p">(</span>
+    <span class="n">x_values</span><span class="o">=</span><span class="n">xv</span><span class="p">,</span>
+    <span class="n">curves_dict</span><span class="o">=</span><span class="n">curves</span><span class="p">,</span>
+    <span class="n">tv</span><span class="o">=</span><span class="n">tv</span><span class="p">,</span>
+    <span class="n">regions</span><span class="o">=</span><span class="n">region_labels</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">year_to_plot</span><span class="o">=</span><span class="mi">2015</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_29_0.png" src="../_images/notebook_exploration_deterministe_FR_29_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_29_1.png" src="../_images/notebook_exploration_deterministe_FR_29_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_29_2.png" src="../_images/notebook_exploration_deterministe_FR_29_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_29_3.png" src="../_images/notebook_exploration_deterministe_FR_29_3.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_29_4.png" src="../_images/notebook_exploration_deterministe_FR_29_4.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_29_5.png" src="../_images/notebook_exploration_deterministe_FR_29_5.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_29_6.png" src="../_images/notebook_exploration_deterministe_FR_29_6.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_29_7.png" src="../_images/notebook_exploration_deterministe_FR_29_7.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="6.-Projection">
+<h2>6. Projection<a class="headerlink" href="#6.-Projection" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Projection settings</span>
+<span class="n">n_sim</span>       <span class="o">=</span> <span class="mi">2000</span>
+<span class="n">horizon</span>     <span class="o">=</span> <span class="mi">50</span>
+<span class="n">covid_years</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;2019&#39;</span><span class="p">,</span> <span class="s1">&#39;2020&#39;</span><span class="p">,</span> <span class="s1">&#39;2021&#39;</span><span class="p">]</span>  <span class="c1"># excluded from drift estimation</span>
+
+<span class="c1"># Lee-Carter parametric</span>
+<span class="n">proj_lcp</span> <span class="o">=</span> <span class="n">ProjectorLC_SVD</span><span class="p">(</span>
+    <span class="n">results_lcp_nat</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span>
+    <span class="n">horizon</span><span class="o">=</span><span class="n">horizon</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;rw&quot;</span><span class="p">,</span>
+    <span class="n">exclude_years</span><span class="o">=</span><span class="n">covid_years</span><span class="p">,</span>
+    <span class="n">stochastic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">n_sim</span><span class="o">=</span><span class="n">n_sim</span><span class="p">,</span>
+    <span class="n">nb_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">project</span><span class="p">()</span>
+
+<span class="c1"># Li-Lee parametric</span>
+<span class="n">proj_llp</span> <span class="o">=</span> <span class="n">ProjectorLeeLi</span><span class="p">(</span>
+    <span class="n">result_llp</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span>
+    <span class="n">horizon</span><span class="o">=</span><span class="n">horizon</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;rw&quot;</span><span class="p">,</span>
+    <span class="n">exclude_years</span><span class="o">=</span><span class="n">covid_years</span><span class="p">,</span>
+    <span class="n">stochastic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">n_sim</span><span class="o">=</span><span class="n">n_sim</span><span class="p">,</span>
+    <span class="n">nb_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">project</span><span class="p">()</span>
+
+<span class="c1"># Li-Lee classic</span>
+<span class="n">proj_ll</span> <span class="o">=</span> <span class="n">ProjectorLeeLi</span><span class="p">(</span>
+    <span class="n">result_ll</span><span class="p">,</span> <span class="n">tv</span><span class="p">,</span>
+    <span class="n">horizon</span><span class="o">=</span><span class="n">horizon</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;rw&quot;</span><span class="p">,</span>
+    <span class="n">exclude_years</span><span class="o">=</span><span class="n">covid_years</span><span class="p">,</span>
+    <span class="n">stochastic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">n_sim</span><span class="o">=</span><span class="n">n_sim</span><span class="p">,</span>
+    <span class="n">nb_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">project</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="7.-High-Age-Extrapolation-(up-to-age-110)">
+<h2>7. High-Age Extrapolation (up to age 110)<a class="headerlink" href="#7.-High-Age-Extrapolation-(up-to-age-110)" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start_age</span> <span class="o">=</span> <span class="mi">60</span>  <span class="c1"># start of log-linear regression window</span>
+
+<span class="c1"># Projected log-mortality: Li-Lee parametric</span>
+<span class="n">logmu_extrap_llp</span><span class="p">,</span> <span class="n">xv_full</span> <span class="o">=</span> <span class="n">HighAgeExtrapolator</span><span class="p">(</span>
+    <span class="n">xv</span>             <span class="o">=</span> <span class="n">xv</span><span class="p">,</span>
+    <span class="n">x_extrap</span>       <span class="o">=</span> <span class="mi">110</span><span class="p">,</span>
+    <span class="n">x_extrap_start</span> <span class="o">=</span> <span class="n">start_age</span><span class="p">,</span>
+    <span class="n">method</span>         <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="n">log_Muxtg</span>      <span class="o">=</span> <span class="n">proj_llp</span><span class="p">[</span><span class="s2">&quot;logmu_future&quot;</span><span class="p">],</span>
+    <span class="n">auto_start</span>     <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">extrapolate</span><span class="p">()</span>
+
+<span class="c1"># Projected log-mortality: Li-Lee classic</span>
+<span class="n">logmu_extrap_ll</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">HighAgeExtrapolator</span><span class="p">(</span>
+    <span class="n">xv</span>             <span class="o">=</span> <span class="n">xv</span><span class="p">,</span>
+    <span class="n">x_extrap</span>       <span class="o">=</span> <span class="mi">110</span><span class="p">,</span>
+    <span class="n">x_extrap_start</span> <span class="o">=</span> <span class="n">start_age</span><span class="p">,</span>
+    <span class="n">method</span>         <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="n">log_Muxtg</span>      <span class="o">=</span> <span class="n">proj_ll</span><span class="p">[</span><span class="s2">&quot;logmu_future&quot;</span><span class="p">],</span>
+    <span class="n">auto_start</span>     <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">extrapolate</span><span class="p">()</span>
+
+<span class="c1"># Historical log-mortality: Li-Lee parametric</span>
+<span class="n">logmu_llp_hist</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">HighAgeExtrapolator</span><span class="p">(</span>
+    <span class="n">xv</span>             <span class="o">=</span> <span class="n">xv</span><span class="p">,</span>
+    <span class="n">x_extrap</span>       <span class="o">=</span> <span class="mi">110</span><span class="p">,</span>
+    <span class="n">x_extrap_start</span> <span class="o">=</span> <span class="n">start_age</span><span class="p">,</span>
+    <span class="n">method</span>         <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="n">log_Muxtg</span>      <span class="o">=</span> <span class="n">result_llp</span><span class="p">[</span><span class="s2">&quot;fitted_values&quot;</span><span class="p">][</span><span class="s2">&quot;log_mu&quot;</span><span class="p">],</span>
+    <span class="n">auto_start</span>     <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">extrapolate</span><span class="p">()</span>
+
+<span class="c1"># Historical log-mortality: Li-Lee classic</span>
+<span class="n">logmu_ll_hist</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">HighAgeExtrapolator</span><span class="p">(</span>
+    <span class="n">xv</span>             <span class="o">=</span> <span class="n">xv</span><span class="p">,</span>
+    <span class="n">x_extrap</span>       <span class="o">=</span> <span class="mi">110</span><span class="p">,</span>
+    <span class="n">x_extrap_start</span> <span class="o">=</span> <span class="n">start_age</span><span class="p">,</span>
+    <span class="n">method</span>         <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="n">log_Muxtg</span>      <span class="o">=</span> <span class="n">result_ll</span><span class="p">[</span><span class="s2">&quot;fitted_values&quot;</span><span class="p">][</span><span class="s2">&quot;log_mu&quot;</span><span class="p">],</span>
+    <span class="n">auto_start</span>     <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">extrapolate</span><span class="p">()</span>
+
+<span class="c1"># Concatenate historical + projected</span>
+<span class="n">logmu_full_llp</span> <span class="o">=</span> <span class="n">concat_logmu_time</span><span class="p">(</span><span class="n">logmu_llp_hist</span><span class="p">,</span> <span class="n">logmu_extrap_llp</span><span class="p">)</span>
+<span class="n">logmu_full_ll</span>  <span class="o">=</span> <span class="n">concat_logmu_time</span><span class="p">(</span><span class="n">logmu_ll_hist</span><span class="p">,</span>  <span class="n">logmu_extrap_ll</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;logmu_full_llp shape:&quot;</span><span class="p">,</span> <span class="n">logmu_full_llp</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;logmu_full_ll  shape:&quot;</span><span class="p">,</span> <span class="n">logmu_full_ll</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Age grid       :&quot;</span><span class="p">,</span> <span class="n">xv_full</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;→&quot;</span><span class="p">,</span> <span class="n">xv_full</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+logmu_full_llp shape: (111, 84, 22)
+logmu_full_ll  shape: (111, 84, 22)
+Age grid       : 0 → 110
+</pre></div></div>
+</div>
+</section>
+<section id="8.-Life-Expectancy">
+<h2>8. Life Expectancy<a class="headerlink" href="#8.-Life-Expectancy" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">esp_llp</span> <span class="o">=</span> <span class="n">LifeExpectancy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmu_full_llp</span><span class="p">))</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="n">esp_ll</span>  <span class="o">=</span> <span class="n">LifeExpectancy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logmu_full_ll</span><span class="p">))</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="n">e0_llp</span> <span class="o">=</span> <span class="n">esp_llp</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>  <span class="c1"># shape: (nb_years, nb_regions)</span>
+<span class="n">e0_ll</span>  <span class="o">=</span> <span class="n">esp_ll</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="p">:,</span> <span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<section id="8.1-Export-to-CSV">
+<h3>8.1 Export to CSV<a class="headerlink" href="#8.1-Export-to-CSV" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_esp_llp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">e0_llp</span><span class="p">,</span>
+    <span class="n">index</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">2023</span> <span class="o">+</span> <span class="mi">51</span><span class="p">),</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="n">region_labels</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">df_esp_llp</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;year&quot;</span>
+
+<span class="n">df_esp_llp_export</span> <span class="o">=</span> <span class="n">df_esp_llp</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># df_esp_llp_export.to_csv(path_fr + &quot;/LifeExpectancy_at_birth_llp_parametric.csv&quot;, index=False)</span>
+
+<span class="c1"># Growth rates every 10 years</span>
+<span class="n">years_step</span> <span class="o">=</span> <span class="n">df_esp_llp</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()[::</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">df_growth</span>  <span class="o">=</span> <span class="n">df_esp_llp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">years_step</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">df_growth</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Horizon&quot;</span>
+<span class="n">df_growth</span> <span class="o">=</span> <span class="n">df_growth</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># df_growth.to_csv(path_fr + &quot;/LifeExpectancy_increase_llp_to_percent.csv&quot;, index=False)</span>
+
+<span class="n">df_esp_llp_export</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>IDF</th>
+      <th>CVL</th>
+      <th>BOU</th>
+      <th>FCO</th>
+      <th>BN</th>
+      <th>HN</th>
+      <th>NPC</th>
+      <th>PIC</th>
+      <th>ALS</th>
+      <th>...</th>
+      <th>BRE</th>
+      <th>AQU</th>
+      <th>LIM</th>
+      <th>POI</th>
+      <th>LR</th>
+      <th>MPY</th>
+      <th>AUV</th>
+      <th>RA</th>
+      <th>PACA</th>
+      <th>COR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1990</td>
+      <td>77.55</td>
+      <td>77.61</td>
+      <td>76.78</td>
+      <td>76.73</td>
+      <td>76.43</td>
+      <td>76.12</td>
+      <td>74.12</td>
+      <td>75.15</td>
+      <td>75.46</td>
+      <td>...</td>
+      <td>75.36</td>
+      <td>77.15</td>
+      <td>76.69</td>
+      <td>77.62</td>
+      <td>77.10</td>
+      <td>77.59</td>
+      <td>76.30</td>
+      <td>77.26</td>
+      <td>77.11</td>
+      <td>76.30</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1991</td>
+      <td>77.41</td>
+      <td>77.46</td>
+      <td>76.80</td>
+      <td>77.10</td>
+      <td>76.58</td>
+      <td>76.32</td>
+      <td>74.40</td>
+      <td>75.19</td>
+      <td>75.87</td>
+      <td>...</td>
+      <td>75.75</td>
+      <td>77.37</td>
+      <td>77.03</td>
+      <td>77.77</td>
+      <td>77.20</td>
+      <td>78.17</td>
+      <td>76.26</td>
+      <td>77.40</td>
+      <td>77.19</td>
+      <td>76.68</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1992</td>
+      <td>77.72</td>
+      <td>77.84</td>
+      <td>77.14</td>
+      <td>77.35</td>
+      <td>77.13</td>
+      <td>76.34</td>
+      <td>74.82</td>
+      <td>75.79</td>
+      <td>76.55</td>
+      <td>...</td>
+      <td>76.24</td>
+      <td>77.61</td>
+      <td>77.48</td>
+      <td>77.96</td>
+      <td>77.83</td>
+      <td>78.56</td>
+      <td>76.48</td>
+      <td>77.99</td>
+      <td>77.53</td>
+      <td>76.08</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1993</td>
+      <td>77.79</td>
+      <td>77.87</td>
+      <td>76.81</td>
+      <td>77.23</td>
+      <td>76.75</td>
+      <td>76.39</td>
+      <td>74.50</td>
+      <td>75.65</td>
+      <td>76.45</td>
+      <td>...</td>
+      <td>75.98</td>
+      <td>77.51</td>
+      <td>77.66</td>
+      <td>78.29</td>
+      <td>77.62</td>
+      <td>78.49</td>
+      <td>76.77</td>
+      <td>77.76</td>
+      <td>77.61</td>
+      <td>76.03</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1994</td>
+      <td>78.07</td>
+      <td>78.08</td>
+      <td>77.58</td>
+      <td>77.67</td>
+      <td>77.62</td>
+      <td>77.03</td>
+      <td>75.15</td>
+      <td>76.31</td>
+      <td>77.05</td>
+      <td>...</td>
+      <td>76.61</td>
+      <td>77.96</td>
+      <td>77.88</td>
+      <td>78.31</td>
+      <td>77.87</td>
+      <td>78.80</td>
+      <td>77.05</td>
+      <td>78.27</td>
+      <td>77.73</td>
+      <td>76.76</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 23 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_growth</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Horizon</th>
+      <th>IDF</th>
+      <th>CVL</th>
+      <th>BOU</th>
+      <th>FCO</th>
+      <th>BN</th>
+      <th>HN</th>
+      <th>NPC</th>
+      <th>PIC</th>
+      <th>ALS</th>
+      <th>...</th>
+      <th>BRE</th>
+      <th>AQU</th>
+      <th>LIM</th>
+      <th>POI</th>
+      <th>LR</th>
+      <th>MPY</th>
+      <th>AUV</th>
+      <th>RA</th>
+      <th>PACA</th>
+      <th>COR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1990</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2000</td>
+      <td>3.30</td>
+      <td>2.08</td>
+      <td>2.19</td>
+      <td>3.12</td>
+      <td>2.81</td>
+      <td>2.56</td>
+      <td>2.80</td>
+      <td>2.82</td>
+      <td>3.97</td>
+      <td>...</td>
+      <td>3.36</td>
+      <td>3.01</td>
+      <td>2.80</td>
+      <td>2.21</td>
+      <td>2.03</td>
+      <td>2.77</td>
+      <td>2.44</td>
+      <td>3.00</td>
+      <td>2.88</td>
+      <td>3.03</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2010</td>
+      <td>3.32</td>
+      <td>2.56</td>
+      <td>3.35</td>
+      <td>3.03</td>
+      <td>3.20</td>
+      <td>2.86</td>
+      <td>3.42</td>
+      <td>3.25</td>
+      <td>3.43</td>
+      <td>...</td>
+      <td>3.97</td>
+      <td>3.25</td>
+      <td>3.00</td>
+      <td>3.01</td>
+      <td>3.80</td>
+      <td>3.54</td>
+      <td>3.51</td>
+      <td>3.68</td>
+      <td>3.59</td>
+      <td>3.84</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2020</td>
+      <td>0.44</td>
+      <td>1.87</td>
+      <td>1.05</td>
+      <td>0.11</td>
+      <td>1.32</td>
+      <td>1.27</td>
+      <td>2.11</td>
+      <td>0.80</td>
+      <td>0.86</td>
+      <td>...</td>
+      <td>2.31</td>
+      <td>2.28</td>
+      <td>2.21</td>
+      <td>1.70</td>
+      <td>1.43</td>
+      <td>1.69</td>
+      <td>1.79</td>
+      <td>0.91</td>
+      <td>1.22</td>
+      <td>3.61</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2030</td>
+      <td>3.56</td>
+      <td>2.03</td>
+      <td>2.52</td>
+      <td>3.51</td>
+      <td>2.40</td>
+      <td>2.62</td>
+      <td>2.40</td>
+      <td>2.86</td>
+      <td>3.47</td>
+      <td>...</td>
+      <td>2.26</td>
+      <td>1.78</td>
+      <td>1.39</td>
+      <td>1.83</td>
+      <td>2.34</td>
+      <td>2.01</td>
+      <td>2.25</td>
+      <td>3.10</td>
+      <td>2.48</td>
+      <td>1.72</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 23 columns</p>
+</div></div>
+</div>
+</section>
+<section id="8.2-Maps-—-Life-Expectancy-at-Birth">
+<h3>8.2 Maps — Life Expectancy at Birth<a class="headerlink" href="#8.2-Maps-—-Life-Expectancy-at-Birth" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tv_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">2023</span> <span class="o">+</span> <span class="mi">28</span><span class="p">)</span>
+
+<span class="c1"># Li-Lee parametric</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Li-Lee parametric&quot;</span><span class="p">)</span>
+<span class="n">mp</span> <span class="o">=</span> <span class="n">MapPlotter</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="n">esp_llp</span><span class="p">,</span> <span class="n">tv_map</span><span class="p">,</span> <span class="s2">&quot;FR&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greens&quot;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">plot_compare_years</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">2035</span><span class="p">,</span> <span class="mi">2050</span><span class="p">])</span>
+<span class="c1"># mp.save(path_fr + &quot;/LifeExpectancy_at_birth_llp_color_detra.png&quot;)</span>
+
+<span class="c1"># Li-Lee classic</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Li-Lee classic&quot;</span><span class="p">)</span>
+<span class="n">mp</span> <span class="o">=</span> <span class="n">MapPlotter</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="n">esp_ll</span><span class="p">,</span> <span class="n">tv_map</span><span class="p">,</span> <span class="s2">&quot;FR&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greens&quot;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">plot_compare_years</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">2035</span><span class="p">,</span> <span class="mi">2050</span><span class="p">])</span>
+<span class="c1"># mp.save(path_fr + &quot;/LifeExpectancy_at_birth_ll_color_detra.png&quot;)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Li-Lee parametric
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_40_1.png" src="../_images/notebook_exploration_deterministe_FR_40_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Li-Lee classic
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_40_3.png" src="../_images/notebook_exploration_deterministe_FR_40_3.png" />
+</div>
+</div>
+</section>
+<section id="8.3-Life-Expectancy-Curves-by-Region">
+<h3>8.3 Life Expectancy Curves by Region<a class="headerlink" href="#8.3-Life-Expectancy-Curves-by-Region" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">HIST_LAST_YEAR</span> <span class="o">=</span> <span class="mi">2022</span>
+<span class="n">COLOR_HIST</span>     <span class="o">=</span> <span class="s2">&quot;#2e8b57&quot;</span>  <span class="c1"># dark green — historical</span>
+<span class="n">COLOR_PROJ</span>     <span class="o">=</span> <span class="s2">&quot;#90ee90&quot;</span>  <span class="c1"># light green — projection</span>
+
+<span class="n">legend_elements</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">COLOR_HIST</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>   <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Historical (1990–2022)&quot;</span><span class="p">),</span>
+    <span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">COLOR_PROJ</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span>
+           <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>                             <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Projection (2023–2073)&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">NCOLS</span>  <span class="o">=</span> <span class="mi">3</span>
+<span class="n">years</span>  <span class="o">=</span> <span class="n">df_esp_llp</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">region_labels</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">NCOLS</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">region_labels</span><span class="p">),</span> <span class="n">NCOLS</span><span class="p">)]</span>
+
+<span class="k">for</span> <span class="n">fig_idx</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">groups</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">NCOLS</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.97</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">region</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="n">vals_all</span> <span class="o">=</span> <span class="n">df_esp_llp</span><span class="p">[</span><span class="n">region</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">mask_h</span>   <span class="o">=</span> <span class="n">years</span> <span class="o">&lt;=</span> <span class="n">HIST_LAST_YEAR</span>
+        <span class="n">mask_p</span>   <span class="o">=</span> <span class="n">years</span> <span class="o">&gt;=</span> <span class="n">HIST_LAST_YEAR</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">HIST_LAST_YEAR</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#cccccc&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">[</span><span class="n">mask_h</span><span class="p">],</span> <span class="n">vals_all</span><span class="p">[</span><span class="n">mask_h</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">COLOR_HIST</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">[</span><span class="n">mask_p</span><span class="p">],</span> <span class="n">vals_all</span><span class="p">[</span><span class="n">mask_p</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">COLOR_PROJ</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">vals_all</span><span class="p">[</span><span class="n">mask_h</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">years</span><span class="p">[</span><span class="n">mask_h</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>  <span class="n">vals_all</span><span class="p">[</span><span class="n">mask_h</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+                    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>  <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">COLOR_HIST</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">vals_all</span><span class="p">[</span><span class="n">mask_p</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">years</span><span class="p">[</span><span class="n">mask_p</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">vals_all</span><span class="p">[</span><span class="n">mask_p</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+                    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">28</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">COLOR_PROJ</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.0f</span><span class="s2">&quot;</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">years</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="n">years</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">vals_all</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">vals_all</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">[</span><span class="n">n</span><span class="p">:]:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">legend_elements</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower center&quot;</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+               <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">))</span>
+
+    <span class="n">fname_out</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;esperance_vie_fig</span><span class="si">{</span><span class="n">fig_idx</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">_LL_parametric.png&quot;</span>
+    <span class="c1">#plt.savefig(path_fr + fname_out, dpi=160, bbox_inches=&quot;tight&quot;)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Figure </span><span class="si">{</span><span class="n">fig_idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">groups</span><span class="p">)</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">fname_out</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_42_0.png" src="../_images/notebook_exploration_deterministe_FR_42_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Figure 1/8 : esperance_vie_fig01_LL_parametric.png
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_42_2.png" src="../_images/notebook_exploration_deterministe_FR_42_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Figure 2/8 : esperance_vie_fig02_LL_parametric.png
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_42_4.png" src="../_images/notebook_exploration_deterministe_FR_42_4.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Figure 3/8 : esperance_vie_fig03_LL_parametric.png
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_42_6.png" src="../_images/notebook_exploration_deterministe_FR_42_6.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Figure 4/8 : esperance_vie_fig04_LL_parametric.png
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_42_8.png" src="../_images/notebook_exploration_deterministe_FR_42_8.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Figure 5/8 : esperance_vie_fig05_LL_parametric.png
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_42_10.png" src="../_images/notebook_exploration_deterministe_FR_42_10.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Figure 6/8 : esperance_vie_fig06_LL_parametric.png
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_42_12.png" src="../_images/notebook_exploration_deterministe_FR_42_12.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Figure 7/8 : esperance_vie_fig07_LL_parametric.png
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebook_exploration_deterministe_FR_42_14.png" src="../_images/notebook_exploration_deterministe_FR_42_14.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Figure 8/8 : esperance_vie_fig08_LL_parametric.png
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="exploration_stochastique_BE.html" class="btn btn-neutral float-left" title="Exploration stochastique BE" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="exploration_stochastique_FR.html" class="btn btn-neutral float-right" title="Exploration stochastique FR" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Detralytics Innovation Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

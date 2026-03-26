@@ -15,6 +15,7 @@
       <script src="../../../_static/documentation_options.js?v=01f34227"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -136,6 +137,13 @@
 <p class="caption" role="heading"><span class="caption-text">Models:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/model/bsplines.html">B-Splines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#bsplines">Bsplines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/bsplines.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/bsplines.html#knot-vector-convention-scipy">Knot vector convention (scipy)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/bsplines.html#finite-difference-penalty-p-splines">Finite difference penalty (P-splines)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/bsplines.html#visual-illustration">Visual illustration</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.difference_matrix"><code class="docutils literal notranslate"><span class="pre">difference_matrix()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.plot_Bsplines"><code class="docutils literal notranslate"><span class="pre">plot_Bsplines()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.basis_matrix_from_knots"><code class="docutils literal notranslate"><span class="pre">basis_matrix_from_knots()</span></code></a></li>
@@ -175,7 +183,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.difference_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.difference_matrix()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.FullModel</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.variant"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.variant</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.Variant</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic</span></code></a><ul>
@@ -258,7 +266,6 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/visualisation/mortality_plotter.html">Mortality Plotter</a></li>
 </ul>
 
         </div>
@@ -344,18 +351,25 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
+<span class="c1"># ── Global style : pure white background for all figures ────────────</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s2">&quot;figure.facecolor&quot;</span><span class="p">:</span>  <span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;axes.facecolor&quot;</span><span class="p">:</span>    <span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;savefig.facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
+<span class="p">})</span>
+
 
 <span class="c1"># ── Default color palette for extra series (cycles if more series than colors) ──</span>
 <span class="n">_DEFAULT_COLORS</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#1a1a2e&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#e94560&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="s2">&quot;#e94560&quot;</span><span class="p">},</span>  <span class="c1"># red</span>
-    <span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#fff8e1&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#e67e22&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="s2">&quot;#e67e22&quot;</span><span class="p">},</span>  <span class="c1"># orange</span>
-    <span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#e8f5e9&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#27ae60&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="s2">&quot;#27ae60&quot;</span><span class="p">},</span>  <span class="c1"># green</span>
-    <span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#f3e5f5&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#8e44ad&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="s2">&quot;#8e44ad&quot;</span><span class="p">},</span>  <span class="c1"># purple</span>
+    <span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#fefefe&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#e67e22&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="s2">&quot;#e67e22&quot;</span><span class="p">},</span>  <span class="c1"># orange</span>
+    <span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#fefefe&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#27ae60&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="s2">&quot;#27ae60&quot;</span><span class="p">},</span>  <span class="c1"># green</span>
+    <span class="p">{</span><span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#fefefe&quot;</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#8e44ad&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="s2">&quot;#8e44ad&quot;</span><span class="p">},</span>  <span class="c1"># purple</span>
 <span class="p">]</span>
 
 <span class="c1"># Default style applied to regional boxplots</span>
 <span class="n">_REGIONAL_STYLE</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#eaf2fb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#fefefe&quot;</span><span class="p">,</span>
     <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#2c3e50&quot;</span><span class="p">,</span>
     <span class="s2">&quot;median&quot;</span><span class="p">:</span>    <span class="s2">&quot;#f39c12&quot;</span><span class="p">,</span>
 <span class="p">}</span>
@@ -543,14 +557,11 @@
         <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
             <span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">,</span>
             <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">n_rows</span><span class="p">),</span>
-            <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;#F7F7F7&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">axes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># always 1-D for uniform indexing</span>
 
         <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">region_indices</span><span class="p">):</span>
             <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;#F7F7F7&quot;</span><span class="p">)</span>
-
             <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">array3d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">curves_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">x_values</span><span class="p">,</span>
@@ -1352,7 +1363,6 @@
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Region&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Price (€)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.22</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;#fafafa&quot;</span><span class="p">)</span>
 
         <span class="c1"># Build the legend from colored patch handles</span>
         <span class="n">legend_handles</span> <span class="o">=</span> <span class="p">[</span>
@@ -1488,7 +1498,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2026, Innovation Lab.</p>
+    <p>&#169; Copyright 2026, Detralytics Innovation Lab.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

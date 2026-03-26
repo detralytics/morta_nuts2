@@ -1,0 +1,12 @@
+nuts2,region,label,LL,LL parametric,LC parametric,LLp vs LL (%),LCp vs LL (%),LLp vs LCp (%)
+BE10,Bruxelles-Capitale,BXL,5e-05,4e-05,6e-05,-9.57,21.62,-25.65
+BE21,Antwerpen,ANT,4e-05,3e-05,6e-05,-4.34,65.76,-42.29
+BE22,Limburg,LIM,5e-05,4e-05,8e-05,-7.48,62.87,-43.19
+BE23,Oost-Vlaanderen,OVL,4e-05,4e-05,5e-05,-6.39,23.3,-24.08
+BE24,Vlaams-Brabant,VlB,4e-05,4e-05,8e-05,-4.65,90.67,-49.99
+BE25,West-Vlaanderen,WVl,4e-05,4e-05,8e-05,-3.68,91.13,-49.6
+BE31,Brabant wallon,BWA,7e-05,7e-05,8e-05,-2.5,13.89,-14.38
+BE32,Hainaut,HAI,5e-05,4e-05,0.00014,-8.16,190.36,-68.37
+BE33,Liège,LIE,5e-05,5e-05,9e-05,-4.93,87.6,-49.32
+BE34,Luxembourg,LUX,9e-05,9e-05,0.00011,-2.92,15.18,-15.71
+BE35,Namur,NAM,7e-05,7e-05,0.00011,-3.21,50.72,-35.78

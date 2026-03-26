@@ -1,0 +1,2 @@
+# Installs all dependencies declared in pyproject.toml
+-e .

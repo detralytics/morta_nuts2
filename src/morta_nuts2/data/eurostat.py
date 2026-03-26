@@ -355,6 +355,15 @@ class Eurostat_data:
         # In-memory cache for NUTS region lists (avoids repeated shapefile queries)
         self._regions_cache: Dict[Tuple[str, int, bool], List[str]] = {}
 
+        print(
+            "\n"
+            "⚠️  [Eurostat] DATA QUALITY WARNING\n"
+            "   Eurostat datasets may contain anomalies such as missing values,\n"
+            "   suppressed cells, inconsistent time series, or regional boundary\n"
+            "   changes. It is strongly recommended to perform thorough data\n"
+            "   quality checks before proceeding with any analysis.\n"
+        )
+
     # ------------------------------------------------------------------
     # Shapefile property and helpers
     # ------------------------------------------------------------------

@@ -1,0 +1,512 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>morta_nuts2.visualisation.MortalityPlotter &mdash; morta_nuts2 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            morta_nuts2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Data:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/data/eurostat.html">Eurostat API Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#eurostat-py-eurostat-data-manager">eurostat.py - Eurostat Data Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig"><code class="docutils literal notranslate"><span class="pre">EurostatConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_SHAPEFILE_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DEFAULT_DATA_PATH"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.DATASETS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.EXCLUDE_REGIONS"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#id0"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_SHAPEFILE_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#id1"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DEFAULT_DATA_PATH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#id2"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.DATASETS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#id3"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.EXCLUDE_REGIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_shapefile"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.set_default_data_path"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.set_default_data_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.EurostatConfig.register_dataset"><code class="docutils literal notranslate"><span class="pre">EurostatConfig.register_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data"><code class="docutils literal notranslate"><span class="pre">Eurostat_data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.shapefile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.set_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.register_dataset"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.register_dataset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.load_all"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.load_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.pivot_age_year"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.pivot_age_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.get_regions"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.filter_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.parse_age"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.parse_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.add_exclusion"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.add_exclusion()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.list_datasets"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.list_datasets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.cache_info"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.cache_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.clear_cache"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.Eurostat_data.stats"><code class="docutils literal notranslate"><span class="pre">Eurostat_data.stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.load_mxt_raw"><code class="docutils literal notranslate"><span class="pre">load_mxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.load_dxt_raw"><code class="docutils literal notranslate"><span class="pre">load_dxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.load_lxt_raw"><code class="docutils literal notranslate"><span class="pre">load_lxt_raw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.age_year_pivot_table"><code class="docutils literal notranslate"><span class="pre">age_year_pivot_table()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.filter_shapefile"><code class="docutils literal notranslate"><span class="pre">filter_shapefile()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/eurostat.html#morta_nuts2.data.eurostat.parse_age"><code class="docutils literal notranslate"><span class="pre">parse_age()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/data/mortality_table.html">Mortality Table</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#id1">mortality_table</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#main-features">Main features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#typical-workflow">Typical workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig"><code class="docutils literal notranslate"><span class="pre">MortalityConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_max"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_max</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.age_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.age_anomalies</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.fill_value"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.fill_value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.n_jobs"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.n_jobs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.enable_cache"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.enable_cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.cache_dir"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.cache_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.validate_data"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.validate_data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityConfig.correct_anomalies"><code class="docutils literal notranslate"><span class="pre">MortalityConfig.correct_anomalies</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator"><code class="docutils literal notranslate"><span class="pre">DataValidator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_dataframe"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.DataValidator.validate_mortality_data"><code class="docutils literal notranslate"><span class="pre">DataValidator.validate_mortality_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager"><code class="docutils literal notranslate"><span class="pre">CacheManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.get"><code class="docutils literal notranslate"><span class="pre">CacheManager.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.set"><code class="docutils literal notranslate"><span class="pre">CacheManager.set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.CacheManager.clear"><code class="docutils literal notranslate"><span class="pre">CacheManager.clear()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.timing_decorator"><code class="docutils literal notranslate"><span class="pre">timing_decorator()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.DEFAULT_SHAPEFILE"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.DEFAULT_SHAPEFILE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.FRANCE_OUTREMER"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.FRANCE_OUTREMER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.__init__"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.set_shapefile"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.set_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_regions"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_regions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.validate_input_data"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.validate_input_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.calculate_mortality"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.calculate_mortality()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.export_results"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.export_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.get_statistics"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.get_statistics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.clear_cache"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.clear_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.MortalityCalculator.summary"><code class="docutils literal notranslate"><span class="pre">MortalityCalculator.summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region"><code class="docutils literal notranslate"><span class="pre">mortality_by_region()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.mortality_by_region_by_age"><code class="docutils literal notranslate"><span class="pre">mortality_by_region_by_age()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/data/mortality_table.html#morta_nuts2.data.mortality_table.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">build_input_from_dataframe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Models:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model/bsplines.html">B-Splines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#bsplines">Bsplines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/bsplines.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/bsplines.html#knot-vector-convention-scipy">Knot vector convention (scipy)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/bsplines.html#finite-difference-penalty-p-splines">Finite difference penalty (P-splines)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/bsplines.html#visual-illustration">Visual illustration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.difference_matrix"><code class="docutils literal notranslate"><span class="pre">difference_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.plot_Bsplines"><code class="docutils literal notranslate"><span class="pre">plot_Bsplines()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.basis_matrix_from_knots"><code class="docutils literal notranslate"><span class="pre">basis_matrix_from_knots()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.Bspline_approx"><code class="docutils literal notranslate"><span class="pre">Bspline_approx()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.make_bspline_basis"><code class="docutils literal notranslate"><span class="pre">make_bspline_basis()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/bsplines.html#morta_nuts2.model.Bsplines.Bsplines.eval_bspline_from_coef"><code class="docutils literal notranslate"><span class="pre">eval_bspline_from_coef()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model/lcp.html">Lee-Carter Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/lcp.html#lee-carter-object-oriented-architecture">Lee-Carter — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter"><code class="docutils literal notranslate"><span class="pre">LeeCarter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LeeCarter.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LeeCarter.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_ax_coef"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_ax_coef()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.update_kappa"><code class="docutils literal notranslate"><span class="pre">LeeCarter.update_kappa()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LeeCarter.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.build_input_from_dataframe"><code class="docutils literal notranslate"><span class="pre">LeeCarter.build_input_from_dataframe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Parametric.National"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Parametric.National</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/model/lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LeeCarter.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model/llp.html">Lee &amp; Li Parametric Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/llp.html#lilee-object-oriented-architecture">LiLee — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee"><code class="docutils literal notranslate"><span class="pre">LiLee</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.make_penalty_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LiLee.poisson_lnL()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block"><code class="docutils literal notranslate"><span class="pre">LiLee.effective_dof_spline_block()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.compute_fit_stats"><code class="docutils literal notranslate"><span class="pre">LiLee.compute_fit_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.difference_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.difference_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.FullModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant"><code class="docutils literal notranslate"><span class="pre">LiLee.Parametric.Variant</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/model/llp.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic.fit"><code class="docutils literal notranslate"><span class="pre">LiLee.Classic.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model/param_init.html">Parameter Initialization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_bspline_init"><code class="docutils literal notranslate"><span class="pre">lcp_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lileep_bspline_init"><code class="docutils literal notranslate"><span class="pre">lileep_bspline_init()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/param_init.html#morta_nuts2.model.parameters_init.param_init.lcp_parametrique_init_national"><code class="docutils literal notranslate"><span class="pre">lcp_parametrique_init_national()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/model/projection.html">Mortality Projection Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#projection">Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.kannisto_log_mu"><code class="docutils literal notranslate"><span class="pre">kannisto_log_mu()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy.compute"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi.project()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator.extrapolate"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator.extrapolate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.concat_logmu_time"><code class="docutils literal notranslate"><span class="pre">concat_logmu_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.Annuity_pricing"><code class="docutils literal notranslate"><span class="pre">Annuity_pricing()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/model/projection.html#morta_nuts2.model.projection.project_class.compute_mae"><code class="docutils literal notranslate"><span class="pre">compute_mae()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/visualisation/plot_class.html">Plot Class</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#id1">plot_class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.SHAPEF_PATH"><code class="docutils literal notranslate"><span class="pre">SHAPEF_PATH</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries"><code class="docutils literal notranslate"><span class="pre">ExtraSeries</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.data"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.label"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.label</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.position"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.position</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.ExtraSeries.style"><code class="docutils literal notranslate"><span class="pre">ExtraSeries.style</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.plot"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalCurvePlotter.save"><code class="docutils literal notranslate"><span class="pre">RegionalCurvePlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter"><code class="docutils literal notranslate"><span class="pre">MapPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_single_year"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_single_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_years"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_years()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_static"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_static()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.save"><code class="docutils literal notranslate"><span class="pre">MapPlotter.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.MapPlotter.plot_compare_models"><code class="docutils literal notranslate"><span class="pre">MapPlotter.plot_compare_models()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats"><code class="docutils literal notranslate"><span class="pre">RegionalStats</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.RegionalStats.compute"><code class="docutils literal notranslate"><span class="pre">RegionalStats.compute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.plot"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.DispersionPlotter.save"><code class="docutils literal notranslate"><span class="pre">DispersionPlotter.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.plot"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/visualisation/plot_class.html#morta_nuts2.graph.plot_class.AnnuityBoxPlotter.save"><code class="docutils literal notranslate"><span class="pre">AnnuityBoxPlotter.save()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">morta_nuts2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">morta_nuts2.visualisation.MortalityPlotter</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for morta_nuts2.visualisation.MortalityPlotter</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+
+<div class="viewcode-block" id="age_year_pivot_table">
+<a class="viewcode-back" href="../../../api/visualisation/mortality_plotter.html#morta_nuts2.visualisation.MortalityPlotter.age_year_pivot_table">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">age_year_pivot_table</span><span class="p">(</span><span class="n">data_raw</span><span class="p">,</span><span class="n">region</span><span class="p">,</span><span class="n">gender</span><span class="p">,</span><span class="n">indicator</span><span class="p">):</span>
+    <span class="c1"># Sub-dataframe</span>
+    <span class="n">tab</span>  <span class="o">=</span> <span class="n">data_raw</span><span class="p">[</span> <span class="p">(</span><span class="n">data_raw</span><span class="p">[</span><span class="s1">&#39;geo&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">region</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data_raw</span><span class="p">[</span><span class="s1">&#39;sex&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">gender</span><span class="p">)</span> <span class="o">&amp;</span> \
+                    <span class="p">(</span><span class="n">data_raw</span><span class="p">[</span><span class="s1">&#39;indic_de&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">indicator</span><span class="p">)]</span>
+    <span class="n">tab</span>  <span class="o">=</span> <span class="n">tab</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Pivot table </span>
+    <span class="n">tab</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">tab</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;values&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span>
+                 <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span><span class="n">observed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># We sort by ascending ages</span>
+    <span class="n">tab</span>  <span class="o">=</span> <span class="n">tab</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># surface of log-mortality</span>
+    <span class="n">ages</span>  <span class="o">=</span> <span class="n">tab</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+    <span class="n">years</span> <span class="o">=</span> <span class="n">tab</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tab</span> <span class="p">,</span> <span class="n">ages</span> <span class="p">,</span> <span class="n">years</span> </div>
+
+
+
+<span class="c1"># plots/mortality_plots.py</span>
+
+
+<span class="c1"># plots/mortality_plots.py</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+
+<div class="viewcode-block" id="plot_mortality_surface">
+<a class="viewcode-back" href="../../../api/visualisation/mortality_plotter.html#morta_nuts2.visualisation.MortalityPlotter.plot_mortality_surface">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_mortality_surface</span><span class="p">(</span>
+    <span class="n">mxt_raw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">muxt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">ages</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">years</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;T&quot;</span><span class="p">,</span>
+    <span class="n">indicator</span><span class="o">=</span><span class="s2">&quot;DEATHRATE&quot;</span><span class="p">,</span>
+    <span class="n">age_year_pivot_table</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">log_scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot a 3D mortality surface by age and year.</span>
+
+<span class="sd">    The function automatically builds (muxt, ages, years) using</span>
+<span class="sd">    age_year_pivot_table if they are not provided.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mxt_raw : DataFrame, optional</span>
+<span class="sd">        Raw Eurostat mortality table</span>
+<span class="sd">    muxt : array-like or DataFrame, optional</span>
+<span class="sd">        Mortality rates (age x year)</span>
+<span class="sd">    ages : array-like, optional</span>
+<span class="sd">        Age vector</span>
+<span class="sd">    years : array-like, optional</span>
+<span class="sd">        Year vector</span>
+<span class="sd">    region : str, optional</span>
+<span class="sd">        Region code (required if mxt_raw is used)</span>
+<span class="sd">    gender : str, default &#39;T&#39;</span>
+<span class="sd">    indicator : str, default &#39;DEATHRATE&#39;</span>
+<span class="sd">    age_year_pivot_table : callable, optional</span>
+<span class="sd">        Function to build age-year pivot table</span>
+<span class="sd">    log_scale : bool</span>
+<span class="sd">        Plot log-mortality</span>
+<span class="sd">    cmap : str</span>
+<span class="sd">        Colormap</span>
+<span class="sd">    figsize : tuple</span>
+<span class="sd">    show : bool</span>
+<span class="sd">        Call plt.show()</span>
+<span class="sd">    ax : matplotlib axis, optional</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ax : matplotlib axis</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># 1. Build muxt, ages, years ONLY if needed</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">if</span> <span class="n">muxt</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">ages</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">years</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mxt_raw</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">age_year_pivot_table</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Either provide (muxt, ages, years) OR &quot;</span>
+                <span class="s2">&quot;(mxt_raw, region, age_year_pivot_table)&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">muxt</span><span class="p">,</span> <span class="n">ages</span><span class="p">,</span> <span class="n">years</span> <span class="o">=</span> <span class="n">age_year_pivot_table</span><span class="p">(</span>
+            <span class="n">mxt_raw</span><span class="p">,</span>
+            <span class="n">region</span><span class="p">,</span>
+            <span class="n">gender</span><span class="p">,</span>
+            <span class="n">indicator</span>
+        <span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># 2. Prepare grid</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">ages</span><span class="p">)</span>
+
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">muxt</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">muxt</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">muxt</span>
+    <span class="k">if</span> <span class="n">log_scale</span><span class="p">:</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="mf">1e-12</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># 3. Create plot</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+
+    <span class="n">surf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
+        <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;none&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Year&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Age&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Log-mortality rate&quot;</span> <span class="k">if</span> <span class="n">log_scale</span> <span class="k">else</span> <span class="s2">&quot;Mortality rate&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mortality surface – </span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">gender</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">surf</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+
+<div class="viewcode-block" id="plot_mortality_map">
+<a class="viewcode-back" href="../../../api/visualisation/mortality_plotter.html#morta_nuts2.visualisation.MortalityPlotter.plot_mortality_map">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_mortality_map</span><span class="p">(</span>
+    <span class="n">shapef</span><span class="p">,</span>
+    <span class="n">mxt_raw</span><span class="p">,</span>
+    <span class="n">year</span><span class="p">,</span>
+    <span class="n">age</span><span class="p">,</span>
+    <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;T&quot;</span><span class="p">,</span>
+    <span class="n">indicator</span><span class="o">=</span><span class="s2">&quot;DEATHRATE&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot geographic map of mortality rates by region</span>
+<span class="sd">    for a given age and year.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">reg</span> <span class="ow">in</span> <span class="n">shapef</span><span class="p">[</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">]:</span>
+        <span class="n">muxt</span><span class="p">,</span> <span class="n">ages</span><span class="p">,</span> <span class="n">years</span> <span class="o">=</span> <span class="n">age_year_pivot_table</span><span class="p">(</span>
+            <span class="n">mxt_raw</span><span class="p">,</span> <span class="n">reg</span><span class="p">,</span> <span class="n">gender</span><span class="p">,</span> <span class="n">indicator</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">age</span> <span class="ow">in</span> <span class="n">ages</span> <span class="ow">and</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ages</span> <span class="o">==</span> <span class="n">age</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">years</span> <span class="o">==</span> <span class="n">year</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">reg</span><span class="p">,</span> <span class="n">muxt</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]))</span>
+
+    <span class="n">df_map</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">,</span> <span class="s2">&quot;mu&quot;</span><span class="p">])</span>
+    <span class="n">shapef_plot</span> <span class="o">=</span> <span class="n">shapef</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_map</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;NUTS_ID&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+    <span class="n">shapef_plot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">column</span><span class="o">=</span><span class="s2">&quot;mu&quot;</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
+        <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">missing_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;lightgrey&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mortalité âge </span><span class="si">{</span><span class="n">age</span><span class="si">}</span><span class="s2">, année </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Detralytics Innovation Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

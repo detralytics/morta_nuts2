@@ -1,23 +1,3 @@
-.. morta\_nuts2 Documentation
-.. ==========================
-
-.. .. image:: https://img.shields.io/badge/python-3.9%2B-blue
-..    :alt: Python 3.9+
-
-.. .. image:: https://img.shields.io/badge/licence-MIT-green
-..    :alt: MIT Licence
-
-.. .. image:: https://img.shields.io/badge/doc-Sphinx-orange
-..    :alt: Sphinx Documentation
-
-.. .. image:: https://img.shields.io/badge/data-Eurostat-blueviolet
-..    :alt: Eurostat Data
-
-.. .. image:: https://img.shields.io/badge/env-uv-black
-..    :alt: uv virtual environment
-
-.. ----
-
 morta\_nuts2 Documentation
 ==========================
 
@@ -34,7 +14,6 @@ morta\_nuts2 Documentation
    </div>
 
 ----
-
 
 Project Overview
 -----------------
@@ -156,8 +135,25 @@ description of all classes, methods and functions.
    :caption: Visualization:
 
    api/visualisation/plot_class
-   
 
+----
+
+Examples & Notebooks
+---------------------
+
+.. note::
+   The following notebooks illustrate the usage of the **morta_nuts2** package.
+   They are displayed in **read-only mode**: code is shown with its pre-computed
+   outputs but cannot be executed from this documentation.
+
+.. toctree::
+   :maxdepth: 0
+   :caption: Notebooks:
+
+   notebook/exploration_deterministe_BE
+   notebook/exploration_stochastique_BE
+   notebook/exploration_deterministe_FR
+   notebook/exploration_stochastique_FR
 ----
 
 Indices and Tables

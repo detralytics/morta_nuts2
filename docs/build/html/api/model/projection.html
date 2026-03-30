@@ -158,7 +158,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="lcp.html">Lee-Carter Parametric Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lcp.html#lee-carter-object-oriented-architecture">Lee-Carter — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lcp.html#lee-carter-object-oriented-architecture">Lee-Carter — Object-oriented architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#class-hierarchy">Class hierarchy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#dependencies">Dependencies</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter"><code class="docutils literal notranslate"><span class="pre">LeeCarter</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LeeCarter.make_penalty_matrix()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LeeCarter.poisson_lnL()</span></code></a></li>
@@ -206,18 +211,21 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Mortality Projection Engine</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#projection">Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#projection">Projection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#main-components">Main components</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.model.projection.project_class.kannisto_log_mu"><code class="docutils literal notranslate"><span class="pre">kannisto_log_mu()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.model.projection.project_class.LifeExpectancy"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.model.projection.project_class.LifeExpectancy.compute"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy.compute()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.model.projection.project_class.ProjectorLC_SVD"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.model.projection.project_class.ProjectorLC_SVD.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD.project()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.model.projection.project_class.ProjectorLC"><code class="docutils literal notranslate"><span class="pre">ProjectorLC</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.model.projection.project_class.ProjectorLC.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLC.project()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.model.projection.project_class.ProjectorLeeLi"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.model.projection.project_class.ProjectorLeeLi.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi.project()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.model.projection.project_class.ProjectorLL"><code class="docutils literal notranslate"><span class="pre">ProjectorLL</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.model.projection.project_class.ProjectorLL.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLL.project()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.model.projection.project_class.HighAgeExtrapolator"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator</span></code></a><ul>
@@ -274,138 +282,150 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Notebooks:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html">1. Imports</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#2.-Data-Loading">2. Data Loading</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#3.-Data-Preparation">3. Data Preparation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#4.-Model-Fitting">4. Model Fitting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html">Exploration deterministe BE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#1.-Imports">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#2.-Data-Loading">2. Data Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#3.-Data-Preparation">3. Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#4.-Model-Fitting">4. Model Fitting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.-Model-Comparison">5. Model Comparison</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.5-Fitted-Mortality-Curves">5.5 Fitted Mortality Curves</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#6.-Projection">6. Projection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.-Life-Expectancy">8. Life Expectancy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.1-Export-to-CSV">8.1 Export to CSV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.2-Maps-—-Life-Expectancy-at-Birth">8.2 Maps — Life Expectancy at Birth</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.3-Life-Expectancy-Curves-by-Region">8.3 Life Expectancy Curves by Region</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html">1. Imports</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#2.-Data-Loading">2. Data Loading</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#3.-Data-Preparation">3. Data Preparation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#4.-Model-Fitting">4. Model Fitting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.-Model-Comparison">5. Model Comparison</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.5-Regional-Beta-Curves">5.5 Regional Beta Curves</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.6-Fitted-Mortality-Curves">5.6 Fitted Mortality Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.-Model-Comparison">5. Model Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.5-Fitted-Mortality-Curves">5.5 Fitted Mortality Curves</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#6.-Stochastic-Projection">6. Stochastic Projection</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#6.1-Regional-kappa_g-Trajectories">6.1 Regional kappa_g Trajectories</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#8.-Annuity-Pricing">8. Annuity Pricing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#8.1-Box-Plots">8.1 Box Plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#8.2-Export-Simulation-Table">8.2 Export Simulation Table</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html">1. Imports</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#2.-Data-Loading">2. Data Loading</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#3.-Data-Preparation">3. Data Preparation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#4.-Model-Fitting">4. Model Fitting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#6.-Projection">6. Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.-Life-Expectancy">8. Life Expectancy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.1-Export-to-CSV">8.1 Export to CSV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.2-Maps-—-Life-Expectancy-at-Birth">8.2 Maps — Life Expectancy at Birth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.3-Life-Expectancy-Curves-by-Region">8.3 Life Expectancy Curves by Region</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.-Model-Comparison">5. Model Comparison</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.4-WMAE-Maps">5.4 WMAE Maps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.5-Fitted-Mortality-Curves">5.5 Fitted Mortality Curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html">Exploration stochastique BE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#1.-Imports">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#2.-Data-Loading">2. Data Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#3.-Data-Preparation">3. Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#4.-Model-Fitting">4. Model Fitting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#6.-Projection">6. Projection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.-Life-Expectancy">8. Life Expectancy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.1-Export-to-CSV">8.1 Export to CSV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.2-Maps-—-Life-Expectancy-at-Birth">8.2 Maps — Life Expectancy at Birth</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.3-Life-Expectancy-Curves-by-Region">8.3 Life Expectancy Curves by Region</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html">1. Imports</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#2.-Data-Loading">2. Data Loading</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#3.-Data-Preparation">3. Data Preparation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#4.-Model-Fitting">4. Model Fitting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.-Model-Comparison">5. Model Comparison</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.5-Regional-Beta-Curves">5.5 Regional Beta Curves</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.6-Fitted-Mortality-Curves">5.6 Fitted Mortality Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.-Model-Comparison">5. Model Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.5-Regional-Beta-Curves">5.5 Regional Beta Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.6-Fitted-Mortality-Curves">5.6 Fitted Mortality Curves</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#6.-Stochastic-Projection">6. Stochastic Projection</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#6.1-Regional-kappa_g-Trajectories">6.1 Regional kappa_g Trajectories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#6.-Stochastic-Projection">6. Stochastic Projection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#6.1-Regional-kappa_g-Trajectories">6.1 Regional kappa_g Trajectories</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#8.-Annuity-Pricing">8. Annuity Pricing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#8.1-Box-Plots">8.1 Box Plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#8.2-Export-Simulation-Table">8.2 Export Simulation Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#8.-Annuity-Pricing">8. Annuity Pricing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#8.1-Box-Plots">8.1 Box Plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#8.2-Export-Simulation-Table">8.2 Export Simulation Table</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html">Exploration deterministe FR</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#1.-Imports">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#2.-Data-Loading">2. Data Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#3.-Data-Preparation">3. Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#4.-Model-Fitting">4. Model Fitting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.-Model-Comparison">5. Model Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.4-WMAE-Maps">5.4 WMAE Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.5-Fitted-Mortality-Curves">5.5 Fitted Mortality Curves</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#6.-Projection">6. Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.-Life-Expectancy">8. Life Expectancy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.1-Export-to-CSV">8.1 Export to CSV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.2-Maps-—-Life-Expectancy-at-Birth">8.2 Maps — Life Expectancy at Birth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.3-Life-Expectancy-Curves-by-Region">8.3 Life Expectancy Curves by Region</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html">Exploration stochastique FR</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#1.-Imports">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#2.-Data-Loading">2. Data Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#3.-Data-Preparation">3. Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#4.-Model-Fitting">4. Model Fitting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.-Model-Comparison">5. Model Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.5-Regional-Beta-Curves">5.5 Regional Beta Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.6-Fitted-Mortality-Curves">5.6 Fitted Mortality Curves</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#6.-Stochastic-Projection">6. Stochastic Projection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#6.1-Regional-kappa_g-Trajectories">6.1 Regional kappa_g Trajectories</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#8.-Annuity-Pricing">8. Annuity Pricing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#8.1-Box-Plots">8.1 Box Plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#8.2-Export-Simulation-Table">8.2 Export Simulation Table</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -438,23 +458,76 @@
 <span id="mortality-projection-engine"></span><h1>Mortality Projection Engine<a class="headerlink" href="#module-morta_nuts2.model.projection.project_class" title="Link to this heading"></a></h1>
 <section id="projection">
 <h2>Projection<a class="headerlink" href="#projection" title="Link to this heading"></a></h2>
+<p>This module provides classes and utilities for prospective mortality projection,
+high-age extrapolation, life expectancy computation, and actuarial annuity pricing.</p>
+<section id="main-components">
+<h3>Main components<a class="headerlink" href="#main-components" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="#morta_nuts2.model.projection.project_class.kannisto_log_mu" title="morta_nuts2.model.projection.project_class.kannisto_log_mu"><code class="xref py py-func docutils literal notranslate"><span class="pre">kannisto_log_mu()</span></code></a> : Low-level Kannisto log-mortality formula.</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.model.projection.project_class.LifeExpectancy" title="morta_nuts2.model.projection.project_class.LifeExpectancy"><code class="xref py py-class docutils literal notranslate"><span class="pre">LifeExpectancy</span></code></a> : Computes period life expectancy from mortality rates.</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.model.projection.project_class.ProjectorLC" title="morta_nuts2.model.projection.project_class.ProjectorLC"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProjectorLC</span></code></a> : Lee-Carter projection.</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.model.projection.project_class.ProjectorLL" title="morta_nuts2.model.projection.project_class.ProjectorLL"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProjectorLL</span></code></a> : Li-Lee two-factor projection (common + regional).</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.model.projection.project_class.HighAgeExtrapolator" title="morta_nuts2.model.projection.project_class.HighAgeExtrapolator"><code class="xref py py-class docutils literal notranslate"><span class="pre">HighAgeExtrapolator</span></code></a> : Extrapolates log-mortality beyond the observed age range.</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.model.projection.project_class.concat_logmu_time" title="morta_nuts2.model.projection.project_class.concat_logmu_time"><code class="xref py py-func docutils literal notranslate"><span class="pre">concat_logmu_time()</span></code></a> : Concatenates historical and projected log-mortality arrays.</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.model.projection.project_class.Annuity_pricing" title="morta_nuts2.model.projection.project_class.Annuity_pricing"><code class="xref py py-func docutils literal notranslate"><span class="pre">Annuity_pricing()</span></code></a> : Actuarial present value of life annuities.</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.model.projection.project_class.compute_mae" title="morta_nuts2.model.projection.project_class.compute_mae"><code class="xref py py-func docutils literal notranslate"><span class="pre">compute_mae()</span></code></a> : Mean absolute error and weighted MAE between observed and modelled rates.</p></li>
+</ul>
+</section>
 </section>
 <dl class="py function">
 <dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.kannisto_log_mu">
 <span class="sig-prename descclassname"><span class="pre">morta_nuts2.model.projection.project_class.</span></span><span class="sig-name descname"><span class="pre">kannisto_log_mu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#kannisto_log_mu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.kannisto_log_mu" title="Link to this definition"></a></dt>
-<dd><p>log(μ(x)) for the Kannisto model: μ(x) = a·exp(b·x) / (1 + a·exp(b·x))</p>
+<dd><p>Evaluate the log force of mortality under the Kannisto model.</p>
+<p>The Kannisto (logistic Gompertz) parametric model expresses the force of
+mortality as a logistic function of age:</p>
+<div class="math notranslate nohighlight">
+\[\mu(x) = \frac{a \, e^{bx}}{1 + a \, e^{bx}}\]</div>
+<p>This function returns <span class="math notranslate nohighlight">\(\log \mu(x)\)</span> directly for numerical
+stability (avoids computing <code class="docutils literal notranslate"><span class="pre">exp</span></code> then <code class="docutils literal notranslate"><span class="pre">log</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array-like</em>) – Ages at which to evaluate the model.</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – Scale parameter (<span class="math notranslate nohighlight">\(a &gt; 0\)</span>). Controls the level of mortality.</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Growth parameter (<span class="math notranslate nohighlight">\(b &gt; 0\)</span>). Controls the rate of mortality
+increase with age.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\log \mu(x)\)</span> evaluated at each age in <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>As <span class="math notranslate nohighlight">\(x \to \infty\)</span>, <span class="math notranslate nohighlight">\(\mu(x) \to 1\)</span>, so the model imposes
+an implicit upper bound of 1 on the force of mortality — a key difference
+from the unbounded Gompertz model.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.LifeExpectancy">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">morta_nuts2.model.projection.project_class.</span></span><span class="sig-name descname"><span class="pre">LifeExpectancy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu_future</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#LifeExpectancy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.LifeExpectancy" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Computes life expectancy from mortality rates.</p>
+<p>Computes period life expectancy from an array of force-of-mortality rates.</p>
+<p>Period life expectancy at age <span class="math notranslate nohighlight">\(x\)</span> is defined as the expected number
+of additional years lived by a cohort subject throughout its life to the
+age-specific mortality rates observed at a given point in time:</p>
+<div class="math notranslate nohighlight">
+\[e_x = \frac{\sum_{y=x}^{\omega} {}_y p_0}{{}_{x} p_0}
+    = \sum_{t=0}^{\omega - x} {}_t p_x\]</div>
+<p>where the survival probability is derived from the force of mortality via:</p>
+<div class="math notranslate nohighlight">
+\[{}_t p_x = \exp\!\left(-\int_x^{x+t} \mu(s)\, ds\right)
+         \approx \prod_{k=0}^{t-1} \exp(-\mu_{x+k})\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mu_future</strong> (<em>ndarray</em>) – <ul class="simple">
-<li><p>(ages, horizon, regions)         -&gt; deterministic case</p></li>
-<li><p>(ages, horizon, regions, n_sim)  -&gt; stochastic case</p></li>
+<dd class="field-odd"><p><strong>mu_future</strong> (<em>ndarray</em>) – <p>Array of force-of-mortality rates.</p>
+<ul class="simple">
+<li><p>Shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">horizon,</span> <span class="pre">nb_regions)</span></code> for the deterministic case.</p></li>
+<li><p>Shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">horizon,</span> <span class="pre">nb_regions,</span> <span class="pre">n_sim)</span></code> for the stochastic
+case.</p></li>
 </ul>
 </p>
 </dd>
@@ -462,62 +535,153 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.LifeExpectancy.compute">
 <span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#LifeExpectancy.compute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.LifeExpectancy.compute" title="Link to this definition"></a></dt>
-<dd><p>Returns ex with the same shape as mu_future.</p>
+<dd><p>Compute life expectancy for the full <code class="docutils literal notranslate"><span class="pre">mu_future</span></code> array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Life expectancy array with the same shape as <code class="docutils literal notranslate"><span class="pre">mu_future</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">horizon,</span> <span class="pre">nb_regions)</span></code> in the deterministic case.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">horizon,</span> <span class="pre">nb_regions,</span> <span class="pre">n_sim)</span></code> in the stochastic case.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.ProjectorLC_SVD">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">morta_nuts2.model.projection.project_class.</span></span><span class="sig-name descname"><span class="pre">ProjectorLC_SVD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">horizon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_years</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rw'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stochastic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#ProjectorLC_SVD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.ProjectorLC_SVD" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.ProjectorLC">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">morta_nuts2.model.projection.project_class.</span></span><span class="sig-name descname"><span class="pre">ProjectorLC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">horizon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_years</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rw'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stochastic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#ProjectorLC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.ProjectorLC" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Multi-regional Lee-Carter prospective projection via SVD.</p>
+<p>The Lee-Carter model decomposes the log force of mortality as:</p>
+<div class="math notranslate nohighlight">
+\[\ln \mu(x, t) = \alpha_x + \beta_x \, \kappa_t + \varepsilon_{x,t}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha_x\)</span> is the age-specific baseline, <span class="math notranslate nohighlight">\(\beta_x\)</span> is
+the age-sensitivity pattern, and <span class="math notranslate nohighlight">\(\kappa_t\)</span> is the period index.</p>
+<p>For the <strong>multi-regional</strong> variant, the period indices across regions are
+decomposed via SVD:</p>
+<div class="math notranslate nohighlight">
+\[K = U \, S \, V^\top \approx Z_{\text{red}} \, V_{\text{red}}^\top\]</div>
+<p>where <span class="math notranslate nohighlight">\(Z_{\text{red}} = U_{[1:r]} S_{[1:r]}\)</span> collects the first
+<code class="docutils literal notranslate"><span class="pre">nb_components</span></code> principal scores and <span class="math notranslate nohighlight">\(V_{\text{red}}\)</span> the
+corresponding regional loadings.</p>
+<p>Two period-index dynamics are supported:</p>
+<p><strong>Random walk with drift (``model=’rw’``):</strong></p>
+<div class="math notranslate nohighlight">
+\[Z_{T+h} = Z_T + \sum_{s=1}^{h} \varepsilon_s, \qquad
+    \varepsilon_s \sim \mathcal{N}(\hat{\delta},\, \hat{\Sigma})\]</div>
+<p><strong>Linear trend (``model=’linear’``):</strong></p>
+<div class="math notranslate nohighlight">
+\[Z_t = \alpha + \beta \, t + \varepsilon_t, \qquad
+\varepsilon_t \sim \mathcal{N}(0, \Sigma_{\text{res}})\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>results</strong> (<em>dict</em>) – Must contain results[“curves”][“alpha_x”], results[“curves”][“beta_xg”],
-and results[“parameters”][“kappa”].</p></li>
+<li><p><strong>results</strong> (<em>dict</em>) – Must contain <code class="docutils literal notranslate"><span class="pre">results[&quot;curves&quot;][&quot;alpha_x&quot;]</span></code>, <code class="docutils literal notranslate"><span class="pre">results[&quot;curves&quot;][&quot;beta_xg&quot;]</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">results[&quot;parameters&quot;][&quot;kappa&quot;]</span></code>.</p></li>
 <li><p><strong>tv</strong> (<em>array-like</em>) – Observation year vector.</p></li>
-<li><p><strong>horizon</strong> (<em>int</em>)</p></li>
-<li><p><strong>exclude_years</strong> (<em>list</em>)</p></li>
-<li><p><strong>nb_components</strong> (<em>int</em>)</p></li>
-<li><p><strong>model</strong> (<em>{'rw'</em><em>, </em><em>'linear'}</em>)</p></li>
-<li><p><strong>stochastic</strong> (<em>bool</em>)</p></li>
-<li><p><strong>n_sim</strong> (<em>int</em>)</p></li>
+<li><p><strong>horizon</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of projection years (default <code class="docutils literal notranslate"><span class="pre">30</span></code>).</p></li>
+<li><p><strong>exclude_years</strong> (<em>list</em><em>, </em><em>optional</em>) – Years to exclude before fitting (default <code class="docutils literal notranslate"><span class="pre">[2020,</span> <span class="pre">2021]</span></code>).</p></li>
+<li><p><strong>nb_components</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of SVD components to retain (default <code class="docutils literal notranslate"><span class="pre">1</span></code>).</p></li>
+<li><p><strong>model</strong> (<em>{'rw'</em><em>, </em><em>'linear'}</em><em>, </em><em>optional</em>) – Projection model for <span class="math notranslate nohighlight">\(\kappa_t\)</span> (default <code class="docutils literal notranslate"><span class="pre">'rw'</span></code>).</p></li>
+<li><p><strong>stochastic</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, generates <code class="docutils literal notranslate"><span class="pre">n_sim</span></code> Monte-Carlo paths (default <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
+<li><p><strong>n_sim</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of stochastic simulations (default <code class="docutils literal notranslate"><span class="pre">1000</span></code>).</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.ProjectorLC_SVD.project">
-<span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#ProjectorLC_SVD.project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.ProjectorLC_SVD.project" title="Link to this definition"></a></dt>
-<dd><p>Runs the projection and returns the results dict.</p>
+<dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.ProjectorLC.project">
+<span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#ProjectorLC.project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.ProjectorLC.project" title="Link to this definition"></a></dt>
+<dd><p>Run the full Lee-Carter projection and return all outputs.</p>
+<p>Dispatches to the appropriate internal methods depending on whether
+kappa is scalar (classic 1-D variant) or multi-regional (SVD variant),
+then calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">_reconstruct()</span></code> to apply the Lee-Carter identity and
+produce mortality arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Deterministic keys: <code class="docutils literal notranslate"><span class="pre">kappa_future</span></code>, <code class="docutils literal notranslate"><span class="pre">logmu_future</span></code>, <code class="docutils literal notranslate"><span class="pre">mu_future</span></code>.</p>
+<p>Stochastic keys: <code class="docutils literal notranslate"><span class="pre">kappa_paths</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_lower</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_median</span></code>,
+<code class="docutils literal notranslate"><span class="pre">kappa_upper</span></code>, <code class="docutils literal notranslate"><span class="pre">logmu_sim</span></code>, <code class="docutils literal notranslate"><span class="pre">mu_sim</span></code>, <code class="docutils literal notranslate"><span class="pre">mu_lower</span></code>,
+<code class="docutils literal notranslate"><span class="pre">mu_median</span></code>, <code class="docutils literal notranslate"><span class="pre">mu_upper</span></code>.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.ProjectorLeeLi">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">morta_nuts2.model.projection.project_class.</span></span><span class="sig-name descname"><span class="pre">ProjectorLeeLi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">horizon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_years</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rw'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stochastic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#ProjectorLeeLi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.ProjectorLeeLi" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.ProjectorLL">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">morta_nuts2.model.projection.project_class.</span></span><span class="sig-name descname"><span class="pre">ProjectorLL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">horizon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_years</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rw'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stochastic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#ProjectorLL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.ProjectorLL" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Lee-Li prospective projection (common factor + regional components).</p>
+<p>Li-Lee prospective mortality projection (common factor + regional components).</p>
+<p>The Li-Lee model extends the Lee-Carter model by decomposing log-mortality
+into a common trend shared by all regions and region-specific deviations:</p>
+<div class="math notranslate nohighlight">
+\[\ln \mu_{x,t}^{(g)} = \alpha_x^{(g)}
+    + \beta_x \, \kappa_t
+    + \beta_x^{(g)} \, \kappa_t^{(g)}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha_x^{(g)}\)</span> is the age-region baseline log-mortality.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_x\)</span> and <span class="math notranslate nohighlight">\(\kappa_t\)</span> are the common age-loading and
+time-index (shared across regions).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_x^{(g)}\)</span> and <span class="math notranslate nohighlight">\(\kappa_t^{(g)}\)</span> are the regional
+age-loading and time-index (region <span class="math notranslate nohighlight">\(g\)</span>-specific).</p></li>
+</ul>
+<p>The regional kappa series <span class="math notranslate nohighlight">\(\kappa_t^{(g)}\)</span> is compressed via SVD
+into <code class="docutils literal notranslate"><span class="pre">nb_components</span></code> principal components before projection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>results</strong> (<em>dict</em>) – Must contain results[“curves”] (alpha_xg, beta_x, beta_xg)
-and results[“parameters”] (kappa, kappa_g).</p></li>
-<li><p><strong>tv</strong> (<em>array-like</em>)</p></li>
-<li><p><strong>horizon</strong> (<em>int</em>)</p></li>
-<li><p><strong>exclude_years</strong> (<em>list</em>)</p></li>
-<li><p><strong>model</strong> (<em>{'rw'</em><em>, </em><em>'linear'}</em>)</p></li>
-<li><p><strong>stochastic</strong> (<em>bool</em>)</p></li>
-<li><p><strong>n_sim</strong> (<em>int</em>)</p></li>
+<li><p><strong>results</strong> (<em>dict</em>) – <p>Estimation output.  Must contain:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">results[&quot;curves&quot;]</span></code> (parametric variant) with keys
+<code class="docutils literal notranslate"><span class="pre">alpha_xg</span></code>, <code class="docutils literal notranslate"><span class="pre">beta_x</span></code>, <code class="docutils literal notranslate"><span class="pre">beta_xg</span></code>, or</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">results[&quot;parameters&quot;]</span></code> (classic variant) with keys
+<code class="docutils literal notranslate"><span class="pre">ax</span></code>, <code class="docutils literal notranslate"><span class="pre">bx</span></code>, <code class="docutils literal notranslate"><span class="pre">bx_gr</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_gr</span></code>.</p></li>
+</ul>
+</p></li>
+<li><p><strong>tv</strong> (<em>array-like</em>) – Observation year vector aligned with kappa.</p></li>
+<li><p><strong>horizon</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of projection years (default 30).</p></li>
+<li><p><strong>exclude_years</strong> (<em>list</em><em>, </em><em>optional</em>) – Years excluded from drift/covariance estimation (default [2020, 2021]).</p></li>
+<li><p><strong>nb_components</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of SVD components retained for the regional kappa (default 1).</p></li>
+<li><p><strong>model</strong> (<em>{'rw'</em><em>, </em><em>'linear'}</em><em>, </em><em>optional</em>) – Time-series model for kappa projection (default <code class="docutils literal notranslate"><span class="pre">'rw'</span></code>).</p></li>
+<li><p><strong>stochastic</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, generate Monte Carlo paths (default <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
+<li><p><strong>n_sim</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of stochastic simulations (default 1000).</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.ProjectorLeeLi.project">
-<span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#ProjectorLeeLi.project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.ProjectorLeeLi.project" title="Link to this definition"></a></dt>
-<dd><p>Runs the projection and returns the results dict.</p>
+<dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.ProjectorLL.project">
+<span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#ProjectorLL.project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.ProjectorLL.project" title="Link to this definition"></a></dt>
+<dd><p>Run the full Lee-Li projection and return all outputs.</p>
+<p>Masks excluded years, compresses regional kappas via SVD, projects
+both the common and regional factors with the selected time-series
+model, then calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">_reconstruct()</span></code> to apply the Lee-Li identity
+and build mortality arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Deterministic keys: <code class="docutils literal notranslate"><span class="pre">kappa_future</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_g_future</span></code>,
+<code class="docutils literal notranslate"><span class="pre">logmu_future</span></code>, <code class="docutils literal notranslate"><span class="pre">mu_future</span></code>.</p>
+<p>Stochastic keys: <code class="docutils literal notranslate"><span class="pre">kappa_paths</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_lower</span></code>,
+<code class="docutils literal notranslate"><span class="pre">kappa_median</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_upper</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_g_paths</span></code>,
+<code class="docutils literal notranslate"><span class="pre">kappa_g_lower</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_g_median</span></code>, <code class="docutils literal notranslate"><span class="pre">kappa_g_upper</span></code>,
+<code class="docutils literal notranslate"><span class="pre">logmu_sim</span></code>, <code class="docutils literal notranslate"><span class="pre">mu_sim</span></code>, <code class="docutils literal notranslate"><span class="pre">mu_lower</span></code>, <code class="docutils literal notranslate"><span class="pre">mu_median</span></code>,
+<code class="docutils literal notranslate"><span class="pre">mu_upper</span></code>.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -526,26 +690,72 @@ and results[“parameters”] (kappa, kappa_g).</p></li>
 <dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.HighAgeExtrapolator">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">morta_nuts2.model.projection.project_class.</span></span><span class="sig-name descname"><span class="pre">HighAgeExtrapolator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_extrap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_extrap_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_Muxtg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'kannisto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_linear</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#HighAgeExtrapolator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.HighAgeExtrapolator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Extrapolates log_Muxtg beyond max(xv) up to x_extrap.</p>
-<dl class="simple">
-<dt>Two methods available:</dt><dd><ul class="simple">
-<li><p>‘linear’   : no-intercept linear regression (base method)</p></li>
-<li><p>‘kannisto’ : Kannisto model with linear fallback</p></li>
+<p>Extrapolates log-mortality rates beyond the maximum observed age up to <em>x_extrap</em>.</p>
+<p>Two extrapolation methods are available:</p>
+<p><strong>Linear (no-intercept regression)</strong></p>
+<p>A slope <span class="math notranslate nohighlight">\(s\)</span> is estimated by anchored no-intercept OLS on ages
+<span class="math notranslate nohighlight">\([x_{\text{start}}, x_{\max}]\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\log\mu(x) - \log\mu(x_{\max})
+    \approx s \cdot (x - x_{\max})\]</div>
+<p>and the extrapolation beyond <span class="math notranslate nohighlight">\(x_{\max}\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[\log\mu(x) = \log\mu(x_{\max}) + s \cdot (x - x_{\max}),
+\quad x &gt; x_{\max}\]</div>
+<p><strong>Kannisto (logistic Gompertz)</strong></p>
+<p>The force of mortality is modelled as:</p>
+<div class="math notranslate nohighlight">
+\[\mu(x) = \frac{a \, e^{bx}}{1 + a \, e^{bx}}\]</div>
+<p>Parameters <span class="math notranslate nohighlight">\((a, b)\)</span> are fitted by nonlinear least squares on ages
+<span class="math notranslate nohighlight">\([x_{\text{start}}, x_{\max}]\)</span> using the <a class="reference internal" href="#morta_nuts2.model.projection.project_class.kannisto_log_mu" title="morta_nuts2.model.projection.project_class.kannisto_log_mu"><code class="xref py py-func docutils literal notranslate"><span class="pre">kannisto_log_mu()</span></code></a>
+function.  If the fit fails, the method falls back to the linear approach.
+Monotonicity of log-mortality is enforced beyond <span class="math notranslate nohighlight">\(x_{\max}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xv</strong> (<em>array-like</em>) – Observed age vector.</p></li>
+<li><p><strong>x_extrap</strong> (<em>int</em>) – Maximum age to extrapolate to.</p></li>
+<li><p><strong>x_extrap_start</strong> (<em>int</em><em> or </em><em>None</em>) – Starting age of the regression window.  Set to <code class="docutils literal notranslate"><span class="pre">None</span></code> and pass
+<code class="docutils literal notranslate"><span class="pre">auto_start=True</span></code> to select automatically via leave-one-out CV.</p></li>
+<li><p><strong>log_Muxtg</strong> (<em>ndarray</em>) – <p>Log force-of-mortality array.  Expected shapes:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_regions,</span> <span class="pre">horizon)</span></code> — deterministic, linear method.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_regions,</span> <span class="pre">horizon,</span> <span class="pre">n_sim)</span></code> — stochastic, linear method.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">horizon,</span> <span class="pre">nb_regions)</span></code> — deterministic, Kannisto method.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">horizon,</span> <span class="pre">nb_regions,</span> <span class="pre">n_sim)</span></code> — stochastic, Kannisto method.</p></li>
 </ul>
-</dd>
-<dt>Expected shape of log_Muxtg:</dt><dd><ul class="simple">
-<li><p>(nb_ages, nb_regions, horizon)         -&gt; deterministic  [linear]</p></li>
-<li><p>(nb_ages, nb_regions, horizon, n_sim)  -&gt; stochastic     [linear]</p></li>
-<li><p>(nb_ages, horizon, nb_regions)         -&gt; deterministic  [kannisto]</p></li>
-<li><p>(nb_ages, horizon, nb_regions, n_sim)  -&gt; stochastic     [kannisto]</p></li>
+</p></li>
+<li><p><strong>method</strong> (<em>{'kannisto'</em><em>, </em><em>'linear'}</em><em>, </em><em>optional</em>) – Extrapolation method (default <code class="docutils literal notranslate"><span class="pre">'kannisto'</span></code>).</p></li>
+<li><p><strong>auto_start</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, select <em>x_extrap_start</em> automatically (default <code class="docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
+<li><p><strong>fallback_linear</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, fall back to the linear method when Kannisto fails
+(default <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.HighAgeExtrapolator.extrapolate">
 <span class="sig-name descname"><span class="pre">extrapolate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#HighAgeExtrapolator.extrapolate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.HighAgeExtrapolator.extrapolate" title="Link to this definition"></a></dt>
-<dd><p>Runs the extrapolation using the selected method.</p>
-<p>Returns (out, xv_full).</p>
+<dd><p>Run the high-age extrapolation using the selected method.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">auto_start=True</span></code> or <em>x_extrap_start</em> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, the optimal
+regression start age is selected first via leave-one-out
+cross-validation (<code class="xref py py-meth docutils literal notranslate"><span class="pre">_optimal_start()</span></code>).</p>
+<p>Then dispatches to:</p>
+<ul class="simple">
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">_extrapolate_linear()</span></code> for <code class="docutils literal notranslate"><span class="pre">method='linear'</span></code>.</p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">_extrapolate_kannisto()</span></code> for <code class="docutils literal notranslate"><span class="pre">method='kannisto'</span></code>.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>out</strong> (<em>ndarray</em>) – Extended log-mortality array covering ages up to <em>x_extrap</em>.</p></li>
+<li><p><strong>xv_full</strong> (<em>ndarray</em>) – Complete age vector from <code class="docutils literal notranslate"><span class="pre">xv.min()</span></code> to <code class="docutils literal notranslate"><span class="pre">x_extrap</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <em>method</em> is not <code class="docutils literal notranslate"><span class="pre">'linear'</span></code> or <code class="docutils literal notranslate"><span class="pre">'kannisto'</span></code>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -553,24 +763,39 @@ and results[“parameters”] (kappa, kappa_g).</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.concat_logmu_time">
 <span class="sig-prename descclassname"><span class="pre">morta_nuts2.model.projection.project_class.</span></span><span class="sig-name descname"><span class="pre">concat_logmu_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logmu_hist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logmu_proj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#concat_logmu_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.concat_logmu_time" title="Link to this definition"></a></dt>
-<dd><p>Concatenate historical and projected log-mortality along time axis.</p>
+<dd><p>Concatenate historical and projected log-mortality arrays along the time axis.</p>
+<p>In the stochastic case, the 3-D historical array is broadcast to 4-D by
+repeating it <em>n_sim</em> times along a new simulation axis before concatenation,
+so that the output always has a consistent shape:</p>
+<div class="math notranslate nohighlight">
+\[\log\boldsymbol{\mu}_{\text{full}} =
+\bigl[\,\log\boldsymbol{\mu}_{\text{hist}}
+     \;\big|\;
+     \log\boldsymbol{\mu}_{\text{proj}}\,\bigr]_{\text{axis=1}}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>logmu_hist</strong> (<em>(</em><em>nb_ages</em><em>, </em><em>nb_years_hist</em><em>, </em><em>nb_regions</em><em>)</em>)</p></li>
-<li><p><strong>logmu_proj</strong> – <ul>
-<li><p>deterministic : (nb_ages, horizon, nb_regions)</p></li>
-<li><p>stochastic    : (nb_ages, horizon, nb_regions, n_sim)</p></li>
+<li><p><strong>logmu_hist</strong> (ndarray, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years_hist,</span> <span class="pre">nb_regions)</span></code>) – Observed log-mortality array.</p></li>
+<li><p><strong>logmu_proj</strong> (<em>ndarray</em>) – <p>Projected log-mortality array.</p>
+<ul>
+<li><p>Deterministic: shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">horizon,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p>Stochastic: shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">horizon,</span> <span class="pre">nb_regions,</span> <span class="pre">n_sim)</span></code>.</p></li>
 </ul>
 </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>- deterministic</strong> (<em>(nb_ages, nb_years_hist + horizon, nb_regions)</em>)</p></li>
-<li><p><strong>- stochastic</strong> (<em>(nb_ages, nb_years_hist + horizon, nb_regions, n_sim)</em>)</p></li>
+<li><p>Deterministic: shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years_hist</span> <span class="pre">+</span> <span class="pre">horizon,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p>Stochastic: shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years_hist</span> <span class="pre">+</span> <span class="pre">horizon,</span> <span class="pre">nb_regions,</span> <span class="pre">n_sim)</span></code>.</p></li>
 </ul>
 </p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <em>logmu_proj</em> is not 3-D or 4-D.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -637,17 +862,50 @@ for a given entry age, region, and stochastic mortality scenario.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="morta_nuts2.model.projection.project_class.compute_mae">
 <span class="sig-prename descclassname"><span class="pre">morta_nuts2.model.projection.project_class.</span></span><span class="sig-name descname"><span class="pre">compute_mae</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu_obs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/projection/project_class.html#compute_mae"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.projection.project_class.compute_mae" title="Link to this definition"></a></dt>
-<dd><p>Compute MAE and WMAE between observed and modelled mortality rates.</p>
+<dd><p>Compute the Mean Absolute Error (MAE) and Weighted MAE (WMAE) between
+observed and modelled mortality rates.</p>
+<p>The global MAE is:</p>
+<div class="math notranslate nohighlight">
+\[\text{MAE} = \frac{1}{A \cdot T \cdot G}
+\sum_{x,t,g} \bigl| \hat{\mu}_{x,t}^{(g)} - \mu_{x,t}^{(g)} \bigr|\]</div>
+<p>When exposure weights <span class="math notranslate nohighlight">\(E_{x,t}^{(g)}\)</span> are provided, the
+weighted MAE is:</p>
+<div class="math notranslate nohighlight">
+\[\text{WMAE} = \frac{
+    \sum_{x,t,g}
+    E_{x,t}^{(g)} \,
+    \bigl| \hat{\mu}_{x,t}^{(g)} - \mu_{x,t}^{(g)} \bigr|
+}{
+    \sum_{x,t,g} E_{x,t}^{(g)}
+}\]</div>
+<p>Both metrics are also computed marginally over each dimension
+(by region, by age, by year).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mu_obs</strong> (<em>(</em><em>nb_ages</em><em>, </em><em>horizon</em><em>) or </em><em>(</em><em>nb_ages</em><em>, </em><em>horizon</em><em>, </em><em>nb_regions</em><em>)</em>)</p></li>
-<li><p><strong>mu_model</strong> (<em>(</em><em>nb_ages</em><em>, </em><em>horizon</em><em>) or </em><em>(</em><em>nb_ages</em><em>, </em><em>horizon</em><em>, </em><em>nb_regions</em><em>)</em>)</p></li>
-<li><p><strong>weights</strong> (<em>same shape as mu_obs</em><em>, </em><em>optional</em><em>, </em><em>e.g. exposures Extg</em>)</p></li>
+<li><p><strong>mu_obs</strong> (ndarray, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">horizon)</span></code> or <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">horizon,</span> <span class="pre">nb_regions)</span></code>) – Observed mortality rates.</p></li>
+<li><p><strong>mu_model</strong> (<em>ndarray</em>) – Modelled mortality rates; must be broadcastable to the shape of <em>mu_obs</em>.</p></li>
+<li><p><strong>weights</strong> (<em>ndarray</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Non-negative weights (e.g. exposures <span class="math notranslate nohighlight">\(E_{x,t}^{(g)}\)</span>), same
+shape as <em>mu_obs</em>.  If <code class="docutils literal notranslate"><span class="pre">None</span></code>, only unweighted MAE is computed.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict with MAE and WMAE (if weights provided) at different aggregation levels</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Always contains:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;by_region&quot;</span></code> — MAE averaged over ages and years, shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;by_age&quot;</span></code>    — MAE averaged over years and regions, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;by_year&quot;</span></code>   — MAE averaged over ages and regions, shape <code class="docutils literal notranslate"><span class="pre">(horizon,)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;global&quot;</span></code>    — scalar global MAE.</p></li>
+</ul>
+<p>If <em>weights</em> is provided, also contains:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;wmae_by_region&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;wmae_by_age&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;wmae_by_year&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;wmae_global&quot;</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>

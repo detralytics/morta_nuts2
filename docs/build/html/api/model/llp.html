@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lee &amp; Li Parametric Model &mdash; morta_nuts2 0.1.0 documentation</title>
+  <title>Li &amp; Lee Parametric Model &mdash; morta_nuts2 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
@@ -158,7 +158,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="lcp.html">Lee-Carter Parametric Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lcp.html#lee-carter-object-oriented-architecture">Lee-Carter — Object-oriented architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lcp.html#lee-carter-object-oriented-architecture">Lee-Carter — Object-oriented architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#class-hierarchy">Class hierarchy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lcp.html#dependencies">Dependencies</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter"><code class="docutils literal notranslate"><span class="pre">LeeCarter</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LeeCarter.make_penalty_matrix()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="lcp.html#morta_nuts2.model.LC_p.lcp_class.LeeCarter.poisson_lnL"><code class="docutils literal notranslate"><span class="pre">LeeCarter.poisson_lnL()</span></code></a></li>
@@ -178,7 +183,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Lee &amp; Li Parametric Model</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Li &amp; Lee Parametric Model</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#lilee-object-oriented-architecture">LiLee — Object-oriented architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee"><code class="docutils literal notranslate"><span class="pre">LiLee</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.make_penalty_matrix"><code class="docutils literal notranslate"><span class="pre">LiLee.make_penalty_matrix()</span></code></a></li>
@@ -206,18 +211,21 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="projection.html">Mortality Projection Engine</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="projection.html#projection">Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="projection.html#projection">Projection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="projection.html#main-components">Main components</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.kannisto_log_mu"><code class="docutils literal notranslate"><span class="pre">kannisto_log_mu()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.LifeExpectancy.compute"><code class="docutils literal notranslate"><span class="pre">LifeExpectancy.compute()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.ProjectorLC_SVD.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLC_SVD.project()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.ProjectorLC"><code class="docutils literal notranslate"><span class="pre">ProjectorLC</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.ProjectorLC.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLC.project()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.ProjectorLeeLi.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLeeLi.project()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.ProjectorLL"><code class="docutils literal notranslate"><span class="pre">ProjectorLL</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.ProjectorLL.project"><code class="docutils literal notranslate"><span class="pre">ProjectorLL.project()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="projection.html#morta_nuts2.model.projection.project_class.HighAgeExtrapolator"><code class="docutils literal notranslate"><span class="pre">HighAgeExtrapolator</span></code></a><ul>
@@ -274,138 +282,150 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Notebooks:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html">1. Imports</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#2.-Data-Loading">2. Data Loading</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#3.-Data-Preparation">3. Data Preparation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#4.-Model-Fitting">4. Model Fitting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html">Exploration deterministe BE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#1.-Imports">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#2.-Data-Loading">2. Data Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#3.-Data-Preparation">3. Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#4.-Model-Fitting">4. Model Fitting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.-Model-Comparison">5. Model Comparison</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.5-Fitted-Mortality-Curves">5.5 Fitted Mortality Curves</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#6.-Projection">6. Projection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.-Life-Expectancy">8. Life Expectancy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.1-Export-to-CSV">8.1 Export to CSV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.2-Maps-—-Life-Expectancy-at-Birth">8.2 Maps — Life Expectancy at Birth</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.3-Life-Expectancy-Curves-by-Region">8.3 Life Expectancy Curves by Region</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html">1. Imports</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#2.-Data-Loading">2. Data Loading</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#3.-Data-Preparation">3. Data Preparation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#4.-Model-Fitting">4. Model Fitting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.-Model-Comparison">5. Model Comparison</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.5-Regional-Beta-Curves">5.5 Regional Beta Curves</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.6-Fitted-Mortality-Curves">5.6 Fitted Mortality Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.-Model-Comparison">5. Model Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#5.5-Fitted-Mortality-Curves">5.5 Fitted Mortality Curves</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#6.-Stochastic-Projection">6. Stochastic Projection</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#6.1-Regional-kappa_g-Trajectories">6.1 Regional kappa_g Trajectories</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#8.-Annuity-Pricing">8. Annuity Pricing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#8.1-Box-Plots">8.1 Box Plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#8.2-Export-Simulation-Table">8.2 Export Simulation Table</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html">1. Imports</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#2.-Data-Loading">2. Data Loading</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#3.-Data-Preparation">3. Data Preparation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#4.-Model-Fitting">4. Model Fitting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#6.-Projection">6. Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.-Life-Expectancy">8. Life Expectancy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.1-Export-to-CSV">8.1 Export to CSV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.2-Maps-—-Life-Expectancy-at-Birth">8.2 Maps — Life Expectancy at Birth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_BE.html#8.3-Life-Expectancy-Curves-by-Region">8.3 Life Expectancy Curves by Region</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.-Model-Comparison">5. Model Comparison</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.4-WMAE-Maps">5.4 WMAE Maps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.5-Fitted-Mortality-Curves">5.5 Fitted Mortality Curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html">Exploration stochastique BE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#1.-Imports">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#2.-Data-Loading">2. Data Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#3.-Data-Preparation">3. Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#4.-Model-Fitting">4. Model Fitting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#6.-Projection">6. Projection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.-Life-Expectancy">8. Life Expectancy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.1-Export-to-CSV">8.1 Export to CSV</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.2-Maps-—-Life-Expectancy-at-Birth">8.2 Maps — Life Expectancy at Birth</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.3-Life-Expectancy-Curves-by-Region">8.3 Life Expectancy Curves by Region</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html">1. Imports</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#2.-Data-Loading">2. Data Loading</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#3.-Data-Preparation">3. Data Preparation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#4.-Model-Fitting">4. Model Fitting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.-Model-Comparison">5. Model Comparison</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.5-Regional-Beta-Curves">5.5 Regional Beta Curves</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.6-Fitted-Mortality-Curves">5.6 Fitted Mortality Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.-Model-Comparison">5. Model Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.5-Regional-Beta-Curves">5.5 Regional Beta Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#5.6-Fitted-Mortality-Curves">5.6 Fitted Mortality Curves</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#6.-Stochastic-Projection">6. Stochastic Projection</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#6.1-Regional-kappa_g-Trajectories">6.1 Regional kappa_g Trajectories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#6.-Stochastic-Projection">6. Stochastic Projection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#6.1-Regional-kappa_g-Trajectories">6.1 Regional kappa_g Trajectories</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#8.-Annuity-Pricing">8. Annuity Pricing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#8.1-Box-Plots">8.1 Box Plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#8.2-Export-Simulation-Table">8.2 Export Simulation Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#8.-Annuity-Pricing">8. Annuity Pricing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#8.1-Box-Plots">8.1 Box Plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_BE.html#8.2-Export-Simulation-Table">8.2 Export Simulation Table</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html">Exploration deterministe FR</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#1.-Imports">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#2.-Data-Loading">2. Data Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#3.-Data-Preparation">3. Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#4.-Model-Fitting">4. Model Fitting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.-Model-Comparison">5. Model Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.4-WMAE-Maps">5.4 WMAE Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#5.5-Fitted-Mortality-Curves">5.5 Fitted Mortality Curves</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#6.-Projection">6. Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.-Life-Expectancy">8. Life Expectancy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.1-Export-to-CSV">8.1 Export to CSV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.2-Maps-—-Life-Expectancy-at-Birth">8.2 Maps — Life Expectancy at Birth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_deterministe_FR.html#8.3-Life-Expectancy-Curves-by-Region">8.3 Life Expectancy Curves by Region</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html">Exploration stochastique FR</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#1.-Imports">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#2.-Data-Loading">2. Data Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#3.-Data-Preparation">3. Data Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#4.-Model-Fitting">4. Model Fitting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#4.1-Lee-Carter-Model">4.1 Lee-Carter Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Non-Parametric-Lee-Carter">Non-Parametric Lee-Carter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Parametric-Lee-Carter">Parametric Lee-Carter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#4.2-Li-and-Lee-Model">4.2 Li and Lee Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Non-Parametric-Li-and-Lee">Non-Parametric Li and Lee</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#Parametric-Li-and-Lee-with-B-Splines">Parametric Li and Lee with B-Splines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.-Model-Comparison">5. Model Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.1-AIC-/-BIC-/-Log-Likelihood">5.1 AIC / BIC / Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.2-MAE-&amp;-WMAE">5.2 MAE &amp; WMAE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.3-WMAE-Bar-Chart-by-Region">5.3 WMAE Bar Chart by Region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.4-WMAE-Map">5.4 WMAE Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.5-Regional-Beta-Curves">5.5 Regional Beta Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#5.6-Fitted-Mortality-Curves">5.6 Fitted Mortality Curves</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#6.-Stochastic-Projection">6. Stochastic Projection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#6.1-Regional-kappa_g-Trajectories">6.1 Regional kappa_g Trajectories</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#7.-High-Age-Extrapolation-(up-to-age-110)">7. High-Age Extrapolation (up to age 110)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#8.-Annuity-Pricing">8. Annuity Pricing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#8.1-Box-Plots">8.1 Box Plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../notebook/exploration_stochastique_FR.html#8.2-Export-Simulation-Table">8.2 Export Simulation Table</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -424,7 +444,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Lee &amp; Li Parametric Model</li>
+      <li class="breadcrumb-item active">Li &amp; Lee Parametric Model</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/api/model/llp.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -435,7 +455,7 @@
            <div itemprop="articleBody">
              
   <section id="module-morta_nuts2.model.LL_p.llp_class">
-<span id="lee-li-parametric-model"></span><h1>Lee &amp; Li Parametric Model<a class="headerlink" href="#module-morta_nuts2.model.LL_p.llp_class" title="Link to this heading"></a></h1>
+<span id="li-lee-parametric-model"></span><h1>Li &amp; Lee Parametric Model<a class="headerlink" href="#module-morta_nuts2.model.LL_p.llp_class" title="Link to this heading"></a></h1>
 <section id="lilee-object-oriented-architecture">
 <h2>LiLee — Object-oriented architecture<a class="headerlink" href="#lilee-object-oriented-architecture" title="Link to this heading"></a></h2>
 <p>Multi-population mortality models based on the Li-Lee family.</p>
@@ -486,8 +506,8 @@
 <li><p>shared mathematical tools (static methods)</p></li>
 <li><p>the two main model families as nested sub-classes:</p>
 <ul>
-<li><p><a class="reference internal" href="../../api.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric" title="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiLee.Parametric</span></code></a> — two parametric variants (B-splines, P-splines)</p></li>
-<li><p><a class="reference internal" href="../../api.html#morta_nuts2.model.LL_p.llp_class.LiLee.Classic" title="morta_nuts2.model.LL_p.llp_class.LiLee.Classic"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiLee.Classic</span></code></a>    — non-parametric gradient descent</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric" title="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiLee.Parametric</span></code></a> — two parametric variants (B-splines, P-splines)</p></li>
+<li><p><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Classic" title="morta_nuts2.model.LL_p.llp_class.LiLee.Classic"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiLee.Classic</span></code></a>    — non-parametric gradient descent</p></li>
 </ul>
 </li>
 </ul>
@@ -500,17 +520,25 @@
 <dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.make_penalty_matrix">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">make_penalty_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diff_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.make_penalty_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.make_penalty_matrix" title="Link to this definition"></a></dt>
 <dd><p>Build the P-splines penalty matrix <span class="math notranslate nohighlight">\(D^T D\)</span>.</p>
+<p>The penalty is used to enforce smoothness on the spline coefficients
+<span class="math notranslate nohighlight">\(c\)</span> via the penalized log-likelihood:</p>
+<div class="math notranslate nohighlight">
+\[\ell_p(\theta) = \ell(\theta) - \lambda \, c^\top D^\top D \, c\]</div>
+<p>where <span class="math notranslate nohighlight">\(D\)</span> is the finite difference matrix of order <code class="docutils literal notranslate"><span class="pre">diff_order</span></code>
+applied to an identity of size <code class="docutils literal notranslate"><span class="pre">n_basis</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n_basis</strong> (<em>int</em>) – Number of spline basis functions.</p></li>
-<li><p><strong>diff_order</strong> (<em>int</em>) – Order of the finite difference operator.</p></li>
+<li><p><strong>diff_order</strong> (<em>int</em>) – Order of the finite difference operator.
+<code class="docutils literal notranslate"><span class="pre">1</span></code> penalizes slope changes; <code class="docutils literal notranslate"><span class="pre">2</span></code> penalizes curvature.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>) — penalty matrix.</p></li>
-<li><p><strong>diag_DtD</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>) — diagonal of <code class="docutils literal notranslate"><span class="pre">DtD</span></code>.</p></li>
+<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>) — penalty matrix <span class="math notranslate nohighlight">\(D^\top D\)</span>.</p></li>
+<li><p><strong>diag_DtD</strong> (<em>numpy.ndarray</em>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>) — diagonal of <code class="docutils literal notranslate"><span class="pre">DtD</span></code>,
+used for diagonal Hessian preconditioning.</p></li>
 </ul>
 </p>
 </dd>
@@ -520,22 +548,32 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.poisson_lnL">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">poisson_lnL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Dxtg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Extg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logmu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logDxtgFact</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.poisson_lnL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.poisson_lnL" title="Link to this definition"></a></dt>
-<dd><p>Compute the Poisson log-likelihood.</p>
+<dd><p>Compute the Poisson log-likelihood for the Li-Lee model.</p>
+<p>Under the assumption
+<span class="math notranslate nohighlight">\(D_{x,t}^{(g)} \sim \text{Poisson}(E_{x,t}^{(g)} \, \mu_{x,t}^{(g)})\)</span>,
+the log-likelihood is:</p>
+<div class="math notranslate nohighlight">
+\[\ell(\theta) = \sum_{x,t,g} \Bigl[
+    D_{x,t}^{(g)} \ln \mu_{x,t}^{(g)}
+    - E_{x,t}^{(g)} \, \mu_{x,t}^{(g)}
+    + D_{x,t}^{(g)} \ln E_{x,t}^{(g)}
+    - \ln D_{x,t}^{(g)}!
+\Bigr]\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>Dxtg</strong> (<em>numpy.ndarray</em>) – Observed death counts, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
 <li><p><strong>Extg</strong> (<em>numpy.ndarray</em>) – Exposures, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
-<li><p><strong>logmu</strong> (<em>numpy.ndarray</em>) – Log mortality rates, same shape as <code class="docutils literal notranslate"><span class="pre">Dxtg</span></code>.</p></li>
-<li><p><strong>logDxtgFact</strong> (<em>numpy.ndarray</em>) – Pre-computed <span class="math notranslate nohighlight">\(\log(D_{x,t,g}!)\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">Dxtg</span></code>.</p></li>
+<li><p><strong>logmu</strong> (<em>numpy.ndarray</em>) – Log mortality rates <span class="math notranslate nohighlight">\(\ln \mu_{x,t}^{(g)}\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">Dxtg</span></code>.</p></li>
+<li><p><strong>logDxtgFact</strong> (<em>numpy.ndarray</em>) – Pre-computed <span class="math notranslate nohighlight">\(\ln(D_{x,t,g}!)\)</span> via <code class="docutils literal notranslate"><span class="pre">scipy.special.gammaln</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>lnL</strong> (<em>float</em>) — scalar log-likelihood.</p></li>
-<li><p><strong>exp_logmu</strong> (<em>numpy.ndarray</em>) — <span class="math notranslate nohighlight">\(\exp(\ln \mu)\)</span>.</p></li>
-<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) — <span class="math notranslate nohighlight">\(E_{x,t,g} \cdot \exp(\ln \mu)\)</span>.</p></li>
-<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) — <span class="math notranslate nohighlight">\(D_{x,t,g} - E_{x,t,g} \cdot \exp(\ln \mu)\)</span>.</p></li>
+<li><p><strong>lnL</strong> (<em>float</em>) — scalar log-likelihood <span class="math notranslate nohighlight">\(\ell(\theta)\)</span>.</p></li>
+<li><p><strong>exp_logmu</strong> (<em>numpy.ndarray</em>) — <span class="math notranslate nohighlight">\(\mu_{x,t}^{(g)} = \exp(\ln \mu)\)</span>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) — expected deaths <span class="math notranslate nohighlight">\(E_{x,t}^{(g)} \mu_{x,t}^{(g)}\)</span>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) — Pearson residuals <span class="math notranslate nohighlight">\(D_{x,t}^{(g)} - E_{x,t}^{(g)} \mu_{x,t}^{(g)}\)</span>.</p></li>
 </ul>
 </p>
 </dd>
@@ -579,8 +617,21 @@ or <code class="docutils literal notranslate"><span class="pre">weighted_exp.sum
 <dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.compute_fit_stats">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">compute_fit_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Dxtg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Extg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logmu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logDxtgFact</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dofs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.compute_fit_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.compute_fit_stats" title="Link to this definition"></a></dt>
 <dd><p>Compute Poisson deviance, AIC, and BIC given pre-computed effective dofs.</p>
+<p><strong>Poisson deviance</strong></p>
+<div class="math notranslate nohighlight">
+\[\mathcal{D} = 2\bigl(\ell_{\text{sat}} - \ell(\hat{\theta})\bigr)\]</div>
+<p>where the saturated log-likelihood is:</p>
+<div class="math notranslate nohighlight">
+\[\ell_{\text{sat}} = \sum_{x,t,g} \left[
+    D_{x,t}^{(g)} \ln\!\frac{D_{x,t}^{(g)}}{E_{x,t}^{(g)}}
+    - D_{x,t}^{(g)}
+\right]\]</div>
+<p><strong>Information criteria</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{AIC} = 2 \cdot \text{dofs} - 2\,\ell(\hat{\theta}), \qquad
+\text{BIC} = \text{dofs} \cdot \ln(N) - 2\,\ell(\hat{\theta})\]</div>
 <p>The effective dofs must be computed by the calling <code class="docutils literal notranslate"><span class="pre">fit()</span></code> method
-using <a class="reference internal" href="../../api.html#morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block" title="morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block"><code class="xref py py-meth docutils literal notranslate"><span class="pre">LiLee.effective_dof_spline_block()</span></code></a>, so that the P-splines
+using <a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block" title="morta_nuts2.model.LL_p.llp_class.LiLee.effective_dof_spline_block"><code class="xref py py-meth docutils literal notranslate"><span class="pre">LiLee.effective_dof_spline_block()</span></code></a>, so that the P-splines
 penalty is properly accounted for.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -588,7 +639,7 @@ penalty is properly accounted for.</p>
 <li><p><strong>Dxtg</strong> (<em>numpy.ndarray</em>) – Death counts, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
 <li><p><strong>Extg</strong> (<em>numpy.ndarray</em>) – Exposures, same shape as <code class="docutils literal notranslate"><span class="pre">Dxtg</span></code>.</p></li>
 <li><p><strong>logmu</strong> (<em>numpy.ndarray</em>) – Fitted log mortality rates, same shape as <code class="docutils literal notranslate"><span class="pre">Dxtg</span></code>.</p></li>
-<li><p><strong>logDxtgFact</strong> (<em>numpy.ndarray</em>) – Pre-computed <span class="math notranslate nohighlight">\(\log(D!)\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">Dxtg</span></code>.</p></li>
+<li><p><strong>logDxtgFact</strong> (<em>numpy.ndarray</em>) – Pre-computed <span class="math notranslate nohighlight">\(\ln(D!)\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">Dxtg</span></code>.</p></li>
 <li><p><strong>dofs</strong> (<em>float</em>) – Effective number of parameters (float).</p></li>
 </ul>
 </dd>
@@ -605,6 +656,13 @@ penalty is properly accounted for.</p>
 <dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.difference_matrix">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">difference_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.difference_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.difference_matrix" title="Link to this definition"></a></dt>
 <dd><p>Construct the finite difference matrix of order <code class="docutils literal notranslate"><span class="pre">k</span></code> for vectors of length <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+<p>The <span class="math notranslate nohighlight">\(k\)</span>-th order finite difference operator applied to a vector
+<span class="math notranslate nohighlight">\(v \in \mathbb{R}^n\)</span> yields a vector of length <span class="math notranslate nohighlight">\(n - k\)</span>
+whose <span class="math notranslate nohighlight">\(i\)</span>-th entry is:</p>
+<div class="math notranslate nohighlight">
+\[(\Delta^k v)_i = \sum_{j=0}^{k} (-1)^j \binom{k}{j} \, v_{i+j}\]</div>
+<p>The matrix <span class="math notranslate nohighlight">\(D\)</span> of shape <span class="math notranslate nohighlight">\((n-k, n)\)</span> encodes this operation
+as <span class="math notranslate nohighlight">\(D v = \Delta^k v\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -631,14 +689,14 @@ penalty is properly accounted for.</p>
 <p>Parametric Li-Lee model family — B-splines + P-splines penalty.</p>
 <p>This class acts as a <strong>namespace</strong> grouping two parametric variants:</p>
 <dl>
-<dt><a class="reference internal" href="../../api.html#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel" title="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiLee.Parametric.FullModel</span></code></a></dt><dd><p>Full Li-Lee model with region-specific baselines <span class="math notranslate nohighlight">\(\alpha_{x,g}\)</span>,
+<dt><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel" title="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiLee.Parametric.FullModel</span></code></a></dt><dd><p>Full Li-Lee model with region-specific baselines <span class="math notranslate nohighlight">\(\alpha_{x,g}\)</span>,
 a common sensitivity <span class="math notranslate nohighlight">\(\beta_x\)</span>, and regional deviations
 <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\ln(\mu_{x,t,g}) = \alpha_{x,g} + \beta_x \cdot \kappa_t
                     + \beta_{x,g} \cdot \kappa_{g,t}\]</div>
 </dd>
-<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">LiLee.Parametric.LeeAndLi</span></code></dt><dd><p>Simplified Lee &amp; Li model with a <strong>common</strong> baseline <span class="math notranslate nohighlight">\(\alpha_x\)</span>
+<dt><a class="reference internal" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant" title="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiLee.Parametric.Variant</span></code></a></dt><dd><p>Simplified Li &amp; Lee model with a <strong>common</strong> baseline <span class="math notranslate nohighlight">\(\alpha_x\)</span>
 and region-specific sensitivities <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span> driven by
 a <strong>single</strong> time index:</p>
 <div class="math notranslate nohighlight">
@@ -727,16 +785,26 @@ shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,<
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_alpha_coef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DtD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag_DtD</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.update_alpha_coef"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_alpha_coef" title="Link to this definition"></a></dt>
 <dd><p>Newton-Raphson update of <span class="math notranslate nohighlight">\(\alpha_{x,g}\)</span> (region-specific baseline,
 one coefficient vector per region).</p>
+<p>For each region <span class="math notranslate nohighlight">\(g\)</span> and basis function <span class="math notranslate nohighlight">\(j\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\text{num}_{j,g} = \sum_{x,t} r_{x,t}^{(g)} B_j(x)
+    - 2\lambda (D^\top D \, c^{\alpha}_g)_j\]</div>
+<div class="math notranslate nohighlight">
+\[\text{den}_{j,g} = \sum_{x,t} E_{x,t}^{(g)} \mu_{x,t}^{(g)} B_j(x)^2
+    + 2\lambda (D^\top D)_{jj}\]</div>
+<div class="math notranslate nohighlight">
+\[c^{\alpha}_{g,j} \leftarrow c^{\alpha}_{g,j}
+    + \eta \, \frac{\text{num}_{j,g}}{\text{den}_{j,g}}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>alpha_coef</strong> (<em>numpy.ndarray</em>) – Current coefficients, shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p></li>
 <li><p><strong>B</strong> (<em>numpy.ndarray</em>) – B-spline basis matrix, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">n_basis)</span></code>.</p></li>
-<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
-<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals <span class="math notranslate nohighlight">\(D - E\mu\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – Expected deaths <span class="math notranslate nohighlight">\(E\mu\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
 <li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
-<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty.</p></li>
-<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty <span class="math notranslate nohighlight">\(\lambda\)</span>.</p></li>
+<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix <span class="math notranslate nohighlight">\(D^\top D\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
 <li><p><strong>diag_DtD</strong> (<em>numpy.ndarray</em>) – Diagonal of <code class="docutils literal notranslate"><span class="pre">DtD</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
 </ul>
 </dd>
@@ -754,17 +822,28 @@ one coefficient vector per region).</p>
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_beta_coef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DtD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag_DtD</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.update_beta_coef"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_beta_coef" title="Link to this definition"></a></dt>
 <dd><p>Newton-Raphson update of <span class="math notranslate nohighlight">\(\beta_x\)</span> (common sensitivity,
 a single coefficient vector for all regions).</p>
+<p>The gradient is summed over all regions <span class="math notranslate nohighlight">\(g\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\text{num}_j = \sum_{x,t,g} r_{x,t}^{(g)} B_j(x) \kappa_t
+    - 2\lambda (D^\top D \, c^{\beta})_j\]</div>
+<div class="math notranslate nohighlight">
+\[\text{den}_j = \sum_{x,t,g} E_{x,t}^{(g)} \mu_{x,t}^{(g)}
+    \bigl(B_j(x) \kappa_t\bigr)^2
+    + 2\lambda (D^\top D)_{jj}\]</div>
+<div class="math notranslate nohighlight">
+\[c^{\beta}_j \leftarrow c^{\beta}_j
+    + \eta \, \frac{\text{num}_j}{\text{den}_j}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>beta_coef</strong> (<em>numpy.ndarray</em>) – Current coefficients, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
 <li><p><strong>B</strong> (<em>numpy.ndarray</em>) – B-spline basis matrix, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">n_basis)</span></code>.</p></li>
 <li><p><strong>kappa</strong> (<em>numpy.ndarray</em>) – Common time index <span class="math notranslate nohighlight">\(\kappa_t\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
-<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
-<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals <span class="math notranslate nohighlight">\(D - E\mu\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – Expected deaths <span class="math notranslate nohighlight">\(E\mu\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
 <li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
-<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty.</p></li>
-<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty <span class="math notranslate nohighlight">\(\lambda\)</span>.</p></li>
+<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix <span class="math notranslate nohighlight">\(D^\top D\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
 <li><p><strong>diag_DtD</strong> (<em>numpy.ndarray</em>) – Diagonal of <code class="docutils literal notranslate"><span class="pre">DtD</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
 </ul>
 </dd>
@@ -782,6 +861,17 @@ a single coefficient vector for all regions).</p>
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_beta_g_coef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta_g_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DtD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag_DtD</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.update_beta_g_coef"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_beta_g_coef" title="Link to this definition"></a></dt>
 <dd><p>Newton-Raphson update of <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span> (regional sensitivity,
 one coefficient vector per region).</p>
+<p>For each region <span class="math notranslate nohighlight">\(g\)</span> and basis function <span class="math notranslate nohighlight">\(j\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\text{num}_{j,g} = \sum_{x,t} r_{x,t}^{(g)} B_j(x) \kappa_{g,t}
+    - 2\lambda (D^\top D \, c^{\beta_g}_g)_j\]</div>
+<div class="math notranslate nohighlight">
+\[\text{den}_{j,g} = \sum_{x,t} E_{x,t}^{(g)} \mu_{x,t}^{(g)}
+    \bigl(B_j(x) \kappa_{g,t}\bigr)^2
+    + 2\lambda (D^\top D)_{jj}\]</div>
+<div class="math notranslate nohighlight">
+\[c^{\beta_g}_{g,j} \leftarrow c^{\beta_g}_{g,j}
+    + \eta \, \frac{\text{num}_{j,g}}{\text{den}_{j,g}}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -789,11 +879,11 @@ one coefficient vector per region).</p>
 <li><p><strong>B</strong> (<em>numpy.ndarray</em>) – B-spline basis matrix, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">n_basis)</span></code>.</p></li>
 <li><p><strong>kappa_g</strong> (<em>numpy.ndarray</em>) – Regional time indices <span class="math notranslate nohighlight">\(\kappa_{g,t}\)</span>,
 shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">nb_years)</span></code>.</p></li>
-<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
-<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals <span class="math notranslate nohighlight">\(D - E\mu\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – Expected deaths <span class="math notranslate nohighlight">\(E\mu\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
 <li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
-<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty.</p></li>
-<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty <span class="math notranslate nohighlight">\(\lambda\)</span>.</p></li>
+<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix <span class="math notranslate nohighlight">\(D^\top D\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
 <li><p><strong>diag_DtD</strong> (<em>numpy.ndarray</em>) – Diagonal of <code class="docutils literal notranslate"><span class="pre">DtD</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
 </ul>
 </dd>
@@ -810,13 +900,21 @@ shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,<
 <dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_kappa">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_kappa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.update_kappa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_kappa" title="Link to this definition"></a></dt>
 <dd><p>Newton-Raphson update of <span class="math notranslate nohighlight">\(\kappa_t\)</span> (common time factor).</p>
+<p>The score and Fisher information, summed over all ages and regions:</p>
+<div class="math notranslate nohighlight">
+\[\text{num}_t = \sum_{x,g} r_{x,t}^{(g)} \beta_x\]</div>
+<div class="math notranslate nohighlight">
+\[\text{den}_t = \sum_{x,g} E_{x,t}^{(g)} \mu_{x,t}^{(g)} \beta_x^2\]</div>
+<div class="math notranslate nohighlight">
+\[\kappa_t \leftarrow \kappa_t
+    + \eta \, \frac{\text{num}_t}{\text{den}_t}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>kappa</strong> (<em>numpy.ndarray</em>) – Current time index, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
-<li><p><strong>beta</strong> (<em>numpy.ndarray</em>) – Evaluated <span class="math notranslate nohighlight">\(\beta_x\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,)</span></code>.</p></li>
-<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
-<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>beta</strong> (<em>numpy.ndarray</em>) – Evaluated common sensitivity <span class="math notranslate nohighlight">\(\beta_x\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,)</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals <span class="math notranslate nohighlight">\(D - E\mu\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – Expected deaths <span class="math notranslate nohighlight">\(E\mu\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
 <li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
 </ul>
 </dd>
@@ -833,15 +931,23 @@ shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,<
 <dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_kappa_g">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_kappa_g</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kappa_g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.update_kappa_g"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.update_kappa_g" title="Link to this definition"></a></dt>
 <dd><p>Newton-Raphson update of <span class="math notranslate nohighlight">\(\kappa_{g,t}\)</span> (regional time factors).</p>
+<p>For each region <span class="math notranslate nohighlight">\(g\)</span> and time <span class="math notranslate nohighlight">\(t\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\text{num}_{g,t} = \sum_x r_{x,t}^{(g)} \beta_{x,g}\]</div>
+<div class="math notranslate nohighlight">
+\[\text{den}_{g,t} = \sum_x E_{x,t}^{(g)} \mu_{x,t}^{(g)} \beta_{x,g}^2\]</div>
+<div class="math notranslate nohighlight">
+\[\kappa_{g,t} \leftarrow \kappa_{g,t}
+    + \eta \, \frac{\text{num}_{g,t}}{\text{den}_{g,t}}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>kappa_g</strong> (<em>numpy.ndarray</em>) – Current regional time indices,
 shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">nb_years)</span></code>.</p></li>
-<li><p><strong>beta_g</strong> (<em>numpy.ndarray</em>) – Evaluated <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
+<li><p><strong>beta_g</strong> (<em>numpy.ndarray</em>) – Evaluated regional sensitivity <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
 shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_regions)</span></code>.</p></li>
-<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
-<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals <span class="math notranslate nohighlight">\(D - E\mu\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – Expected deaths <span class="math notranslate nohighlight">\(E\mu\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
 <li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
 </ul>
 </dd>
@@ -858,17 +964,23 @@ shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</sp
 <dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.normalize_lilee">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">normalize_lilee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_g_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.FullModel.normalize_lilee"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.FullModel.normalize_lilee" title="Link to this definition"></a></dt>
 <dd><p>Enforce Li-Lee identifiability constraints.</p>
-<p>Constraints applied:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><span class="math notranslate nohighlight">\(\sum_x \beta_x = 1\)</span>
-— fixes the scale of the common factor</p></li>
-<li><p><span class="math notranslate nohighlight">\(\sum_x \beta_{x,g} = 1 \; \forall g\)</span>
-— fixes the scale of each regional factor</p></li>
-<li><p><span class="math notranslate nohighlight">\(\overline{\kappa}_t = 0\)</span>
-— centres <span class="math notranslate nohighlight">\(\kappa_t\)</span>; compensated in <span class="math notranslate nohighlight">\(\alpha_{x,g}\)</span></p></li>
-</ol>
-</div></blockquote>
+<p>Three constraints are applied to ensure the model is identified:</p>
+<p><strong>1. Common factor scale</strong> — <span class="math notranslate nohighlight">\(\sum_x \beta_x = 1\)</span></p>
+<div class="math notranslate nohighlight">
+\[s = \sum_x \beta_x, \quad
+\beta_x \leftarrow \frac{\beta_x}{s}, \quad
+\kappa_t \leftarrow s \, \kappa_t\]</div>
+<p><strong>2. Regional factor scale</strong> — <span class="math notranslate nohighlight">\(\sum_x \beta_{x,g} = 1 \; \forall g\)</span></p>
+<div class="math notranslate nohighlight">
+\[s_g = \sum_x \beta_{x,g}, \quad
+\beta_{x,g} \leftarrow \frac{\beta_{x,g}}{s_g}, \quad
+\kappa_{g,t} \leftarrow s_g \, \kappa_{g,t}\]</div>
+<p><strong>3. Common index centering</strong> — <span class="math notranslate nohighlight">\(\overline{\kappa}_t = 0\)</span></p>
+<div class="math notranslate nohighlight">
+\[\bar{\kappa} = \frac{1}{T}\sum_t \kappa_t, \quad
+\kappa_t \leftarrow \kappa_t - \bar{\kappa}, \quad
+\alpha_{x,g} \leftarrow \alpha_{x,g} + \beta_x \, \bar{\kappa}\]</div>
+<p>so that <span class="math notranslate nohighlight">\(\ln \mu_{x,t,g}\)</span> remains invariant.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1025,17 +1137,28 @@ shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,<
 <dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.update_bx_coef">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_bx_coef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bx_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DtD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag_DtD</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.Variant.update_bx_coef"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.update_bx_coef" title="Link to this definition"></a></dt>
 <dd><p>Newton-Raphson update of <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span> (one B-spline curve per region).</p>
+<p>For each region <span class="math notranslate nohighlight">\(g\)</span> and basis function <span class="math notranslate nohighlight">\(j\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\text{num}_{j,g} = \sum_{x,t} r_{x,t}^{(g)} B_j(x) \kappa_t
+    - 2\lambda (D^\top D \, c^{\beta_g}_g)_j\]</div>
+<div class="math notranslate nohighlight">
+\[\text{den}_{j,g} = \sum_{x,t} E_{x,t}^{(g)} \mu_{x,t}^{(g)}
+    \bigl(B_j(x) \kappa_t\bigr)^2
+    + 2\lambda (D^\top D)_{jj}\]</div>
+<div class="math notranslate nohighlight">
+\[c^{\beta_g}_{g,j} \leftarrow c^{\beta_g}_{g,j}
+    + \eta \, \frac{\text{num}_{j,g}}{\text{den}_{j,g}}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bx_coef</strong> (<em>numpy.ndarray</em>) – Current coefficients, shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,</span> <span class="pre">n_basis)</span></code>.</p></li>
 <li><p><strong>B</strong> (<em>numpy.ndarray</em>) – B-spline basis matrix, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">n_basis)</span></code>.</p></li>
-<li><p><strong>kappa</strong> (<em>numpy.ndarray</em>) – Common time index, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
-<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
-<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>kappa</strong> (<em>numpy.ndarray</em>) – Common time index <span class="math notranslate nohighlight">\(\kappa_t\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals <span class="math notranslate nohighlight">\(D - E\mu\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – Expected deaths <span class="math notranslate nohighlight">\(E\mu\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
 <li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
-<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty.</p></li>
-<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty <span class="math notranslate nohighlight">\(\lambda\)</span>.</p></li>
+<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix <span class="math notranslate nohighlight">\(D^\top D\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
 <li><p><strong>diag_DtD</strong> (<em>numpy.ndarray</em>) – Diagonal of <code class="docutils literal notranslate"><span class="pre">DtD</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
 </ul>
 </dd>
@@ -1052,16 +1175,27 @@ shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,<
 <dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.update_ax_coef">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_ax_coef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DtD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag_DtD</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.Variant.update_ax_coef"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.update_ax_coef" title="Link to this definition"></a></dt>
 <dd><p>Newton-Raphson update of the B-spline coefficients of <span class="math notranslate nohighlight">\(\alpha_x\)</span>.</p>
+<p>Since <span class="math notranslate nohighlight">\(\alpha_x\)</span> is common to all regions, the gradient
+is summed over all <span class="math notranslate nohighlight">\(g\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\text{num}_j = \sum_{x,t,g} r_{x,t}^{(g)} B_j(x)
+    - 2\lambda (D^\top D \, c^{\alpha})_j\]</div>
+<div class="math notranslate nohighlight">
+\[\text{den}_j = \sum_{x,t,g} E_{x,t}^{(g)} \mu_{x,t}^{(g)} B_j(x)^2
+    + 2\lambda (D^\top D)_{jj}\]</div>
+<div class="math notranslate nohighlight">
+\[c^{\alpha}_j \leftarrow c^{\alpha}_j
+    + \eta \, \frac{\text{num}_j}{\text{den}_j}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ax_coef</strong> (<em>numpy.ndarray</em>) – Current coefficients, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
 <li><p><strong>B</strong> (<em>numpy.ndarray</em>) – B-spline basis matrix, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">n_basis)</span></code>.</p></li>
-<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
-<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals <span class="math notranslate nohighlight">\(D - E\mu\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – Expected deaths <span class="math notranslate nohighlight">\(E\mu\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
 <li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
-<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty.</p></li>
-<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – P-spline penalty <span class="math notranslate nohighlight">\(\lambda\)</span>.</p></li>
+<li><p><strong>DtD</strong> (<em>numpy.ndarray</em>) – Penalty matrix <span class="math notranslate nohighlight">\(D^\top D\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,</span> <span class="pre">n_basis)</span></code>.</p></li>
 <li><p><strong>diag_DtD</strong> (<em>numpy.ndarray</em>) – Diagonal of <code class="docutils literal notranslate"><span class="pre">DtD</span></code>, shape <code class="docutils literal notranslate"><span class="pre">(n_basis,)</span></code>.</p></li>
 </ul>
 </dd>
@@ -1078,14 +1212,23 @@ shape <code class="docutils literal notranslate"><span class="pre">(nb_regions,<
 <dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.update_kappa">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_kappa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bx_reg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_exp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.Variant.update_kappa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.update_kappa" title="Link to this definition"></a></dt>
 <dd><p>Newton-Raphson update of the common time index <span class="math notranslate nohighlight">\(\kappa_t\)</span>.</p>
+<p>For the Lee &amp; Li variant, all regions share <span class="math notranslate nohighlight">\(\kappa_t\)</span>,
+so the gradient is summed over both ages and regions:</p>
+<div class="math notranslate nohighlight">
+\[\text{num}_t = \sum_{x,g} r_{x,t}^{(g)} \beta_{x,g}\]</div>
+<div class="math notranslate nohighlight">
+\[\text{den}_t = \sum_{x,g} E_{x,t}^{(g)} \mu_{x,t}^{(g)} \beta_{x,g}^2\]</div>
+<div class="math notranslate nohighlight">
+\[\kappa_t \leftarrow \kappa_t
+    + \eta \, \frac{\text{num}_t}{\text{den}_t}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>kappa</strong> (<em>numpy.ndarray</em>) – Current time index, shape <code class="docutils literal notranslate"><span class="pre">(nb_years,)</span></code>.</p></li>
-<li><p><strong>bx_reg</strong> (<em>numpy.ndarray</em>) – Evaluated <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
+<li><p><strong>bx_reg</strong> (<em>numpy.ndarray</em>) – Evaluated regional sensitivity <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span>,
 shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_regions)</span></code>.</p></li>
-<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
-<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – <code class="docutils literal notranslate"><span class="pre">Extg</span> <span class="pre">*</span> <span class="pre">exp(logmu)</span></code>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
+<li><p><strong>residual</strong> (<em>numpy.ndarray</em>) – Residuals <span class="math notranslate nohighlight">\(D - E\mu\)</span>, shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</span> <span class="pre">nb_years,</span> <span class="pre">nb_regions)</span></code>.</p></li>
+<li><p><strong>weighted_exp</strong> (<em>numpy.ndarray</em>) – Expected deaths <span class="math notranslate nohighlight">\(E\mu\)</span>, same shape as <code class="docutils literal notranslate"><span class="pre">residual</span></code>.</p></li>
 <li><p><strong>eta</strong> (<em>float</em>) – Learning rate.</p></li>
 </ul>
 </dd>
@@ -1101,9 +1244,18 @@ shape <code class="docutils literal notranslate"><span class="pre">(nb_ages,</sp
 <dl class="py method">
 <dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.rescale_bx_kappa">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">rescale_bx_kappa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bx_coef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bx_reg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Parametric.Variant.rescale_bx_kappa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Parametric.Variant.rescale_bx_kappa" title="Link to this definition"></a></dt>
-<dd><p>Normalize <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span> so that
-<span class="math notranslate nohighlight">\(\sum_x \overline{\beta}_x = 1\)</span>, where
-<span class="math notranslate nohighlight">\(\overline{\beta}_x = \frac{1}{G} \sum_g \beta_{x,g}\)</span>.</p>
+<dd><p>Normalize <span class="math notranslate nohighlight">\(\beta_{x,g}\)</span> via the average across regions.</p>
+<p>The identifiability constraint enforced is:</p>
+<div class="math notranslate nohighlight">
+\[\sum_x \bar{\beta}_x = 1, \qquad
+\bar{\beta}_x = \frac{1}{G} \sum_g \beta_{x,g}\]</div>
+<p>This is achieved by computing the scale factor
+<span class="math notranslate nohighlight">\(s = \sum_x \bar{\beta}_x\)</span> and applying:</p>
+<div class="math notranslate nohighlight">
+\[\beta_{x,g} \leftarrow \frac{\beta_{x,g}}{s}, \quad
+c^{\beta_g} \leftarrow \frac{c^{\beta_g}}{s}, \quad
+\kappa_t \leftarrow s \, \kappa_t\]</div>
+<p>so that the product <span class="math notranslate nohighlight">\(\beta_{x,g} \kappa_t\)</span> is preserved.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1193,7 +1345,23 @@ are inconsistent with the computed B-spline basis.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="morta_nuts2.model.LL_p.llp_class.LiLee.Classic.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bx_gr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_gr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Extg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dxtg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Muxtg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/morta_nuts2/model/LL_p/llp_class.html#LiLee.Classic.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#morta_nuts2.model.LL_p.llp_class.LiLee.Classic.fit" title="Link to this definition"></a></dt>
-<dd><p>Fit the classic Li-Lee model.</p>
+<dd><p>Fit the classic Li-Lee model by two-step gradient descent.</p>
+<p><strong>Step 1</strong> — fits a standard Lee-Carter model on the data
+using <code class="xref py py-meth docutils literal notranslate"><span class="pre">_lc_fit()</span></code> to obtain the common components
+<span class="math notranslate nohighlight">\((\alpha_x, \beta_x, \kappa_t)\)</span>.</p>
+<p><strong>Step 2</strong> — fixes the common component and fits the regional
+residual terms <span class="math notranslate nohighlight">\((\beta_{x,g}, \kappa_{g,t})\)</span> by gradient
+ascent on the Poisson log-likelihood of:</p>
+<div class="math notranslate nohighlight">
+\[\ln \mu_{x,t,g} = \alpha_x + \beta_x \kappa_t
+                   + \beta_{x,g} \kappa_{g,t}\]</div>
+<p>At each iteration:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta_{x,g}\)</span> — gradient step followed by normalization
+<span class="math notranslate nohighlight">\(\sum_x \beta_{x,g} = 1 \; \forall g\)</span>, with a P-spline
+roughness penalty of strength <code class="docutils literal notranslate"><span class="pre">h</span></code>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\kappa_{g,t}\)</span> — gradient step (no centering constraint).</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

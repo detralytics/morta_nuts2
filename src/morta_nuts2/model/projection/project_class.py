@@ -1,7 +1,20 @@
 """
-Projection 
+Projection
 =====================================================
 
+This module provides classes and utilities for prospective mortality projection,
+high-age extrapolation, life expectancy computation, and actuarial annuity pricing.
+
+Main components
+---------------
+- :func:`kannisto_log_mu` : Low-level Kannisto log-mortality formula.
+- :class:`LifeExpectancy` : Computes period life expectancy from mortality rates.
+- :class:`ProjectorLC` : Lee-Carter projection.
+- :class:`ProjectorLL` : Li-Lee two-factor projection (common + regional).
+- :class:`HighAgeExtrapolator` : Extrapolates log-mortality beyond the observed age range.
+- :func:`concat_logmu_time` : Concatenates historical and projected log-mortality arrays.
+- :func:`Annuity_pricing` : Actuarial present value of life annuities.
+- :func:`compute_mae` : Mean absolute error and weighted MAE between observed and modelled rates.
 """
 
 
@@ -15,7 +28,40 @@ from scipy.optimize import curve_fit
 # ─────────────────────────────────────────────────────────────────────────────
 
 def kannisto_log_mu(x, a, b):
-    """log(μ(x)) for the Kannisto model: μ(x) = a·exp(b·x) / (1 + a·exp(b·x))"""
+    """
+    Evaluate the log force of mortality under the Kannisto model.
+
+    The Kannisto (logistic Gompertz) parametric model expresses the force of
+    mortality as a logistic function of age:
+
+    .. math::
+
+        \\mu(x) = \\frac{a \\, e^{bx}}{1 + a \\, e^{bx}}
+
+    This function returns :math:`\\log \\mu(x)` directly for numerical
+    stability (avoids computing ``exp`` then ``log``).
+
+    Parameters
+    ----------
+    x : array-like
+        Ages at which to evaluate the model.
+    a : float
+        Scale parameter (:math:`a > 0`). Controls the level of mortality.
+    b : float
+        Growth parameter (:math:`b > 0`). Controls the rate of mortality
+        increase with age.
+
+    Returns
+    -------
+    ndarray
+        :math:`\\log \\mu(x)` evaluated at each age in ``x``.
+
+    Notes
+    -----
+    As :math:`x \\to \\infty`, :math:`\\mu(x) \\to 1`, so the model imposes
+    an implicit upper bound of 1 on the force of mortality — a key difference
+    from the unbounded Gompertz model.
+    """
     ebx = np.exp(b * x)
     return np.log(a * ebx / (1.0 + a * ebx))
 
@@ -26,13 +72,32 @@ def kannisto_log_mu(x, a, b):
 
 class LifeExpectancy:
     """
-    Computes life expectancy from mortality rates.
+    Computes period life expectancy from an array of force-of-mortality rates.
+
+    Period life expectancy at age :math:`x` is defined as the expected number
+    of additional years lived by a cohort subject throughout its life to the
+    age-specific mortality rates observed at a given point in time:
+
+    .. math::
+
+        e_x = \\frac{\\sum_{y=x}^{\\omega} {}_y p_0}{{}_{x} p_0}
+            = \\sum_{t=0}^{\\omega - x} {}_t p_x
+
+    where the survival probability is derived from the force of mortality via:
+
+    .. math::
+
+        {}_t p_x = \\exp\\!\\left(-\\int_x^{x+t} \\mu(s)\\, ds\\right)
+                 \\approx \\prod_{k=0}^{t-1} \\exp(-\\mu_{x+k})
 
     Parameters
     ----------
     mu_future : ndarray
-        - (ages, horizon, regions)         -> deterministic case
-        - (ages, horizon, regions, n_sim)  -> stochastic case
+        Array of force-of-mortality rates.
+
+        - Shape ``(nb_ages, horizon, nb_regions)`` for the deterministic case.
+        - Shape ``(nb_ages, horizon, nb_regions, n_sim)`` for the stochastic
+          case.
     """
 
     def __init__(self, mu_future: np.ndarray):
@@ -42,7 +107,39 @@ class LifeExpectancy:
 
     # ------------------------------------------------------------------
     def _compute(self, mu: np.ndarray) -> np.ndarray:
-        """Vectorized life expectancy computation (works for both 3D and 4D)."""
+        """
+        Compute life expectancy from a force-of-mortality array (vectorized).
+
+        Works for both 3-D ``(nb_ages, horizon, nb_regions)`` and 4-D
+        ``(nb_ages, horizon, nb_regions, n_sim)`` inputs.
+
+        The algorithm uses the discrete approximation:
+
+        .. math::
+
+            p_x = \\exp(-\\mu_x), \\qquad
+            {}_t p_0 = \\prod_{k=0}^{t-1} p_k = \\exp\\!\\left(
+                       \\sum_{k=0}^{t-1} \\log p_k \\right)
+
+        Life expectancy at age :math:`x` is then:
+
+        .. math::
+
+            e_x = \\frac{\\displaystyle\\sum_{y \\ge x} {}_y p_0}{{}_{x} p_0}
+
+        which is computed as a reversed cumulative sum of :math:`{}_y p_0`
+        divided by :math:`{}_{x-1} p_0` (survival from age 0 to age :math:`x`).
+
+        Parameters
+        ----------
+        mu : ndarray
+            Force-of-mortality array, 3-D or 4-D.
+
+        Returns
+        -------
+        ndarray
+            Life expectancy array with the same shape as ``mu``.
+        """
         px        = np.exp(-mu)
         log_px    = np.log(np.maximum(px, 1e-300))
         cumlog_px = np.cumsum(log_px, axis=0)
@@ -64,7 +161,17 @@ class LifeExpectancy:
 
     # ------------------------------------------------------------------
     def compute(self) -> np.ndarray:
-        """Returns ex with the same shape as mu_future."""
+        """
+        Compute life expectancy for the full ``mu_future`` array.
+
+        Returns
+        -------
+        ndarray
+            Life expectancy array with the same shape as ``mu_future``:
+
+            - ``(nb_ages, horizon, nb_regions)`` in the deterministic case.
+            - ``(nb_ages, horizon, nb_regions, n_sim)`` in the stochastic case.
+        """
         return self._compute(self.mu_future)
 
 
@@ -72,23 +179,64 @@ class LifeExpectancy:
 # 2. Lee-Carter SVD projection
 # ─────────────────────────────────────────────────────────────────────────────
 
-class ProjectorLC_SVD:
+class ProjectorLC:
     """
-    Multi-regional Lee-Carter prospective projection via SVD.
+
+    The Lee-Carter model decomposes the log force of mortality as:
+
+    .. math::
+
+        \\ln \\mu(x, t) = \\alpha_x + \\beta_x \\, \\kappa_t + \\varepsilon_{x,t}
+
+    where :math:`\\alpha_x` is the age-specific baseline, :math:`\\beta_x` is
+    the age-sensitivity pattern, and :math:`\\kappa_t` is the period index.
+
+    For the **multi-regional** variant, the period indices across regions are
+    decomposed via SVD:
+
+    .. math::
+
+        K = U \\, S \\, V^\\top \\approx Z_{\\text{red}} \\, V_{\\text{red}}^\\top
+
+    where :math:`Z_{\\text{red}} = U_{[1:r]} S_{[1:r]}` collects the first
+    ``nb_components`` principal scores and :math:`V_{\\text{red}}` the
+    corresponding regional loadings.
+
+    Two period-index dynamics are supported:
+
+    **Random walk with drift (``model='rw'``):**
+
+    .. math::
+
+        Z_{T+h} = Z_T + \\sum_{s=1}^{h} \\varepsilon_s, \\qquad
+            \\varepsilon_s \\sim \\mathcal{N}(\\hat{\\delta},\\, \\hat{\\Sigma})
+
+    **Linear trend (``model='linear'``):**
+
+    .. math::
+
+        Z_t = \\alpha + \\beta \\, t + \\varepsilon_t, \\qquad
+        \\varepsilon_t \\sim \\mathcal{N}(0, \\Sigma_{\\text{res}})
 
     Parameters
     ----------
     results : dict
-        Must contain results["curves"]["alpha_x"], results["curves"]["beta_xg"],
-        and results["parameters"]["kappa"].
+        Must contain ``results["curves"]["alpha_x"]``, ``results["curves"]["beta_xg"]``,
+        and ``results["parameters"]["kappa"]``.
     tv : array-like
         Observation year vector.
-    horizon : int
-    exclude_years : list
-    nb_components : int
-    model : {'rw', 'linear'}
-    stochastic : bool
-    n_sim : int
+    horizon : int, optional
+        Number of projection years (default ``30``).
+    exclude_years : list, optional
+        Years to exclude before fitting (default ``[2020, 2021]``).
+    nb_components : int, optional
+        Number of SVD components to retain (default ``1``).
+    model : {'rw', 'linear'}, optional
+        Projection model for :math:`\\kappa_t` (default ``'rw'``).
+    stochastic : bool, optional
+        If ``True``, generates ``n_sim`` Monte-Carlo paths (default ``True``).
+    n_sim : int, optional
+        Number of stochastic simulations (default ``1000``).
     """
 
     def __init__(
@@ -133,7 +281,28 @@ class ProjectorLC_SVD:
 
     # ------------------------------------------------------------------
     def _svd_factors(self):
-        """Builds reduced Z and V matrices via SVD after masking excluded years."""
+        """
+        Build the reduced score matrix ``Zred`` and loading matrix ``Vred`` via SVD.
+
+        Years listed in ``exclude_years`` are removed before decomposition.
+        The raw kappa matrix :math:`K` (shape ``(T, nb_regions)``) is
+        factorised as:
+
+        .. math::
+
+            K \\approx Z_{\\text{red}} \\, V_{\\text{red}}^\\top
+
+        where :math:`Z_{\\text{red}} = U_{[:,1:r]} \\cdot S_{[1:r]}` and
+        :math:`V_{\\text{red}} = V^\\top_{[1:r, :]}{}^\\top`, retaining the
+        first ``nb_components`` singular triplets.
+
+        Returns
+        -------
+        Zred : ndarray of shape ``(T, nb_components)``
+            Principal score matrix (time × components).
+        Vred : ndarray of shape ``(nb_regions, nb_components)``
+            Regional loading matrix.
+        """
         X_svd = self.kappa_raw.reshape(-1, 1) if self.kappa_raw.ndim == 1 else self.kappa_raw.T
         X_svd = X_svd[~np.isin(self.tv, self.exclude_years), :]
 
@@ -144,7 +313,47 @@ class ProjectorLC_SVD:
 
     # ------------------------------------------------------------------
     def _project_rw(self, Zred, Vred):
-        """Random walk projection."""
+        """
+        Project the reduced score matrix ``Zred`` with a random walk with drift.
+
+        Each step is drawn from a multivariate normal centred on the empirical
+        drift :math:`\\hat{\\delta}`, so the drift is already embedded in the
+        distribution of the increments.  The projected score at horizon
+        :math:`h` is:
+
+        .. math::
+
+            Z_{T+h} = Z_T + \\sum_{s=1}^{h} \\varepsilon_s, \\qquad
+            \\varepsilon_s \\sim \\mathcal{N}(\\hat{\\delta},\\, \\hat{\\Sigma})
+
+        where:
+
+        - :math:`\\hat{\\delta} = \\overline{\\Delta Z}` is the sample mean of
+          first differences (annual drift).
+        - :math:`\\hat{\\Sigma}` is the sample covariance of first differences.
+
+        In expectation:
+        :math:`\\mathbb{E}[Z_{T+h}] = Z_T + h\\,\\hat{\\delta}`,
+        and uncertainty grows with the horizon through the cumulative sum
+        of independent draws.
+
+        The projected regional kappa is then reconstructed as:
+
+        .. math::
+
+            \\kappa^{\\text{future}} = Z^{\\text{future}} \\, V_{\\text{red}}^\\top
+
+        Parameters
+        ----------
+        Zred : ndarray of shape ``(T, nb_components)``
+        Vred : ndarray of shape ``(nb_regions, nb_components)``
+
+        Returns
+        -------
+        kappa_future : ndarray
+            - ``(horizon, nb_regions)`` if deterministic.
+            - ``(horizon, n_sim, nb_regions)`` if stochastic.
+        """
         diffs  = np.diff(Zred, axis=0)
         drift  = np.mean(diffs, axis=0)
         cov    = np.cov(diffs, rowvar=False).reshape(self.nb_components, self.nb_components)
@@ -161,7 +370,38 @@ class ProjectorLC_SVD:
 
     # ------------------------------------------------------------------
     def _project_linear(self, Zred, Vred):
-        """Linear trend projection."""
+        """
+        Project the reduced score matrix ``Zred`` with a linear trend model.
+
+        The score vector is modelled as:
+
+        .. math::
+
+            Z_t = \\alpha + \\beta \\, t + \\varepsilon_t, \\qquad
+            \\varepsilon_t \\sim \\mathcal{N}(0,\\, \\hat{\\Sigma}_{\\text{res}})
+
+        Coefficients :math:`(\\alpha, \\beta)` are estimated by ordinary least
+        squares. The deterministic projection is :math:`\\hat{Z}_{T+h} = \\alpha
+        + \\beta(T+h)`. Stochastic paths add residual noise drawn from
+        :math:`\\mathcal{N}(0, \\hat{\\Sigma}_{\\text{res}})`.
+
+        The projected regional kappa is:
+
+        .. math::
+
+            \\kappa^{\\text{future}} = Z^{\\text{future}} \\, V_{\\text{red}}^\\top
+
+        Parameters
+        ----------
+        Zred : ndarray of shape ``(T, nb_components)``
+        Vred : ndarray of shape ``(nb_regions, nb_components)``
+
+        Returns
+        -------
+        kappa_future : ndarray
+            - ``(horizon, nb_regions)`` if deterministic.
+            - ``(horizon, n_sim, nb_regions)`` if stochastic.
+        """
         T          = Zred.shape[0]
         time_idx   = np.arange(T)
         X_des      = np.column_stack([np.ones(T), time_idx])
@@ -185,25 +425,52 @@ class ProjectorLC_SVD:
 
     # ------------------------------------------------------------------
     def _reconstruct(self, kappa_future):
-        """Reconstructs log(μ) and μ from projected kappa.
+        """
+        Reconstruct log(μ) and μ from projected kappa trajectories.
 
-        Shapes attendues selon le chemin emprunté :
+        Applies the Lee-Carter identity to recover log-mortality:
 
-        ┌──────────────┬─────────────┬──────────────────────────────────────────────┐
-        │ variante     │ stochastic  │ kappa_future shape                           │
-        ├──────────────┼─────────────┼──────────────────────────────────────────────┤
-        │ classic 1D   │ False       │ (horizon,)                                   │
-        │ classic 1D   │ True        │ (horizon, n_sim)                             │
-        │ SVD (≥1 cp)  │ False       │ (horizon, nb_regions)                        │
-        │ SVD (≥1 cp)  │ True        │ (horizon, n_sim, nb_regions)                 │
-        └──────────────┴─────────────┴──────────────────────────────────────────────┘
+        .. math::
 
-        Détection :
-          - classic sans SVD  →  ax.ndim == 2 ET kappa_future.ndim ∈ {1, 2}
-          - SVD (nb_components ≥ 1) ou parametric  →  kappa_future.ndim ∈ {2, 3}
-            avec la dernière dimension = nb_regions
+            \\ln \\mu(x, t) = \\alpha_x + \\beta_x \\, \\kappa_t
 
-        ax.ndim == 2  →  classic (ax/bx par région),  ax.ndim == 1  →  parametric (ax scalaire par âge)
+        and exponentiates to obtain :math:`\\mu(x, t) = e^{\\ln \\mu(x,t)}`.
+
+        Expected shapes of ``kappa_future`` depending on the projection path:
+
+        .. list-table::
+           :header-rows: 1
+
+           * - Variant
+             - Stochastic
+             - ``kappa_future`` shape
+           * - Classic 1-D
+             - No
+             - ``(horizon,)``
+           * - Classic 1-D
+             - Yes
+             - ``(horizon, n_sim)``
+           * - SVD (≥1 component)
+             - No
+             - ``(horizon, nb_regions)``
+           * - SVD (≥1 component)
+             - Yes
+             - ``(horizon, n_sim, nb_regions)``
+
+        Parameters
+        ----------
+        kappa_future : ndarray
+            Projected period-index array (see table above).
+
+        Returns
+        -------
+        dict
+            Deterministic path keys: ``kappa_future``, ``logmu_future``,
+            ``mu_future``.
+
+            Stochastic path keys: ``kappa_paths``, ``kappa_lower``,
+            ``kappa_median``, ``kappa_upper``, ``logmu_sim``, ``mu_sim``,
+            ``mu_lower``, ``mu_median``, ``mu_upper``.
         """
         ax, bx  = self.ax, self.bx
         classic = ax.ndim == 2   # classic: ax (nb_ages, nb_regions), parametric: ax (nb_ages,)
@@ -282,7 +549,29 @@ class ProjectorLC_SVD:
     # ------------------------------------------------------------------
     # ------------------------------------------------------------------
     def _project_rw_1d(self):
-        """Random walk pour kappa 1D (variante classic)."""
+        """
+        Project a scalar kappa series with a random walk with drift.
+
+        Used for the classic (non-SVD) Lee-Carter variant where a single
+        :math:`\\kappa_t` drives all regions simultaneously.
+
+        The model is:
+
+        .. math::
+
+            \\kappa_{t+1} = \\kappa_t + \\hat{\\delta} + \\varepsilon_t, \\qquad
+            \\varepsilon_t \\sim \\mathcal{N}(0,\\, \\hat{\\sigma}^2)
+
+        where :math:`\\hat{\\delta} = \\overline{\\Delta\\kappa}` is the sample
+        mean of annual differences and :math:`\\hat{\\sigma}` is their standard
+        deviation.
+
+        Returns
+        -------
+        ndarray
+            - Shape ``(horizon,)`` if deterministic.
+            - Shape ``(horizon, n_sim)`` if stochastic.
+        """
         kappa_m = self.kappa_raw[~np.isin(self.tv, self.exclude_years)]
         diffs   = np.diff(kappa_m)
         drift   = np.mean(diffs)
@@ -297,7 +586,26 @@ class ProjectorLC_SVD:
 
     # ------------------------------------------------------------------
     def _project_linear_1d(self):
-        """Tendance linéaire pour kappa 1D (variante classic)."""
+        """
+        Project a scalar kappa series with a linear trend model.
+
+        Used for the classic (non-SVD) Lee-Carter variant. The model is:
+
+        .. math::
+
+            \\kappa_t = \\alpha + \\beta \\, t + \\varepsilon_t, \\qquad
+            \\varepsilon_t \\sim \\mathcal{N}(0,\\, \\hat{\\sigma}_{\\text{res}}^2)
+
+        Coefficients are estimated by OLS. Future values are the deterministic
+        trend :math:`\\hat{\\alpha} + \\hat{\\beta}(T+h)` plus optional Gaussian
+        residual noise.
+
+        Returns
+        -------
+        ndarray
+            - Shape ``(horizon,)`` if deterministic.
+            - Shape ``(horizon, n_sim)`` if stochastic.
+        """
         kappa_m = self.kappa_raw[~np.isin(self.tv, self.exclude_years)]
         T        = len(kappa_m)
         time_idx = np.arange(T)
@@ -315,11 +623,27 @@ class ProjectorLC_SVD:
 
     # ------------------------------------------------------------------
     def project(self) -> dict:
-        """Runs the projection and returns the results dict."""
-        classic = self.kappa_raw.ndim == 1   # True pour le classic LC mono-kappa
+        """
+        Run the full Lee-Carter projection and return all outputs.
+
+        Dispatches to the appropriate internal methods depending on whether
+        kappa is scalar (classic 1-D variant) or multi-regional (SVD variant),
+        then calls :meth:`_reconstruct` to apply the Lee-Carter identity and
+        produce mortality arrays.
+
+        Returns
+        -------
+        dict
+            Deterministic keys: ``kappa_future``, ``logmu_future``, ``mu_future``.
+
+            Stochastic keys: ``kappa_paths``, ``kappa_lower``, ``kappa_median``,
+            ``kappa_upper``, ``logmu_sim``, ``mu_sim``, ``mu_lower``,
+            ``mu_median``, ``mu_upper``.
+        """
+        classic = self.kappa_raw.ndim == 1   # True for classic LC single-kappa variant
 
         if classic:
-            # Pas de SVD : projection directe de kappa 1D
+            # No SVD: direct projection of scalar kappa
             if self.model == "rw":
                 kappa_future = self._project_rw_1d()
             elif self.model == "linear":
@@ -342,21 +666,53 @@ class ProjectorLC_SVD:
 # 3. Lee-Li projection
 # ─────────────────────────────────────────────────────────────────────────────
 
-class ProjectorLeeLi:
+class ProjectorLL:
     """
-    Lee-Li prospective projection (common factor + regional components).
+    Li-Lee prospective mortality projection (common factor + regional components).
+
+    The Li-Lee model extends the Lee-Carter model by decomposing log-mortality
+    into a common trend shared by all regions and region-specific deviations:
+
+    .. math::
+
+        \\ln \\mu_{x,t}^{(g)} = \\alpha_x^{(g)}
+            + \\beta_x \\, \\kappa_t
+            + \\beta_x^{(g)} \\, \\kappa_t^{(g)}
+
+    where:
+
+    - :math:`\\alpha_x^{(g)}` is the age-region baseline log-mortality.
+    - :math:`\\beta_x` and :math:`\\kappa_t` are the common age-loading and
+      time-index (shared across regions).
+    - :math:`\\beta_x^{(g)}` and :math:`\\kappa_t^{(g)}` are the regional
+      age-loading and time-index (region :math:`g`-specific).
+
+    The regional kappa series :math:`\\kappa_t^{(g)}` is compressed via SVD
+    into ``nb_components`` principal components before projection.
 
     Parameters
     ----------
     results : dict
-        Must contain results["curves"] (alpha_xg, beta_x, beta_xg)
-        and results["parameters"] (kappa, kappa_g).
+        Estimation output.  Must contain:
+
+        - ``results["curves"]`` (parametric variant) with keys
+          ``alpha_xg``, ``beta_x``, ``beta_xg``, or
+        - ``results["parameters"]`` (classic variant) with keys
+          ``ax``, ``bx``, ``bx_gr``, ``kappa``, ``kappa_gr``.
     tv : array-like
-    horizon : int
-    exclude_years : list
-    model : {'rw', 'linear'}
-    stochastic : bool
-    n_sim : int
+        Observation year vector aligned with kappa.
+    horizon : int, optional
+        Number of projection years (default 30).
+    exclude_years : list, optional
+        Years excluded from drift/covariance estimation (default [2020, 2021]).
+    nb_components : int, optional
+        Number of SVD components retained for the regional kappa (default 1).
+    model : {'rw', 'linear'}, optional
+        Time-series model for kappa projection (default ``'rw'``).
+    stochastic : bool, optional
+        If ``True``, generate Monte Carlo paths (default ``True``).
+    n_sim : int, optional
+        Number of stochastic simulations (default 1000).
     """
 
     def __init__(
@@ -409,8 +765,34 @@ class ProjectorLeeLi:
     # ------------------------------------------------------------------
     @staticmethod
     def _fit_rw(series: np.ndarray):
-        """Fits a random walk on series (T,) or (T, nb_regions).
-        Returns (drift, covariance, last_value)."""
+        """
+        Estimate random-walk parameters from a univariate or multivariate series.
+
+        Computes the sample mean and covariance of the first differences:
+
+        .. math::
+
+            \\hat{\\boldsymbol{\\delta}} = \\overline{\\Delta Z}, \\qquad
+            \\hat{\\Sigma} = \\operatorname{Cov}(\\Delta Z)
+
+        where :math:`\\Delta Z_t = Z_t - Z_{t-1}`.
+
+        Parameters
+        ----------
+        series : ndarray, shape ``(T,)`` or ``(T, nb_regions)``
+            Observed time series.
+
+        Returns
+        -------
+        drift : ndarray
+            Sample mean of differences; shape ``(1,)`` for 1-D input or
+            ``(nb_regions,)`` for 2-D input.
+        cov : ndarray
+            Covariance matrix of differences; shape ``(1, 1)`` or
+            ``(nb_regions, nb_regions)``.
+        last : ndarray
+            Last observed value(s).
+        """
         diffs = np.diff(series, axis=0)
         drift = np.mean(diffs, axis=0)
         if diffs.ndim == 1:
@@ -423,17 +805,34 @@ class ProjectorLeeLi:
 
     # ------------------------------------------------------------------
     def _svd_factors_g(self, kappa_gm: np.ndarray):
-        """Builds reduced Z and V matrices for kappa_g via SVD.
+        """
+        Build the reduced SVD factors for the regional kappa matrix.
+
+        The masked regional kappa matrix :math:`K_g` of shape
+        ``(T, nb_regions)`` is decomposed as:
+
+        .. math::
+
+            K_g \\approx Z_{\\text{red}} \\, V_{\\text{red}}^\\top
+
+        retaining the first ``nb_components`` singular triplets:
+
+        .. math::
+
+            Z_{\\text{red}} = U_{[:,1:r]} \\cdot S_{[1:r]}, \\qquad
+            V_{\\text{red}} = V^\\top_{[1:r,\\,:]}\\,{}^\\top
 
         Parameters
         ----------
-        kappa_gm : (T, nb_regions)
-            Regional kappa series, already masked (excluded years removed).
+        kappa_gm : ndarray, shape ``(T, nb_regions)``
+            Regional kappa series with excluded years already removed.
 
         Returns
         -------
-        Zred : (T, nb_components)        – scores in the reduced space
-        Vred : (nb_regions, nb_components) – regional loadings
+        Zred : ndarray, shape ``(T, nb_components)``
+            Score matrix (time × components).
+        Vred : ndarray, shape ``(nb_regions, nb_components)``
+            Regional loading matrix.
         """
         U, S, Vt = np.linalg.svd(kappa_gm, full_matrices=False)
         Vred = Vt[:self.nb_components, :].T                        # (nb_regions, nb_components)
@@ -442,7 +841,47 @@ class ProjectorLeeLi:
 
     # ------------------------------------------------------------------
     def _project_rw(self, kappa_m, Zred, Vred):
-        """Random walk projection for common and regional factors."""
+        """
+        Project common and regional factors using independent random walks with drift.
+
+        Both the scalar common index :math:`\\kappa_t` and the reduced regional
+        scores :math:`Z_t` follow independent random walks:
+
+        .. math::
+
+            \\kappa_{t+1} = \\kappa_t + \\hat{\\delta}_\\kappa + \\varepsilon_t^\\kappa,
+            \\qquad \\varepsilon_t^\\kappa \\sim \\mathcal{N}(0,\\, \\hat{\\sigma}_\\kappa^2)
+
+        .. math::
+
+            Z_{t+1} = Z_t + \\hat{\\boldsymbol{\\delta}}_Z
+                      + \\boldsymbol{\\varepsilon}_t^Z,
+            \\qquad \\boldsymbol{\\varepsilon}_t^Z
+            \\sim \\mathcal{N}(\\mathbf{0},\\, \\hat{\\Sigma}_Z)
+
+        The projected regional kappa is then:
+
+        .. math::
+
+            \\kappa_t^{(g)\\text{future}} = Z_t^{\\text{future}} \\, V_{\\text{red}}^\\top
+
+        Parameters
+        ----------
+        kappa_m : ndarray, shape ``(T,)``
+            Observed common kappa (excluded years removed).
+        Zred : ndarray, shape ``(T, nb_components)``
+            Observed regional score matrix (excluded years removed).
+        Vred : ndarray, shape ``(nb_regions, nb_components)``
+            Regional loading matrix from :meth:`_svd_factors_g`.
+
+        Returns
+        -------
+        k_future : ndarray
+            Projected common kappa — ``(horizon,)`` or ``(horizon, n_sim)``.
+        kg_future : ndarray
+            Projected regional kappa — ``(horizon, nb_regions)`` or
+            ``(horizon, n_sim, nb_regions)``.
+        """
         drift_k,  cov_k,  k_last  = self._fit_rw(kappa_m)
         drift_z,  cov_z,  z_last  = self._fit_rw(Zred)
 
@@ -463,7 +902,48 @@ class ProjectorLeeLi:
 
     # ------------------------------------------------------------------
     def _project_linear(self, kappa_m, Zred, Vred):
-        """Linear trend projection for common and regional factors."""
+        """
+        Project common and regional factors using independent linear trend models.
+
+        Both the common index and the regional scores are modelled as linear
+        functions of time, estimated by OLS:
+
+        .. math::
+
+            \\kappa_t = \\alpha_\\kappa + \\beta_\\kappa \\, t + \\varepsilon_t^\\kappa
+
+        .. math::
+
+            Z_t = \\boldsymbol{\\alpha}_Z + \\boldsymbol{\\beta}_Z \\, t
+                  + \\boldsymbol{\\varepsilon}_t^Z
+
+        Deterministic projections use :math:`\\hat{\\alpha} + \\hat{\\beta}(T+h)`;
+        stochastic paths add independent Gaussian residual noise drawn from the
+        respective estimated residual covariances.
+
+        The projected regional kappa is:
+
+        .. math::
+
+            \\kappa_t^{(g)\\text{future}} = Z_t^{\\text{future}} \\, V_{\\text{red}}^\\top
+
+        Parameters
+        ----------
+        kappa_m : ndarray, shape ``(T,)``
+            Observed common kappa (excluded years removed).
+        Zred : ndarray, shape ``(T, nb_components)``
+            Observed regional score matrix (excluded years removed).
+        Vred : ndarray, shape ``(nb_regions, nb_components)``
+            Regional loading matrix.
+
+        Returns
+        -------
+        k_future : ndarray
+            Projected common kappa — ``(horizon,)`` or ``(horizon, n_sim)``.
+        kg_future : ndarray
+            Projected regional kappa — ``(horizon, nb_regions)`` or
+            ``(horizon, n_sim, nb_regions)``.
+        """
         T        = kappa_m.shape[0]
         time_idx = np.arange(T)
         X_des    = np.column_stack([np.ones(T), time_idx])
@@ -495,7 +975,43 @@ class ProjectorLeeLi:
 
     # ------------------------------------------------------------------
     def _reconstruct(self, k_future, kg_future):
-        """Reconstructs log(μ) and μ from projected common and regional factors."""
+        """
+        Reconstruct log-mortality and mortality from projected common and regional factors.
+
+        Applies the Lee-Li identity:
+
+        .. math::
+
+            \\ln \\mu_{x,t}^{(g)} = \\alpha_x^{(g)}
+                + \\beta_x \\, \\kappa_t
+                + \\beta_x^{(g)} \\, \\kappa_t^{(g)}
+
+        and exponentiates to obtain :math:`\\mu_{x,t}^{(g)}`.
+
+        In the stochastic case, empirical quantiles at 2.5 %, 50 %, and 97.5 %
+        are computed over the simulation axis for both :math:`\\mu` and each
+        kappa series.
+
+        Parameters
+        ----------
+        k_future : ndarray
+            Projected common kappa — ``(horizon,)`` or ``(horizon, n_sim)``.
+        kg_future : ndarray
+            Projected regional kappa — ``(horizon, nb_regions)`` or
+            ``(horizon, n_sim, nb_regions)``.
+
+        Returns
+        -------
+        dict
+            Deterministic keys: ``kappa_future``, ``kappa_g_future``,
+            ``logmu_future``, ``mu_future``.
+
+            Stochastic keys: ``kappa_paths``, ``kappa_lower``,
+            ``kappa_median``, ``kappa_upper``, ``kappa_g_paths``,
+            ``kappa_g_lower``, ``kappa_g_median``, ``kappa_g_upper``,
+            ``logmu_sim``, ``mu_sim``, ``mu_lower``, ``mu_median``,
+            ``mu_upper``.
+        """
         alpha_xg = self.alpha_xg
         beta_x   = self.beta_x
         beta_xg  = self.beta_xg
@@ -556,7 +1072,26 @@ class ProjectorLeeLi:
 
     # ------------------------------------------------------------------
     def project(self) -> dict:
-        """Runs the projection and returns the results dict."""
+        """
+        Run the full Lee-Li projection and return all outputs.
+
+        Masks excluded years, compresses regional kappas via SVD, projects
+        both the common and regional factors with the selected time-series
+        model, then calls :meth:`_reconstruct` to apply the Lee-Li identity
+        and build mortality arrays.
+
+        Returns
+        -------
+        dict
+            Deterministic keys: ``kappa_future``, ``kappa_g_future``,
+            ``logmu_future``, ``mu_future``.
+
+            Stochastic keys: ``kappa_paths``, ``kappa_lower``,
+            ``kappa_median``, ``kappa_upper``, ``kappa_g_paths``,
+            ``kappa_g_lower``, ``kappa_g_median``, ``kappa_g_upper``,
+            ``logmu_sim``, ``mu_sim``, ``mu_lower``, ``mu_median``,
+            ``mu_upper``.
+        """
         mask     = ~np.isin(self.tv, self.exclude_years)
         kappa_m  = self.kappa[mask]
         kappa_gm = self.kappa_g[:, mask].T   # (T, nb_regions)
@@ -579,17 +1114,63 @@ class ProjectorLeeLi:
 
 class HighAgeExtrapolator:
     """
-    Extrapolates log_Muxtg beyond max(xv) up to x_extrap.
+    Extrapolates log-mortality rates beyond the maximum observed age up to *x_extrap*.
 
-    Two methods available:
-      - 'linear'   : no-intercept linear regression (base method)
-      - 'kannisto' : Kannisto model with linear fallback
+    Two extrapolation methods are available:
 
-    Expected shape of log_Muxtg:
-      - (nb_ages, nb_regions, horizon)         -> deterministic  [linear]
-      - (nb_ages, nb_regions, horizon, n_sim)  -> stochastic     [linear]
-      - (nb_ages, horizon, nb_regions)         -> deterministic  [kannisto]
-      - (nb_ages, horizon, nb_regions, n_sim)  -> stochastic     [kannisto]
+    **Linear (no-intercept regression)**
+
+    A slope :math:`s` is estimated by anchored no-intercept OLS on ages
+    :math:`[x_{\\text{start}}, x_{\\max}]`:
+
+    .. math::
+
+        \\log\\mu(x) - \\log\\mu(x_{\\max})
+            \\approx s \\cdot (x - x_{\\max})
+
+    and the extrapolation beyond :math:`x_{\\max}` is:
+
+    .. math::
+
+        \\log\\mu(x) = \\log\\mu(x_{\\max}) + s \\cdot (x - x_{\\max}),
+        \\quad x > x_{\\max}
+
+    **Kannisto (logistic Gompertz)**
+
+    The force of mortality is modelled as:
+
+    .. math::
+
+        \\mu(x) = \\frac{a \\, e^{bx}}{1 + a \\, e^{bx}}
+
+    Parameters :math:`(a, b)` are fitted by nonlinear least squares on ages
+    :math:`[x_{\\text{start}}, x_{\\max}]` using the :func:`kannisto_log_mu`
+    function.  If the fit fails, the method falls back to the linear approach.
+    Monotonicity of log-mortality is enforced beyond :math:`x_{\\max}`.
+
+    Parameters
+    ----------
+    xv : array-like
+        Observed age vector.
+    x_extrap : int
+        Maximum age to extrapolate to.
+    x_extrap_start : int or None
+        Starting age of the regression window.  Set to ``None`` and pass
+        ``auto_start=True`` to select automatically via leave-one-out CV.
+    log_Muxtg : ndarray
+        Log force-of-mortality array.  Expected shapes:
+
+        - ``(nb_ages, nb_regions, horizon)`` — deterministic, linear method.
+        - ``(nb_ages, nb_regions, horizon, n_sim)`` — stochastic, linear method.
+        - ``(nb_ages, horizon, nb_regions)`` — deterministic, Kannisto method.
+        - ``(nb_ages, horizon, nb_regions, n_sim)`` — stochastic, Kannisto method.
+    method : {'kannisto', 'linear'}, optional
+        Extrapolation method (default ``'kannisto'``).
+    auto_start : bool, optional
+        If ``True``, select *x_extrap_start* automatically (default ``False``).
+    fallback_linear : bool, optional
+        If ``True``, fall back to the linear method when Kannisto fails
+        (default ``True``).
     """
 
     def __init__(
@@ -613,7 +1194,42 @@ class HighAgeExtrapolator:
 
     # ------------------------------------------------------------------
     def _optimal_start(self, x_max: int, min_window: int = 5, max_window: int = 15) -> int:
-        """Automatically selects x_extrap_start via leave-one-out cross-validation."""
+        """
+        Select the regression start age *x_extrap_start* via leave-one-out cross-validation.
+
+        For each candidate window :math:`[x_{\\max} - w,\\, x_{\\max}]`
+        (with :math:`w` ranging from *min_window* to *max_window*), a
+        no-intercept slope is fitted by leaving out one interior point at a
+        time.  The mean squared LOO prediction error is:
+
+        .. math::
+
+            \\text{MSE}(w) = \\frac{1}{|\\text{LOO}|}
+            \\sum_{i \\in \\text{LOO}}
+            \\left(
+                \\hat{s}_{-i} \\cdot \\Delta x_i - \\Delta y_i
+            \\right)^2
+
+        where :math:`\\Delta x_i = x_i - x_{\\max}`,
+        :math:`\\Delta y_i = \\log\\mu(x_i) - \\log\\mu(x_{\\max})`, and
+        :math:`\\hat{s}_{-i}` is the slope estimated without point :math:`i`.
+
+        The window minimising :math:`\\text{MSE}(w)` is selected.
+
+        Parameters
+        ----------
+        x_max : int
+            Maximum observed age.
+        min_window : int, optional
+            Minimum regression window size (default 5).
+        max_window : int, optional
+            Maximum regression window size (default 15).
+
+        Returns
+        -------
+        int
+            Optimal *x_extrap_start* age.
+        """
         age_to_idx = {int(age): i for i, age in enumerate(self.xv)}
         idx_max    = age_to_idx[x_max]
         anchor     = self.log_Muxtg[idx_max, ...]
@@ -655,7 +1271,37 @@ class HighAgeExtrapolator:
 
     # ------------------------------------------------------------------
     def _extrapolate_linear(self) -> tuple:
-        """No-intercept linear regression (convention: nb_ages, nb_regions, horizon[, n_sim])."""
+        """
+        Extrapolate log-mortality beyond *x_max* using anchored no-intercept linear regression.
+
+        For each region and horizon, the slope :math:`s` is estimated on the
+        window :math:`[x_{\\text{start}}, x_{\\max}]` by solving:
+
+        .. math::
+
+            s = \\frac{
+                \\sum_{x \\in W} (x - x_{\\max})
+                \\bigl[\\log\\mu(x) - \\log\\mu(x_{\\max})\\bigr]
+            }{
+                \\sum_{x \\in W} (x - x_{\\max})^2
+            }
+
+        and the extrapolated value at age :math:`x > x_{\\max}` is:
+
+        .. math::
+
+            \\log\\mu(x) = \\log\\mu(x_{\\max}) + s \\cdot (x - x_{\\max})
+
+        Array convention: ``(nb_ages, nb_regions, horizon[, n_sim])``.
+
+        Returns
+        -------
+        out : ndarray
+            Extended log-mortality array with shape
+            ``(nb_ages_full, nb_regions, horizon[, n_sim])``.
+        xv_full : ndarray
+            Complete age vector from ``xv.min()`` to ``x_extrap``.
+        """
         x_max   = int(self.xv.max())
         xv_reg  = np.arange(self.x_extrap_start, x_max + 1)
         xv_add  = np.arange(x_max + 1, self.x_extrap + 1)
@@ -689,7 +1335,42 @@ class HighAgeExtrapolator:
 
     # ------------------------------------------------------------------
     def _extrapolate_kannisto(self) -> tuple:
-        """Kannisto extrapolation with linear fallback (convention: nb_ages, horizon, nb_regions[, n_sim])."""
+        """
+        Extrapolate log-mortality beyond *x_max* using the Kannisto model.
+
+        For each 1-D slice (one region × one horizon × one simulation), the
+        Kannisto parameters :math:`(a, b)` are estimated by nonlinear least
+        squares via :meth:`_fit_kannisto` on the window
+        :math:`[x_{\\text{start}}, x_{\\max}]`.
+
+        The extrapolated log-mortality at ages :math:`x > x_{\\max}` is:
+
+        .. math::
+
+            \\log\\mu(x) = \\log\\!\\left(
+                \\frac{a \\, e^{bx}}{1 + a \\, e^{bx}}
+            \\right)
+
+        Monotonicity is enforced by:
+
+        .. math::
+
+            \\log\\mu(x) \\leftarrow
+            \\max\\bigl(\\log\\mu(x),\\, \\log\\mu(x-1)\\bigr)
+
+        If the Kannisto fit fails and *fallback_linear* is ``True``, the
+        linear no-intercept method is used instead for that slice.
+
+        Array convention: ``(nb_ages, horizon, nb_regions[, n_sim])``.
+
+        Returns
+        -------
+        out : ndarray
+            Extended log-mortality array with shape
+            ``(nb_ages_full, horizon, nb_regions[, n_sim])``.
+        xv_full : ndarray
+            Complete age vector from ``xv.min()`` to ``x_extrap``.
+        """
         x_max      = int(self.xv.max())
         idx_reg    = np.where((self.xv >= self.x_extrap_start) & (self.xv <= x_max))[0]
         idx_anchor = np.where(self.xv == x_max)[0][0]
@@ -764,7 +1445,40 @@ class HighAgeExtrapolator:
     # ------------------------------------------------------------------
     @staticmethod
     def _fit_kannisto(xv_fit, log_mu_fit):
-        """Fits Kannisto model on a 1D vector. Returns (a, b) or None on failure."""
+        """
+        Fit the Kannisto model to a 1-D log-mortality slice.
+
+        Estimates parameters :math:`(a, b)` of:
+
+        .. math::
+
+            \\log\\mu(x) = \\log\\!\\left(
+                \\frac{a \\, e^{bx}}{1 + a \\, e^{bx}}
+            \\right)
+
+        by nonlinear least squares (``scipy.optimize.curve_fit``).
+
+        Initial values are obtained from a Gompertz log-linear regression
+        (which approximates the Kannisto model at moderate ages):
+
+        .. math::
+
+            \\log\\mu(x) \\approx \\log a + b \\, x
+            \\quad \\Rightarrow \\quad
+            a_0 = e^{\\hat{\\alpha}},\\; b_0 = \\hat{\\beta}
+
+        Parameters
+        ----------
+        xv_fit : ndarray
+            Age values in the regression window.
+        log_mu_fit : ndarray
+            Corresponding observed log-mortality values.
+
+        Returns
+        -------
+        tuple or None
+            ``(a, b)`` if the fit converged, ``None`` otherwise.
+        """
         try:
             # initialize via Gompertz (log-linear regression)
             slope, intercept = np.polyfit(xv_fit, log_mu_fit, 1)
@@ -784,9 +1498,28 @@ class HighAgeExtrapolator:
     # ------------------------------------------------------------------
     def extrapolate(self) -> tuple:
         """
-        Runs the extrapolation using the selected method.
+        Run the high-age extrapolation using the selected method.
 
-        Returns (out, xv_full).
+        If ``auto_start=True`` or *x_extrap_start* is ``None``, the optimal
+        regression start age is selected first via leave-one-out
+        cross-validation (:meth:`_optimal_start`).
+
+        Then dispatches to:
+
+        - :meth:`_extrapolate_linear` for ``method='linear'``.
+        - :meth:`_extrapolate_kannisto` for ``method='kannisto'``.
+
+        Returns
+        -------
+        out : ndarray
+            Extended log-mortality array covering ages up to *x_extrap*.
+        xv_full : ndarray
+            Complete age vector from ``xv.min()`` to ``x_extrap``.
+
+        Raises
+        ------
+        ValueError
+            If *method* is not ``'linear'`` or ``'kannisto'``.
         """
         x_max = int(self.xv.max())
 
@@ -807,19 +1540,39 @@ class HighAgeExtrapolator:
 #pour stochastique
 def concat_logmu_time(logmu_hist, logmu_proj):
     """
-    Concatenate historical and projected log-mortality along time axis.
+    Concatenate historical and projected log-mortality arrays along the time axis.
+
+    In the stochastic case, the 3-D historical array is broadcast to 4-D by
+    repeating it *n_sim* times along a new simulation axis before concatenation,
+    so that the output always has a consistent shape:
+
+    .. math::
+
+        \\log\\boldsymbol{\\mu}_{\\text{full}} =
+        \\bigl[\\,\\log\\boldsymbol{\\mu}_{\\text{hist}}
+             \\;\\big|\\;
+             \\log\\boldsymbol{\\mu}_{\\text{proj}}\\,\\bigr]_{\\text{axis=1}}
 
     Parameters
     ----------
-    logmu_hist : (nb_ages, nb_years_hist, nb_regions)
-    logmu_proj :
-        - deterministic : (nb_ages, horizon, nb_regions)
-        - stochastic    : (nb_ages, horizon, nb_regions, n_sim)
+    logmu_hist : ndarray, shape ``(nb_ages, nb_years_hist, nb_regions)``
+        Observed log-mortality array.
+    logmu_proj : ndarray
+        Projected log-mortality array.
+
+        - Deterministic: shape ``(nb_ages, horizon, nb_regions)``.
+        - Stochastic: shape ``(nb_ages, horizon, nb_regions, n_sim)``.
 
     Returns
     -------
-    - deterministic : (nb_ages, nb_years_hist + horizon, nb_regions)
-    - stochastic    : (nb_ages, nb_years_hist + horizon, nb_regions, n_sim)
+    ndarray
+        - Deterministic: shape ``(nb_ages, nb_years_hist + horizon, nb_regions)``.
+        - Stochastic: shape ``(nb_ages, nb_years_hist + horizon, nb_regions, n_sim)``.
+
+    Raises
+    ------
+    ValueError
+        If *logmu_proj* is not 3-D or 4-D.
     """
     if logmu_proj.ndim == 3:
         return np.concatenate([logmu_hist, logmu_proj], axis=1)
@@ -994,17 +1747,56 @@ def Annuity_pricing(xe, xv, log_Muxtg, duration, rate):
 
 def compute_mae(mu_obs, mu_model, weights=None):
     """
-    Compute MAE and WMAE between observed and modelled mortality rates.
+    Compute the Mean Absolute Error (MAE) and Weighted MAE (WMAE) between
+    observed and modelled mortality rates.
+
+    The global MAE is:
+
+    .. math::
+
+        \\text{MAE} = \\frac{1}{A \\cdot T \\cdot G}
+        \\sum_{x,t,g} \\bigl| \\hat{\\mu}_{x,t}^{(g)} - \\mu_{x,t}^{(g)} \\bigr|
+
+    When exposure weights :math:`E_{x,t}^{(g)}` are provided, the
+    weighted MAE is:
+
+    .. math::
+
+        \\text{WMAE} = \\frac{
+            \\sum_{x,t,g}
+            E_{x,t}^{(g)} \\,
+            \\bigl| \\hat{\\mu}_{x,t}^{(g)} - \\mu_{x,t}^{(g)} \\bigr|
+        }{
+            \\sum_{x,t,g} E_{x,t}^{(g)}
+        }
+
+    Both metrics are also computed marginally over each dimension
+    (by region, by age, by year).
 
     Parameters
     ----------
-    mu_obs   : (nb_ages, horizon) or (nb_ages, horizon, nb_regions)
-    mu_model : (nb_ages, horizon) or (nb_ages, horizon, nb_regions)
-    weights  : same shape as mu_obs, optional, e.g. exposures Extg
+    mu_obs : ndarray, shape ``(nb_ages, horizon)`` or ``(nb_ages, horizon, nb_regions)``
+        Observed mortality rates.
+    mu_model : ndarray
+        Modelled mortality rates; must be broadcastable to the shape of *mu_obs*.
+    weights : ndarray or None, optional
+        Non-negative weights (e.g. exposures :math:`E_{x,t}^{(g)}`), same
+        shape as *mu_obs*.  If ``None``, only unweighted MAE is computed.
 
     Returns
     -------
-    dict with MAE and WMAE (if weights provided) at different aggregation levels
+    dict
+        Always contains:
+
+        - ``"by_region"`` — MAE averaged over ages and years, shape ``(nb_regions,)``.
+        - ``"by_age"``    — MAE averaged over years and regions, shape ``(nb_ages,)``.
+        - ``"by_year"``   — MAE averaged over ages and regions, shape ``(horizon,)``.
+        - ``"global"``    — scalar global MAE.
+
+        If *weights* is provided, also contains:
+
+        - ``"wmae_by_region"``, ``"wmae_by_age"``, ``"wmae_by_year"``,
+          ``"wmae_global"``.
     """
     #  2D  →  broadcast to 3D
     if mu_obs.ndim == 2:
@@ -1036,3 +1828,4 @@ def compute_mae(mu_obs, mu_model, weights=None):
         })
 
     return result
+

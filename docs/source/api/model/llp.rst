@@ -1,4 +1,4 @@
-Lee & Li Parametric Model
+Li & Lee Parametric Model
 =========================
 
 .. automodule:: morta_nuts2.model.LL_p.llp_class

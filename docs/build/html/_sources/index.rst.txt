@@ -59,11 +59,13 @@ in ``pyproject.toml``.
 
    # Create and activate the virtual environment with uv
    uv venv
-   source .venv/bin/activate        # Linux / macOS
-   .venv\Scripts\activate           # Windows
-
+   
    # Install all dependencies from the lockfile
    uv sync
+
+   # Or used the package with :
+   uv pip install git+https://github.com/Detralytics/morta_nuts2.git
+ 
 
 .. tip::
    ``uv sync`` reads ``uv.lock`` and installs the exact same package versions

@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 """
 LiLee — Object-oriented architecture
@@ -96,14 +95,26 @@ class LiLee:
         """
         Build the P-splines penalty matrix :math:`D^T D`.
 
+        The penalty is used to enforce smoothness on the spline coefficients
+        :math:`c` via the penalized log-likelihood:
+
+        .. math::
+
+            \\ell_p(\\theta) = \\ell(\\theta) - \\lambda \\, c^\\top D^\\top D \\, c
+
+        where :math:`D` is the finite difference matrix of order ``diff_order``
+        applied to an identity of size ``n_basis``.
+
         :param n_basis: Number of spline basis functions.
         :type n_basis: int
         :param diff_order: Order of the finite difference operator.
+            ``1`` penalizes slope changes; ``2`` penalizes curvature.
         :type diff_order: int
 
         :returns:
-            - **DtD** (*numpy.ndarray*, shape ``(n_basis, n_basis)``) — penalty matrix.
-            - **diag_DtD** (*numpy.ndarray*, shape ``(n_basis,)``) — diagonal of ``DtD``.
+            - **DtD** (*numpy.ndarray*, shape ``(n_basis, n_basis)``) — penalty matrix :math:`D^\\top D`.
+            - **diag_DtD** (*numpy.ndarray*, shape ``(n_basis,)``) — diagonal of ``DtD``,
+              used for diagonal Hessian preconditioning.
         """
         D = np.diff(np.eye(n_basis), n=diff_order, axis=0)
         DtD = D.T @ D
@@ -115,22 +126,35 @@ class LiLee:
     @staticmethod
     def poisson_lnL(Dxtg, Extg, logmu, logDxtgFact):
         """
-        Compute the Poisson log-likelihood.
+        Compute the Poisson log-likelihood for the Li-Lee model.
+
+        Under the assumption
+        :math:`D_{x,t}^{(g)} \\sim \\text{Poisson}(E_{x,t}^{(g)} \\, \\mu_{x,t}^{(g)})`,
+        the log-likelihood is:
+
+        .. math::
+
+            \\ell(\\theta) = \\sum_{x,t,g} \\Bigl[
+                D_{x,t}^{(g)} \\ln \\mu_{x,t}^{(g)}
+                - E_{x,t}^{(g)} \\, \\mu_{x,t}^{(g)}
+                + D_{x,t}^{(g)} \\ln E_{x,t}^{(g)}
+                - \\ln D_{x,t}^{(g)}!
+            \\Bigr]
 
         :param Dxtg: Observed death counts, shape ``(nb_ages, nb_years, nb_regions)``.
         :type Dxtg: numpy.ndarray
         :param Extg: Exposures, shape ``(nb_ages, nb_years, nb_regions)``.
         :type Extg: numpy.ndarray
-        :param logmu: Log mortality rates, same shape as ``Dxtg``.
+        :param logmu: Log mortality rates :math:`\\ln \\mu_{x,t}^{(g)}`, same shape as ``Dxtg``.
         :type logmu: numpy.ndarray
-        :param logDxtgFact: Pre-computed :math:`\\log(D_{x,t,g}!)`, same shape as ``Dxtg``.
+        :param logDxtgFact: Pre-computed :math:`\\ln(D_{x,t,g}!)` via ``scipy.special.gammaln``.
         :type logDxtgFact: numpy.ndarray
 
         :returns:
-            - **lnL** (*float*) — scalar log-likelihood.
-            - **exp_logmu** (*numpy.ndarray*) — :math:`\\exp(\\ln \\mu)`.
-            - **weighted_exp** (*numpy.ndarray*) — :math:`E_{x,t,g} \\cdot \\exp(\\ln \\mu)`.
-            - **residual** (*numpy.ndarray*) — :math:`D_{x,t,g} - E_{x,t,g} \\cdot \\exp(\\ln \\mu)`.
+            - **lnL** (*float*) — scalar log-likelihood :math:`\\ell(\\theta)`.
+            - **exp_logmu** (*numpy.ndarray*) — :math:`\\mu_{x,t}^{(g)} = \\exp(\\ln \\mu)`.
+            - **weighted_exp** (*numpy.ndarray*) — expected deaths :math:`E_{x,t}^{(g)} \\mu_{x,t}^{(g)}`.
+            - **residual** (*numpy.ndarray*) — Pearson residuals :math:`D_{x,t}^{(g)} - E_{x,t}^{(g)} \\mu_{x,t}^{(g)}`.
         """
         exp_logmu    = np.exp(logmu)
         weighted_exp = Extg * exp_logmu
@@ -193,6 +217,28 @@ class LiLee:
         """
         Compute Poisson deviance, AIC, and BIC given pre-computed effective dofs.
 
+        **Poisson deviance**
+
+        .. math::
+
+            \\mathcal{D} = 2\\bigl(\\ell_{\\text{sat}} - \\ell(\\hat{\\theta})\\bigr)
+
+        where the saturated log-likelihood is:
+
+        .. math::
+
+            \\ell_{\\text{sat}} = \\sum_{x,t,g} \\left[
+                D_{x,t}^{(g)} \\ln\\!\\frac{D_{x,t}^{(g)}}{E_{x,t}^{(g)}}
+                - D_{x,t}^{(g)}
+            \\right]
+
+        **Information criteria**
+
+        .. math::
+
+            \\text{AIC} = 2 \\cdot \\text{dofs} - 2\\,\\ell(\\hat{\\theta}), \\qquad
+            \\text{BIC} = \\text{dofs} \\cdot \\ln(N) - 2\\,\\ell(\\hat{\\theta})
+
         The effective dofs must be computed by the calling ``fit()`` method
         using :meth:`LiLee.effective_dof_spline_block`, so that the P-splines
         penalty is properly accounted for.
@@ -203,7 +249,7 @@ class LiLee:
         :type Extg: numpy.ndarray
         :param logmu: Fitted log mortality rates, same shape as ``Dxtg``.
         :type logmu: numpy.ndarray
-        :param logDxtgFact: Pre-computed :math:`\\log(D!)`, same shape as ``Dxtg``.
+        :param logDxtgFact: Pre-computed :math:`\\ln(D!)`, same shape as ``Dxtg``.
         :type logDxtgFact: numpy.ndarray
         :param dofs: Effective number of parameters (float).
         :type dofs: float
@@ -241,6 +287,17 @@ class LiLee:
     def difference_matrix(n, k):
         """
         Construct the finite difference matrix of order ``k`` for vectors of length ``n``.
+
+        The :math:`k`-th order finite difference operator applied to a vector
+        :math:`v \\in \\mathbb{R}^n` yields a vector of length :math:`n - k`
+        whose :math:`i`-th entry is:
+
+        .. math::
+
+            (\\Delta^k v)_i = \\sum_{j=0}^{k} (-1)^j \\binom{k}{j} \\, v_{i+j}
+
+        The matrix :math:`D` of shape :math:`(n-k, n)` encodes this operation
+        as :math:`D v = \\Delta^k v`.
 
         :param n: Length of the input vector.
         :type n: int
@@ -285,8 +342,8 @@ class LiLee:
                 \\ln(\\mu_{x,t,g}) = \\alpha_{x,g} + \\beta_x \\cdot \\kappa_t
                                     + \\beta_{x,g} \\cdot \\kappa_{g,t}
 
-        :class:`LiLee.Parametric.LeeAndLi`
-            Simplified Lee & Li model with a **common** baseline :math:`\\alpha_x`
+        :class:`LiLee.Parametric.Variant`
+            Simplified Li & Lee model with a **common** baseline :math:`\\alpha_x`
             and region-specific sensitivities :math:`\\beta_{x,g}` driven by
             a **single** time index:
 
@@ -301,7 +358,7 @@ class LiLee:
         """
 
         # =====================================================================
-        # VARIANT : FullModel
+        # FullModel
         # Full Li-Lee model: α_{x,g} + β_x·κ_t + β_{x,g}·κ_{g,t}
         # =====================================================================
 
@@ -451,19 +508,36 @@ class LiLee:
                 Newton-Raphson update of :math:`\\alpha_{x,g}` (region-specific baseline,
                 one coefficient vector per region).
 
+                For each region :math:`g` and basis function :math:`j`:
+
+                .. math::
+
+                    \\text{num}_{j,g} = \\sum_{x,t} r_{x,t}^{(g)} B_j(x)
+                        - 2\\lambda (D^\\top D \\, c^{\\alpha}_g)_j
+
+                .. math::
+
+                    \\text{den}_{j,g} = \\sum_{x,t} E_{x,t}^{(g)} \\mu_{x,t}^{(g)} B_j(x)^2
+                        + 2\\lambda (D^\\top D)_{jj}
+
+                .. math::
+
+                    c^{\\alpha}_{g,j} \\leftarrow c^{\\alpha}_{g,j}
+                        + \\eta \\, \\frac{\\text{num}_{j,g}}{\\text{den}_{j,g}}
+
                 :param alpha_coef: Current coefficients, shape ``(nb_regions, n_basis)``.
                 :type alpha_coef: numpy.ndarray
                 :param B: B-spline basis matrix, shape ``(nb_ages, n_basis)``.
                 :type B: numpy.ndarray
-                :param residual: Residuals, shape ``(nb_ages, nb_years, nb_regions)``.
+                :param residual: Residuals :math:`D - E\\mu`, shape ``(nb_ages, nb_years, nb_regions)``.
                 :type residual: numpy.ndarray
-                :param weighted_exp: ``Extg * exp(logmu)``, same shape as ``residual``.
+                :param weighted_exp: Expected deaths :math:`E\\mu`, same shape as ``residual``.
                 :type weighted_exp: numpy.ndarray
                 :param eta: Learning rate.
                 :type eta: float
-                :param lam: P-spline penalty.
+                :param lam: P-spline penalty :math:`\\lambda`.
                 :type lam: float
-                :param DtD: Penalty matrix, shape ``(n_basis, n_basis)``.
+                :param DtD: Penalty matrix :math:`D^\\top D`, shape ``(n_basis, n_basis)``.
                 :type DtD: numpy.ndarray
                 :param diag_DtD: Diagonal of ``DtD``, shape ``(n_basis,)``.
                 :type diag_DtD: numpy.ndarray
@@ -493,21 +567,39 @@ class LiLee:
                 Newton-Raphson update of :math:`\\beta_x` (common sensitivity,
                 a single coefficient vector for all regions).
 
+                The gradient is summed over all regions :math:`g`:
+
+                .. math::
+
+                    \\text{num}_j = \\sum_{x,t,g} r_{x,t}^{(g)} B_j(x) \\kappa_t
+                        - 2\\lambda (D^\\top D \\, c^{\\beta})_j
+
+                .. math::
+
+                    \\text{den}_j = \\sum_{x,t,g} E_{x,t}^{(g)} \\mu_{x,t}^{(g)}
+                        \\bigl(B_j(x) \\kappa_t\\bigr)^2
+                        + 2\\lambda (D^\\top D)_{jj}
+
+                .. math::
+
+                    c^{\\beta}_j \\leftarrow c^{\\beta}_j
+                        + \\eta \\, \\frac{\\text{num}_j}{\\text{den}_j}
+
                 :param beta_coef: Current coefficients, shape ``(n_basis,)``.
                 :type beta_coef: numpy.ndarray
                 :param B: B-spline basis matrix, shape ``(nb_ages, n_basis)``.
                 :type B: numpy.ndarray
                 :param kappa: Common time index :math:`\\kappa_t`, shape ``(nb_years,)``.
                 :type kappa: numpy.ndarray
-                :param residual: Residuals, shape ``(nb_ages, nb_years, nb_regions)``.
+                :param residual: Residuals :math:`D - E\\mu`, shape ``(nb_ages, nb_years, nb_regions)``.
                 :type residual: numpy.ndarray
-                :param weighted_exp: ``Extg * exp(logmu)``, same shape as ``residual``.
+                :param weighted_exp: Expected deaths :math:`E\\mu`, same shape as ``residual``.
                 :type weighted_exp: numpy.ndarray
                 :param eta: Learning rate.
                 :type eta: float
-                :param lam: P-spline penalty.
+                :param lam: P-spline penalty :math:`\\lambda`.
                 :type lam: float
-                :param DtD: Penalty matrix, shape ``(n_basis, n_basis)``.
+                :param DtD: Penalty matrix :math:`D^\\top D`, shape ``(n_basis, n_basis)``.
                 :type DtD: numpy.ndarray
                 :param diag_DtD: Diagonal of ``DtD``, shape ``(n_basis,)``.
                 :type diag_DtD: numpy.ndarray
@@ -540,6 +632,24 @@ class LiLee:
                 Newton-Raphson update of :math:`\\beta_{x,g}` (regional sensitivity,
                 one coefficient vector per region).
 
+                For each region :math:`g` and basis function :math:`j`:
+
+                .. math::
+
+                    \\text{num}_{j,g} = \\sum_{x,t} r_{x,t}^{(g)} B_j(x) \\kappa_{g,t}
+                        - 2\\lambda (D^\\top D \\, c^{\\beta_g}_g)_j
+
+                .. math::
+
+                    \\text{den}_{j,g} = \\sum_{x,t} E_{x,t}^{(g)} \\mu_{x,t}^{(g)}
+                        \\bigl(B_j(x) \\kappa_{g,t}\\bigr)^2
+                        + 2\\lambda (D^\\top D)_{jj}
+
+                .. math::
+
+                    c^{\\beta_g}_{g,j} \\leftarrow c^{\\beta_g}_{g,j}
+                        + \\eta \\, \\frac{\\text{num}_{j,g}}{\\text{den}_{j,g}}
+
                 :param beta_g_coef: Current coefficients, shape ``(nb_regions, n_basis)``.
                 :type beta_g_coef: numpy.ndarray
                 :param B: B-spline basis matrix, shape ``(nb_ages, n_basis)``.
@@ -547,15 +657,15 @@ class LiLee:
                 :param kappa_g: Regional time indices :math:`\\kappa_{g,t}`,
                     shape ``(nb_regions, nb_years)``.
                 :type kappa_g: numpy.ndarray
-                :param residual: Residuals, shape ``(nb_ages, nb_years, nb_regions)``.
+                :param residual: Residuals :math:`D - E\\mu`, shape ``(nb_ages, nb_years, nb_regions)``.
                 :type residual: numpy.ndarray
-                :param weighted_exp: ``Extg * exp(logmu)``, same shape as ``residual``.
+                :param weighted_exp: Expected deaths :math:`E\\mu`, same shape as ``residual``.
                 :type weighted_exp: numpy.ndarray
                 :param eta: Learning rate.
                 :type eta: float
-                :param lam: P-spline penalty.
+                :param lam: P-spline penalty :math:`\\lambda`.
                 :type lam: float
-                :param DtD: Penalty matrix, shape ``(n_basis, n_basis)``.
+                :param DtD: Penalty matrix :math:`D^\\top D`, shape ``(n_basis, n_basis)``.
                 :type DtD: numpy.ndarray
                 :param diag_DtD: Diagonal of ``DtD``, shape ``(n_basis,)``.
                 :type diag_DtD: numpy.ndarray
@@ -588,13 +698,28 @@ class LiLee:
                 """
                 Newton-Raphson update of :math:`\\kappa_t` (common time factor).
 
+                The score and Fisher information, summed over all ages and regions:
+
+                .. math::
+
+                    \\text{num}_t = \\sum_{x,g} r_{x,t}^{(g)} \\beta_x
+
+                .. math::
+
+                    \\text{den}_t = \\sum_{x,g} E_{x,t}^{(g)} \\mu_{x,t}^{(g)} \\beta_x^2
+
+                .. math::
+
+                    \\kappa_t \\leftarrow \\kappa_t
+                        + \\eta \\, \\frac{\\text{num}_t}{\\text{den}_t}
+
                 :param kappa: Current time index, shape ``(nb_years,)``.
                 :type kappa: numpy.ndarray
-                :param beta: Evaluated :math:`\\beta_x`, shape ``(nb_ages,)``.
+                :param beta: Evaluated common sensitivity :math:`\\beta_x`, shape ``(nb_ages,)``.
                 :type beta: numpy.ndarray
-                :param residual: Residuals, shape ``(nb_ages, nb_years, nb_regions)``.
+                :param residual: Residuals :math:`D - E\\mu`, shape ``(nb_ages, nb_years, nb_regions)``.
                 :type residual: numpy.ndarray
-                :param weighted_exp: ``Extg * exp(logmu)``, same shape as ``residual``.
+                :param weighted_exp: Expected deaths :math:`E\\mu`, same shape as ``residual``.
                 :type weighted_exp: numpy.ndarray
                 :param eta: Learning rate.
                 :type eta: float
@@ -615,15 +740,30 @@ class LiLee:
                 """
                 Newton-Raphson update of :math:`\\kappa_{g,t}` (regional time factors).
 
+                For each region :math:`g` and time :math:`t`:
+
+                .. math::
+
+                    \\text{num}_{g,t} = \\sum_x r_{x,t}^{(g)} \\beta_{x,g}
+
+                .. math::
+
+                    \\text{den}_{g,t} = \\sum_x E_{x,t}^{(g)} \\mu_{x,t}^{(g)} \\beta_{x,g}^2
+
+                .. math::
+
+                    \\kappa_{g,t} \\leftarrow \\kappa_{g,t}
+                        + \\eta \\, \\frac{\\text{num}_{g,t}}{\\text{den}_{g,t}}
+
                 :param kappa_g: Current regional time indices,
                     shape ``(nb_regions, nb_years)``.
                 :type kappa_g: numpy.ndarray
-                :param beta_g: Evaluated :math:`\\beta_{x,g}`,
+                :param beta_g: Evaluated regional sensitivity :math:`\\beta_{x,g}`,
                     shape ``(nb_ages, nb_regions)``.
                 :type beta_g: numpy.ndarray
-                :param residual: Residuals, shape ``(nb_ages, nb_years, nb_regions)``.
+                :param residual: Residuals :math:`D - E\\mu`, shape ``(nb_ages, nb_years, nb_regions)``.
                 :type residual: numpy.ndarray
-                :param weighted_exp: ``Extg * exp(logmu)``, same shape as ``residual``.
+                :param weighted_exp: Expected deaths :math:`E\\mu`, same shape as ``residual``.
                 :type weighted_exp: numpy.ndarray
                 :param eta: Learning rate.
                 :type eta: float
@@ -651,14 +791,33 @@ class LiLee:
                 """
                 Enforce Li-Lee identifiability constraints.
 
-                Constraints applied:
+                Three constraints are applied to ensure the model is identified:
 
-                  1. :math:`\\sum_x \\beta_x = 1`
-                     — fixes the scale of the common factor
-                  2. :math:`\\sum_x \\beta_{x,g} = 1 \\; \\forall g`
-                     — fixes the scale of each regional factor
-                  3. :math:`\\overline{\\kappa}_t = 0`
-                     — centres :math:`\\kappa_t`; compensated in :math:`\\alpha_{x,g}`
+                **1. Common factor scale** — :math:`\\sum_x \\beta_x = 1`
+
+                .. math::
+
+                    s = \\sum_x \\beta_x, \\quad
+                    \\beta_x \\leftarrow \\frac{\\beta_x}{s}, \\quad
+                    \\kappa_t \\leftarrow s \\, \\kappa_t
+
+                **2. Regional factor scale** — :math:`\\sum_x \\beta_{x,g} = 1 \\; \\forall g`
+
+                .. math::
+
+                    s_g = \\sum_x \\beta_{x,g}, \\quad
+                    \\beta_{x,g} \\leftarrow \\frac{\\beta_{x,g}}{s_g}, \\quad
+                    \\kappa_{g,t} \\leftarrow s_g \\, \\kappa_{g,t}
+
+                **3. Common index centering** — :math:`\\overline{\\kappa}_t = 0`
+
+                .. math::
+
+                    \\bar{\\kappa} = \\frac{1}{T}\\sum_t \\kappa_t, \\quad
+                    \\kappa_t \\leftarrow \\kappa_t - \\bar{\\kappa}, \\quad
+                    \\alpha_{x,g} \\leftarrow \\alpha_{x,g} + \\beta_x \\, \\bar{\\kappa}
+
+                so that :math:`\\ln \\mu_{x,t,g}` remains invariant.
                 """
                 # ----------------------------------------------------------
                 # 1. Σ_x β_x = 1 : scale of the common factor
@@ -1185,21 +1344,39 @@ class LiLee:
                 """
                 Newton-Raphson update of :math:`\\beta_{x,g}` (one B-spline curve per region).
 
+                For each region :math:`g` and basis function :math:`j`:
+
+                .. math::
+
+                    \\text{num}_{j,g} = \\sum_{x,t} r_{x,t}^{(g)} B_j(x) \\kappa_t
+                        - 2\\lambda (D^\\top D \\, c^{\\beta_g}_g)_j
+
+                .. math::
+
+                    \\text{den}_{j,g} = \\sum_{x,t} E_{x,t}^{(g)} \\mu_{x,t}^{(g)}
+                        \\bigl(B_j(x) \\kappa_t\\bigr)^2
+                        + 2\\lambda (D^\\top D)_{jj}
+
+                .. math::
+
+                    c^{\\beta_g}_{g,j} \\leftarrow c^{\\beta_g}_{g,j}
+                        + \\eta \\, \\frac{\\text{num}_{j,g}}{\\text{den}_{j,g}}
+
                 :param bx_coef: Current coefficients, shape ``(nb_regions, n_basis)``.
                 :type bx_coef: numpy.ndarray
                 :param B: B-spline basis matrix, shape ``(nb_ages, n_basis)``.
                 :type B: numpy.ndarray
-                :param kappa: Common time index, shape ``(nb_years,)``.
+                :param kappa: Common time index :math:`\\kappa_t`, shape ``(nb_years,)``.
                 :type kappa: numpy.ndarray
-                :param residual: Residuals, shape ``(nb_ages, nb_years, nb_regions)``.
+                :param residual: Residuals :math:`D - E\\mu`, shape ``(nb_ages, nb_years, nb_regions)``.
                 :type residual: numpy.ndarray
-                :param weighted_exp: ``Extg * exp(logmu)``, same shape as ``residual``.
+                :param weighted_exp: Expected deaths :math:`E\\mu`, same shape as ``residual``.
                 :type weighted_exp: numpy.ndarray
                 :param eta: Learning rate.
                 :type eta: float
-                :param lam: P-spline penalty.
+                :param lam: P-spline penalty :math:`\\lambda`.
                 :type lam: float
-                :param DtD: Penalty matrix, shape ``(n_basis, n_basis)``.
+                :param DtD: Penalty matrix :math:`D^\\top D`, shape ``(n_basis, n_basis)``.
                 :type DtD: numpy.ndarray
                 :param diag_DtD: Diagonal of ``DtD``, shape ``(n_basis,)``.
                 :type diag_DtD: numpy.ndarray
@@ -1233,19 +1410,37 @@ class LiLee:
                 """
                 Newton-Raphson update of the B-spline coefficients of :math:`\\alpha_x`.
 
+                Since :math:`\\alpha_x` is common to all regions, the gradient
+                is summed over all :math:`g`:
+
+                .. math::
+
+                    \\text{num}_j = \\sum_{x,t,g} r_{x,t}^{(g)} B_j(x)
+                        - 2\\lambda (D^\\top D \\, c^{\\alpha})_j
+
+                .. math::
+
+                    \\text{den}_j = \\sum_{x,t,g} E_{x,t}^{(g)} \\mu_{x,t}^{(g)} B_j(x)^2
+                        + 2\\lambda (D^\\top D)_{jj}
+
+                .. math::
+
+                    c^{\\alpha}_j \\leftarrow c^{\\alpha}_j
+                        + \\eta \\, \\frac{\\text{num}_j}{\\text{den}_j}
+
                 :param ax_coef: Current coefficients, shape ``(n_basis,)``.
                 :type ax_coef: numpy.ndarray
                 :param B: B-spline basis matrix, shape ``(nb_ages, n_basis)``.
                 :type B: numpy.ndarray
-                :param residual: Residuals, shape ``(nb_ages, nb_years, nb_regions)``.
+                :param residual: Residuals :math:`D - E\\mu`, shape ``(nb_ages, nb_years, nb_regions)``.
                 :type residual: numpy.ndarray
-                :param weighted_exp: ``Extg * exp(logmu)``, same shape as ``residual``.
+                :param weighted_exp: Expected deaths :math:`E\\mu`, same shape as ``residual``.
                 :type weighted_exp: numpy.ndarray
                 :param eta: Learning rate.
                 :type eta: float
-                :param lam: P-spline penalty.
+                :param lam: P-spline penalty :math:`\\lambda`.
                 :type lam: float
-                :param DtD: Penalty matrix, shape ``(n_basis, n_basis)``.
+                :param DtD: Penalty matrix :math:`D^\\top D`, shape ``(n_basis, n_basis)``.
                 :type DtD: numpy.ndarray
                 :param diag_DtD: Diagonal of ``DtD``, shape ``(n_basis,)``.
                 :type diag_DtD: numpy.ndarray
@@ -1275,14 +1470,30 @@ class LiLee:
                 """
                 Newton-Raphson update of the common time index :math:`\\kappa_t`.
 
+                For the Lee & Li variant, all regions share :math:`\\kappa_t`,
+                so the gradient is summed over both ages and regions:
+
+                .. math::
+
+                    \\text{num}_t = \\sum_{x,g} r_{x,t}^{(g)} \\beta_{x,g}
+
+                .. math::
+
+                    \\text{den}_t = \\sum_{x,g} E_{x,t}^{(g)} \\mu_{x,t}^{(g)} \\beta_{x,g}^2
+
+                .. math::
+
+                    \\kappa_t \\leftarrow \\kappa_t
+                        + \\eta \\, \\frac{\\text{num}_t}{\\text{den}_t}
+
                 :param kappa: Current time index, shape ``(nb_years,)``.
                 :type kappa: numpy.ndarray
-                :param bx_reg: Evaluated :math:`\\beta_{x,g}`,
+                :param bx_reg: Evaluated regional sensitivity :math:`\\beta_{x,g}`,
                     shape ``(nb_ages, nb_regions)``.
                 :type bx_reg: numpy.ndarray
-                :param residual: Residuals, shape ``(nb_ages, nb_years, nb_regions)``.
+                :param residual: Residuals :math:`D - E\\mu`, shape ``(nb_ages, nb_years, nb_regions)``.
                 :type residual: numpy.ndarray
-                :param weighted_exp: ``Extg * exp(logmu)``, same shape as ``residual``.
+                :param weighted_exp: Expected deaths :math:`E\\mu`, same shape as ``residual``.
                 :type weighted_exp: numpy.ndarray
                 :param eta: Learning rate.
                 :type eta: float
@@ -1304,9 +1515,25 @@ class LiLee:
             @staticmethod
             def rescale_bx_kappa(bx_coef, bx_reg, kappa):
                 """
-                Normalize :math:`\\beta_{x,g}` so that
-                :math:`\\sum_x \\overline{\\beta}_x = 1`, where
-                :math:`\\overline{\\beta}_x = \\frac{1}{G} \\sum_g \\beta_{x,g}`.
+                Normalize :math:`\\beta_{x,g}` via the average across regions.
+
+                The identifiability constraint enforced is:
+
+                .. math::
+
+                    \\sum_x \\bar{\\beta}_x = 1, \\qquad
+                    \\bar{\\beta}_x = \\frac{1}{G} \\sum_g \\beta_{x,g}
+
+                This is achieved by computing the scale factor
+                :math:`s = \\sum_x \\bar{\\beta}_x` and applying:
+
+                .. math::
+
+                    \\beta_{x,g} \\leftarrow \\frac{\\beta_{x,g}}{s}, \\quad
+                    c^{\\beta_g} \\leftarrow \\frac{c^{\\beta_g}}{s}, \\quad
+                    \\kappa_t \\leftarrow s \\, \\kappa_t
+
+                so that the product :math:`\\beta_{x,g} \\kappa_t` is preserved.
 
                 :param bx_coef: Coefficients of :math:`\\beta_{x,g}`,
                     shape ``(nb_regions, n_basis)``.
@@ -1540,10 +1767,40 @@ class LiLee:
         @staticmethod
         def _lc_fit(ax, bx, kappa, Extg, Dxtg, xv, tv, nb_iter):
             """
-            Classic Lee-Carter gradient descent — used as baseline for Step 1.
+            Classic Lee-Carter gradient descent — used as Step 1 baseline.
 
-            Fits :math:`\\alpha_x`, :math:`\\beta_x`, :math:`\\kappa_t`
-            on the full dataset.
+            Fits :math:`\\alpha_x`, :math:`\\beta_x`, :math:`\\kappa_t` on the
+            full dataset by maximising the Poisson log-likelihood via
+            coordinate-wise gradient ascent.
+
+            At each iteration the three blocks are updated in sequence:
+
+            1. :math:`\\alpha_x` — gradient step.
+            2. :math:`\\beta_x` — gradient step followed by normalization
+               :math:`\\sum_x \\beta_x = 1`.
+            3. :math:`\\kappa_t` — gradient step followed by centering
+               :math:`\\bar{\\kappa} = 0`; the mean is absorbed into :math:`\\alpha_x`:
+
+               .. math::
+
+                   \\alpha_x \\leftarrow \\alpha_x + \\bar{\\kappa} \\, \\beta_x
+
+            :param ax: Initial age baseline :math:`\\alpha_x`, shape ``(nb_ages, 1)``.
+            :type ax: numpy.ndarray
+            :param bx: Initial sensitivity :math:`\\beta_x`, shape ``(nb_ages, 1)``.
+            :type bx: numpy.ndarray
+            :param kappa: Initial period index :math:`\\kappa_t`, shape ``(nb_years,)``.
+            :type kappa: numpy.ndarray
+            :param Extg: Exposures, shape ``(nb_ages, nb_years, nb_regions)``.
+            :type Extg: numpy.ndarray
+            :param Dxtg: Death counts, same shape as ``Extg``.
+            :type Dxtg: numpy.ndarray
+            :param xv: Age vector.
+            :type xv: numpy.ndarray
+            :param tv: Year vector.
+            :type tv: numpy.ndarray
+            :param nb_iter: Number of gradient descent iterations.
+            :type nb_iter: int
 
             :returns: Updated ``(ax, bx, kappa, Fit_stat)``.
             :rtype: tuple
@@ -1634,7 +1891,27 @@ class LiLee:
         # ---------------------------------------------------------------------
         def fit(self, ax, bx, bx_gr, kappa, kappa_gr, Extg, Dxtg, Muxtg, xv, tv):
             """
-            Fit the classic Li-Lee model.
+            Fit the classic Li-Lee model by two-step gradient descent.
+
+            **Step 1** — fits a standard Lee-Carter model on the data
+            using :meth:`_lc_fit` to obtain the common components
+            :math:`(\\alpha_x, \\beta_x, \\kappa_t)`.
+
+            **Step 2** — fixes the common component and fits the regional
+            residual terms :math:`(\\beta_{x,g}, \\kappa_{g,t})` by gradient
+            ascent on the Poisson log-likelihood of:
+
+            .. math::
+
+                \\ln \\mu_{x,t,g} = \\alpha_x + \\beta_x \\kappa_t
+                                   + \\beta_{x,g} \\kappa_{g,t}
+
+            At each iteration:
+
+            - :math:`\\beta_{x,g}` — gradient step followed by normalization
+              :math:`\\sum_x \\beta_{x,g} = 1 \\; \\forall g`, with a P-spline
+              roughness penalty of strength ``h``.
+            - :math:`\\kappa_{g,t}` — gradient step (no centering constraint).
 
             :param ax: Initial age baseline :math:`\\alpha_x`, shape ``(nb_ages, 1)``.
             :type ax: numpy.ndarray
@@ -1695,10 +1972,17 @@ class LiLee:
                         logmuxt_gr[:, :, ct] = (logmuxt_baseline + bx_grM[:, :, ct] * kappa_grM[:, :, ct])
 
                     #baseline for update
+                    # r_{x,t,g} = D_{x,t}^{(g)} - E_{x,t}^{(g)} * exp(ln mu_{x,t,g})
                     dlnL_baseline = (Dxtg - Extg * np.exp(logmuxt_gr))
 
                     if (ct_opt == 0):
                         #--------------- bx gr -----------------
+                        # Penalized Newton-Raphson update for β_{x,g}:
+                        #
+                        #   ∂ℓ/∂β_{x,g}  = Σ_t r_{x,t,g} · κ_{g,t}  - 2h (K^T K β_g)_x
+                        #   ∂²ℓ/∂β²_{x,g} = -Σ_t E_{x,t,g} μ_{x,t,g} κ_{g,t}²  + 2h (diag K^T K)_x
+                        #
+                        #   β_{x,g} ← β_{x,g} + η · (∂ℓ/∂β) / |∂²ℓ/∂β²|
                         bx_gr_new = np.zeros_like(bx_gr)
 
                         dlnL_dpar = ((np.sum(dlnL_baseline * kappa_grM, axis=1) - 2 * self.h * (KTK @ bx_gr)) /
@@ -1723,6 +2007,12 @@ class LiLee:
 
                     if (ct_opt == 1):
                         #--------------- kappa gr -----------------
+                        # Newton-Raphson update for κ_{g,t}:
+                        #
+                        #   ∂ℓ/∂κ_{g,t}  = Σ_x r_{x,t,g} · β_{x,g}
+                        #   ∂²ℓ/∂κ²_{g,t} = -Σ_x E_{x,t,g} μ_{x,t,g} β_{x,g}²
+                        #
+                        #   κ_{g,t} ← κ_{g,t} + η · (∂ℓ/∂κ) / |∂²ℓ/∂κ²|
                         kappa_gr_new = np.zeros_like(kappa_gr)
 
                         dlnL_dpar = (np.sum(dlnL_baseline * bx_grM, axis=0) /
@@ -1794,5 +2084,4 @@ class LiLee:
                 },
                 "fit_statistics": Fit_stat,
             }
-
 

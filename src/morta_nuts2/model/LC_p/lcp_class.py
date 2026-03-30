@@ -895,6 +895,7 @@ class LeeCarter:
                       ``N``, ``n_basis``, ``dofs``, ``lnL``,
                       ``deviance``, ``AIC``, ``BIC``.
                 """
+                nb_years   = len(tv)
                 nb_regions = Extg.shape[2]
 
                 xmin = self.xmin if self.xmin is not None else float(np.min(xv))
@@ -1151,7 +1152,7 @@ class LeeCarter:
                         ax_new    = np.zeros_like(ax)
                         dlnL_dpar = (np.sum(dlnL_baseline, axis=(1, 2)) /
                                      np.sum(Extg * np.exp(logmuxt_grp), axis=(1, 2)))
-                        ax_new = ax + eta * dlnL_dpar.reshape(-1, 1)
+                        ax_new = ax + self.eta * dlnL_dpar.reshape(-1, 1)
                         #update
                         ax = ax_new.copy()
                     if (ct_opt == 1):
@@ -1162,7 +1163,7 @@ class LeeCarter:
                         kappaM = np.repeat(kappaM, nb_regions, axis=2)
                         dlnL_dpar = (np.sum(dlnL_baseline * kappaM, axis=(1, 2)) /
                                      (np.sum(Extg * np.exp(logmuxt_grp) * kappaM**2, axis=(1, 2))))
-                        bx_new = bx + eta * dlnL_dpar.reshape(-1, 1)
+                        bx_new = bx + self.eta * dlnL_dpar.reshape(-1, 1)
                         #we normalize
                         scal_bx = np.sum(bx_new)
                         bx_new  = bx_new / scal_bx
@@ -1177,7 +1178,7 @@ class LeeCarter:
                         bxM = np.repeat(bxM, nb_regions, axis=2)
                         dlnL_dpar = (np.sum(dlnL_baseline * bxM, axis=(0, 2)) /
                                      (np.sum(Extg * np.exp(logmuxt_grp) * bxM**2, axis=(0, 2))))
-                        kappa_new = kappa + eta * dlnL_dpar
+                        kappa_new = kappa + self.eta * dlnL_dpar
                         #we rescale
                         kappa_avg = np.mean(kappa_new)
                         kappa_new = (kappa_new - kappa_avg)  #*np.sum(bx)

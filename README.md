@@ -55,16 +55,9 @@ morta_nuts2/
 
 ## Documentation
 
-The full API documentation is generated with Sphinx and is made available via ReadtheDocs: 
+The full API documentation is generated with Sphinx and is made available via ReadtheDocs at the following link:
 
-```bash
-uv add sphinx sphinx-rtd-theme
-cd docs
-make html
-```
-
-Then open `docs/build/html/index.html` in your browser.
-
+https://morta-nuts2.readthedocs.io/en/latest/
 
 ## Disclaimer
 

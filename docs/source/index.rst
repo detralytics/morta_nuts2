@@ -51,6 +51,15 @@ This project uses `uv <https://github.com/astral-sh/uv>`_ to manage the virtual
 environment and dependencies. All packages are locked in ``uv.lock`` and declared
 in ``pyproject.toml``.
 
+If you want to install the package and run the package functions inside and existing .venv, do as follows:
+
+.. code-block:: bash
+
+   # Or used the package with :
+   uv pip install git+https://github.com/Detralytics/morta_nuts2.git
+ 
+If you want to use it from the cloned repository and explore its usage using the provided notebooks, do as follows:
+
 .. code-block:: bash
 
    # Clone the repository
@@ -62,10 +71,6 @@ in ``pyproject.toml``.
    
    # Install all dependencies from the lockfile
    uv sync
-
-   # Or used the package with :
-   uv pip install git+https://github.com/Detralytics/morta_nuts2.git
- 
 
 .. tip::
    ``uv sync`` reads ``uv.lock`` and installs the exact same package versions

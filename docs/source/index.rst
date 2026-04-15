@@ -10,6 +10,9 @@ morta\_nuts2 Documentation
        <img src="https://img.shields.io/badge/doc-Sphinx-orange"/>
        <img src="https://img.shields.io/badge/data-Eurostat-blueviolet"/>
        <img src="https://img.shields.io/badge/env-uv-black"/>
+       <a href="https://morta-nuts2.readthedocs.io/">
+         <img src="https://readthedocs.org/projects/morta-nuts2/badge/?version=latest"/>
+       </a>
      </div>
    </div>
 

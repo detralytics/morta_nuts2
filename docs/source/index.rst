@@ -4,7 +4,7 @@ morta\_nuts2 Documentation
 .. raw:: html
 
    <div style="text-align: center; margin-bottom: 20px;">
-     <img src="docs/source/LogoDetralytics.png" style="height: 80px; margin-bottom: 10px;"/>
+     <img src="_static/LogoDetralytics.png" style="height: 80px; margin-bottom: 10px;"/>
      <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
        <img src="https://img.shields.io/badge/python-3.11%2B-blue"/>
        <img src="https://img.shields.io/badge/doc-Sphinx-orange"/>

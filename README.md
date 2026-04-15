@@ -1,16 +1,15 @@
 # morta_nuts2
 
-.. raw:: html
+<p align="center">
+  <img src="docs/source/LogoDetralytics.png" height="80">
+</p>
 
-   <div style="text-align: center; margin-bottom: 20px;">
-     <img src="docs/source/LogoDetralytics.png" style="height: 80px; margin-bottom: 10px;"/>
-     <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
-       <img src="https://img.shields.io/badge/python-3.11%2B-blue"/>
-       <img src="https://img.shields.io/badge/doc-Sphinx-orange"/>
-       <img src="https://img.shields.io/badge/data-Eurostat-blueviolet"/>
-       <img src="https://img.shields.io/badge/env-uv-black"/>
-     </div>
-   </div>
+<p align="center">
+  <img src="https://img.shields.io/badge/python-3.11%2B-blue" />
+  <img src="https://img.shields.io/badge/doc-Sphinx-orange" />
+  <img src="https://img.shields.io/badge/data-Eurostat-blueviolet" />
+  <img src="https://img.shields.io/badge/env-uv-black" />
+</p>
 
 A Python package for modeling and analyzing mortality rates at the NUTS2 regional level across Europe, using Eurostat data.
 

@@ -39,7 +39,7 @@ morta_nuts2/
 │           └── projection/
 │               └── project_class.py # Mortality projection engine
 │
-├── notebook/                        # Jupyter notebooks for exploration
+├── notebook/                        # Jupyter notebooks for exploration - can be used as tutorials
 ├── NUTS_files/                      # NUTS2 shapefiles (Eurostat)
 └── docs/                            # Sphinx documentation
 

@@ -20,5 +20,8 @@ build/
 venv/
 env/
 
+# Remove data folders from github
+data/
+
 # results folder
 results/

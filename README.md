@@ -9,6 +9,9 @@
   <img src="https://img.shields.io/badge/doc-Sphinx-orange" />
   <img src="https://img.shields.io/badge/data-Eurostat-blueviolet" />
   <img src="https://img.shields.io/badge/env-uv-black" />
+  <a href="https://morta-nuts2.readthedocs.io/">
+    <img src="https://readthedocs.org/projects/morta-nuts2/badge/?version=latest" />
+  </a>
 </p>
 
 A Python package for modeling and analyzing mortality rates at the NUTS2 regional level across Europe, using Eurostat data.

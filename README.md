@@ -56,3 +56,9 @@ make html
 ```
 
 Then open `docs/build/html/index.html` in your browser.
+
+
+## Disclaimer
+
+This package is provided "as is" for computational purposes only. While we strive for accuracy, the authors and the company accept no liability for errors, unexpected behaviour, or decisions made based on its outputs.
+Users are solely responsible for validating results and ensuring their appropriate use in any professional or regulatory context. This tool is not a substitute for qualified actuarial judgement.

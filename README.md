@@ -10,6 +10,13 @@ If you are using 'uv' python package manager, you can install the package in you
 uv pip install git+https://github.com/Detralytics/morta_nuts2.git
 ```
 
+## Documentation
+
+The full API documentation is generated with Sphinx and is made available via ReadtheDocs at the following link:
+
+https://morta-nuts2.readthedocs.io/en/latest/
+
+
 ## Overview
 
 `morta_nuts2` provides tools to:
@@ -52,12 +59,6 @@ morta_nuts2/
 └── docs/                            # Sphinx documentation
 
 ```
-
-## Documentation
-
-The full API documentation is generated with Sphinx and is made available via ReadtheDocs at the following link:
-
-https://morta-nuts2.readthedocs.io/en/latest/
 
 ## Disclaimer
 

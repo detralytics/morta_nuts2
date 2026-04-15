@@ -1,5 +1,17 @@
 # morta_nuts2
 
+.. raw:: html
+
+   <div style="text-align: center; margin-bottom: 20px;">
+     <img src="_static/LogoDetralytics.png" style="height: 80px; margin-bottom: 10px;"/>
+     <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+       <img src="https://img.shields.io/badge/python-3.11%2B-blue"/>
+       <img src="https://img.shields.io/badge/doc-Sphinx-orange"/>
+       <img src="https://img.shields.io/badge/data-Eurostat-blueviolet"/>
+       <img src="https://img.shields.io/badge/env-uv-black"/>
+     </div>
+   </div>
+   
 A Python package for modeling and analyzing mortality rates at the NUTS2 regional level across Europe, using Eurostat data.
 
 ## Installation

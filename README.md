@@ -2,6 +2,14 @@
 
 A Python package for modeling and analyzing mortality rates at the NUTS2 regional level across Europe, using Eurostat data.
 
+## Installation
+
+If you are using 'uv' python package manager, you can install the package in your python .venv using the following command:
+
+```
+uv pip install git+https://github.com/Detralytics/morta_nuts2.git
+```
+
 ## Overview
 
 `morta_nuts2` provides tools to:
@@ -47,7 +55,7 @@ morta_nuts2/
 
 ## Documentation
 
-The full API documentation is generated with Sphinx.
+The full API documentation is generated with Sphinx and is made available via ReadtheDocs: 
 
 ```bash
 uv add sphinx sphinx-rtd-theme
